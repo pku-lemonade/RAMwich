@@ -136,12 +136,8 @@ class RAMwichSimulator:
 
     def execute_load(self, op: Load):
         """Process to execute a Load operation"""
-        start_time = self.env.now
-        logger.info(f"Time {start_time}: Load operation on tile {op.tile} core {op.core} starting")
-
         # Find the corresponding components in our architecture
-        node_id = 0  # Default to first node if not specified in op
-        node = self.nodes[node_id]
+        node = self.nodes[op.node]
         tile = node.tiles[op.tile]
         core = tile.cores[op.core]
 
@@ -151,18 +147,10 @@ class RAMwichSimulator:
         # Execute on the actual component
         core.execute_load(op.d1)
 
-        end_time = self.env.now
-        duration = end_time - start_time
-        logger.info(f"Time {end_time}: Load operation on tile {op.tile} core {op.core} completed (duration: {duration})")
-
     def execute_set(self, op: Set):
         """Process to execute a Set operation"""
-        start_time = self.env.now
-        logger.info(f"Time {start_time}: Set operation on tile {op.tile} core {op.core} starting")
-
         # Find the corresponding components
-        node_id = 0  # Default to first node if not specified in op
-        node = self.nodes[node_id]
+        node = self.nodes[op.node]
         tile = node.tiles[op.tile]
         core = tile.cores[op.core]
 
@@ -172,18 +160,10 @@ class RAMwichSimulator:
         # Execute on the actual component
         core.execute_set(op.imm)
 
-        end_time = self.env.now
-        duration = end_time - start_time
-        logger.info(f"Time {end_time}: Set operation on tile {op.tile} core {op.core} completed (duration: {duration})")
-
     def execute_alu(self, op: Alu):
         """Process to execute an ALU operation"""
-        start_time = self.env.now
-        logger.info(f"Time {start_time}: ALU operation {op.opcode} on tile {op.tile} core {op.core} starting")
-
         # Find the corresponding components
-        node_id = 0  # Default to first node if not specified in op
-        node = self.nodes[node_id]
+        node = self.nodes[op.node]
         tile = node.tiles[op.tile]
         core = tile.cores[op.core]
 
@@ -193,23 +173,12 @@ class RAMwichSimulator:
         # Execute on the actual component
         core.execute_alu(op.opcode)
 
-        end_time = self.env.now
-        duration = end_time - start_time
-        logger.info(f"Time {end_time}: ALU operation {op.opcode} on tile {op.tile} core {op.core} completed (duration: {duration})")
-
     def execute_mvm(self, op: MVM):
         """Process to execute an MVM operation"""
-        start_time = self.env.now
-        logger.info(f"Time {start_time}: MVM operation on tile {op.tile} core {op.core} starting")
-
         # Find the corresponding components
-        node_id = 0  # Default to first node if not specified in op
-        node = self.nodes[node_id]
+        node = self.nodes[op.node]
         tile = node.tiles[op.tile]
         core = tile.cores[op.core]
-
-        # Assuming the first IMA is used for MVM operations
-        ima_id = 0
 
         # Execute MVM operation (sequentially)
         # Execution time may depend on xbar size
@@ -218,10 +187,6 @@ class RAMwichSimulator:
 
         # Execute on the actual component
         core.execute_mvm(ima_id, op.xbar)
-
-        end_time = self.env.now
-        duration = end_time - start_time
-        logger.info(f"Time {end_time}: MVM operation on tile {op.tile} core {op.core} completed (duration: {duration})")
 
     def run_component_operations(self, tile_id, core_id, operations):
         """Execute a sequence of operations for a specific tile/core combination"""
