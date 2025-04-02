@@ -45,7 +45,6 @@ class RAMwichSimulator:
                     self.config = Config.parse_obj(yaml.safe_load(f))
 
         self.env = simpy.Environment()
-        self.stats = defaultdict(list)
 
         # Build the hierarchical architecture
         self.nodes = self._build_architecture()
@@ -95,7 +94,7 @@ class RAMwichSimulator:
         return nodes
 
     def load_operations(self, file_path):
-        """Load operations from a file (JSON, YAML, or custom format) and organize by tile/core"""
+        """Load operations from a JSON file and organize by tile/core"""
         operations_by_component = defaultdict(list)  # Will store operations by (tile_id, core_id)
 
         if not os.path.exists(file_path):
@@ -106,12 +105,9 @@ class RAMwichSimulator:
             with open(file_path, 'r') as f:
                 if file_path.endswith('.json'):
                     data = json.load(f)
-                elif file_path.endswith(('.yaml', '.yml')):
-                    data = yaml.safe_load(f)
                 else:
-                    # Custom parsing logic for other formats
-                    lines = f.readlines()
-                    data = self._parse_custom_format(lines)
+                    logger.error(f"Unsupported file format: {file_path}. Only JSON is supported.")
+                    return operations_by_component
 
             # Convert raw data to operation objects and organize by tile/core
             for op_data in data:
@@ -138,39 +134,6 @@ class RAMwichSimulator:
 
         return operations_by_component
 
-    def _parse_custom_format(self, lines):
-        """Parse a custom format file into operation data"""
-        operations = []
-        current_op = {}
-
-        for line in lines:
-            line = line.strip()
-            if not line or line.startswith('#'):
-                continue
-
-            if line.startswith('OP:'):
-                if current_op:
-                    operations.append(current_op)
-                current_op = {'type': line[3:].strip().lower()}
-            elif ':' in line:
-                key, value = line.split(':', 1)
-                key = key.strip()
-                value = value.strip()
-
-                # Convert value to appropriate type
-                if value.isdigit():
-                    value = int(value)
-                elif value.startswith('[') and value.endswith(']'):
-                    # Parse list of integers
-                    value = [int(x.strip()) for x in value[1:-1].split(',')]
-
-                current_op[key] = value
-
-        if current_op:
-            operations.append(current_op)
-
-        return operations
-
     def execute_load(self, op: Load):
         """Process to execute a Load operation"""
         start_time = self.env.now
@@ -188,21 +151,9 @@ class RAMwichSimulator:
         # Execute on the actual component
         core.execute_load(op.d1)
 
-        # Update stats
-        execution_time = self.config.load_execution_time
-        core.update_execution_time('load', execution_time)
-        tile.update_stats('load')
-        tile.update_execution_time(execution_time)
-        node.update_stats('load')
-        node.update_execution_time(execution_time)
-
         end_time = self.env.now
         duration = end_time - start_time
         logger.info(f"Time {end_time}: Load operation on tile {op.tile} core {op.core} completed (duration: {duration})")
-
-        # Record statistics
-        self.stats['load_times'].append(duration)
-        self.stats['completion_times'].append(end_time)
 
     def execute_set(self, op: Set):
         """Process to execute a Set operation"""
@@ -221,21 +172,9 @@ class RAMwichSimulator:
         # Execute on the actual component
         core.execute_set(op.imm)
 
-        # Update stats
-        execution_time = self.config.set_execution_time
-        core.update_execution_time('set', execution_time)
-        tile.update_stats('set')
-        tile.update_execution_time(execution_time)
-        node.update_stats('set')
-        node.update_execution_time(execution_time)
-
         end_time = self.env.now
         duration = end_time - start_time
         logger.info(f"Time {end_time}: Set operation on tile {op.tile} core {op.core} completed (duration: {duration})")
-
-        # Record statistics
-        self.stats['set_times'].append(duration)
-        self.stats['completion_times'].append(end_time)
 
     def execute_alu(self, op: Alu):
         """Process to execute an ALU operation"""
@@ -254,21 +193,9 @@ class RAMwichSimulator:
         # Execute on the actual component
         core.execute_alu(op.opcode)
 
-        # Update stats
-        execution_time = self.config.alu_execution_time
-        core.update_execution_time('alu', execution_time)
-        tile.update_stats('alu')
-        tile.update_execution_time(execution_time)
-        node.update_stats('alu')
-        node.update_execution_time(execution_time)
-
         end_time = self.env.now
         duration = end_time - start_time
         logger.info(f"Time {end_time}: ALU operation {op.opcode} on tile {op.tile} core {op.core} completed (duration: {duration})")
-
-        # Record statistics
-        self.stats['alu_times'].append(duration)
-        self.stats['completion_times'].append(end_time)
 
     def execute_mvm(self, op: MVM):
         """Process to execute an MVM operation"""
@@ -292,20 +219,9 @@ class RAMwichSimulator:
         # Execute on the actual component
         core.execute_mvm(ima_id, op.xbar)
 
-        # Update stats
-        core.update_execution_time('mvm', execution_time)
-        tile.update_stats('mvm')
-        tile.update_execution_time(execution_time)
-        node.update_stats('mvm')
-        node.update_execution_time(execution_time)
-
         end_time = self.env.now
         duration = end_time - start_time
         logger.info(f"Time {end_time}: MVM operation on tile {op.tile} core {op.core} completed (duration: {duration})")
-
-        # Record statistics
-        self.stats['mvm_times'].append(duration)
-        self.stats['completion_times'].append(end_time)
 
     def run_component_operations(self, tile_id, core_id, operations):
         """Execute a sequence of operations for a specific tile/core combination"""
@@ -345,7 +261,7 @@ class RAMwichSimulator:
         self.env.run(until=self.config.simulation_time)
 
         logger.info(f"Simulation completed at time {self.env.now}")
-        summarize_results(self.stats, self.nodes)
+        summarize_results(self.nodes)
 
 def main():
     import argparse
