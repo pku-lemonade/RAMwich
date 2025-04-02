@@ -1,0 +1,17 @@
+# RAMwich Simulator Configuration
+
+# System Architecture
+num_nodes: 2
+num_tiles_per_node: 8
+num_cores_per_tile: 4
+num_imas_per_core: 4
+num_xbars_per_ima: 8
+
+# Operation Execution Times (in simulator time units)
+alu_execution_time: 3
+load_execution_time: 6
+set_execution_time: 2
+mvm_execution_time: 15
+
+# Simulation Parameters
+simulation_time: 2000
