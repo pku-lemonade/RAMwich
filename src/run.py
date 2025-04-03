@@ -2,7 +2,7 @@ import argparse
 import logging
 
 from .ramwich import RAMwich
-from .visualize import summarize_results
+from .utils.visualize import summarize_results
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')

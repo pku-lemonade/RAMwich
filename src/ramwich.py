@@ -7,12 +7,12 @@ import simpy
 import yaml
 
 from .config import Config
-from .op import CoreOp, OpType, TileOp
+from .ops import CoreOp, OpType, TileOp
 from .tile import Tile
 from .core import Core
 from .ima import IMA
 from .node import Node
-from .visualize import summarize_results
+from .utils.visualize import summarize_results
 from .stats import Stats
 
 # Configure logging

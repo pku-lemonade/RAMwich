@@ -1,9 +1,9 @@
 from typing import List, Dict, Any, Union
 from ima import IMA
-from .op import Op
+from .ops import Op
 from .stats import Stat
-from .dram import DRAM
-from .sram import SRAM
+from .blocks.dram import DRAM
+from .blocks.sram import SRAM
 
 class Core:
     """
