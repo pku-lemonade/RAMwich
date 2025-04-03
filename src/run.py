@@ -9,7 +9,7 @@ from typing import List, Dict, Any
 from pydantic import BaseModel, Field
 
 from op import Op, Load, Set, Alu, MVM
-from tile import Tile
+from tile import Tile, Core
 from ima import IMA
 from node import Node
 from visualize import summarize_results
@@ -94,12 +94,10 @@ class RAMwichSimulator:
         return nodes
 
     def load_operations(self, file_path):
-        """Load operations from a JSON file and organize by tile/core"""
-        operations_by_component = defaultdict(list)  # Will store operations by (tile_id, core_id)
-
+        """Load operations from a JSON file and organize by node/tile/core hierarchy"""
         if not os.path.exists(file_path):
             logger.error(f"Operation file {file_path} not found")
-            return operations_by_component
+            return
 
         try:
             with open(file_path, 'r') as f:
@@ -107,32 +105,49 @@ class RAMwichSimulator:
                     data = json.load(f)
                 else:
                     logger.error(f"Unsupported file format: {file_path}. Only JSON is supported.")
-                    return operations_by_component
+                    return
 
-            # Convert raw data to operation objects and organize by tile/core
+            # Convert raw data to operation objects and organize by node/tile/core
             for op_data in data:
                 op_type = op_data.pop('type', None)
-
-                # Extract tile and core information to use as keys
+                node_id = op_data.get('node', 0)
                 tile_id = op_data.get('tile', 0)
                 core_id = op_data.get('core', 0)
-                component_key = (tile_id, core_id)
 
-                if op_type == 'load':
-                    operations_by_component[component_key].append(Load(**op_data))
-                elif op_type == 'set':
-                    operations_by_component[component_key].append(Set(**op_data))
-                elif op_type == 'alu':
-                    operations_by_component[component_key].append(Alu(**op_data))
-                elif op_type == 'mvm':
-                    operations_by_component[component_key].append(MVM(**op_data))
-                else:
-                    logger.warning(f"Unknown operation type: {op_type}")
+                if node_id >= len(self.nodes):
+                    logger.warning(f"Operation specifies node {node_id} but only {len(self.nodes)} nodes exist")
+                    continue
+
+                node = self.nodes[node_id]
+
+                try:
+                    tile = node.get_tile(tile_id)
+                    core = tile.get_core(core_id)
+
+                    # Create the appropriate operation object
+                    op = None
+                    if op_type == 'load':
+                        op = Load(**op_data)
+                    elif op_type == 'set':
+                        op = Set(**op_data)
+                    elif op_type == 'alu':
+                        op = Alu(**op_data)
+                    elif op_type == 'mvm':
+                        op = MVM(**op_data)
+                    else:
+                        logger.warning(f"Unknown operation type: {op_type}")
+                        continue
+
+                    # Store the operation in the core
+                    if not hasattr(core, 'operations'):
+                        core.operations = []
+                    core.operations.append(op)
+
+                except ValueError as e:
+                    logger.warning(str(e))
 
         except Exception as e:
             logger.error(f"Error loading operations: {e}")
-
-        return operations_by_component
 
     def execute_load(self, op: Load):
         """Process to execute a Load operation"""
@@ -186,41 +201,17 @@ class RAMwichSimulator:
         yield self.env.timeout(execution_time)
 
         # Execute on the actual component
-        core.execute_mvm(ima_id, op.xbar)
-
-    def run_component_operations(self, tile_id, core_id, operations):
-        """Execute a sequence of operations for a specific tile/core combination"""
-        logger.info(f"Starting operation execution for tile {tile_id}, core {core_id} with {len(operations)} operations")
-
-        for op in operations:
-            if isinstance(op, Load):
-                yield self.env.process(self.execute_load(op))
-            elif isinstance(op, Set):
-                yield self.env.process(self.execute_set(op))
-            elif isinstance(op, Alu):
-                yield self.env.process(self.execute_alu(op))
-            elif isinstance(op, MVM):
-                yield self.env.process(self.execute_mvm(op))
-            else:
-                logger.warning(f"Unknown operation type: {type(op)}")
-
-        logger.info(f"Completed all operations for tile {tile_id}, core {core_id}")
+        core.execute_mvm(op.ima, op.xbar)
 
     def run_simulation(self, op_file):
         """Run the simulation with operations from the specified file"""
-        operations_by_component = self.load_operations(op_file)
+        # Load operations into node/tile/core hierarchy
+        self.load_operations(op_file)
 
-        if not operations_by_component:
-            logger.error("No operations to simulate")
-            return
-
-        total_operations = sum(len(ops) for ops in operations_by_component.values())
-        logger.info(f"Starting simulation with {total_operations} operations across {len(operations_by_component)} tile/core combinations")
-
-        # Create and schedule parallel processes for each tile/core combination
-        for (tile_id, core_id), operations in operations_by_component.items():
-            if operations:  # Only create processes for components with operations
-                self.env.process(self.run_component_operations(tile_id, core_id, operations))
+        # Create and schedule parallel processes for each node
+        node_processes = []
+        for node in self.nodes:
+            node_processes.append(self.env.process(node.run(self, self.env)))
 
         # Run simulation
         self.env.run(until=self.config.simulation_time)
