@@ -63,11 +63,7 @@ class NOCStats(BaseModel):
         stats.area = 0.0  # NoC area not tracked in this component
 
         # Map operation counts
-        stats.operations = self.packets_sent + self.packets_received
         stats.op_counts = self.op_counts.copy()
-
-        # We could map specific operation types if needed
-        # For now, we'll leave the specific operation counts at 0
 
         # Set execution time metrics
         stats.total_execution_time = float(self.active_cycles)

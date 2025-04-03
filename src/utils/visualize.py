@@ -64,21 +64,21 @@ def visualize_results(simulator_stats):
     # Collect operation stats from hierarchy
     for node_stats in components:
         node_id = node_stats.get('component_id', 'unknown')
-        node_op_count = node_stats.get('stats', {}).get('operations', 0)
+        node_op_count = sum(node_stats.get('stats', {}).get('op_counts', {}).values())
         all_components.append(f"Node {node_id}")
         all_op_counts.append(node_op_count)
 
         # Process tiles within the node
         for tile_stats in node_stats.get('components', []):
             tile_id = tile_stats.get('component_id', 'unknown')
-            tile_op_count = tile_stats.get('stats', {}).get('operations', 0)
+            tile_op_count = sum(tile_stats.get('stats', {}).get('op_counts', {}).values())
             all_components.append(f"Tile {node_id}.{tile_id}")
             all_op_counts.append(tile_op_count)
 
             # Process cores within the tile
             for core_stats in tile_stats.get('components', []):
                 core_id = core_stats.get('component_id', 'unknown')
-                core_op_count = core_stats.get('stats', {}).get('operations', 0)
+                core_op_count = sum(core_stats.get('stats', {}).get('op_counts', {}).values())
                 all_components.append(f"Core {node_id}.{tile_id}.{core_id}")
                 all_op_counts.append(core_op_count)
 

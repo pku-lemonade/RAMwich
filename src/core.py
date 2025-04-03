@@ -26,7 +26,6 @@ class Core:
         try:
             value = self.dram.read(d1)
             self.sram.write(0, value)
-            self.stats.operations += 1
             return True
         except IndexError as e:
             print(f"Load operation failed: {e}")
@@ -39,7 +38,6 @@ class Core:
             address = self.sram.read(0)
             self.sram.write(1, imm)
             self.dram.write(address, imm)
-            self.stats.operations += 1
             return True
         except IndexError as e:
             print(f"Set operation failed: {e}")
@@ -55,25 +53,14 @@ class Core:
         elif opcode == "sub": result = r0 - r1
         elif opcode == "mul": result = r0 * r1
         self.sram.write(2, result)
-        self.stats.operations += 1
         return True
 
     def execute_mvm(self, ima_id: int, xbar_ids: List[int]) -> bool:
         """Execute an MVM operation on a specific IMA"""
         if 0 <= ima_id < len(self.imas):
             self.imas[ima_id].execute_mvm(xbar_ids)
-            self.stats.operations += 1
             return True
         return False
-
-    def execute_operation(self, op: Op) -> bool:
-        """Execute an operation directly on this core"""
-        # Let the operation call the appropriate method through its accept method
-        result = op.accept(self)
-
-        # Update statistics based on operation type
-        self.stats.operations += 1
-        return result
 
     def update_execution_time(self, op_type: str, execution_time: float) -> None:
         """Update the execution time statistics"""
@@ -98,7 +85,6 @@ class Core:
         # Aggregate all component stats
         for component in components:
             component_stats = component.get_stats()
-            stats.operations += component_stats.operations
             stats.latency += component_stats.latency
             # Add other metrics as needed
 
