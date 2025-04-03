@@ -1,4 +1,49 @@
 from .config import ADCConfig
+from typing import Dict, Any, Optional
+from pydantic import Field, BaseModel
+
+class ADCStats(BaseModel):
+    """Statistics tracking for ADC (Analog-to-Digital Converter) components"""
+
+    # Basic metrics
+    conversions: int = Field(default=0, description="Number of A/D conversions performed")
+    samples_processed: int = Field(default=0, description="Total number of analog samples processed")
+    out_of_range_samples: int = Field(default=0, description="Number of samples that were out of ADC range")
+    quantization_errors: float = Field(default=0.0, description="Accumulated quantization error")
+
+    # Performance metrics
+    active_cycles: int = Field(default=0, description="Number of active cycles")
+    energy_consumption: float = Field(default=0.0, description="Energy consumption in pJ")
+
+    def record_conversion(self, num_samples: int = 1, out_of_range: int = 0, quant_error: float = 0.0):
+        """Record an ADC conversion operation"""
+        self.conversions += 1
+        self.samples_processed += num_samples
+        self.out_of_range_samples += out_of_range
+        self.quantization_errors += quant_error
+
+    def get_stats(self, adc_id: Optional[int] = None) -> Dict[str, Any]:
+        """Get ADC-specific statistics"""
+        result = {
+            'stats': {
+                'conversions': self.conversions,
+                'samples_processed': self.samples_processed,
+                'out_of_range_samples': self.out_of_range_samples,
+                'quantization_errors': self.quantization_errors,
+                'active_cycles': self.active_cycles,
+                'energy_consumption': self.energy_consumption,
+            }
+        }
+
+        # Add ADC-specific derived metrics
+        if self.samples_processed > 0:
+            result['stats']['avg_quantization_error'] = self.quantization_errors / self.samples_processed
+            result['stats']['out_of_range_percentage'] = (self.out_of_range_samples / self.samples_processed) * 100
+
+        if adc_id is not None:
+            result['adc_id'] = adc_id
+
+        return result
 
 class ADC:
     """Hardware implementation of the ADC component"""
@@ -14,27 +59,39 @@ class ADC:
         else:
             self.resolution = self.adc_config.resolution
 
-        # Performance tracking
-        self.conversion_count = 0
-        self.active_cycles = 0
-        self.energy_consumption = 0
+        # Initialize stats
+        self.stats = ADCStats()
 
     def convert(self, analog_value):
         """Simulate ADC conversion from analog to digital"""
         # Calculate the number of cycles needed
         cycles = self.adc_config.lat
 
-        # Update stats
-        self.conversion_count += 1
-        self.active_cycles += cycles
-        self.energy_consumption += self.adc_config.pow_dyn * cycles
+        # Calculate max value based on resolution
+        max_value = (1 << self.resolution) - 1
+
+        # Check if value is out of range
+        out_of_range = 0
+        if analog_value < 0 or analog_value > 1:
+            out_of_range = 1
 
         # Apply quantization based on resolution
-        max_value = (1 << self.resolution) - 1
-        quantized = int(min(max(0, analog_value * max_value), max_value))
+        capped_value = min(max(0, analog_value), 1)
+        ideal_value = capped_value * max_value
+        quantized = int(ideal_value)
+        quant_error = abs(ideal_value - quantized)
+
+        # Update stats
+        self.stats.record_conversion(num_samples=1, out_of_range=out_of_range, quant_error=quant_error)
+        self.stats.active_cycles += cycles
+        self.stats.energy_consumption += self.adc_config.pow_dyn * cycles
 
         return quantized, cycles
 
     def get_energy_consumption(self):
         """Return the total energy consumption in pJ"""
-        return self.energy_consumption
+        return self.stats.energy_consumption
+
+    def get_stats(self):
+        """Return detailed statistics about this ADC"""
+        return self.stats.get_stats(self.adc_id)

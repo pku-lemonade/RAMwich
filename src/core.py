@@ -1,31 +1,7 @@
 from typing import List, Dict, Any, Union
 from ima import IMA
 from .op import Op
-from pydantic import BaseModel, Field
-
-class CoreStats(BaseModel):
-    operations: int = Field(default=0, description="Total number of operations")
-    load_operations: int = Field(default=0, description="Number of load operations")
-    set_operations: int = Field(default=0, description="Number of set operations")
-    alu_operations: int = Field(default=0, description="Number of ALU operations")
-    mvm_operations: int = Field(default=0, description="Number of MVM operations")
-    total_execution_time: float = Field(default=0, description="Total execution time")
-    last_execution_time: float = Field(default=0, description="Last operation execution time")
-
-    def get_stats(self, core_id: int, include_components: bool = True, imas=None) -> Dict[str, Any]:
-        """Get statistics for this Core and optionally its components"""
-        result = {
-            'core_id': core_id,
-            'stats': self.dict()
-        }
-
-        if include_components and imas:
-            result['imas'] = [
-                ima.get_stats(include_components)
-                for ima in imas
-            ]
-
-        return result
+from .stats import Stat  # CoreStats is no longer needed
 
 class Core:
     """
@@ -36,7 +12,7 @@ class Core:
         self.imas = imas
         self.registers: List[int] = [0] * 16  # Default 16 registers
         self.operations: List[Op] = []  # Store operations to be executed
-        self.stats = CoreStats()
+        self.stats = Stat()
 
     def __repr__(self) -> str:
         return f"Core({self.id}, imas={len(self.imas)})"
@@ -46,7 +22,6 @@ class Core:
         # Placeholder for actual implementation
         self.registers[0] = d1
         self.stats.operations += 1
-        self.stats.load_operations += 1
         return True
 
     def execute_set(self, imm: int) -> bool:
@@ -54,7 +29,6 @@ class Core:
         # Placeholder for actual implementation
         self.registers[1] = imm
         self.stats.operations += 1
-        self.stats.set_operations += 1
         return True
 
     def execute_alu(self, opcode: str) -> bool:
@@ -67,7 +41,6 @@ class Core:
         elif opcode == "mul":
             self.registers[2] = self.registers[0] * self.registers[1]
         self.stats.operations += 1
-        self.stats.alu_operations += 1
         return True
 
     def execute_mvm(self, ima_id: int, xbar_ids: List[int]) -> bool:
@@ -75,7 +48,6 @@ class Core:
         if 0 <= ima_id < len(self.imas):
             self.imas[ima_id].execute_mvm(xbar_ids)
             self.stats.operations += 1
-            self.stats.mvm_operations += 1
             return True
         return False
 
@@ -85,17 +57,12 @@ class Core:
         result = op.accept(self)
 
         # Update statistics based on operation type
-        op_type = op.__class__.__name__.lower()
         self.stats.operations += 1
-        if op_type in ['load', 'set', 'alu', 'mvm']:
-            self.stats[f'{op_type}_operations'] += 1
-
         return result
 
     def update_execution_time(self, op_type: str, execution_time: float) -> None:
         """Update the execution time statistics"""
-        self.stats.total_execution_time += execution_time
-        self.stats.last_execution_time = execution_time
+        self.stats.latency += execution_time
 
         # For MVM operations, also update the IMA stats
         if op_type == 'mvm':
@@ -103,11 +70,17 @@ class Core:
             ima_id = 0
             self.imas[ima_id].update_execution_time(execution_time)
 
-    def get_stats(self, include_components: bool = True) -> Dict[str, Any]:
+    def get_stats(self, include_components: bool = True) -> Stat:
         """Get statistics for this Core and optionally its components"""
-        return self.stats.get_stats(self.id, include_components, self.imas)
+        # Directly modify and return the original stats object
+        return self.stats.get_stats(
+            component_id=self.id,
+            component_type="core",
+            components=self.imas if include_components else None,
+            include_components=include_components
+        )
 
-    def run(self) -> Dict[str, Any]:
+    def run(self):
         """
         Execute all operations in the operation queue (self.operations)
 
@@ -117,11 +90,4 @@ class Core:
         results = []
 
         for op in self.operations:
-            result = self.execute_operation(op)
-            results.append(result)
-
-        return {
-            'success': all(results),
-            'operations_executed': len(results),
-            'stats': self.get_stats(include_components=False)
-        }
+            self.execute_operation(op)
