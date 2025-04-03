@@ -7,27 +7,16 @@ class DramStats(BaseModel):
     read_operations: int = Field(default=0, description="Number of read operations")
     write_operations: int = Field(default=0, description="Number of write operations")
     total_operations: int = Field(default=0, description="Total number of operations")
-    total_execution_time: float = Field(default=0, description="Total execution time")
-    # last_execution_time field removed
 
     def get_stats(self) -> Stat:
         """Convert DramStats to general Stat object"""
         stats = Stat()
-
-        # Map DRAM metrics to Stat object
-        stats.latency = float(self.total_execution_time)
+        stats.latency = 0.0  # Will be updated through update_execution_time
         stats.energy = 0.0  # Placeholder for energy consumption
         stats.area = 0.0    # Placeholder for area usage
-
-        # Map operation counts
         stats.operations = self.total_operations
         stats.read_operations = self.read_operations
         stats.write_operations = self.write_operations
-
-        # Set execution time metrics
-        stats.total_execution_time = float(self.total_execution_time)
-        # Removed last_execution_time assignment
-
         return stats
 
 class DRAM:
@@ -91,12 +80,9 @@ class DRAM:
         elif operation_type == "write":
             self.stats.write_operations += 1
 
-        # Update execution time based on latency
-        self.stats.total_execution_time += self.latency
-
     def update_execution_time(self, execution_time: float) -> None:
         """Update the execution time statistics"""
-        self.stats.total_execution_time += execution_time
+        self.stats.latency += execution_time
 
     def get_stats(self) -> Stat:
         """Get statistics for this DRAM module"""

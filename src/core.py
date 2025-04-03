@@ -100,7 +100,6 @@ class Core:
             component_stats = component.get_stats()
             stats.operations += component_stats.operations
             stats.latency += component_stats.latency
-            stats.total_execution_time += component_stats.total_execution_time
             # Add other metrics as needed
 
         return stats

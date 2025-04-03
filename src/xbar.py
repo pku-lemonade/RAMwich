@@ -5,26 +5,15 @@ from .stats import Stat
 class XbarStats(BaseModel):
     operations: int = Field(default=0, description="Total number of operations")
     mvm_operations: int = Field(default=0, description="Number of MVM operations")
-    total_execution_time: float = Field(default=0, description="Total execution time")
-    # last_execution_time field removed
 
     def get_stats(self, xbar_id: int) -> Stat:
         """Get statistics for this Xbar"""
         stats = Stat()
-
-        # Map Xbar metrics to Stat object
-        stats.latency = float(self.total_execution_time)
+        stats.latency = 0.0  # Will be updated through execution
         stats.energy = 0.0  # Set appropriate energy value if available
         stats.area = 0.0    # Set appropriate area value if available
-
-        # Map operation counts
         stats.operations = self.operations
         stats.mvm_operations = self.mvm_operations
-
-        # Set execution time metrics
-        stats.total_execution_time = float(self.total_execution_time)
-        # Removed last_execution_time assignment
-
         return stats
 
 class Xbar:
@@ -49,7 +38,7 @@ class Xbar:
 
     def update_execution_time(self, execution_time):
         """Update the execution time statistics"""
-        self.stats.total_execution_time += execution_time
+        self.stats.latency += execution_time
 
     def get_stats(self) -> Stat:
         """Get statistics for this Xbar"""

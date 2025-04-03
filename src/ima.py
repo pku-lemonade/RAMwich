@@ -9,24 +9,15 @@ from .stats import Stat
 class IMAStats(BaseModel):
     operations: int = Field(default=0, description="Total number of operations")
     mvm_operations: int = Field(default=0, description="Number of MVM operations")
-    total_execution_time: float = Field(default=0, description="Total execution time")
 
     def get_stats(self, ima_id: int) -> Stat:
-        """Get statistics for this IMA and optionally its components"""
+        """Get statistics for this IMA"""
         stats = Stat()
-
-        # Map IMA metrics to Stat object
-        stats.latency = float(self.total_execution_time)
+        stats.latency = 0.0  # Will be updated through update_execution_time
         stats.energy = 0.0  # Set appropriate energy value if available
         stats.area = 0.0    # Set appropriate area value if available
-
-        # Map operation counts
         stats.operations = self.operations
         stats.mvm_operations = self.mvm_operations
-
-        # Set execution time metrics
-        stats.total_execution_time = float(self.total_execution_time)
-
         return stats
 
 class IMA:
@@ -174,24 +165,20 @@ class IMA:
 
     def update_execution_time(self, execution_time):
         """Update the execution time statistics"""
-        self.stats.total_execution_time += execution_time
+        self.stats.latency += execution_time
 
     def get_stats(self) -> Stat:
         """Get statistics for this IMA aggregating from all components"""
         stats = Stat()
-
-        # Aggregate stats from all components
         components = []
         components.extend(self.xbars)
         components.extend(self.adcs)
         components.extend(self.dacs)
 
-        # Aggregate all component stats
         for component in components:
             component_stats = component.get_stats()
             stats.operations += component_stats.operations
             stats.latency += component_stats.latency
-            stats.total_execution_time += component_stats.total_execution_time
             stats.mvm_operations += getattr(component_stats, 'mvm_operations', 0)
 
         return stats

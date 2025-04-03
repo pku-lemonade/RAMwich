@@ -18,9 +18,6 @@ class Stat(BaseModel):
     alu_operations: int = Field(default=0, description="Number of ALU operations")
     mvm_operations: int = Field(default=0, description="Number of MVM operations")
 
-    # Execution time metrics
-    total_execution_time: float = Field(default=0.0, description="Total execution time")
-
     def get_stats(self, components):
         # Get stats from each subcomponent
         for component in components:
@@ -37,7 +34,5 @@ class Stat(BaseModel):
                 self.set_operations += component_stats.set_operations
                 self.alu_operations += component_stats.alu_operations
                 self.mvm_operations += component_stats.mvm_operations
-                self.total_execution_time += component_stats.total_execution_time
-                # We don't aggregate last_execution_time as it's not cumulative
 
         return self

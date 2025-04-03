@@ -7,16 +7,14 @@ class SRAMStats(BaseModel):
     read_operations: int = Field(default=0, description="Number of read operations")
     write_operations: int = Field(default=0, description="Number of write operations")
     total_operations: int = Field(default=0, description="Total number of operations")
-    total_execution_time: float = Field(default=0, description="Total execution time")
 
     def get_stats(self) -> Stat:
         """Convert SRAMStats to general Stat object"""
         stats = Stat()
-        stats.latency = float(self.total_execution_time)
+        stats.latency = 0.0  # Will be updated through execution
         stats.operations = self.total_operations
         stats.read_operations = self.read_operations
         stats.write_operations = self.write_operations
-        stats.total_execution_time = float(self.total_execution_time)
         return stats
 
 class SRAM:
@@ -46,7 +44,7 @@ class SRAM:
             self.stats.read_operations += 1
         elif operation_type == "write":
             self.stats.write_operations += 1
-        self.stats.total_execution_time += self.latency
+        self.stats.latency += self.latency
 
     def get_stats(self) -> Stat:
         return self.stats.get_stats()
