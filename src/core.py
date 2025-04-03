@@ -61,6 +61,19 @@ class Core:
             return True
         return False
 
+    def execute_operation(self, op):
+        """Execute an operation directly on this core"""
+        # Let the operation call the appropriate method through its accept method
+        result = op.accept(self)
+
+        # Update statistics based on operation type
+        op_type = op.__class__.__name__.lower()
+        self.stats['operations'] += 1
+        if op_type in ['load', 'set', 'alu', 'mvm']:
+            self.stats[f'{op_type}_operations'] += 1
+
+        return result
+
     def update_execution_time(self, op_type, execution_time):
         """Update the execution time statistics"""
         self.stats['total_execution_time'] += execution_time

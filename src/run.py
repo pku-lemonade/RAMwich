@@ -8,28 +8,16 @@ import os
 from typing import List, Dict, Any
 from pydantic import BaseModel, Field
 
+from config import Config, ADCConfig, DACConfig, NOCConfig, IMAConfig
 from op import Op, Load, Set, Alu, MVM
 from tile import Tile, Core
-from ima import IMA
+from ima import IMA, InMemoryAccelerator
 from node import Node
 from visualize import summarize_results
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(asctime)s - %(message)s')
 logger = logging.getLogger(__name__)
-
-class Config(BaseModel):
-    """Configuration for the RAMwich Simulator"""
-    num_nodes: int = Field(default=1, description="Number of nodes in the system")
-    num_tiles_per_node: int = Field(default=4, description="Number of tiles per node")
-    num_cores_per_tile: int = Field(default=2, description="Number of cores per tile")
-    num_imas_per_core: int = Field(default=2, description="Number of IMAs per core")
-    num_xbars_per_ima: int = Field(default=4, description="Number of crossbars per IMA")
-    alu_execution_time: int = Field(default=2, description="Execution time for ALU operations")
-    load_execution_time: int = Field(default=5, description="Execution time for Load operations")
-    set_execution_time: int = Field(default=1, description="Execution time for Set operations")
-    mvm_execution_time: int = Field(default=10, description="Execution time for MVM operations")
-    simulation_time: int = Field(default=1000, description="Maximum simulation time")
 
 class RAMwichSimulator:
     def __init__(self, config_file=None):
