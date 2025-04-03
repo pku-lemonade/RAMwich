@@ -20,7 +20,6 @@ class Stat(BaseModel):
 
     # Execution time metrics
     total_execution_time: float = Field(default=0.0, description="Total execution time")
-    last_execution_time: float = Field(default=0.0, description="Last operation execution time")
 
     def get_stats(self, components):
         # Get stats from each subcomponent

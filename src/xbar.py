@@ -6,7 +6,7 @@ class XbarStats(BaseModel):
     operations: int = Field(default=0, description="Total number of operations")
     mvm_operations: int = Field(default=0, description="Number of MVM operations")
     total_execution_time: float = Field(default=0, description="Total execution time")
-    last_execution_time: float = Field(default=0, description="Last operation execution time")
+    # last_execution_time field removed
 
     def get_stats(self, xbar_id: int) -> Stat:
         """Get statistics for this Xbar"""
@@ -23,7 +23,7 @@ class XbarStats(BaseModel):
 
         # Set execution time metrics
         stats.total_execution_time = float(self.total_execution_time)
-        stats.last_execution_time = float(self.last_execution_time)
+        # Removed last_execution_time assignment
 
         return stats
 
@@ -50,7 +50,6 @@ class Xbar:
     def update_execution_time(self, execution_time):
         """Update the execution time statistics"""
         self.stats.total_execution_time += execution_time
-        self.stats.last_execution_time = execution_time
 
     def get_stats(self) -> Stat:
         """Get statistics for this Xbar"""

@@ -69,7 +69,6 @@ class NOCStats(BaseModel):
 
         # Set execution time metrics
         stats.total_execution_time = float(self.active_cycles)
-        stats.last_execution_time = float(self.total_latency / self.packets_sent if self.packets_sent > 0 else 0)
 
         return stats
 
