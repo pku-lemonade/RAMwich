@@ -1,4 +1,5 @@
-from typing import List
+from typing import List, Dict, Any
+from pydantic import BaseModel, Field
 from .config import IMAConfig
 from .adc import AnalogToDigitalConverter
 from .dac import DigitalToAnalogConverter
@@ -23,6 +24,26 @@ class Xbar:
             else:
                 break
 
+class IMAStats(BaseModel):
+    operations: int = Field(default=0, description="Total number of operations")
+    mvm_operations: int = Field(default=0, description="Number of MVM operations")
+    total_execution_time: float = Field(default=0, description="Total execution time")
+
+    def get_stats(self, ima_id: int, include_components: bool = True, xbars=None) -> Dict[str, Any]:
+        """Get statistics for this IMA and optionally its components"""
+        result = {
+            'ima_id': ima_id,
+            'stats': self.dict()
+        }
+
+        if include_components and xbars:
+            result['xbars'] = [
+                xbar.get_stats()
+                for xbar in xbars
+            ]
+
+        return result
+
 class IMA:
     """
     In-Memory Accelerator containing multiple crossbar arrays.
@@ -30,6 +51,7 @@ class IMA:
     def __init__(self, id: int, num_xbars: int = 4):
         self.id = id
         self.xbars = [Xbar(i) for i in range(num_xbars)]
+        self.stats = IMAStats()
 
     def __repr__(self):
         return f"IMA({self.id}, xbars={len(self.xbars)})"
@@ -44,6 +66,14 @@ class IMA:
             self.xbars[0].set_values(xbar_values)
 
         return True
+
+    def update_execution_time(self, execution_time):
+        """Update the execution time statistics"""
+        self.stats.total_execution_time += execution_time
+
+    def get_stats(self, include_components=True):
+        """Get statistics for this IMA and optionally its components"""
+        return self.stats.get_stats(self.id, include_components, self.xbars)
 
 class InMemoryAccelerator:
     """Hardware implementation of the In-Memory Accelerator component"""

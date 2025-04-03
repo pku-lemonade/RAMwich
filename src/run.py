@@ -8,7 +8,7 @@ import simpy
 import yaml
 
 from .config import Config
-from .op import Op, Load, Set, Alu, MVM
+from .op import Op, Load, Set, ALU, MVM, OpType
 from .tile import Tile
 from .core import Core
 from .ima import IMA
@@ -104,27 +104,15 @@ class RAMwichSimulator:
         # Convert raw data to operation objects and organize by node/tile/core
         for op_data in data:
             try:
-                op_type = op_data.get('type')
-                if not op_type:
-                    logger.warning(f"Missing operation type in data: {op_data}")
-                    continue
+                # Parse the operation using Pydantic discriminated union
+                # This automatically creates the correct object type based on the 'type' field
+                op = OpType.model_validate(op_data)
 
-                op: Optional[Op] = None
-                if op_type == 'load':
-                    op = Load(**op_data)
-                elif op_type == 'set':
-                    op = Set(**op_data)
-                elif op_type == 'alu':
-                    op = Alu(**op_data)
-                elif op_type == 'mvm':
-                    op = MVM(**op_data)
-                else:
-                    logger.warning(f"Unknown operation type: {op_type}")
-                    continue
-
+                # Access the hierarchical components
                 node = self.get_node(op.node)
                 tile = node.get_tile(op.tile)
                 core = tile.get_core(op.core)
+
                 # Store the operation in the core
                 core.operations.append(op)
 
@@ -137,9 +125,9 @@ class RAMwichSimulator:
         self.load_operations(ops_file)
 
         # Create and schedule parallel processes for each node
-        node_processes = []
+        processes = []
         for node in self.nodes:
-            node_processes.append(self.env.process(node.run(self, self.env)))
+            processes.append(self.env.process(node.run(self, self.env)))
 
         # Run simulation
         self.env.run(until=self.config.simulation_time)
