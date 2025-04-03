@@ -27,9 +27,7 @@ class RAMwichSimulator:
             raise FileNotFoundError(f"Configuration file {config_file} not found")
 
         with open(config_file, 'r') as f:
-            if config_file.endswith('.json'):
-                self.config = Config.parse_obj(json.load(f))
-            elif config_file.endswith(('.yaml', '.yml')):
+            if config_file.endswith(('.yaml', '.yml')):
                 self.config = Config.parse_obj(yaml.safe_load(f))
             else:
                 raise ValueError(f"Unsupported config format: {config_file}. Use JSON or YAML.")

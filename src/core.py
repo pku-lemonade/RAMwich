@@ -87,7 +87,5 @@ class Core:
         Returns:
             Dict containing execution results and updated statistics
         """
-        results = []
-
         for op in self.operations:
-            self.execute_operation(op)
+            op.accept(self)

@@ -1,6 +1,5 @@
 import argparse
 import logging
-import os
 
 from .simulator import RAMwichSimulator
 from .visualize import summarize_results
