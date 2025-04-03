@@ -1,8 +1,9 @@
 from typing import List, Dict, Any, Union
 from ima import IMA
 from .op import Op
-from .stats import Stat  # CoreStats is no longer needed
-from .dram import DRAM  # Import the DRAM class
+from .stats import Stat
+from .dram import DRAM
+from .sram import SRAM
 
 class Core:
     """
@@ -11,10 +12,10 @@ class Core:
     def __init__(self, id: int, imas: List[IMA], dram_capacity: int = 1024):
         self.id = id
         self.imas = imas
-        self.registers: List[int] = [0] * 16  # Default 16 registers
-        self.operations: List[Op] = []  # Store operations to be executed
+        self.sram = SRAM()  # Replace register_file with sram
+        self.operations: List[Op] = []
         self.stats = Stat()
-        self.dram = DRAM(capacity=dram_capacity)  # Initialize DRAM
+        self.dram = DRAM(capacity=dram_capacity)
 
     def __repr__(self) -> str:
         return f"Core({self.id}, imas={len(self.imas)})"
@@ -23,7 +24,8 @@ class Core:
         """Execute a Load operation"""
         # Load data from DRAM address d1 into register 0
         try:
-            self.registers[0] = self.dram.read(d1)
+            value = self.dram.read(d1)
+            self.sram.write(0, value)
             self.stats.operations += 1
             return True
         except IndexError as e:
@@ -33,10 +35,9 @@ class Core:
     def execute_set(self, imm: int) -> bool:
         """Execute a Set operation"""
         # Set immediate value to register 1
-        self.registers[1] = imm
-        # Also store the value to DRAM at address specified by register 0
         try:
-            address = self.registers[0]
+            address = self.sram.read(0)
+            self.sram.write(1, imm)
             self.dram.write(address, imm)
             self.stats.operations += 1
             return True
@@ -47,12 +48,13 @@ class Core:
     def execute_alu(self, opcode: str) -> bool:
         """Execute an ALU operation"""
         # Placeholder for actual implementation
-        if opcode == "add":
-            self.registers[2] = self.registers[0] + self.registers[1]
-        elif opcode == "sub":
-            self.registers[2] = self.registers[0] - self.registers[1]
-        elif opcode == "mul":
-            self.registers[2] = self.registers[0] * self.registers[1]
+        r0 = self.sram.read(0)
+        r1 = self.sram.read(1)
+        result = 0
+        if opcode == "add": result = r0 + r1
+        elif opcode == "sub": result = r0 - r1
+        elif opcode == "mul": result = r0 * r1
+        self.sram.write(2, result)
         self.stats.operations += 1
         return True
 
@@ -83,18 +85,25 @@ class Core:
             ima_id = 0
             self.imas[ima_id].update_execution_time(execution_time)
 
-    def get_stats(self, include_components: bool = True) -> Stat:
-        """Get statistics for this Core and optionally its components"""
-        # Include DRAM statistics in the components if requested
-        components = []
-        if include_components:
-            components.extend(self.imas)
-            components.append(self.dram)
+    def get_stats(self) -> Stat:
+        """Get statistics for this Core by aggregating from all components"""
+        stats = Stat()
 
-        # Directly modify and return the original stats object
-        return self.stats.get_stats(
-            components=components if include_components else None
-        )
+        # Aggregate stats from all components
+        components = []
+        components.extend(self.imas)  # IMAs will aggregate their own sub-components
+        components.append(self.dram)
+        components.append(self.sram)
+
+        # Aggregate all component stats
+        for component in components:
+            component_stats = component.get_stats()
+            stats.operations += component_stats.operations
+            stats.latency += component_stats.latency
+            stats.total_execution_time += component_stats.total_execution_time
+            # Add other metrics as needed
+
+        return stats
 
     def run(self):
         """

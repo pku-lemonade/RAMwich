@@ -11,7 +11,7 @@ class IMAStats(BaseModel):
     mvm_operations: int = Field(default=0, description="Number of MVM operations")
     total_execution_time: float = Field(default=0, description="Total execution time")
 
-    def get_stats(self, ima_id: int, include_components: bool = True, xbars=None) -> Stat:
+    def get_stats(self, ima_id: int) -> Stat:
         """Get statistics for this IMA and optionally its components"""
         stats = Stat()
 
@@ -176,9 +176,25 @@ class IMA:
         """Update the execution time statistics"""
         self.stats.total_execution_time += execution_time
 
-    def get_stats(self, include_components=True) -> Stat:
-        """Get statistics for this IMA and optionally its components"""
-        return self.stats.get_stats(self.id, include_components, self.xbars)
+    def get_stats(self) -> Stat:
+        """Get statistics for this IMA aggregating from all components"""
+        stats = Stat()
+
+        # Aggregate stats from all components
+        components = []
+        components.extend(self.xbars)
+        components.extend(self.adcs)
+        components.extend(self.dacs)
+
+        # Aggregate all component stats
+        for component in components:
+            component_stats = component.get_stats()
+            stats.operations += component_stats.operations
+            stats.latency += component_stats.latency
+            stats.total_execution_time += component_stats.total_execution_time
+            stats.mvm_operations += getattr(component_stats, 'mvm_operations', 0)
+
+        return stats
 
     def get_total_cycles(self):
         """Return the total execution cycles"""
