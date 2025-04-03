@@ -23,10 +23,7 @@ class Node:
 
     def get_tile(self, tile_id):
         """Get a specific tile by ID"""
-        for tile in self.tiles:
-            if tile.id == tile_id:
-                return tile
-        raise ValueError(f"Tile with ID {tile_id} not found")
+        raise self.tiles[tile_id]
 
     def update_stats(self, op_type):
         """Update operation count statistics"""

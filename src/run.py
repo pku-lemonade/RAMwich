@@ -82,6 +82,9 @@ class RAMwichSimulator:
 
         return nodes
 
+    def get_node(self, node_id: int) -> Node:
+        return self.nodes[node_id]
+
     def load_operations(self, file_path: str):
         """Load operations from a JSON file and organize by node/tile/core hierarchy"""
         if not os.path.exists(file_path):
@@ -98,22 +101,7 @@ class RAMwichSimulator:
 
             # Convert raw data to operation objects and organize by node/tile/core
             for op_data in data:
-                op_type = op_data.pop('type', None)
-                node_id = op_data.get('node', 0)
-                tile_id = op_data.get('tile', 0)
-                core_id = op_data.get('core', 0)
-
-                if node_id >= len(self.nodes):
-                    logger.warning(f"Operation specifies node {node_id} but only {len(self.nodes)} nodes exist")
-                    continue
-
-                node = self.nodes[node_id]
-
                 try:
-                    tile = node.get_tile(tile_id)
-                    core = tile.get_core(core_id)
-
-                    # Create the appropriate operation object
                     op: Optional[Op] = None
                     if op_type == 'load':
                         op = Load(**op_data)
@@ -127,9 +115,10 @@ class RAMwichSimulator:
                         logger.warning(f"Unknown operation type: {op_type}")
                         continue
 
+                    node = self.get_node(op.node)
+                    tile = node.get_tile(op.tile)
+                    core = tile.get_core(op.core)
                     # Store the operation in the core
-                    if not hasattr(core, 'operations'):
-                        core.operations = []
                     core.operations.append(op)
 
                 except ValueError as e:

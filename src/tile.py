@@ -23,10 +23,7 @@ class Tile:
 
     def get_core(self, core_id):
         """Get a specific core by ID"""
-        for core in self.cores:
-            if core.id == core_id:
-                return core
-        raise ValueError(f"Core with ID {core_id} not found")
+        raise self.cores[core_id]
 
     def update_stats(self, op_type):
         """Update operation count statistics"""
