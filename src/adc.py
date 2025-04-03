@@ -1,6 +1,6 @@
-from src.component_config import ADCConfig
+from .config import ADCConfig
 
-class AnalogToDigitalConverter:
+class ADC:
     """Hardware implementation of the ADC component"""
 
     def __init__(self, adc_config=None, adc_id=0):

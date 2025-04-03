@@ -1,3 +1,4 @@
+import logging
 from typing import List
 from core import Core
 
@@ -55,7 +56,6 @@ class Tile:
 
     def run(self, simulator, env):
         """Execute operations for all cores in this tile"""
-        import logging
         logger = logging.getLogger(__name__)
 
         logger.info(f"Starting operations for tile {self.id}")

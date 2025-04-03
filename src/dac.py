@@ -1,4 +1,4 @@
-from src.config import DACConfig
+from .config import DACConfig
 
 class DAC:
     """Hardware implementation of the DAC component"""

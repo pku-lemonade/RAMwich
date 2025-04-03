@@ -1,4 +1,4 @@
-from src.component_config import NOCConfig
+from .config import NOCConfig
 
 class NetworkOnChip:
     """Hardware implementation of the Network-on-Chip component"""

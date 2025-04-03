@@ -1,7 +1,8 @@
 import json
-import yaml
 import os
-from typing import List, Dict, Any
+from typing import Dict, Any, List
+
+import yaml
 from pydantic import BaseModel, Field
 
 class ADCConfig(BaseModel):
@@ -14,19 +15,19 @@ class ADCConfig(BaseModel):
     AREA_DICT = {'1': 0.0012, '2': 0.0012, '4': 0.0012, '8': 0.0012, '16': 0.0012}
 
     resolution: int = Field(default=8, description="ADC resolution")
-    lat: float = None
-    pow_dyn: float = None
-    pow_leak: float = None
-    area: float = None
+    adc_lat: float = None
+    adc_pow_dyn: float = None
+    adc_pow_leak: float = None
+    adc_area: float = None
     res_new: Dict[str, int] = None
 
     def __init__(self, **data):
         super().__init__(**data)
         # Set derived values based on config
-        self.lat = self.LAT_DICT.get(str(self.resolution), 1)
-        self.pow_dyn = self.POW_DYN_DICT.get(str(self.resolution), 1.8)
-        self.pow_leak = self.POW_LEAK_DICT.get(str(self.resolution), 0.2)
-        self.area = self.AREA_DICT.get(str(self.resolution), 0.0012)
+        self.adc_lat = self.LAT_DICT.get(str(self.resolution), 1)
+        self.adc_pow_dyn = self.POW_DYN_DICT.get(str(self.resolution), 1.8)
+        self.adc_pow_leak = self.POW_LEAK_DICT.get(str(self.resolution), 0.2)
+        self.adc_area = self.AREA_DICT.get(str(self.resolution), 0.0012)
 
         # Multi-resolution support
         if self.res_new is None:
@@ -50,18 +51,18 @@ class DACConfig(BaseModel):
     AREA_DICT = {'1': 1.67e-7, '2': 1.67e-7, '4': 1.67e-7, '8': 1.67e-7, '16': 1.67e-7}
 
     resolution: int = Field(default=1, description="DAC resolution")
-    lat: float = None
-    pow_dyn: float = None
-    pow_leak: float = None
-    area: float = None
+    dac_lat: float = None
+    dac_pow_dyn: float = None
+    dac_pow_leak: float = None
+    dac_area: float = None
 
     def __init__(self, **data):
         super().__init__(**data)
         # Set derived values based on config
-        self.lat = self.LAT_DICT.get(str(self.resolution), 1)
-        self.pow_dyn = self.POW_DYN_DICT.get(str(self.resolution), 0.00350625)
-        self.pow_leak = self.POW_LEAK_DICT.get(str(self.resolution), 0.000390625)
-        self.area = self.AREA_DICT.get(str(self.resolution), 1.67e-7)
+        self.dac_lat = self.LAT_DICT.get(str(self.resolution), 1)
+        self.dac_pow_dyn = self.POW_DYN_DICT.get(str(self.resolution), 0.00350625)
+        self.dac_pow_leak = self.POW_LEAK_DICT.get(str(self.resolution), 0.000390625)
+        self.dac_area = self.AREA_DICT.get(str(self.resolution), 1.67e-7)
 
 
 class NOCConfig(BaseModel):
@@ -76,15 +77,15 @@ class NOCConfig(BaseModel):
 
     inj_rate: float = Field(default=0.005, description="Injection rate")
     num_port: int = Field(default=4, description="Number of ports")
-    intra_lat: float = None
-    intra_pow_dyn: float = None
-    intra_pow_leak: float = None
-    intra_area: float = None
-    ht_lat: float = None
-    inter_lat: float = None
-    inter_pow_dyn: float = None
-    inter_pow_leak: float = None
-    inter_area: float = None
+    noc_intra_lat: float = None
+    noc_intra_pow_dyn: float = None
+    noc_intra_pow_leak: float = None
+    noc_intra_area: float = None
+    noc_ht_lat: float = None
+    noc_inter_lat: float = None
+    noc_inter_pow_dyn: float = None
+    noc_inter_pow_leak: float = None
+    noc_inter_area: float = None
 
     def __init__(self, **data):
         super().__init__(**data)
@@ -93,17 +94,17 @@ class NOCConfig(BaseModel):
             raise ValueError('NoC injection rate too high! Reconsider NOC design or DNN mapping.')
 
         # Set derived values
-        self.intra_lat = self.LAT_DICT.get(str(self.inj_rate), 31)
-        self.intra_pow_dyn = self.POW_DYN_DICT.get(str(self.num_port), 16.13)
-        self.intra_pow_leak = self.POW_LEAK_DICT.get(str(self.num_port), 0.41)
-        self.intra_area = self.AREA_DICT.get(str(self.num_port), 0.047)
+        self.noc_intra_lat = self.LAT_DICT.get(str(self.inj_rate), 31)
+        self.noc_intra_pow_dyn = self.POW_DYN_DICT.get(str(self.num_port), 16.13)
+        self.noc_intra_pow_leak = self.POW_LEAK_DICT.get(str(self.num_port), 0.41)
+        self.noc_intra_area = self.AREA_DICT.get(str(self.num_port), 0.047)
 
         # Hypertransport network
-        self.ht_lat = 5
-        self.inter_lat = self.ht_lat + self.intra_lat
-        self.inter_pow_dyn = 10400  # 10.4W
-        self.inter_pow_leak = 0
-        self.inter_area = 22.88
+        self.noc_ht_lat = 5
+        self.noc_inter_lat = self.noc_ht_lat + self.noc_intra_lat
+        self.noc_inter_pow_dyn = 10400  # 10.4W
+        self.noc_inter_pow_leak = 0
+        self.noc_inter_area = 22.88
 
 
 class IMAConfig(BaseModel):
@@ -140,40 +141,40 @@ class IMAConfig(BaseModel):
     dataMem_size: int = Field(default=4096, description="Data memory size")
     instrnMem_size: int = Field(default=131072, description="Instruction memory size")
     xbar_bits: int = Field(default=4, description="Crossbar bits")
-    xbar_ip_lat: float = None
-    xbar_ip_pow: float = None
-    xbar_op_lat: float = None
-    xbar_op_pow: float = None
-    xbar_rd_lat: float = None
-    xbar_wr_lat: float = None
-    xbar_rd_pow: float = None
-    xbar_wr_pow: float = None
-    alu_lat: int = None
-    alu_pow_dyn: float = None
-    alu_pow_leak: float = None
-    alu_area: float = None
-    dataMem_lat: int = None
-    dataMem_pow_dyn: float = None
-    dataMem_pow_leak: float = None
-    dataMem_area: float = None
+    ima_xbar_ip_lat: float = None
+    ima_xbar_ip_pow: float = None
+    ima_xbar_op_lat: float = None
+    ima_xbar_op_pow: float = None
+    ima_xbar_rd_lat: float = None
+    ima_xbar_wr_lat: float = None
+    ima_xbar_rd_pow: float = None
+    ima_xbar_wr_pow: float = None
+    ima_alu_lat: int = None
+    ima_alu_pow_dyn: float = None
+    ima_alu_pow_leak: float = None
+    ima_alu_area: float = None
+    ima_dataMem_lat: int = None
+    ima_dataMem_pow_dyn: float = None
+    ima_dataMem_pow_leak: float = None
+    ima_dataMem_area: float = None
 
     def __init__(self, **data):
         super().__init__(**data)
         # Set derived operation parameters
-        self.xbar_ip_lat = self.XBAR_IP_LAT
-        self.xbar_ip_pow = self.XBAR_IP_POW
-        self.xbar_op_lat = self.XBAR_OP_LAT
-        self.xbar_op_pow = self.XBAR_OP_POW
-        self.xbar_rd_lat = self.XBAR_RD_LAT
-        self.xbar_wr_lat = self.XBAR_WR_LAT
-        self.xbar_rd_pow = 208.0 * 1000 * (1/32.0) / self.xbar_rd_lat
-        self.xbar_wr_pow = 676.0 * 1000 * (1/32.0) / self.xbar_rd_lat
+        self.ima_xbar_ip_lat = self.XBAR_IP_LAT
+        self.ima_xbar_ip_pow = self.XBAR_IP_POW
+        self.ima_xbar_op_lat = self.XBAR_OP_LAT
+        self.ima_xbar_op_pow = self.XBAR_OP_POW
+        self.ima_xbar_rd_lat = self.XBAR_RD_LAT
+        self.ima_xbar_wr_lat = self.XBAR_WR_LAT
+        self.ima_xbar_rd_pow = 208.0 * 1000 * (1/32.0) / self.ima_xbar_rd_lat
+        self.ima_xbar_wr_pow = 676.0 * 1000 * (1/32.0) / self.ima_xbar_rd_lat
 
         # ALU parameters
-        self.alu_lat = 1
-        self.alu_pow_dyn = 2.4 * 32/45
-        self.alu_pow_leak = 0.27 * 32/45
-        self.alu_area = 0.00567 * 32/45
+        self.ima_alu_lat = 1
+        self.ima_alu_pow_dyn = 2.4 * 32/45
+        self.ima_alu_pow_leak = 0.27 * 32/45
+        self.ima_alu_area = 0.00567 * 32/45
 
         # Memory lookup tables
         DATA_MEM_LAT_DICT = {'256': 1, '512': 1, '1024': 1, '2048': 1}
@@ -182,10 +183,10 @@ class IMAConfig(BaseModel):
         DATA_MEM_AREA_DICT = {'256': 0.00056, '512': 0.00108, '1024': 0.00192, '2048': 0.00392}
 
         # Set memory parameters
-        self.dataMem_lat = DATA_MEM_LAT_DICT.get(str(self.dataMem_size), 1)
-        self.dataMem_pow_dyn = DATA_MEM_POW_DYN_DICT.get(str(self.dataMem_size), 0.33)
-        self.dataMem_pow_leak = DATA_MEM_POW_LEAK_DICT.get(str(self.dataMem_size), 0.147)
-        self.dataMem_area = DATA_MEM_AREA_DICT.get(str(self.dataMem_size), 0.00192)
+        self.ima_dataMem_lat = DATA_MEM_LAT_DICT.get(str(self.dataMem_size), 1)
+        self.ima_dataMem_pow_dyn = DATA_MEM_POW_DYN_DICT.get(str(self.dataMem_size), 0.33)
+        self.ima_dataMem_pow_leak = DATA_MEM_POW_LEAK_DICT.get(str(self.dataMem_size), 0.147)
+        self.ima_dataMem_area = DATA_MEM_AREA_DICT.get(str(self.dataMem_size), 0.00192)
 
 
 class Config(BaseModel):

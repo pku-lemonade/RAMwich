@@ -1,5 +1,6 @@
+import logging
 from typing import List
-from tile import Tile
+from .tile import Tile
 
 class Node:
     """

@@ -1,7 +1,7 @@
 from typing import List
-from src.component_config import IMAConfig
-from src.adc import AnalogToDigitalConverter
-from src.dac import DigitalToAnalogConverter
+from .config import IMAConfig
+from .adc import AnalogToDigitalConverter
+from .dac import DigitalToAnalogConverter
 
 class Xbar:
     """
