@@ -1,7 +1,7 @@
-from .config import DACConfig
+from ..config import DACConfig
 from typing import Dict, Any, Optional
 from pydantic import Field, BaseModel
-from .stats import Stat
+from ..stats import Stat
 
 class DACStats(BaseModel):
     """Statistics tracking for DAC (Digital-to-Analog Converter) components"""

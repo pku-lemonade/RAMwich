@@ -1,6 +1,6 @@
 from typing import List
 from pydantic import BaseModel, Field
-from .stats import Stats
+from ..stats import Stats
 
 class SRAMStats(BaseModel):
     """Statistics for SRAM operations"""

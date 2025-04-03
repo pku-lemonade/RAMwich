@@ -1,7 +1,7 @@
-from .config import ADCConfig
+from ..config import ADCConfig
 from typing import Dict, Any, Optional
 from pydantic import Field, BaseModel
-from .stats import Stats
+from ..stats import Stats
 
 class ADCStats(BaseModel):
     """Statistics tracking for ADC (Analog-to-Digital Converter) components"""

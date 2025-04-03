@@ -1,6 +1,6 @@
 from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field
-from .stats import Stats
+from ..stats import Stats
 
 class DramStats(BaseModel):
     """Statistics for DRAM operations"""
