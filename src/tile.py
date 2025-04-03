@@ -21,14 +21,6 @@ class Tile:
         """Get a specific core by ID"""
         raise self.cores[core_id]
 
-    def update_stats(self, op_type):
-        """Update operation count statistics"""
-        self.stats.operations += 1
-
-    def update_execution_time(self, execution_time):
-        """Update the execution time statistics"""
-        self.stats.latency += execution_time
-
     def get_stats(self) -> Stat:
         """Get statistics for this Tile and optionally its components"""
         return self.stats.get_stats(components=self.cores)
@@ -42,7 +34,6 @@ class Tile:
         for core in self.cores:
             processes.append(env.process(core.run(simulator, env)))
 
-        # Wait for all cores to complete
-        yield env.all_of(processes)
+        # TODO: run tile operations send/receive here
 
         logger.info(f"Completed all operations for tile {self.id}")
