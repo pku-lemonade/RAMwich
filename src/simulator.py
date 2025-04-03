@@ -7,7 +7,7 @@ import simpy
 import yaml
 
 from .config import Config
-from .op import Op, Load, Set, ALU, MVM, OpType
+from .op import CoreOp, Load, Set, ALU, MVM, OpType, TileOp
 from .tile import Tile
 from .core import Core
 from .ima import IMA
@@ -102,16 +102,20 @@ class RAMwichSimulator:
         for op_data in data:
             try:
                 # Parse the operation using Pydantic discriminated union
-                # This automatically creates the correct object type based on the 'type' field
                 op = OpType.model_validate(op_data)
 
-                # Access the hierarchical components
+                # Access the node and tile
                 node = self.get_node(op.node)
                 tile = node.get_tile(op.tile)
-                core = tile.get_core(op.core)
 
-                # Store the operation in the core
-                core.operations.append(op)
+                # Handle operations by type
+                if isinstance(op, TileOp):
+                    tile.operations.append(op)
+                elif isinstance(op, CoreOp):
+                    core = tile.get_core(op.core)
+                    core.operations.append(op)
+                else:
+                    logger.warning(f"Unknown operation type: {type(op)}")
 
             except ValueError as e:
                 logger.warning(str(e))
