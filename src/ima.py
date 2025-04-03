@@ -3,26 +3,7 @@ from pydantic import BaseModel, Field
 from .config import IMAConfig
 from .adc import AnalogToDigitalConverter
 from .dac import DigitalToAnalogConverter
-
-class Xbar:
-    """
-    Crossbar array in the RAMwich architecture.
-    """
-    def __init__(self, id: int, size: int = 32):
-        self.id = id
-        self.size = size
-        self.memory = [0] * size
-
-    def __repr__(self):
-        return f"Xbar({self.id}, size={self.size})"
-
-    def set_values(self, values: List[int]):
-        """Set values in the crossbar"""
-        for i, val in enumerate(values):
-            if i < self.size:
-                self.memory[i] = val
-            else:
-                break
+from .xbar import Xbar
 
 class IMAStats(BaseModel):
     operations: int = Field(default=0, description="Total number of operations")
@@ -46,52 +27,33 @@ class IMAStats(BaseModel):
 
 class IMA:
     """
-    In-Memory Accelerator containing multiple crossbar arrays.
+    In-Memory Accelerator containing multiple crossbar arrays with detailed hardware simulation.
     """
-    def __init__(self, id: int, num_xbars: int = 4):
-        self.id = id
-        self.xbars = [Xbar(i) for i in range(num_xbars)]
-        self.stats = IMAStats()
-
-    def __repr__(self):
-        return f"IMA({self.id}, xbars={len(self.xbars)})"
-
-    def execute_mvm(self, xbar_values: List[int]):
-        """Execute a Matrix-Vector Multiplication operation"""
-        # Placeholder for actual implementation
-        # Typically would perform matrix operations using the crossbar arrays
-
-        # For now, just store values in the first xbar
-        if self.xbars:
-            self.xbars[0].set_values(xbar_values)
-
-        return True
-
-    def update_execution_time(self, execution_time):
-        """Update the execution time statistics"""
-        self.stats.total_execution_time += execution_time
-
-    def get_stats(self, include_components=True):
-        """Get statistics for this IMA and optionally its components"""
-        return self.stats.get_stats(self.id, include_components, self.xbars)
-
-class InMemoryAccelerator:
-    """Hardware implementation of the In-Memory Accelerator component"""
-
     # Supported opcodes
     OP_LIST = ['ld', 'cp', 'st', 'set', 'nop', 'alu', 'alui', 'mvm', 'vvo', 'hlt', 'jmp', 'beq', 'alu_int', 'crs']
     ALU_OP_LIST = ['add', 'sub', 'sna', 'mul', 'sigmoid']
 
-    def __init__(self, ima_config=None, adc_config=None, dac_config=None, ima_id=0):
+    def __init__(self, id: int = 0, num_xbars: int = 4, ima_config=None, adc_config=None, dac_config=None):
+        # Basic IMA properties
+        self.id = id
         self.ima_config = ima_config if ima_config else IMAConfig()
-        self.ima_id = ima_id
+
+        # Initialize Xbar arrays
+        self.xbars = [Xbar(i, self.ima_config.xbar_size if hasattr(self.ima_config, 'xbar_size') else 32)
+                     for i in range(num_xbars)]
+
+        # Statistics tracking
+        self.stats = IMAStats()
 
         # Initialize sub-components
-        self.adcs = [AnalogToDigitalConverter(adc_config, i) for i in range(int(self.ima_config.xbar_size // 16 * 2))]
-        self.dacs = [DigitalToAnalogConverter(dac_config) for _ in range(self.ima_config.xbar_size)]
+        self.adcs = [AnalogToDigitalConverter(adc_config, i)
+                    for i in range(int(self.ima_config.xbar_size // 16 * 2))]
+        self.dacs = [DigitalToAnalogConverter(dac_config)
+                    for _ in range(self.ima_config.xbar_size)]
 
         # Memory components
-        self.xbar_memory = [[0.0 for _ in range(self.ima_config.xbar_size)] for _ in range(self.ima_config.xbar_size)]
+        self.xbar_memory = [[0.0 for _ in range(self.ima_config.xbar_size)]
+                           for _ in range(self.ima_config.xbar_size)]
         self.data_memory = [0] * self.ima_config.dataMem_size
         self.instruction_memory = [self._create_dummy_instr()] * self.ima_config.instrnMem_size
 
@@ -104,6 +66,9 @@ class InMemoryAccelerator:
         self.mem_access_cycles = 0
         self.instruction_count = 0
         self.energy_consumption = 0
+
+    def __repr__(self):
+        return f"IMA({self.id}, xbars={len(self.xbars)})"
 
     def _create_dummy_instr(self):
         """Create a dummy instruction data structure"""
@@ -118,6 +83,18 @@ class InMemoryAccelerator:
             'imm': 0,
             'xb_nma': 0
         }
+
+    def execute_mvm(self, xbar_values: List[int]):
+        """Execute a Matrix-Vector Multiplication operation on Xbar level"""
+        # High-level MVM operation that uses the first xbar
+        self.stats.operations += 1
+        self.stats.mvm_operations += 1
+
+        # Store values in the first xbar
+        if self.xbars:
+            self.xbars[0].set_values(xbar_values)
+
+        return True
 
     def execute_instruction(self, instruction):
         """Execute a single instruction in the IMA"""
@@ -157,7 +134,7 @@ class InMemoryAccelerator:
 
             elif opcode == 'mvm':
                 # Matrix-vector multiplication (most complex operation)
-                return self._execute_mvm(instruction)
+                return self._execute_mvm_instruction(instruction)
 
             elif opcode == 'alu':
                 # ALU operation
@@ -169,8 +146,8 @@ class InMemoryAccelerator:
 
         return 0, 0  # Should never reach here
 
-    def _execute_mvm(self, instruction):
-        """Execute a matrix-vector multiplication operation"""
+    def _execute_mvm_instruction(self, instruction):
+        """Execute a detailed matrix-vector multiplication instruction"""
         # This involves DACs, crossbar, and ADCs
         cycles = 0
         energy = 0
@@ -190,6 +167,14 @@ class InMemoryAccelerator:
         energy += sum(adc.adc_config.pow_dyn for adc in self.adcs)
 
         return cycles, energy
+
+    def update_execution_time(self, execution_time):
+        """Update the execution time statistics"""
+        self.stats.total_execution_time += execution_time
+
+    def get_stats(self, include_components=True):
+        """Get statistics for this IMA and optionally its components"""
+        return self.stats.get_stats(self.id, include_components, self.xbars)
 
     def get_total_cycles(self):
         """Return the total execution cycles"""

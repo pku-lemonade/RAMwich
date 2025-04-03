@@ -1,4 +1,4 @@
-from typing import Dict, Any
+from typing import Dict, Any, List
 from pydantic import BaseModel, Field
 
 class XbarStats(BaseModel):
@@ -18,12 +18,14 @@ class Xbar:
     """
     Crossbar array component that performs matrix-vector multiplication operations.
     """
-    def __init__(self, id: int):
+    def __init__(self, id: int, size: int = 32):
         self.id = id
+        self.size = size
+        self.memory = [0] * size
         self.stats = XbarStats()
 
     def __repr__(self):
-        return f"Xbar({self.id})"
+        return f"Xbar({self.id}, size={self.size})"
 
     def execute_mvm(self, xbar_data):
         """Execute a matrix-vector multiplication operation"""
@@ -40,3 +42,11 @@ class Xbar:
     def get_stats(self):
         """Get statistics for this Xbar"""
         return self.stats.get_stats(self.id)
+
+    def set_values(self, values: List[int]):
+        """Set values in the crossbar"""
+        for i, val in enumerate(values):
+            if i < self.size:
+                self.memory[i] = val
+            else:
+                break
