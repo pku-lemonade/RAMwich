@@ -1,7 +1,7 @@
 import argparse
 import logging
 
-from .simulator import RAMwichSimulator
+from .ramwich import RAMwich
 from .visualize import summarize_results
 
 # Configure logging
@@ -14,7 +14,7 @@ def main():
     parser.add_argument('--config', required=True, help='Configuration file (YAML)')
     args = parser.parse_args()
 
-    simulator = RAMwichSimulator(config_file=args.config)
+    simulator = RAMwich(config_file=args.config)
     simulator.run(ops_file=args.ops)
 
     # Get statistics and pass to visualization
