@@ -29,13 +29,9 @@ class Tile:
         """Update the execution time statistics"""
         self.stats.latency += execution_time
 
-    def get_stats(self, include_components=True):
+    def get_stats(self):
         """Get statistics for this Tile and optionally its components"""
-        return self.stats.get_stats(
-            component_id=self.id,
-            component_type="tile",
-            components=self.cores if include_components else None
-        )
+        return self.stats.get_stats(components=self.cores)
 
     def run(self, simulator, env):
         """Execute operations for all cores in this tile"""

@@ -3,6 +3,7 @@ import logging
 import os
 
 from .simulator import RAMwichSimulator
+from .visualize import summarize_results
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
@@ -16,6 +17,10 @@ def main():
 
     simulator = RAMwichSimulator(config_file=args.config)
     simulator.run(ops_file=args.ops)
+
+    # Get statistics and pass to visualization
+    stats = simulator.get_stats()
+    summarize_results(stats)
 
 if __name__ == "__main__":
     main()

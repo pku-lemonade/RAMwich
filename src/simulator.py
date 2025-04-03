@@ -35,6 +35,7 @@ class RAMwichSimulator:
                 raise ValueError(f"Unsupported config format: {config_file}. Use JSON or YAML.")
 
         self.env = simpy.Environment()
+        self.stats = Stat()  # Add stats attribute
 
         # Build the hierarchical architecture
         self.nodes: List[Node] = self._build_architecture()
@@ -132,3 +133,7 @@ class RAMwichSimulator:
 
         logger.info(f"Simulation completed at time {self.env.now}")
         summarize_results(self.nodes)
+
+    def get_stats(self):
+        """Get statistics for this Simulator and its components"""
+        return self.stats.get_stats(components=self.nodes)

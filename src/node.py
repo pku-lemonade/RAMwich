@@ -19,23 +19,11 @@ class Node:
 
     def get_tile(self, tile_id):
         """Get a specific tile by ID"""
-        raise self.tiles
+        raise self.tiles[tile_id]
 
-    def update_stats(self, op_type):
-        """Update operation count statistics"""
-        self.stats.operations += 1
-
-    def update_execution_time(self, execution_time):
-        """Update the execution time statistics"""
-        self.stats.latency += execution_time
-
-    def get_stats(self, include_components=True):
+    def get_stats(self):
         """Get statistics for this Node and optionally its components"""
-        return self.stats.get_stats(
-            component_id=self.id,
-            component_type="node",
-            components=self.tiles if include_components else None
-        )
+        return self.stats.get_stats(components=self.tiles)
 
     def run(self, simulator, env):
         """Execute operations for all tiles in this node"""
