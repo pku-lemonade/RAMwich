@@ -1,6 +1,6 @@
 from typing import List
 from pydantic import BaseModel, Field
-from .stats import Stat
+from .stats import Stats
 
 class SRAMStats(BaseModel):
     """Statistics for SRAM operations"""
@@ -8,9 +8,9 @@ class SRAMStats(BaseModel):
     write_operations: int = Field(default=0, description="Number of write operations")
     total_operations: int = Field(default=0, description="Total number of operations")
 
-    def get_stats(self) -> Stat:
-        """Convert SRAMStats to general Stat object"""
-        stats = Stat()
+    def get_stats(self) -> Stats:
+        """Convert SRAMStats to general Stats object"""
+        stats = Stats()
         stats.latency = 0.0  # Will be updated through execution
         stats.operations = self.total_operations
         stats.read_operations = self.read_operations

@@ -1,7 +1,7 @@
 from .config import ADCConfig
 from typing import Dict, Any, Optional
 from pydantic import Field, BaseModel
-from .stats import Stat
+from .stats import Stats
 
 class ADCStats(BaseModel):
     """Statistics tracking for ADC (Analog-to-Digital Converter) components"""
@@ -23,9 +23,9 @@ class ADCStats(BaseModel):
         self.out_of_range_samples += out_of_range
         self.quantization_errors += quant_error
 
-    def get_stats(self, adc_id: Optional[int] = None) -> Stat:
+    def get_stats(self, adc_id: Optional[int] = None) -> Stats:
         """Get ADC-specific statistics"""
-        stats = Stat()
+        stats = Stats()
 
         # Map ADC metrics to Stat object
         stats.latency = float(self.active_cycles)
@@ -34,9 +34,6 @@ class ADCStats(BaseModel):
 
         # Map operation counts
         stats.operations = self.conversions
-
-        # Set execution time metrics
-        stats.total_execution_time = float(self.active_cycles)
 
         return stats
 
@@ -87,6 +84,6 @@ class ADC:
         """Return the total energy consumption in pJ"""
         return self.stats.energy_consumption
 
-    def get_stats(self) -> Stat:
+    def get_stats(self) -> Stats:
         """Return detailed statistics about this ADC"""
         return self.stats.get_stats(self.adc_id)

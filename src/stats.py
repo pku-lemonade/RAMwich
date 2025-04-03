@@ -1,7 +1,7 @@
 from typing import Dict, Any, List, Optional, TypeVar, Protocol, runtime_checkable, Union
 from pydantic import BaseModel, Field
 
-class Stat(BaseModel):
+class Stats(BaseModel):
     """Generic statistics class for recording latency, energy, and area metrics"""
 
     # Basic metrics

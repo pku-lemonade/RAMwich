@@ -1,6 +1,6 @@
 from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field
-from .stats import Stat
+from .stats import Stats
 
 class DramStats(BaseModel):
     """Statistics for DRAM operations"""
@@ -8,9 +8,9 @@ class DramStats(BaseModel):
     write_operations: int = Field(default=0, description="Number of write operations")
     total_operations: int = Field(default=0, description="Total number of operations")
 
-    def get_stats(self) -> Stat:
-        """Convert DramStats to general Stat object"""
-        stats = Stat()
+    def get_stats(self) -> Stats:
+        """Convert DramStats to general Stats object"""
+        stats = Stats()
         stats.latency = 0.0  # Will be updated through update_execution_time
         stats.energy = 0.0  # Placeholder for energy consumption
         stats.area = 0.0    # Placeholder for area usage
@@ -84,6 +84,6 @@ class DRAM:
         """Update the execution time statistics"""
         self.stats.latency += execution_time
 
-    def get_stats(self) -> Stat:
+    def get_stats(self) -> Stats:
         """Get statistics for this DRAM module"""
         return self.stats.get_stats()

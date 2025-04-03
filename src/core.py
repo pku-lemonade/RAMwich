@@ -85,7 +85,7 @@ class Core:
             ima_id = 0
             self.imas[ima_id].update_execution_time(execution_time)
 
-    def get_stats(self) -> Stat:
+    def get_stats(self) -> Stats:
         """Get statistics for this Core by aggregating from all components"""
         stats = Stat()
 
