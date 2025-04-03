@@ -1,6 +1,7 @@
 from .config import NOCConfig
 from typing import Dict, Any, Optional
 from pydantic import Field, BaseModel
+from .stats import Stat
 
 class NOCStats(BaseModel):
     """Statistics tracking for Network-on-Chip (NoC) components"""
@@ -50,40 +51,27 @@ class NOCStats(BaseModel):
         """Record a packet reception"""
         self.packets_received += 1
 
-    def get_stats(self, noc_id: Optional[int] = None, include_paths: bool = False) -> Dict[str, Any]:
+    def get_stats(self, noc_id: Optional[int] = None, include_paths: bool = False) -> Stat:
         """Get NoC-specific statistics"""
-        result = {
-            'stats': {
-                'packets_sent': self.packets_sent,
-                'packets_received': self.packets_received,
-                'flits_transmitted': self.flits_transmitted,
-                'bytes_transmitted': self.bytes_transmitted,
-                'intra_node_transfers': self.intra_node_transfers,
-                'inter_node_transfers': self.inter_node_transfers,
-                'contention_events': self.contention_events,
-                'active_cycles': self.active_cycles,
-                'total_latency': self.total_latency,
-                'energy_consumption': self.energy_consumption,
-            }
-        }
+        # Create a new Stat object
+        stats = Stat()
 
-        # Add NoC-specific derived metrics
-        if self.packets_sent > 0:
-            result['stats']['avg_packet_size_bytes'] = self.bytes_transmitted / self.packets_sent
-            result['stats']['avg_flits_per_packet'] = self.flits_transmitted / self.packets_sent
-            result['stats']['intra_node_percentage'] = (self.intra_node_transfers / self.packets_sent) * 100
-            result['stats']['contention_rate'] = (self.contention_events / self.packets_sent) * 100
-            result['stats']['avg_packet_latency'] = self.total_latency / self.packets_sent if self.packets_sent > 0 else 0
+        # Map NoC metrics to Stat object
+        stats.latency = float(self.total_latency)
+        stats.energy = float(self.energy_consumption)
+        stats.area = 0.0  # NoC area not tracked in this component
 
-        # Include top communication paths if requested
-        if include_paths:
-            sorted_pairs = sorted(self._source_dest_pairs.items(), key=lambda x: x[1], reverse=True)
-            result['communication_paths'] = dict(sorted_pairs[:10])  # Include top 10 paths
+        # Map operation counts
+        stats.operations = self.packets_sent + self.packets_received
 
-        if noc_id is not None:
-            result['noc_id'] = noc_id
+        # We could map specific operation types if needed
+        # For now, we'll leave the specific operation counts at 0
 
-        return result
+        # Set execution time metrics
+        stats.total_execution_time = float(self.active_cycles)
+        stats.last_execution_time = float(self.total_latency / self.packets_sent if self.packets_sent > 0 else 0)
+
+        return stats
 
 class NetworkOnChip:
     """Hardware implementation of the Network-on-Chip component"""
@@ -148,6 +136,6 @@ class NetworkOnChip:
         """Return the total energy consumption in mJ"""
         return self.stats.energy_consumption
 
-    def get_stats(self, include_paths=False):
+    def get_stats(self, include_paths=False) -> Stat:
         """Return detailed statistics about this NoC"""
         return self.stats.get_stats(self.noc_id, include_paths)

@@ -74,10 +74,7 @@ class Core:
         """Get statistics for this Core and optionally its components"""
         # Directly modify and return the original stats object
         return self.stats.get_stats(
-            component_id=self.id,
-            component_type="core",
-            components=self.imas if include_components else None,
-            include_components=include_components
+            components=self.imas if include_components else None
         )
 
     def run(self):

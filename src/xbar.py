@@ -1,5 +1,6 @@
 from typing import Dict, Any, List
 from pydantic import BaseModel, Field
+from .stats import Stat
 
 class XbarStats(BaseModel):
     operations: int = Field(default=0, description="Total number of operations")
@@ -7,12 +8,24 @@ class XbarStats(BaseModel):
     total_execution_time: float = Field(default=0, description="Total execution time")
     last_execution_time: float = Field(default=0, description="Last operation execution time")
 
-    def get_stats(self, xbar_id: int) -> Dict[str, Any]:
+    def get_stats(self, xbar_id: int) -> Stat:
         """Get statistics for this Xbar"""
-        return {
-            'xbar_id': xbar_id,
-            'stats': self.dict()
-        }
+        stats = Stat()
+
+        # Map Xbar metrics to Stat object
+        stats.latency = float(self.total_execution_time)
+        stats.energy = 0.0  # Set appropriate energy value if available
+        stats.area = 0.0    # Set appropriate area value if available
+
+        # Map operation counts
+        stats.operations = self.operations
+        stats.mvm_operations = self.mvm_operations
+
+        # Set execution time metrics
+        stats.total_execution_time = float(self.total_execution_time)
+        stats.last_execution_time = float(self.last_execution_time)
+
+        return stats
 
 class Xbar:
     """
@@ -39,7 +52,7 @@ class Xbar:
         self.stats.total_execution_time += execution_time
         self.stats.last_execution_time = execution_time
 
-    def get_stats(self):
+    def get_stats(self) -> Stat:
         """Get statistics for this Xbar"""
         return self.stats.get_stats(self.id)
 

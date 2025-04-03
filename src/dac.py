@@ -1,6 +1,7 @@
 from .config import DACConfig
 from typing import Dict, Any, Optional
 from pydantic import Field, BaseModel
+from .stats import Stat
 
 class DACStats(BaseModel):
     """Statistics tracking for DAC (Digital-to-Analog Converter) components"""
@@ -26,28 +27,22 @@ class DACStats(BaseModel):
         elif digital_value >= max_digital_value:
             self.max_values += 1
 
-    def get_stats(self, dac_id: Optional[int] = None) -> Dict[str, Any]:
+    def get_stats(self, dac_id: Optional[int] = None) -> Stat:
         """Get DAC-specific statistics"""
-        result = {
-            'stats': {
-                'conversions': self.conversions,
-                'digital_values_processed': self.digital_values_processed,
-                'zero_values': self.zero_values,
-                'max_values': self.max_values,
-                'active_cycles': self.active_cycles,
-                'energy_consumption': self.energy_consumption,
-            }
-        }
+        stats = Stat()
 
-        # Add DAC-specific derived metrics
-        if self.digital_values_processed > 0:
-            result['stats']['zero_value_percentage'] = (self.zero_values / self.digital_values_processed) * 100
-            result['stats']['max_value_percentage'] = (self.max_values / self.digital_values_processed) * 100
+        # Map DAC metrics to Stat object
+        stats.latency = float(self.active_cycles)
+        stats.energy = float(self.energy_consumption)
+        stats.area = 0.0  # Set appropriate area value if available
 
-        if dac_id is not None:
-            result['dac_id'] = dac_id
+        # Map operation counts
+        stats.operations = self.conversions
 
-        return result
+        # Set execution time metrics
+        stats.total_execution_time = float(self.active_cycles)
+
+        return stats
 
 class DAC:
     """Hardware implementation of the DAC component"""
@@ -83,6 +78,6 @@ class DAC:
         """Return the total energy consumption in pJ"""
         return self.stats.energy_consumption
 
-    def get_stats(self):
+    def get_stats(self) -> Stat:
         """Return detailed statistics about this DAC"""
         return self.stats.get_stats(self.dac_id)

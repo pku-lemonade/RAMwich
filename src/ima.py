@@ -4,26 +4,30 @@ from .config import IMAConfig
 from .adc import AnalogToDigitalConverter
 from .dac import DigitalToAnalogConverter
 from .xbar import Xbar
+from .stats import Stat
 
 class IMAStats(BaseModel):
     operations: int = Field(default=0, description="Total number of operations")
     mvm_operations: int = Field(default=0, description="Number of MVM operations")
     total_execution_time: float = Field(default=0, description="Total execution time")
 
-    def get_stats(self, ima_id: int, include_components: bool = True, xbars=None) -> Dict[str, Any]:
+    def get_stats(self, ima_id: int, include_components: bool = True, xbars=None) -> Stat:
         """Get statistics for this IMA and optionally its components"""
-        result = {
-            'ima_id': ima_id,
-            'stats': self.dict()
-        }
+        stats = Stat()
 
-        if include_components and xbars:
-            result['xbars'] = [
-                xbar.get_stats()
-                for xbar in xbars
-            ]
+        # Map IMA metrics to Stat object
+        stats.latency = float(self.total_execution_time)
+        stats.energy = 0.0  # Set appropriate energy value if available
+        stats.area = 0.0    # Set appropriate area value if available
 
-        return result
+        # Map operation counts
+        stats.operations = self.operations
+        stats.mvm_operations = self.mvm_operations
+
+        # Set execution time metrics
+        stats.total_execution_time = float(self.total_execution_time)
+
+        return stats
 
 class IMA:
     """
@@ -172,7 +176,7 @@ class IMA:
         """Update the execution time statistics"""
         self.stats.total_execution_time += execution_time
 
-    def get_stats(self, include_components=True):
+    def get_stats(self, include_components=True) -> Stat:
         """Get statistics for this IMA and optionally its components"""
         return self.stats.get_stats(self.id, include_components, self.xbars)
 

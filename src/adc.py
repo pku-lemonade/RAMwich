@@ -1,6 +1,7 @@
 from .config import ADCConfig
 from typing import Dict, Any, Optional
 from pydantic import Field, BaseModel
+from .stats import Stat
 
 class ADCStats(BaseModel):
     """Statistics tracking for ADC (Analog-to-Digital Converter) components"""
@@ -22,28 +23,22 @@ class ADCStats(BaseModel):
         self.out_of_range_samples += out_of_range
         self.quantization_errors += quant_error
 
-    def get_stats(self, adc_id: Optional[int] = None) -> Dict[str, Any]:
+    def get_stats(self, adc_id: Optional[int] = None) -> Stat:
         """Get ADC-specific statistics"""
-        result = {
-            'stats': {
-                'conversions': self.conversions,
-                'samples_processed': self.samples_processed,
-                'out_of_range_samples': self.out_of_range_samples,
-                'quantization_errors': self.quantization_errors,
-                'active_cycles': self.active_cycles,
-                'energy_consumption': self.energy_consumption,
-            }
-        }
+        stats = Stat()
 
-        # Add ADC-specific derived metrics
-        if self.samples_processed > 0:
-            result['stats']['avg_quantization_error'] = self.quantization_errors / self.samples_processed
-            result['stats']['out_of_range_percentage'] = (self.out_of_range_samples / self.samples_processed) * 100
+        # Map ADC metrics to Stat object
+        stats.latency = float(self.active_cycles)
+        stats.energy = float(self.energy_consumption)
+        stats.area = 0.0  # Set appropriate area value if available
 
-        if adc_id is not None:
-            result['adc_id'] = adc_id
+        # Map operation counts
+        stats.operations = self.conversions
 
-        return result
+        # Set execution time metrics
+        stats.total_execution_time = float(self.active_cycles)
+
+        return stats
 
 class ADC:
     """Hardware implementation of the ADC component"""
@@ -92,6 +87,6 @@ class ADC:
         """Return the total energy consumption in pJ"""
         return self.stats.energy_consumption
 
-    def get_stats(self):
+    def get_stats(self) -> Stat:
         """Return detailed statistics about this ADC"""
         return self.stats.get_stats(self.adc_id)

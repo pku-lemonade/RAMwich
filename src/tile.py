@@ -29,7 +29,7 @@ class Tile:
         """Update the execution time statistics"""
         self.stats.latency += execution_time
 
-    def get_stats(self):
+    def get_stats(self) -> Stat:
         """Get statistics for this Tile and optionally its components"""
         return self.stats.get_stats(components=self.cores)
 

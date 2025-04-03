@@ -2,7 +2,7 @@ from typing import Literal, Union, List
 from pydantic import BaseModel, Field
 
 class Op(BaseModel):
-    node: int = 0  # Default to node 0
+    node: int
     tile: int
     core: int
 
@@ -10,7 +10,7 @@ class Op(BaseModel):
         pass
 
 class Load(Op):
-    type: Literal["load"] = "load"
+    type: Literal["load"]
     d1: int
 
     def accept(self, core):

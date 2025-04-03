@@ -21,7 +21,7 @@ class Node:
         """Get a specific tile by ID"""
         raise self.tiles[tile_id]
 
-    def get_stats(self):
+    def get_stats(self) -> Stat:
         """Get statistics for this Node and optionally its components"""
         return self.stats.get_stats(components=self.tiles)
 
