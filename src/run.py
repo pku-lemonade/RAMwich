@@ -2,13 +2,12 @@ import argparse
 import json
 import logging
 import os
-from typing import Dict, List, Any, Optional, Union, Tuple, Generator, Set
+from typing import List, Optional
 
-import numpy as np
 import simpy
 import yaml
 
-from .config import Config, ADCConfig, DACConfig, NOCConfig, IMAConfig
+from .config import Config
 from .op import Op, Load, Set, Alu, MVM
 from .tile import Tile
 from .core import Core
@@ -17,21 +16,25 @@ from .node import Node
 from .visualize import summarize_results
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(asctime)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 class RAMwichSimulator:
-    def __init__(self, config_file: Optional[str] = None):
+    def __init__(self, config_file: str):
         # Default configuration
         self.config: Config = Config()
 
-        # Load configuration if provided
-        if config_file and os.path.exists(config_file):
-            with open(config_file, 'r') as f:
-                if config_file.endswith('.json'):
-                    self.config = Config.parse_obj(json.load(f))
-                elif config_file.endswith(('.yaml', '.yml')):
-                    self.config = Config.parse_obj(yaml.safe_load(f))
+        # Load configuration from file
+        if not os.path.exists(config_file):
+            raise FileNotFoundError(f"Configuration file {config_file} not found")
+
+        with open(config_file, 'r') as f:
+            if config_file.endswith('.json'):
+                self.config = Config.parse_obj(json.load(f))
+            elif config_file.endswith(('.yaml', '.yml')):
+                self.config = Config.parse_obj(yaml.safe_load(f))
+            else:
+                raise ValueError(f"Unsupported config format: {config_file}. Use JSON or YAML.")
 
         self.env = simpy.Environment()
 
@@ -91,46 +94,47 @@ class RAMwichSimulator:
             logger.error(f"Operation file {file_path} not found")
             return
 
-        try:
-            with open(file_path, 'r') as f:
-                if file_path.endswith('.json'):
-                    data = json.load(f)
+        with open(file_path, 'r') as f:
+            if file_path.endswith('.json'):
+                data = json.load(f)
+            else:
+                logger.error(f"Unsupported file format: {file_path}. Only JSON is supported.")
+                return
+
+        # Convert raw data to operation objects and organize by node/tile/core
+        for op_data in data:
+            try:
+                op_type = op_data.get('type')
+                if not op_type:
+                    logger.warning(f"Missing operation type in data: {op_data}")
+                    continue
+
+                op: Optional[Op] = None
+                if op_type == 'load':
+                    op = Load(**op_data)
+                elif op_type == 'set':
+                    op = Set(**op_data)
+                elif op_type == 'alu':
+                    op = Alu(**op_data)
+                elif op_type == 'mvm':
+                    op = MVM(**op_data)
                 else:
-                    logger.error(f"Unsupported file format: {file_path}. Only JSON is supported.")
-                    return
+                    logger.warning(f"Unknown operation type: {op_type}")
+                    continue
 
-            # Convert raw data to operation objects and organize by node/tile/core
-            for op_data in data:
-                try:
-                    op: Optional[Op] = None
-                    if op_type == 'load':
-                        op = Load(**op_data)
-                    elif op_type == 'set':
-                        op = Set(**op_data)
-                    elif op_type == 'alu':
-                        op = Alu(**op_data)
-                    elif op_type == 'mvm':
-                        op = MVM(**op_data)
-                    else:
-                        logger.warning(f"Unknown operation type: {op_type}")
-                        continue
+                node = self.get_node(op.node)
+                tile = node.get_tile(op.tile)
+                core = tile.get_core(op.core)
+                # Store the operation in the core
+                core.operations.append(op)
 
-                    node = self.get_node(op.node)
-                    tile = node.get_tile(op.tile)
-                    core = tile.get_core(op.core)
-                    # Store the operation in the core
-                    core.operations.append(op)
+            except ValueError as e:
+                logger.warning(str(e))
 
-                except ValueError as e:
-                    logger.warning(str(e))
-
-        except Exception as e:
-            logger.error(f"Error loading operations: {e}")
-
-    def run(self, op_file: str):
+    def run(self, ops_file: str):
         """Run the simulation with operations from the specified file"""
         # Load operations into node/tile/core hierarchy
-        self.load_operations(op_file)
+        self.load_operations(ops_file)
 
         # Create and schedule parallel processes for each node
         node_processes = []
@@ -144,16 +148,13 @@ class RAMwichSimulator:
         summarize_results(self.nodes)
 
 def main():
-    import argparse
-
     parser = argparse.ArgumentParser(description='RAMwich Simulator')
-    parser.add_argument('op_file', help='File containing operations to execute')
-    parser.add_argument('--config', help='Configuration file (JSON or YAML)')
+    parser.add_argument('--ops', required=True, help='OP file (JSON)')
+    parser.add_argument('--config', required=True, help='Configuration file (YAML)')
     args = parser.parse_args()
 
-    # Create and run simulator
     simulator = RAMwichSimulator(config_file=args.config)
-    simulator.run(args.op_file)
+    simulator.run(ops_file=args.ops)
 
 if __name__ == "__main__":
     main()
