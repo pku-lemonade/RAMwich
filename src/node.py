@@ -3,6 +3,8 @@ from typing import List, Dict, Any
 from .tile import Tile
 from pydantic import BaseModel, Field
 
+logger = logging.getLogger(__name__)
+
 class NodeStats(BaseModel):
     operations: int = Field(default=0, description="Total number of operations")
     load_operations: int = Field(default=0, description="Number of load operations")
@@ -59,9 +61,6 @@ class Node:
 
     def run(self, simulator, env):
         """Execute operations for all tiles in this node"""
-        import logging
-        logger = logging.getLogger(__name__)
-
         logger.info(f"Starting operations for node {self.id}")
 
         # Start all tiles in parallel
