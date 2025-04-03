@@ -2,34 +2,47 @@ from typing import List, Dict, Any, Union
 from ima import IMA
 from .op import Op
 from .stats import Stat  # CoreStats is no longer needed
+from .dram import DRAM  # Import the DRAM class
 
 class Core:
     """
     Core in the RAMwich architecture, containing multiple IMAs.
     """
-    def __init__(self, id: int, imas: List[IMA]):
+    def __init__(self, id: int, imas: List[IMA], dram_capacity: int = 1024):
         self.id = id
         self.imas = imas
         self.registers: List[int] = [0] * 16  # Default 16 registers
         self.operations: List[Op] = []  # Store operations to be executed
         self.stats = Stat()
+        self.dram = DRAM(capacity=dram_capacity)  # Initialize DRAM
 
     def __repr__(self) -> str:
         return f"Core({self.id}, imas={len(self.imas)})"
 
     def execute_load(self, d1: int) -> bool:
         """Execute a Load operation"""
-        # Placeholder for actual implementation
-        self.registers[0] = d1
-        self.stats.operations += 1
-        return True
+        # Load data from DRAM address d1 into register 0
+        try:
+            self.registers[0] = self.dram.read(d1)
+            self.stats.operations += 1
+            return True
+        except IndexError as e:
+            print(f"Load operation failed: {e}")
+            return False
 
     def execute_set(self, imm: int) -> bool:
         """Execute a Set operation"""
-        # Placeholder for actual implementation
+        # Set immediate value to register 1
         self.registers[1] = imm
-        self.stats.operations += 1
-        return True
+        # Also store the value to DRAM at address specified by register 0
+        try:
+            address = self.registers[0]
+            self.dram.write(address, imm)
+            self.stats.operations += 1
+            return True
+        except IndexError as e:
+            print(f"Set operation failed: {e}")
+            return False
 
     def execute_alu(self, opcode: str) -> bool:
         """Execute an ALU operation"""
@@ -72,9 +85,15 @@ class Core:
 
     def get_stats(self, include_components: bool = True) -> Stat:
         """Get statistics for this Core and optionally its components"""
+        # Include DRAM statistics in the components if requested
+        components = []
+        if include_components:
+            components.extend(self.imas)
+            components.append(self.dram)
+
         # Directly modify and return the original stats object
         return self.stats.get_stats(
-            components=self.imas if include_components else None
+            components=components if include_components else None
         )
 
     def run(self):
