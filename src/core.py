@@ -1,5 +1,6 @@
-from typing import List
+from typing import List, Dict, Any
 from ima import IMA
+from .op import Op
 
 class Core:
     """
@@ -8,9 +9,9 @@ class Core:
     def __init__(self, id: int, imas: List[IMA]):
         self.id = id
         self.imas = imas
-        self.registers = [0] * 16  # Default 16 registers
-        self.operations = []  # Store operations to be executed
-        self.stats = {
+        self.registers: List[int] = [0] * 16  # Default 16 registers
+        self.operations: List[Op] = []  # Store operations to be executed
+        self.stats: Dict[str, Union[int, float]] = {
             'operations': 0,
             'load_operations': 0,
             'set_operations': 0,
@@ -20,10 +21,10 @@ class Core:
             'last_execution_time': 0
         }
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Core({self.id}, imas={len(self.imas)})"
 
-    def execute_load(self, d1: int):
+    def execute_load(self, d1: int) -> bool:
         """Execute a Load operation"""
         # Placeholder for actual implementation
         self.registers[0] = d1
@@ -31,7 +32,7 @@ class Core:
         self.stats['load_operations'] += 1
         return True
 
-    def execute_set(self, imm: int):
+    def execute_set(self, imm: int) -> bool:
         """Execute a Set operation"""
         # Placeholder for actual implementation
         self.registers[1] = imm
@@ -39,7 +40,7 @@ class Core:
         self.stats['set_operations'] += 1
         return True
 
-    def execute_alu(self, opcode: str):
+    def execute_alu(self, opcode: str) -> bool:
         """Execute an ALU operation"""
         # Placeholder for actual implementation
         if opcode == "add":
@@ -52,7 +53,7 @@ class Core:
         self.stats['alu_operations'] += 1
         return True
 
-    def execute_mvm(self, ima_id, xbar_ids):
+    def execute_mvm(self, ima_id: int, xbar_ids: List[int]) -> bool:
         """Execute an MVM operation on a specific IMA"""
         if 0 <= ima_id < len(self.imas):
             self.imas[ima_id].execute_mvm(xbar_ids)
@@ -61,7 +62,7 @@ class Core:
             return True
         return False
 
-    def execute_operation(self, op):
+    def execute_operation(self, op: Op) -> bool:
         """Execute an operation directly on this core"""
         # Let the operation call the appropriate method through its accept method
         result = op.accept(self)
@@ -74,7 +75,7 @@ class Core:
 
         return result
 
-    def update_execution_time(self, op_type, execution_time):
+    def update_execution_time(self, op_type: str, execution_time: float) -> None:
         """Update the execution time statistics"""
         self.stats['total_execution_time'] += execution_time
         self.stats['last_execution_time'] = execution_time
@@ -85,7 +86,7 @@ class Core:
             ima_id = 0
             self.imas[ima_id].update_execution_time(execution_time)
 
-    def get_stats(self, include_components=True):
+    def get_stats(self, include_components: bool = True) -> Dict[str, Any]:
         """Get statistics for this Core and optionally its components"""
         result = {
             'core_id': self.id,

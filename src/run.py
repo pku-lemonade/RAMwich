@@ -2,7 +2,7 @@ import argparse
 import json
 import logging
 import os
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional, Union, Tuple, Generator, Set
 
 import numpy as np
 import simpy
@@ -21,9 +21,9 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(asctime)s - %(me
 logger = logging.getLogger(__name__)
 
 class RAMwichSimulator:
-    def __init__(self, config_file=None):
+    def __init__(self, config_file: Optional[str] = None):
         # Default configuration
-        self.config = Config()
+        self.config: Config = Config()
 
         # Load configuration if provided
         if config_file and os.path.exists(config_file):
@@ -36,9 +36,9 @@ class RAMwichSimulator:
         self.env = simpy.Environment()
 
         # Build the hierarchical architecture
-        self.nodes = self._build_architecture()
+        self.nodes: List[Node] = self._build_architecture()
 
-    def _build_architecture(self):
+    def _build_architecture(self) -> List[Node]:
         """Build the hierarchical architecture based on configuration"""
         nodes = []
 
@@ -82,7 +82,7 @@ class RAMwichSimulator:
 
         return nodes
 
-    def load_operations(self, file_path):
+    def load_operations(self, file_path: str):
         """Load operations from a JSON file and organize by node/tile/core hierarchy"""
         if not os.path.exists(file_path):
             logger.error(f"Operation file {file_path} not found")
@@ -114,7 +114,7 @@ class RAMwichSimulator:
                     core = tile.get_core(core_id)
 
                     # Create the appropriate operation object
-                    op = None
+                    op: Optional[Op] = None
                     if op_type == 'load':
                         op = Load(**op_data)
                     elif op_type == 'set':
@@ -138,61 +138,7 @@ class RAMwichSimulator:
         except Exception as e:
             logger.error(f"Error loading operations: {e}")
 
-    def execute_load(self, op: Load):
-        """Process to execute a Load operation"""
-        # Find the corresponding components in our architecture
-        node = self.nodes[op.node]
-        tile = node.tiles[op.tile]
-        core = tile.cores[op.core]
-
-        # Execute load operation (sequentially, no resource contention)
-        yield self.env.timeout(self.config.load_execution_time)
-
-        # Execute on the actual component
-        core.execute_load(op.d1)
-
-    def execute_set(self, op: Set):
-        """Process to execute a Set operation"""
-        # Find the corresponding components
-        node = self.nodes[op.node]
-        tile = node.tiles[op.tile]
-        core = tile.cores[op.core]
-
-        # Execute set operation (sequentially)
-        yield self.env.timeout(self.config.set_execution_time)
-
-        # Execute on the actual component
-        core.execute_set(op.imm)
-
-    def execute_alu(self, op: Alu):
-        """Process to execute an ALU operation"""
-        # Find the corresponding components
-        node = self.nodes[op.node]
-        tile = node.tiles[op.tile]
-        core = tile.cores[op.core]
-
-        # Execute ALU operation (sequentially)
-        yield self.env.timeout(self.config.alu_execution_time)
-
-        # Execute on the actual component
-        core.execute_alu(op.opcode)
-
-    def execute_mvm(self, op: MVM):
-        """Process to execute an MVM operation"""
-        # Find the corresponding components
-        node = self.nodes[op.node]
-        tile = node.tiles[op.tile]
-        core = tile.cores[op.core]
-
-        # Execute MVM operation (sequentially)
-        # Execution time may depend on xbar size
-        execution_time = self.config.mvm_execution_time * (len(op.xbar) / 10 + 1)
-        yield self.env.timeout(execution_time)
-
-        # Execute on the actual component
-        core.execute_mvm(op.ima, op.xbar)
-
-    def run_simulation(self, op_file):
+    def run(self, op_file: str):
         """Run the simulation with operations from the specified file"""
         # Load operations into node/tile/core hierarchy
         self.load_operations(op_file)
@@ -218,7 +164,7 @@ def main():
 
     # Create and run simulator
     simulator = RAMwichSimulator(config_file=args.config)
-    simulator.run_simulation(args.op_file)
+    simulator.run(args.op_file)
 
 if __name__ == "__main__":
     main()
