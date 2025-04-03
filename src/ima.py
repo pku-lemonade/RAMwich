@@ -1,33 +1,26 @@
 from typing import List, Dict, Any
 from pydantic import BaseModel, Field
 from .config import IMAConfig
-from .adc import AnalogToDigitalConverter
-from .dac import DigitalToAnalogConverter
+from .blocks.adc import ADC
+from .blocks.dac import DAC
 from .xbar import Xbar
 from .stats import Stat
 
 class IMAStats(BaseModel):
-    operations: int = Field(default=0, description="Total number of operations")
-    mvm_operations: int = Field(default=0, description="Number of MVM operations")
+    op_counts: Dict[str, int] = Field(default_factory=dict, description="Operation counts by type")
 
     def get_stats(self, ima_id: int) -> Stat:
-        """Get statistics for this IMA"""
         stats = Stat()
-        stats.latency = 0.0  # Will be updated through update_execution_time
-        stats.energy = 0.0  # Set appropriate energy value if available
-        stats.area = 0.0    # Set appropriate area value if available
-        stats.operations = self.operations
-        stats.mvm_operations = self.mvm_operations
+        stats.latency = 0.0
+        stats.energy = 0.0
+        stats.area = 0.0
+        stats.op_counts = self.op_counts
         return stats
 
 class IMA:
     """
     In-Memory Accelerator containing multiple crossbar arrays with detailed hardware simulation.
     """
-    # Supported opcodes
-    OP_LIST = ['ld', 'cp', 'st', 'set', 'nop', 'alu', 'alui', 'mvm', 'vvo', 'hlt', 'jmp', 'beq', 'alu_int', 'crs']
-    ALU_OP_LIST = ['add', 'sub', 'sna', 'mul', 'sigmoid']
-
     def __init__(self, id: int = 0, num_xbars: int = 4, ima_config=None, adc_config=None, dac_config=None):
         # Basic IMA properties
         self.id = id
@@ -41,9 +34,9 @@ class IMA:
         self.stats = IMAStats()
 
         # Initialize sub-components
-        self.adcs = [AnalogToDigitalConverter(adc_config, i)
+        self.adcs = [ADC(adc_config, i)
                     for i in range(int(self.ima_config.xbar_size // 16 * 2))]
-        self.dacs = [DigitalToAnalogConverter(dac_config)
+        self.dacs = [DAC(dac_config)
                     for _ in range(self.ima_config.xbar_size)]
 
         # Memory components
@@ -65,25 +58,10 @@ class IMA:
     def __repr__(self):
         return f"IMA({self.id}, xbars={len(self.xbars)})"
 
-    def _create_dummy_instr(self):
-        """Create a dummy instruction data structure"""
-        return {
-            'opcode': self.OP_LIST[0],
-            'aluop': self.ALU_OP_LIST[0],
-            'd1': 0,
-            'r1': 0,
-            'r2': 0,
-            'r3': 0,
-            'vec': 0,
-            'imm': 0,
-            'xb_nma': 0
-        }
-
     def execute_mvm(self, xbar_values: List[int]):
         """Execute a Matrix-Vector Multiplication operation on Xbar level"""
         # High-level MVM operation that uses the first xbar
-        self.stats.operations += 1
-        self.stats.mvm_operations += 1
+        self.stats.increment_op_count('mvm')
 
         # Store values in the first xbar
         if self.xbars:

@@ -19,7 +19,7 @@ def summarize_results(simulator_stats):
     overall_stats = simulator_stats.get('stats', {})
     components = simulator_stats.get('components', [])
 
-    print(f"Total operations completed: {overall_stats.get('operations', 0)}")
+    print(f"Total operations completed: {sum(overall_stats.get('op_counts', {}).values())}")
     print(f"Total execution time: {overall_stats.get('total_execution_time', 0)}")
 
     # Create visualization
@@ -34,19 +34,14 @@ def visualize_results(simulator_stats):
         logger.warning("Insufficient statistics data for visualization")
         return
 
-    # Create some visualizations of the results
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
 
     # Plot operation counts by type
-    op_types = ['load', 'set', 'alu', 'mvm']
-    op_counts = [
-        overall_stats.get('load_operations', 0),
-        overall_stats.get('set_operations', 0),
-        overall_stats.get('alu_operations', 0),
-        overall_stats.get('mvm_operations', 0)
-    ]
+    op_counts = overall_stats.get('op_counts', {})
+    op_types = list(op_counts.keys())
+    counts = list(op_counts.values())
 
-    axs[0, 0].bar(op_types, op_counts)
+    axs[0, 0].bar(op_types, counts)
     axs[0, 0].set_title('Operation Counts by Type')
     axs[0, 0].set_ylabel('Count')
 
@@ -127,7 +122,7 @@ def _print_hierarchical_stats(components, indent=0):
 
         prefix = "  " * indent
         print(f"{prefix}{component_type.capitalize()} {component_id}:")
-        print(f"{prefix}  Total operations: {stats.get('operations', 0)}")
+        print(f"{prefix}  Total operations: {sum(stats.get('op_counts', {}).values())}")
         print(f"{prefix}  Total execution time: {stats.get('total_execution_time', 0)}")
 
         if 'components' in component:

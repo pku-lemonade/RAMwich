@@ -10,13 +10,11 @@ class Stats(BaseModel):
     area: float = Field(default=0.0, description="Total area")
 
     # Operation counter
-    operations: int = Field(default=0, description="Total number of operations")
+    op_counts: Dict[str, int] = Field(default_factory=dict, description="Operation counts by type")
 
-    # Core-specific operation counters
-    load_operations: int = Field(default=0, description="Number of load operations")
-    set_operations: int = Field(default=0, description="Number of set operations")
-    alu_operations: int = Field(default=0, description="Number of ALU operations")
-    mvm_operations: int = Field(default=0, description="Number of MVM operations")
+    def increment_op_count(self, op_type: str, count: int = 1) -> None:
+        """Increment the count for a specific operation type"""
+        self.op_counts[op_type] = self.op_counts.get(op_type, 0) + count
 
     def get_stats(self, components):
         # Get stats from each subcomponent
@@ -29,10 +27,9 @@ class Stats(BaseModel):
                 self.latency += component_stats.latency
                 self.energy += component_stats.energy
                 self.area += component_stats.area
-                self.operations += component_stats.operations
-                self.load_operations += component_stats.load_operations
-                self.set_operations += component_stats.set_operations
-                self.alu_operations += component_stats.alu_operations
-                self.mvm_operations += component_stats.mvm_operations
+
+                # Aggregate operation counts from dictionary
+                for op_type, count in component_stats.op_counts.items():
+                    self.increment_op_count(op_type, count)
 
         return self

@@ -22,6 +22,7 @@ class NOCStats(BaseModel):
 
     # Track source-destination pairs for topology analysis
     _source_dest_pairs: Dict[str, int] = Field(default_factory=dict, exclude=True)
+    op_counts: Dict[str, int] = Field(default_factory=dict, description="Operation counts by type")
 
     def record_packet_transmission(self, source: int, destination: int, packet_size_bytes: int,
                                   num_flits: int, is_intra_node: bool, contention: bool = False):
@@ -63,6 +64,7 @@ class NOCStats(BaseModel):
 
         # Map operation counts
         stats.operations = self.packets_sent + self.packets_received
+        stats.op_counts = self.op_counts.copy()
 
         # We could map specific operation types if needed
         # For now, we'll leave the specific operation counts at 0

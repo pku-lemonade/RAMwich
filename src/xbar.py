@@ -3,17 +3,14 @@ from pydantic import BaseModel, Field
 from .stats import Stat
 
 class XbarStats(BaseModel):
-    operations: int = Field(default=0, description="Total number of operations")
-    mvm_operations: int = Field(default=0, description="Number of MVM operations")
+    op_counts: Dict[str, int] = Field(default_factory=dict, description="Operation counts by type")
 
     def get_stats(self, xbar_id: int) -> Stat:
-        """Get statistics for this Xbar"""
         stats = Stat()
         stats.latency = 0.0  # Will be updated through execution
         stats.energy = 0.0  # Set appropriate energy value if available
         stats.area = 0.0    # Set appropriate area value if available
-        stats.operations = self.operations
-        stats.mvm_operations = self.mvm_operations
+        stats.op_counts = self.op_counts
         return stats
 
 class Xbar:
@@ -31,8 +28,7 @@ class Xbar:
 
     def execute_mvm(self, xbar_data):
         """Execute a matrix-vector multiplication operation"""
-        self.stats.operations += 1
-        self.stats.mvm_operations += 1
+        self.stats.op_counts['mvm'] = self.stats.op_counts.get('mvm', 0) + 1
         # Actual implementation would be more complex
         return True
 
