@@ -1,12 +1,5 @@
-from typing import Literal, Union, List, Optional, TYPE_CHECKING
+from typing import Literal, Union, List, Optional
 from pydantic import BaseModel, Field
-# Remove direct import of Core and Tile to avoid circular dependency at runtime
-# from .core import Core
-# from .tile import Tile
-
-if TYPE_CHECKING:
-    from .core import Core
-    from .tile import Tile
 
 class BaseOp(BaseModel):
     node: int
@@ -15,11 +8,11 @@ class BaseOp(BaseModel):
 class CoreOp(BaseOp):
     core: int
 
-    def accept(self, core: 'Core'):
+    def accept(self, core):
         pass
 
 class TileOp(BaseOp):
-    def accept(self, tile: 'Tile'):
+    def accept(self, tile):
         pass
 
 class Load(CoreOp):
@@ -27,21 +20,21 @@ class Load(CoreOp):
     imm: int  # Immediate value to load
     d1: int  # Memory address to load from
 
-    def accept(self, core: 'Core'):
+    def accept(self, core):
         return core.execute_load(self)
 
 class Set(CoreOp):
     type: Literal["set"] = "set"
     imm: int  # Immediate value to store
 
-    def accept(self, core: 'Core'):
+    def accept(self, core):
         return core.execute_set(self)
 
 class ALU(CoreOp):
     type: Literal["alu"] = "alu"
     opcode: str
 
-    def accept(self, core: 'Core'):
+    def accept(self, core):
         return core.execute_alu(self)
 
 class MVM(CoreOp):
@@ -49,7 +42,7 @@ class MVM(CoreOp):
     xbar: List[int]
     ima: int = 0  # Default IMA id
 
-    def accept(self, core: 'Core'):
+    def accept(self, core):
         return core.execute_mvm(self)
 
 # Add explicit memory operations if needed
@@ -58,7 +51,7 @@ class Store(CoreOp):
     address: int  # Memory address to store to
     value: int    # Value to store
 
-    def accept(self, core: 'Core'):
+    def accept(self, core):
         return core.execute_store(self)
 
 class Send(TileOp):
@@ -69,7 +62,7 @@ class Send(TileOp):
     counter: int      # Counter for tracking sends
     vec: List[int]    # Vector of data to send
 
-    def accept(self, tile: 'Tile'):
+    def accept(self, tile):
         return tile.execute_send(self)
 
 class Recv(TileOp):
@@ -80,7 +73,7 @@ class Recv(TileOp):
     counter: int      # Counter for tracking receives
     vec: List[int]    # Vector to store received data
 
-    def accept(self, tile: 'Tile'):
+    def accept(self, tile):
         return tile.execute_receive(self)
 
 # Create discriminated union types

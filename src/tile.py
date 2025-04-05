@@ -4,21 +4,18 @@ from .core import Core # Keep Core import for type hint in __init__
 from .stats import Stats # Use Stats consistently
 from .ops import Send, Recv, TileOpType # Import TileOp types
 
-if TYPE_CHECKING:
-    from .ramwich import RAMwich
-    import simpy
-
 logger = logging.getLogger(__name__)
 
 class Tile:
     """
     Tile in the RAMwich architecture, containing multiple cores.
     """
-    def __init__(self, id: int, cores: List[Core]):
+    def __init__(self, id: int, cores: List[Core], config):
         self.id = id
         self.cores = cores
-        self.operations: List[TileOpType] = [] # Add operations list for TileOps
-        self.stats = Stats() # Use Stats consistently
+        self.config = config
+        self.operations: List[TileOpType] = []
+        self.stats = Stats()
 
     def __repr__(self):
         return f"Tile({self.id}, cores={len(self.cores)})"
@@ -64,24 +61,21 @@ class Tile:
         # self.stats.latency += recv_latency # Update latency when known
         return True # Assume success for now
 
-    def run(self, simulator: 'RAMwich', env: 'simpy.Environment'):
+    def run(self, env):
         """Execute operations for this tile and its cores"""
         logger.info(f"Tile {self.id} starting execution at time {env.now}")
 
         # Start core processes
-        core_processes = [env.process(core.run(simulator, env)) for core in self.cores]
+        core_processes = [env.process(core.run(env)) for core in self.cores]
 
         # Process tile-level operations
         for op in self.operations:
-            # Placeholder for tile operation execution time
-            # Need config values for send/receive operations
-            exec_time = 1 # Placeholder
+            # Get execution time from config
+            exec_time = 1 # Default
             if op.type == 'send':
-                # exec_time = simulator.config.send_execution_time
-                pass
+                exec_time = self.config.noc_config.noc_intra_lat
             elif op.type == 'receive':
-                # exec_time = simulator.config.receive_execution_time
-                pass
+                exec_time = self.config.noc_config.noc_intra_lat
 
             yield env.timeout(exec_time)
             success = op.accept(self)

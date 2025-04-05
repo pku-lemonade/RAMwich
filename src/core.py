@@ -6,13 +6,16 @@ from .stats import Stats
 from .blocks.dram import DRAM
 from .blocks.sram import SRAM
 
+logger = logging.getLogger(__name__)
+
 class Core:
     """
     Core in the RAMwich architecture, containing multiple IMAs.
     """
-    def __init__(self, id: int, imas: List[IMA], dram_capacity: int = 1024):
+    def __init__(self, id: int, imas: List[IMA], config, dram_capacity: int = 1024):
         self.id = id
         self.imas = imas
+        self.config = config
         self.sram = SRAM()  # Replace register_file with sram
         self.operations: List[OpType] = [] # Use the union type OpType
         self.stats = Stats()
@@ -122,24 +125,23 @@ class Core:
 
         return aggregated_stats
 
-    def run(self, simulator, env):
+    def run(self, env):
         """
         Execute all operations assigned to this core.
         This method should be called as a SimPy process.
         """
         logger.info(f"Core {self.id} starting execution at time {env.now}")
         for op in self.operations:
-            # Get execution time from config (assuming simulator has access)
-            # This part needs refinement based on how config times are accessed
+            # Get execution time from stored config
             exec_time = 1 # Placeholder
             if op.type == 'load':
-                exec_time = simulator.config.load_execution_time
+                exec_time = self.config.load_execution_time
             elif op.type == 'set':
-                exec_time = simulator.config.set_execution_time
+                exec_time = self.config.set_execution_time
             elif op.type == 'alu':
-                exec_time = simulator.config.alu_execution_time
+                exec_time = self.config.alu_execution_time
             elif op.type == 'mvm':
-                exec_time = simulator.config.mvm_execution_time
+                exec_time = self.config.mvm_execution_time
             # Add other op types like store if needed
 
             # Yield timeout for the operation execution time

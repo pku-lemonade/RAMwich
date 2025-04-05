@@ -9,9 +9,10 @@ class Node:
     """
     Node in the RAMwich architecture, containing multiple tiles.
     """
-    def __init__(self, id: int, tiles: List[Tile]):
+    def __init__(self, id: int, tiles: List[Tile], config):
         self.id = id
         self.tiles = tiles
+        self.config = config
         self.stats = Stat()
 
     def __repr__(self):
@@ -25,14 +26,14 @@ class Node:
         """Get statistics for this Node and optionally its components"""
         return self.stats.get_stats(components=self.tiles)
 
-    def run(self, simulator, env):
+    def run(self, env):
         """Execute operations for all tiles in this node"""
         logger.info(f"Starting operations for node {self.id}")
 
         # Start all tiles in parallel
         processes = []
         for tile in self.tiles:
-            processes.append(env.process(tile.run(simulator, env)))
+            processes.append(env.process(tile.run(env)))
 
         # Wait for all tiles to complete
         yield env.all_of(processes)

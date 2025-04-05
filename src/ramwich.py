@@ -60,24 +60,27 @@ class RAMwich:
                         )
                         imas.append(ima)
 
-                    # Create Core with its IMAs
+                    # Create Core with its IMAs and config
                     core = Core(
                         id=core_id,
-                        imas=imas
+                        imas=imas,
+                        config=self.config
                     )
                     cores.append(core)
 
-                # Create Tile with its Cores
+                # Create Tile with its Cores and config
                 tile = Tile(
                     id=tile_id,
-                    cores=cores
+                    cores=cores,
+                    config=self.config
                 )
                 tiles.append(tile)
 
-            # Create Node with its Tiles
+            # Create Node with its Tiles and config
             node = Node(
                 id=node_id,
-                tiles=tiles
+                tiles=tiles,
+                config=self.config
             )
             nodes.append(node)
 
@@ -129,7 +132,7 @@ class RAMwich:
         # Create and schedule parallel processes for each node
         processes = []
         for node in self.nodes:
-            processes.append(self.env.process(node.run(self, self.env)))
+            processes.append(self.env.process(node.run(self.env)))
 
         # Run simulation
         self.env.run(until=self.config.simulation_time)
