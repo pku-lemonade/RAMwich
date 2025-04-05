@@ -11,25 +11,11 @@ class Stats(BaseModel):
 
     # Operation counter
     op_counts: Dict[str, int] = Field(default_factory=dict, description="Operation counts by type")
+    # Add completion times if needed for timeline visualization
+    completion_times: List[float] = Field(default_factory=list, description="Timestamp of each operation completion")
+    # Add total execution time if needed at component level
+    total_execution_time: float = Field(default=0.0, description="Total execution time for the component")
 
     def increment_op_count(self, op_type: str, count: int = 1) -> None:
         """Increment the count for a specific operation type"""
         self.op_counts[op_type] = self.op_counts.get(op_type, 0) + count
-
-    def get_stats(self, components):
-        # Get stats from each subcomponent
-        for component in components:
-            if hasattr(component, 'get_stats'):
-                # Recursively gather stats from subcomponents
-                component_stats = component.get_stats()
-
-                # Aggregate the stats
-                self.latency += component_stats.latency
-                self.energy += component_stats.energy
-                self.area += component_stats.area
-
-                # Aggregate operation counts from dictionary
-                for op_type, count in component_stats.op_counts.items():
-                    self.increment_op_count(op_type, count)
-
-        return self
