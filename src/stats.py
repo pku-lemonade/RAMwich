@@ -1,19 +1,14 @@
-from typing import Dict, Any, List, Optional, TypeVar, Protocol, runtime_checkable, Union
+from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field
 
 class Stats(BaseModel):
     """Generic statistics class for recording latency, energy, and area metrics"""
 
-    # Basic metrics
     latency: float = Field(default=0.0, description="Total latency/execution time")
     energy: float = Field(default=0.0, description="Total energy consumption")
     area: float = Field(default=0.0, description="Total area")
-
-    # Operation counter
     op_counts: Dict[str, int] = Field(default_factory=dict, description="Operation counts by type")
-    # Add completion times if needed for timeline visualization
     completion_times: List[float] = Field(default_factory=list, description="Timestamp of each operation completion")
-    # Add total execution time if needed at component level
     total_execution_time: float = Field(default=0.0, description="Total execution time for the component")
 
     def increment_op_count(self, op_type: str, count: int = 1) -> None:

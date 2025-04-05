@@ -1,5 +1,5 @@
 import logging
-from typing import List, Dict, Any
+from typing import List
 from .tile import Tile
 from .stats import Stat
 
@@ -30,12 +30,10 @@ class Node:
         """Execute operations for all tiles in this node"""
         logger.info(f"Starting operations for node {self.id}")
 
-        # Start all tiles in parallel
         processes = []
         for tile in self.tiles:
             processes.append(env.process(tile.run(env)))
 
-        # Wait for all tiles to complete
         yield env.all_of(processes)
 
         logger.info(f"Completed all operations for node {self.id}")

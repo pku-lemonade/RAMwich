@@ -1,4 +1,4 @@
-from typing import Dict, Any, List
+from typing import List
 from pydantic import BaseModel, Field
 from ..stats import Stat
 
@@ -7,11 +7,10 @@ class XbarStats(BaseModel):
     mvm_operations: int = Field(default=0, description="Number of MVM operations")
 
     def get_stats(self, xbar_id: int) -> Stat:
-        """Get statistics for this Xbar"""
         stats = Stat()
-        stats.latency = 0.0  # Will be updated through execution
-        stats.energy = 0.0  # Set appropriate energy value if available
-        stats.area = 0.0    # Set appropriate area value if available
+        stats.latency = 0.0
+        stats.energy = 0.0
+        stats.area = 0.0
         stats.operations = self.operations
         stats.mvm_operations = self.mvm_operations
         return stats
@@ -33,7 +32,6 @@ class Xbar:
         """Execute a matrix-vector multiplication operation"""
         self.stats.operations += 1
         self.stats.mvm_operations += 1
-        # Actual implementation would be more complex
         return True
 
     def update_execution_time(self, execution_time):
