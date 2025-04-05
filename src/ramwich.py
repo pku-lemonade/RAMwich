@@ -140,6 +140,6 @@ class RAMwich:
         logger.info(f"Simulation completed at time {self.env.now}")
         summarize_results(self.nodes)
 
-    def get_stats(self) -> Stat:
+    def get_stats(self) -> Stats:
         """Get statistics for this Simulator and its components"""
         return self.stats.get_stats(components=self.nodes)

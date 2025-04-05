@@ -1,4 +1,5 @@
 from typing import List
+import logging
 from .ima import IMA
 from .ops import Load, Set, ALU, MVM, Store, CoreOp
 from .stats import Stats
@@ -92,32 +93,19 @@ class Core:
         self.id = id
         self.imas = imas
         self.config = config
-        self.sram = SRAM()
         self.operations: List[CoreOp] = []
-        self.stats = Stats()
+
+        self.sram = SRAM()
         self.dram = DRAM(capacity=dram_capacity)
+
+        self.stats = Stats()
 
     def __repr__(self) -> str:
         return f"Core({self.id}, imas={len(self.imas)})"
 
     def get_stats(self) -> Stats:
         """Get statistics for this Core by aggregating from all components"""
-        aggregated_stats = self.stats.copy(deep=True)
-        components = []
-        components.extend(self.imas)
-        components.append(self.dram)
-        components.append(self.sram)
-
-        for component in components:
-            if hasattr(component, 'get_stats'):
-                component_stats = component.get_stats()
-                aggregated_stats.latency += component_stats.latency
-                aggregated_stats.energy += component_stats.energy
-                aggregated_stats.area += component_stats.area
-                for op_type, count in component_stats.op_counts.items():
-                    aggregated_stats.increment_op_count(op_type, count)
-
-        return aggregated_stats
+        return self.stats.get_stats(self.imas + self.dram, self.sram)
 
     def run(self, env):
         """

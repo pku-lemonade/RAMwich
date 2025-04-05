@@ -4,7 +4,7 @@ from .config import IMAConfig
 from .blocks.adc import ADC
 from .blocks.dac import DAC
 from .xbar import Xbar
-from .stats import Stat
+from .stats import Stats
 
 class IMAStats(BaseModel):
     op_counts: Dict[str, int] = Field(default_factory=dict, description="Operation counts by type")
@@ -145,21 +145,19 @@ class IMA:
         """Update the execution time statistics"""
         self.stats.latency += execution_time
 
-    def get_stats(self) -> Stat:
-        """Get statistics for this IMA aggregating from all components"""
-        stats = Stat()
-        components = []
-        components.extend(self.xbars)
-        components.extend(self.adcs)
-        components.extend(self.dacs)
-
-        for component in components:
+    def get_stats(self) -> Stats:
+        stats = Stats()
+        for component in self.xbars + self.adcs + self.dacs:
             component_stats = component.get_stats()
-            stats.operations += component_stats.operations
             stats.latency += component_stats.latency
-            stats.mvm_operations += getattr(component_stats, 'mvm_operations', 0)
-
+            stats.energy += component_stats.energy
+            stats.area += component_stats.area
+            for op_type, count in component_stats.op_counts.items():
+                stats.increment_op_count(op_type, count)
         return stats
+
+    def _create_dummy_instr(self):
+        return {"opcode": "nop"}
 
     def get_total_cycles(self):
         """Return the total execution cycles"""

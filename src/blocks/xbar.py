@@ -1,13 +1,13 @@
 from typing import List
 from pydantic import BaseModel, Field
-from ..stats import Stat
+from ..stats import Stats
 
 class XbarStats(BaseModel):
     operations: int = Field(default=0, description="Total number of operations")
     mvm_operations: int = Field(default=0, description="Number of MVM operations")
 
-    def get_stats(self, xbar_id: int) -> Stat:
-        stats = Stat()
+    def get_stats(self, xbar_id: int) -> Stats:
+        stats = Stats()
         stats.latency = 0.0
         stats.energy = 0.0
         stats.area = 0.0

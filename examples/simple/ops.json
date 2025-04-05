@@ -56,5 +56,13 @@
     "tile": 0,
     "core": 1,
     "imm": 200
+  },
+  {
+    "type": "store",
+    "node": 0,
+    "tile": 0,
+    "core": 0,
+    "address": 100,
+    "value": 123
   }
 ]
