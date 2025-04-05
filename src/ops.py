@@ -20,30 +20,30 @@ class Load(CoreOp):
     imm: int  # Immediate value to load
     d1: int  # Memory address to load from
 
-    def accept(self, core):
-        return core.execute_load(self)
+    def accept(self, visitor):
+        return visitor.visit_load(self)
 
 class Set(CoreOp):
     type: Literal["set"] = "set"
     imm: int  # Immediate value to store
 
-    def accept(self, core):
-        return core.execute_set(self)
+    def accept(self, visitor):
+        return visitor.visit_set(self)
 
 class ALU(CoreOp):
     type: Literal["alu"] = "alu"
     opcode: str
 
-    def accept(self, core):
-        return core.execute_alu(self)
+    def accept(self, visitor):
+        return visitor.visit_alu(self)
 
 class MVM(CoreOp):
     type: Literal["mvm"] = "mvm"
     xbar: List[int]
     ima: int = 0  # Default IMA id
 
-    def accept(self, core):
-        return core.execute_mvm(self)
+    def accept(self, visitor):
+        return visitor.visit_mvm(self)
 
 # Add explicit memory operations if needed
 class Store(CoreOp):
@@ -51,8 +51,8 @@ class Store(CoreOp):
     address: int  # Memory address to store to
     value: int    # Value to store
 
-    def accept(self, core):
-        return core.execute_store(self)
+    def accept(self, visitor):
+        return visitor.visit_store(self)
 
 class Send(TileOp):
     type: Literal["send"] = "send"
@@ -75,6 +75,8 @@ class Recv(TileOp):
 
     def accept(self, tile):
         return tile.execute_receive(self)
+
+# Removed TimingVisitor and ExecutionVisitor classes as they are now in core.py
 
 # Create discriminated union types
 CoreOpType = Union[Load, Set, ALU, MVM, Store]
