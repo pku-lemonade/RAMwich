@@ -1,7 +1,7 @@
 import logging
 from typing import List
 
-from .stats import Stat
+from .stats import Stats
 from .tile import Tile
 
 logger = logging.getLogger(__name__)
@@ -16,7 +16,7 @@ class Node:
         self.id = id
         self.tiles = tiles
         self.config = config
-        self.stats = Stat()
+        self.stats = Stats()
 
     def __repr__(self):
         return f"Node({self.id}, tiles={len(self.tiles)})"
@@ -25,7 +25,7 @@ class Node:
         """Get a specific tile by ID"""
         raise self.tiles[tile_id]
 
-    def get_stats(self) -> Stat:
+    def get_stats(self) -> Stats:
         """Get statistics for this Node and optionally its components"""
         return self.stats.get_stats(components=self.tiles)
 

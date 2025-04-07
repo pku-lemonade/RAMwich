@@ -9,7 +9,7 @@ class XbarStats(BaseModel):
     operations: int = Field(default=0, description="Total number of operations")
     mvm_operations: int = Field(default=0, description="Number of MVM operations")
 
-    def get_stats(self, xbar_id: int) -> Stats:
+    def get_stats(self) -> Stats:
         stats = Stats()
         stats.latency = 0.0
         stats.energy = 0.0
@@ -43,9 +43,9 @@ class Xbar:
         """Update the execution time statistics"""
         self.stats.latency += execution_time
 
-    def get_stats(self) -> Stat:
+    def get_stats(self) -> Stats:
         """Get statistics for this Xbar"""
-        return self.stats.get_stats(self.id)
+        return self.stats.get_stats()
 
     def set_values(self, values: List[int]):
         """Set values in the crossbar"""

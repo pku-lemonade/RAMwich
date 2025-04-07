@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import ClassVar, Dict
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -8,10 +8,10 @@ class ADCConfig(BaseModel):
     """Analog-to-Digital Converter configuration"""
 
     # Class constants for lookup tables - using integers as keys instead of strings
-    LAT_DICT = {1: 1, 2: 1, 4: 1, 8: 1, 16: 1}
-    POW_DYN_DICT = {1: 1.8, 2: 1.8, 4: 1.8, 8: 1.8, 16: 1.8}
-    POW_LEAK_DICT = {1: 0.2, 2: 0.2, 4: 0.2, 8: 0.2, 16: 0.2}
-    AREA_DICT = {1: 0.0012, 2: 0.0012, 4: 0.0012, 8: 0.0012, 16: 0.0012}
+    LAT_DICT: ClassVar[Dict[int, int]] = {1: 1, 2: 1, 4: 1, 8: 1, 16: 1}
+    POW_DYN_DICT: ClassVar[Dict[int, float]] = {1: 1.8, 2: 1.8, 4: 1.8, 8: 1.8, 16: 1.8}
+    POW_LEAK_DICT: ClassVar[Dict[int, float]] = {1: 0.2, 2: 0.2, 4: 0.2, 8: 0.2, 16: 0.2}
+    AREA_DICT: ClassVar[Dict[int, float]] = {1: 0.0012, 2: 0.0012, 4: 0.0012, 8: 0.0012, 16: 0.0012}
 
     resolution: int = Field(default=8, description="ADC resolution")
     adc_lat: float = Field(default=1, description="ADC latency")
@@ -38,10 +38,22 @@ class DACConfig(BaseModel):
     """Digital-to-Analog Converter configuration"""
 
     # Class constants for lookup tables
-    LAT_DICT = {1: 1, 2: 1, 4: 1, 8: 1, 16: 1}
-    POW_DYN_DICT = {1: 0.00350625, 2: 0.00350625, 4: 0.00350625, 8: 0.00350625, 16: 0.00350625}
-    POW_LEAK_DICT = {1: 0.000390625, 2: 0.000390625, 4: 0.000390625, 8: 0.000390625, 16: 0.000390625}
-    AREA_DICT = {1: 1.67e-7, 2: 1.67e-7, 4: 1.67e-7, 8: 1.67e-7, 16: 1.67e-7}
+    LAT_DICT: ClassVar[Dict[int, int]] = {1: 1, 2: 1, 4: 1, 8: 1, 16: 1}
+    POW_DYN_DICT: ClassVar[Dict[int, float]] = {
+        1: 0.00350625,
+        2: 0.00350625,
+        4: 0.00350625,
+        8: 0.00350625,
+        16: 0.00350625,
+    }
+    POW_LEAK_DICT: ClassVar[Dict[int, float]] = {
+        1: 0.000390625,
+        2: 0.000390625,
+        4: 0.000390625,
+        8: 0.000390625,
+        16: 0.000390625,
+    }
+    AREA_DICT: ClassVar[Dict[int, float]] = {1: 1.67e-7, 2: 1.67e-7, 4: 1.67e-7, 8: 1.67e-7, 16: 1.67e-7}
 
     resolution: int = Field(default=1, description="DAC resolution")
     dac_lat: float = Field(default=1, description="DAC latency")
@@ -64,12 +76,12 @@ class NOCConfig(BaseModel):
     """Network-on-Chip configuration"""
 
     # Class constants for lookup tables
-    INJ_RATE_MAX = 0.025
+    INJ_RATE_MAX: ClassVar[int] = 0.025
     # Convert string keys to numeric keys for consistency
-    LAT_DICT = {0.001: 29, 0.005: 31, 0.01: 34, 0.02: 54, 0.025: 115}
-    AREA_DICT = {4: 0.047, 8: 0.116}
-    POW_DYN_DICT = {4: 16.13, 8: 51.48}
-    POW_LEAK_DICT = {4: 0.41, 8: 1.04}
+    LAT_DICT: ClassVar[Dict[int, int]] = {0.001: 29, 0.005: 31, 0.01: 34, 0.02: 54, 0.025: 115}
+    AREA_DICT: ClassVar[Dict[int, float]] = {4: 0.047, 8: 0.116}
+    POW_DYN_DICT: ClassVar[Dict[int, float]] = {4: 16.13, 8: 51.48}
+    POW_LEAK_DICT: ClassVar[Dict[int, float]] = {4: 0.41, 8: 1.04}
 
     inj_rate: float = Field(default=0.005, description="Injection rate")
     num_port: int = Field(default=4, description="Number of ports")
@@ -115,29 +127,29 @@ class IMAConfig(BaseModel):
     """In-Memory Accelerator configuration"""
 
     # XBAR lookup tables with numeric keys instead of strings
-    XBAR_LAT_DICT = {
+    XBAR_LAT_DICT: ClassVar[Dict[int, int]] = {
         2: {32: 32, 64: 64, 128: 128, 256: 256},
         4: {32: 32, 64: 64, 128: 128, 256: 256},
         6: {32: 32, 64: 64, 128: 128, 256: 256},
     }
 
-    XBAR_POW_DICT = {
+    XBAR_POW_DICT: ClassVar[Dict[int, float]] = {
         2: {32: 0.01875, 64: 0.075, 128: 0.3, 256: 1.2},
         4: {32: 0.01875, 64: 0.075, 128: 0.3, 256: 1.2},
         6: {32: 0.01875, 64: 0.075, 128: 0.3, 256: 1.2},
     }
 
-    XBAR_AREA_DICT = {
+    XBAR_AREA_DICT: ClassVar[Dict[int, float]] = {
         2: {32: 1.5625e-6, 64: 6.25e-6, 128: 2.5e-5, 256: 1.0e-4},
         4: {32: 1.5625e-6, 64: 6.25e-6, 128: 2.5e-5, 256: 1.0e-4},
         6: {32: 1.5625e-6, 64: 6.25e-6, 128: 2.5e-5, 256: 1.0e-4},
     }
 
     # Memory lookup tables with numeric keys
-    DATA_MEM_LAT_DICT = {256: 1, 512: 1, 1024: 1, 2048: 1}
-    DATA_MEM_POW_DYN_DICT = {256: 0.16, 512: 0.24, 1024: 0.33, 2048: 0.57}
-    DATA_MEM_POW_LEAK_DICT = {256: 0.044, 512: 0.078, 1024: 0.147, 2048: 0.33}
-    DATA_MEM_AREA_DICT = {256: 0.00056, 512: 0.00108, 1024: 0.00192, 2048: 0.00392}
+    DATA_MEM_LAT_DICT: ClassVar[Dict[int, int]] = {256: 1, 512: 1, 1024: 1, 2048: 1}
+    DATA_MEM_POW_DYN_DICT: ClassVar[Dict[int, float]] = {256: 0.16, 512: 0.24, 1024: 0.33, 2048: 0.57}
+    DATA_MEM_POW_LEAK_DICT: ClassVar[Dict[int, float]] = {256: 0.044, 512: 0.078, 1024: 0.147, 2048: 0.33}
+    DATA_MEM_AREA_DICT: ClassVar[Dict[int, float]] = {256: 0.00056, 512: 0.00108, 1024: 0.00192, 2048: 0.00392}
 
     xbar_size: int = Field(default=128, description="Crossbar size")
     dataMem_size: int = Field(default=4096, description="Data memory size")

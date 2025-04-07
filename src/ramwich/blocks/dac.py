@@ -3,7 +3,7 @@ from typing import Any, Dict, Optional
 from pydantic import BaseModel, Field
 
 from ..config import DACConfig
-from ..stats import Stat
+from ..stats import Stats
 
 
 class DACStats(BaseModel):
@@ -30,9 +30,9 @@ class DACStats(BaseModel):
         elif digital_value >= max_digital_value:
             self.max_values += 1
 
-    def get_stats(self, dac_id: Optional[int] = None) -> Stat:
+    def get_stats(self) -> Stats:
         """Get DAC-specific statistics"""
-        stats = Stat()
+        stats = Stats()
 
         # Map DAC metrics to Stat object
         stats.latency = float(self.active_cycles)
@@ -82,6 +82,6 @@ class DAC:
         """Return the total energy consumption in pJ"""
         return self.stats.energy_consumption
 
-    def get_stats(self) -> Stat:
+    def get_stats(self) -> Stats:
         """Return detailed statistics about this DAC"""
         return self.stats.get_stats(self.dac_id)

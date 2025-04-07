@@ -52,5 +52,5 @@ class SRAM:
             self.stats.write_operations += 1
         self.stats.latency += self.latency
 
-    def get_stats(self) -> Stat:
+    def get_stats(self) -> Stats:
         return self.stats.get_stats()
