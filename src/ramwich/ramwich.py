@@ -55,7 +55,7 @@ class RAMwich:
 
                     for ima_id in range(self.config.num_imas_per_core):
                         # Create IMA with its xbars
-                        ima = IMA(id=ima_id, num_xbars=self.config.num_xbars_per_ima)
+                        ima = IMA(id=ima_id)
                         imas.append(ima)
 
                     # Create Core with its IMAs and config

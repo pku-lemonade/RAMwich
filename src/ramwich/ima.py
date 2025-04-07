@@ -1,7 +1,7 @@
 from .blocks.adc import ADC
 from .blocks.dac import DAC
 from .blocks.xbar import Xbar
-from .config import IMAConfig
+from .config import ADCConfig, DACConfig, IMAConfig
 from .stats import Stats
 
 
@@ -10,7 +10,9 @@ class IMA:
     In-Memory Accelerator containing multiple crossbar arrays with detailed hardware simulation.
     """
 
-    def __init__(self, id: int = 0, ima_config: IMAConfig = None, adc_config=None, dac_config=None):
+    def __init__(
+        self, id: int = 0, ima_config: IMAConfig = None, adc_config: ADCConfig = None, dac_config: DACConfig = None
+    ):
         # Basic IMA properties
         self.id = id
         self.ima_config = ima_config or IMAConfig()
@@ -18,7 +20,7 @@ class IMA:
         # Initialize Xbar arrays
         self.xbars = [
             Xbar(i, self.ima_config.xbar_size if hasattr(self.ima_config, "xbar_size") else 32)
-            for i in range(num_xbars)
+            for i in range(self.ima_config.num_xbars)
         ]
 
         self.stats = Stats()
