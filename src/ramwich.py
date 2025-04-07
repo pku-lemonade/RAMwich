@@ -29,7 +29,7 @@ class RAMwich:
 
         with open(config_file, 'r') as f:
             if config_file.endswith(('.yaml', '.yml')):
-                self.config = Config.parse_obj(yaml.safe_load(f))
+                self.config = Config.model_validate(yaml.safe_load(f))
             else:
                 raise ValueError(f"Unsupported config format: {config_file}. Use JSON or YAML.")
 
