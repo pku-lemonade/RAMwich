@@ -4,7 +4,6 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class ADCConfig(BaseModel):
-    model_config = ConfigDict(frozen=True)
     """Analog-to-Digital Converter configuration"""
 
     # Class constants for lookup tables - using integers as keys instead of strings
@@ -34,7 +33,6 @@ class ADCConfig(BaseModel):
 
 
 class DACConfig(BaseModel):
-    model_config = ConfigDict(frozen=True)
     """Digital-to-Analog Converter configuration"""
 
     # Class constants for lookup tables
@@ -72,7 +70,6 @@ class DACConfig(BaseModel):
 
 
 class NOCConfig(BaseModel):
-    model_config = ConfigDict(frozen=True)
     """Network-on-Chip configuration"""
 
     # Class constants for lookup tables
@@ -123,7 +120,6 @@ class NOCConfig(BaseModel):
 
 
 class IMAConfig(BaseModel):
-    model_config = ConfigDict(frozen=True)
     """In-Memory Accelerator configuration"""
 
     # XBAR lookup tables with numeric keys instead of strings
