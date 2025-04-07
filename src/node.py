@@ -1,14 +1,17 @@
 import logging
 from typing import List
-from .tile import Tile
+
 from .stats import Stat
+from .tile import Tile
 
 logger = logging.getLogger(__name__)
+
 
 class Node:
     """
     Node in the RAMwich architecture, containing multiple tiles.
     """
+
     def __init__(self, id: int, tiles: List[Tile], config):
         self.id = id
         self.tiles = tiles

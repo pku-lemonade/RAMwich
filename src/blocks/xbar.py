@@ -1,6 +1,9 @@
 from typing import List
+
 from pydantic import BaseModel, Field
+
 from ..stats import Stats
+
 
 class XbarStats(BaseModel):
     operations: int = Field(default=0, description="Total number of operations")
@@ -15,10 +18,12 @@ class XbarStats(BaseModel):
         stats.mvm_operations = self.mvm_operations
         return stats
 
+
 class Xbar:
     """
     Crossbar array component that performs matrix-vector multiplication operations.
     """
+
     def __init__(self, id: int, size: int = 32):
         self.id = id
         self.size = size

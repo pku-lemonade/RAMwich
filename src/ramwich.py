@@ -7,16 +7,17 @@ import simpy
 import yaml
 
 from .config import Config
-from .ops import CoreOp, OpType, TileOp
-from .tile import Tile
 from .core import Core
 from .ima import IMA
 from .node import Node
-from .utils.visualize import summarize_results
+from .ops import CoreOp, OpType, TileOp
 from .stats import Stats
+from .tile import Tile
+from .utils.visualize import summarize_results
 
 # Configure logging
 logger = logging.getLogger(__name__)
+
 
 class RAMwich:
     def __init__(self, config_file: str):
@@ -27,8 +28,8 @@ class RAMwich:
         if not os.path.exists(config_file):
             raise FileNotFoundError(f"Configuration file {config_file} not found")
 
-        with open(config_file, 'r') as f:
-            if config_file.endswith(('.yaml', '.yml')):
+        with open(config_file, "r") as f:
+            if config_file.endswith((".yaml", ".yml")):
                 self.config = Config.model_validate(yaml.safe_load(f))
             else:
                 raise ValueError(f"Unsupported config format: {config_file}. Use JSON or YAML.")
@@ -54,34 +55,19 @@ class RAMwich:
 
                     for ima_id in range(self.config.num_imas_per_core):
                         # Create IMA with its xbars
-                        ima = IMA(
-                            id=ima_id,
-                            num_xbars=self.config.num_xbars_per_ima
-                        )
+                        ima = IMA(id=ima_id, num_xbars=self.config.num_xbars_per_ima)
                         imas.append(ima)
 
                     # Create Core with its IMAs and config
-                    core = Core(
-                        id=core_id,
-                        imas=imas,
-                        config=self.config
-                    )
+                    core = Core(id=core_id, imas=imas, config=self.config)
                     cores.append(core)
 
                 # Create Tile with its Cores and config
-                tile = Tile(
-                    id=tile_id,
-                    cores=cores,
-                    config=self.config
-                )
+                tile = Tile(id=tile_id, cores=cores, config=self.config)
                 tiles.append(tile)
 
             # Create Node with its Tiles and config
-            node = Node(
-                id=node_id,
-                tiles=tiles,
-                config=self.config
-            )
+            node = Node(id=node_id, tiles=tiles, config=self.config)
             nodes.append(node)
 
         return nodes
@@ -95,8 +81,8 @@ class RAMwich:
             logger.error(f"Operation file {file_path} not found")
             return
 
-        with open(file_path, 'r') as f:
-            if file_path.endswith('.json'):
+        with open(file_path, "r") as f:
+            if file_path.endswith(".json"):
                 data = json.load(f)
             else:
                 logger.error(f"Unsupported file format: {file_path}. Only JSON is supported.")

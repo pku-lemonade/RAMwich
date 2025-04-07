@@ -1,15 +1,18 @@
 import logging
 from typing import List
+
 from .core import Core
+from .ops import Recv, Send, TileOpType
 from .stats import Stats
-from .ops import Send, Recv, TileOpType
 
 logger = logging.getLogger(__name__)
+
 
 class Tile:
     """
     Tile in the RAMwich architecture, containing multiple cores.
     """
+
     def __init__(self, id: int, cores: List[Core], config):
         self.id = id
         self.cores = cores
@@ -41,13 +44,13 @@ class Tile:
     def execute_send(self, op: Send) -> bool:
         """Execute a Send operation (placeholder)"""
         logger.debug(f"Tile {self.id} executing Send: {op}")
-        self.stats.increment_op_count('send')
+        self.stats.increment_op_count("send")
         return True
 
     def execute_receive(self, op: Recv) -> bool:
         """Execute a Receive operation (placeholder)"""
         logger.debug(f"Tile {self.id} executing Receive: {op}")
-        self.stats.increment_op_count('receive')
+        self.stats.increment_op_count("receive")
         return True
 
     def run(self, env):
@@ -58,9 +61,9 @@ class Tile:
 
         for op in self.operations:
             exec_time = 1
-            if op.type == 'send':
+            if op.type == "send":
                 exec_time = self.config.noc_config.noc_intra_lat
-            elif op.type == 'receive':
+            elif op.type == "receive":
                 exec_time = self.config.noc_config.noc_intra_lat
 
             yield env.timeout(exec_time)

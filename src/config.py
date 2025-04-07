@@ -1,6 +1,7 @@
 from typing import Dict
 
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
+
 
 class ADCConfig(BaseModel):
     model_config = ConfigDict(frozen=True)
@@ -18,13 +19,8 @@ class ADCConfig(BaseModel):
     adc_pow_leak: float = Field(default=0.2, description="ADC leakage power")
     adc_area: float = Field(default=0.0012, description="ADC area")
     res_new: Dict[str, int] = Field(
-        default={
-            'matrix_adc_0': 8,
-            'matrix_adc_1': 8,
-            'matrix_adc_2': 8,
-            'matrix_adc_3': 8
-        },
-        description="Multi-resolution support"
+        default={"matrix_adc_0": 8, "matrix_adc_1": 8, "matrix_adc_2": 8, "matrix_adc_3": 8},
+        description="Multi-resolution support",
     )
 
     def __init__(self, **data):
@@ -43,10 +39,8 @@ class DACConfig(BaseModel):
 
     # Class constants for lookup tables
     LAT_DICT = {1: 1, 2: 1, 4: 1, 8: 1, 16: 1}
-    POW_DYN_DICT = {1: 0.00350625, 2: 0.00350625, 4: 0.00350625,
-                    8: 0.00350625, 16: 0.00350625}
-    POW_LEAK_DICT = {1: 0.000390625, 2: 0.000390625, 4: 0.000390625,
-                     8: 0.000390625, 16: 0.000390625}
+    POW_DYN_DICT = {1: 0.00350625, 2: 0.00350625, 4: 0.00350625, 8: 0.00350625, 16: 0.00350625}
+    POW_LEAK_DICT = {1: 0.000390625, 2: 0.000390625, 4: 0.000390625, 8: 0.000390625, 16: 0.000390625}
     AREA_DICT = {1: 1.67e-7, 2: 1.67e-7, 4: 1.67e-7, 8: 1.67e-7, 16: 1.67e-7}
 
     resolution: int = Field(default=1, description="DAC resolution")
@@ -97,7 +91,7 @@ class NOCConfig(BaseModel):
         super().__init__(**data)
         # Validate injection rate
         if self.inj_rate > self.INJ_RATE_MAX:
-            raise ValueError('NoC injection rate too high! Reconsider NOC design or DNN mapping.')
+            raise ValueError("NoC injection rate too high! Reconsider NOC design or DNN mapping.")
 
         # Update derived values based on configuration
         if self.inj_rate in self.LAT_DICT:
@@ -124,19 +118,19 @@ class IMAConfig(BaseModel):
     XBAR_LAT_DICT = {
         2: {32: 32, 64: 64, 128: 128, 256: 256},
         4: {32: 32, 64: 64, 128: 128, 256: 256},
-        6: {32: 32, 64: 64, 128: 128, 256: 256}
+        6: {32: 32, 64: 64, 128: 128, 256: 256},
     }
 
     XBAR_POW_DICT = {
         2: {32: 0.01875, 64: 0.075, 128: 0.3, 256: 1.2},
         4: {32: 0.01875, 64: 0.075, 128: 0.3, 256: 1.2},
-        6: {32: 0.01875, 64: 0.075, 128: 0.3, 256: 1.2}
+        6: {32: 0.01875, 64: 0.075, 128: 0.3, 256: 1.2},
     }
 
     XBAR_AREA_DICT = {
         2: {32: 1.5625e-6, 64: 6.25e-6, 128: 2.5e-5, 256: 1.0e-4},
         4: {32: 1.5625e-6, 64: 6.25e-6, 128: 2.5e-5, 256: 1.0e-4},
-        6: {32: 1.5625e-6, 64: 6.25e-6, 128: 2.5e-5, 256: 1.0e-4}
+        6: {32: 1.5625e-6, 64: 6.25e-6, 128: 2.5e-5, 256: 1.0e-4},
     }
 
     # Memory lookup tables with numeric keys
@@ -155,18 +149,20 @@ class IMAConfig(BaseModel):
     ima_xbar_ip_pow: float = Field(default=1.37 * 2.0, description="XBAR input processing power")
     ima_xbar_op_lat: float = Field(default=20.0 * 12.8, description="XBAR output processing latency")
     ima_xbar_op_pow: float = Field(default=4.44 * 3.27 / 12.8, description="XBAR output processing power")
-    ima_xbar_rd_lat: float = Field(default=328.0 * 1000 * (1/32.0), description="XBAR read latency")
-    ima_xbar_wr_lat: float = Field(default=351.0 * 1000 * (1/32.0), description="XBAR write latency")
-    ima_xbar_rd_pow: float = Field(default=208.0 * 1000 * (1/32.0) / (328.0 * 1000 * (1/32.0)),
-                                   description="XBAR read power")
-    ima_xbar_wr_pow: float = Field(default=676.0 * 1000 * (1/32.0) / (328.0 * 1000 * (1/32.0)),
-                                   description="XBAR write power")
+    ima_xbar_rd_lat: float = Field(default=328.0 * 1000 * (1 / 32.0), description="XBAR read latency")
+    ima_xbar_wr_lat: float = Field(default=351.0 * 1000 * (1 / 32.0), description="XBAR write latency")
+    ima_xbar_rd_pow: float = Field(
+        default=208.0 * 1000 * (1 / 32.0) / (328.0 * 1000 * (1 / 32.0)), description="XBAR read power"
+    )
+    ima_xbar_wr_pow: float = Field(
+        default=676.0 * 1000 * (1 / 32.0) / (328.0 * 1000 * (1 / 32.0)), description="XBAR write power"
+    )
 
     # ALU parameters with default fields
     ima_alu_lat: int = Field(default=1, description="ALU latency")
-    ima_alu_pow_dyn: float = Field(default=2.4 * 32/45, description="ALU dynamic power")
-    ima_alu_pow_leak: float = Field(default=0.27 * 32/45, description="ALU leakage power")
-    ima_alu_area: float = Field(default=0.00567 * 32/45, description="ALU area")
+    ima_alu_pow_dyn: float = Field(default=2.4 * 32 / 45, description="ALU dynamic power")
+    ima_alu_pow_leak: float = Field(default=0.27 * 32 / 45, description="ALU leakage power")
+    ima_alu_area: float = Field(default=0.00567 * 32 / 45, description="ALU area")
 
     # Memory parameters - these will be overridden based on dataMem_size
     ima_dataMem_lat: int = Field(default=1, description="Data memory latency")

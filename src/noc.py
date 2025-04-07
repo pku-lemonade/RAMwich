@@ -1,7 +1,10 @@
+from typing import Any, Dict, Optional
+
+from pydantic import BaseModel, Field
+
 from .config import NOCConfig
-from typing import Dict, Any, Optional
-from pydantic import Field, BaseModel
 from .stats import Stat
+
 
 class NOCStats(BaseModel):
     """Statistics tracking for Network-on-Chip (NoC) components"""
@@ -24,8 +27,15 @@ class NOCStats(BaseModel):
     _source_dest_pairs: Dict[str, int] = Field(default_factory=dict, exclude=True)
     op_counts: Dict[str, int] = Field(default_factory=dict, description="Operation counts by type")
 
-    def record_packet_transmission(self, source: int, destination: int, packet_size_bytes: int,
-                                  num_flits: int, is_intra_node: bool, contention: bool = False):
+    def record_packet_transmission(
+        self,
+        source: int,
+        destination: int,
+        packet_size_bytes: int,
+        num_flits: int,
+        is_intra_node: bool,
+        contention: bool = False,
+    ):
         """Record a packet transmission through the NoC"""
         self.packets_sent += 1
         self.bytes_transmitted += packet_size_bytes
@@ -70,6 +80,7 @@ class NOCStats(BaseModel):
 
         return stats
 
+
 class NetworkOnChip:
     """Hardware implementation of the Network-on-Chip component"""
 
@@ -88,7 +99,7 @@ class NetworkOnChip:
     def send_packet(self, source_tile, dest_tile, data_size):
         """Simulate sending a packet through the NoC"""
         # Determine if this is intra-node or inter-node communication
-        is_intra_node = (source_tile // self.cmesh_c == dest_tile // self.cmesh_c)
+        is_intra_node = source_tile // self.cmesh_c == dest_tile // self.cmesh_c
 
         if is_intra_node:
             latency = self.noc_config.intra_lat
@@ -112,7 +123,7 @@ class NetworkOnChip:
                 packet_size_bytes=self.packet_width,
                 num_flits=flits_per_packet,
                 is_intra_node=is_intra_node,
-                contention=False  # In a more detailed simulator, detect actual contention
+                contention=False,  # In a more detailed simulator, detect actual contention
             )
             self.stats.record_packet_reception()
 

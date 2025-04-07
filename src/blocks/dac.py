@@ -1,7 +1,10 @@
+from typing import Any, Dict, Optional
+
+from pydantic import BaseModel, Field
+
 from ..config import DACConfig
-from typing import Dict, Any, Optional
-from pydantic import Field, BaseModel
 from ..stats import Stat
+
 
 class DACStats(BaseModel):
     """Statistics tracking for DAC (Digital-to-Analog Converter) components"""
@@ -43,6 +46,7 @@ class DACStats(BaseModel):
         stats.total_execution_time = float(self.active_cycles)
 
         return stats
+
 
 class DAC:
     """Hardware implementation of the DAC component"""

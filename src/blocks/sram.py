@@ -1,9 +1,13 @@
 from typing import List
+
 from pydantic import BaseModel, Field
+
 from ..stats import Stats
+
 
 class SRAMStats(BaseModel):
     """Statistics for SRAM operations"""
+
     read_operations: int = Field(default=0, description="Number of read operations")
     write_operations: int = Field(default=0, description="Number of write operations")
     total_operations: int = Field(default=0, description="Total number of operations")
@@ -17,8 +21,10 @@ class SRAMStats(BaseModel):
         stats.write_operations = self.write_operations
         return stats
 
+
 class SRAM:
     """SRAM register file component for the Core"""
+
     def __init__(self, size: int = 16, latency: float = 0.01):
         self.size = size
         self.registers = [0] * size

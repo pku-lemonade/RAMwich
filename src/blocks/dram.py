@@ -1,9 +1,13 @@
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List, Optional
+
 from pydantic import BaseModel, Field
+
 from ..stats import Stats
+
 
 class DramStats(BaseModel):
     """Statistics for DRAM operations"""
+
     read_operations: int = Field(default=0, description="Number of read operations")
     write_operations: int = Field(default=0, description="Number of write operations")
     total_operations: int = Field(default=0, description="Total number of operations")
@@ -13,16 +17,18 @@ class DramStats(BaseModel):
         stats = Stats()
         stats.latency = 0.0  # Will be updated through update_execution_time
         stats.energy = 0.0  # Placeholder for energy consumption
-        stats.area = 0.0    # Placeholder for area usage
+        stats.area = 0.0  # Placeholder for area usage
         stats.operations = self.total_operations
         stats.read_operations = self.read_operations
         stats.write_operations = self.write_operations
         return stats
 
+
 class DRAM:
     """
     DRAM module for memory operations in the RAMwich architecture.
     """
+
     def __init__(self, capacity: int = 1024, latency: float = 0.1):
         """
         Initialize DRAM with specified capacity.

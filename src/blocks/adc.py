@@ -1,7 +1,10 @@
+from typing import Any, Dict, Optional
+
+from pydantic import BaseModel, Field
+
 from ..config import ADCConfig
-from typing import Dict, Any, Optional
-from pydantic import Field, BaseModel
 from ..stats import Stats
+
 
 class ADCStats(BaseModel):
     """Statistics tracking for ADC (Analog-to-Digital Converter) components"""
@@ -37,6 +40,7 @@ class ADCStats(BaseModel):
 
         return stats
 
+
 class ADC:
     """Hardware implementation of the ADC component"""
 
@@ -45,7 +49,7 @@ class ADC:
         self.adc_id = adc_id
 
         # Check if this ADC has a specific resolution setting
-        matrix_key = f'matrix_adc_{adc_id}'
+        matrix_key = f"matrix_adc_{adc_id}"
         if matrix_key in self.adc_config.res_new:
             self.resolution = self.adc_config.res_new[matrix_key]
         else:
