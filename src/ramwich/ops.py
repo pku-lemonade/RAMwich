@@ -1,10 +1,11 @@
 from abc import ABC, abstractmethod
 from typing import List, Literal, Optional, Union
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict
 
 
 class BaseOp(BaseModel, ABC):
+    model_config = ConfigDict(frozen=True)
     type: str
     node: int
 

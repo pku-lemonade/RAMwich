@@ -2,6 +2,13 @@
 
 RAMwich is a simulator for heterogeneous RRAM and SRAM CiM architectures.
 
+## Test
+
+```shell
+export PYTHONPATH="$PWD/src:$PYTHONPATH"
+python run.py --config <config_file> --ops <ops_file>
+```
+
 ## TODO
 
 ETA: 2 days
