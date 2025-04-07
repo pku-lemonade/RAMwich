@@ -1,19 +1,21 @@
+from abc import ABC, abstractmethod
 from typing import Literal, Union, List, Optional
 from pydantic import BaseModel, Field
 
-class BaseOp(BaseModel):
+class BaseOp(BaseModel, ABC):
+    type: str
     node: int
-    tile: int
+
+    @abstractmethod
+    def accept(self, visitor):
+        raise NotImplementedError
 
 class CoreOp(BaseOp):
+    tile: int
     core: int
 
-    def accept(self, core):
-        pass
-
 class TileOp(BaseOp):
-    def accept(self, tile):
-        pass
+    tile: int
 
 class Load(CoreOp):
     type: Literal["load"] = "load"
