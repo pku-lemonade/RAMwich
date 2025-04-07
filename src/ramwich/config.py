@@ -13,14 +13,6 @@ class ADCConfig(BaseModel):
     AREA_DICT: ClassVar[Dict[int, float]] = {1: 0.0012, 2: 0.0012, 4: 0.0012, 8: 0.0012, 16: 0.0012}
 
     resolution: int = Field(default=8, description="ADC resolution")
-    adc_lat: float = Field(default=1, description="ADC latency")
-    adc_pow_dyn: float = Field(default=1.8, description="ADC dynamic power")
-    adc_pow_leak: float = Field(default=0.2, description="ADC leakage power")
-    adc_area: float = Field(default=0.0012, description="ADC area")
-    res_new: Dict[str, int] = Field(
-        default={"matrix_adc_0": 8, "matrix_adc_1": 8, "matrix_adc_2": 8, "matrix_adc_3": 8},
-        description="Multi-resolution support",
-    )
 
     def __init__(self, **data):
         super().__init__(**data)
@@ -54,10 +46,6 @@ class DACConfig(BaseModel):
     AREA_DICT: ClassVar[Dict[int, float]] = {1: 1.67e-7, 2: 1.67e-7, 4: 1.67e-7, 8: 1.67e-7, 16: 1.67e-7}
 
     resolution: int = Field(default=1, description="DAC resolution")
-    dac_lat: float = Field(default=1, description="DAC latency")
-    dac_pow_dyn: float = Field(default=0.00350625, description="DAC dynamic power")
-    dac_pow_leak: float = Field(default=0.000390625, description="DAC leakage power")
-    dac_area: float = Field(default=1.67e-7, description="DAC area")
 
     def __init__(self, **data):
         super().__init__(**data)
@@ -82,12 +70,6 @@ class NOCConfig(BaseModel):
 
     inj_rate: float = Field(default=0.005, description="Injection rate")
     num_port: int = Field(default=4, description="Number of ports")
-
-    # Set default values for derived fields instead of None
-    noc_intra_lat: float = Field(default=31, description="NoC intra-node latency")
-    noc_intra_pow_dyn: float = Field(default=16.13, description="NoC intra-node dynamic power")
-    noc_intra_pow_leak: float = Field(default=0.41, description="NoC intra-node leakage power")
-    noc_intra_area: float = Field(default=0.047, description="NoC intra-node area")
 
     # Hypertransport network defaults
     noc_ht_lat: float = Field(default=5, description="Hypertransport latency")
@@ -171,12 +153,6 @@ class IMAConfig(BaseModel):
     ima_alu_pow_dyn: float = Field(default=2.4 * 32 / 45, description="ALU dynamic power")
     ima_alu_pow_leak: float = Field(default=0.27 * 32 / 45, description="ALU leakage power")
     ima_alu_area: float = Field(default=0.00567 * 32 / 45, description="ALU area")
-
-    # Memory parameters - these will be overridden based on dataMem_size
-    ima_dataMem_lat: int = Field(default=1, description="Data memory latency")
-    ima_dataMem_pow_dyn: float = Field(default=0.33, description="Data memory dynamic power")
-    ima_dataMem_pow_leak: float = Field(default=0.147, description="Data memory leakage power")
-    ima_dataMem_area: float = Field(default=0.00192, description="Data memory area")
 
     def __init__(self, **data):
         super().__init__(**data)
