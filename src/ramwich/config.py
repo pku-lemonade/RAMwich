@@ -1,28 +1,43 @@
 from typing import ClassVar, Dict
+from enum import Enum
+import math
 
 from pydantic import BaseModel, ConfigDict, Field
 
+class BitConfig(str, Enum):
+    SLC = '1'
+    MLC = '2'
+    TLC = '3'
+    QLC = '4'
+    SRAM = 's'
 
-class ADCConfig(BaseModel):
-    """Analog-to-Digital Converter configuration"""
-
-    # Class constants for lookup tables - using integers as keys instead of strings
-    LAT_DICT: ClassVar[Dict[int, int]] = {1: 1, 2: 1, 4: 1, 8: 1, 16: 1}
-    POW_DYN_DICT: ClassVar[Dict[int, float]] = {1: 1.8, 2: 1.8, 4: 1.8, 8: 1.8, 16: 1.8}
-    POW_LEAK_DICT: ClassVar[Dict[int, float]] = {1: 0.2, 2: 0.2, 4: 0.2, 8: 0.2, 16: 0.2}
-    AREA_DICT: ClassVar[Dict[int, float]] = {1: 0.0012, 2: 0.0012, 4: 0.0012, 8: 0.0012, 16: 0.0012}
-
-    resolution: int = Field(default=8, description="ADC resolution")
+class DataConfig(BaseModel):
+    """Data type configuration"""
+    storage_config: list[BitConfig] = Field(default=[BitConfig.MLC, BitConfig.MLC, BitConfig.MLC, BitConfig.MLC], description="Storage configuration")
+    int_bits: int = Field(default=0, description="Integer bits")
+    frac_bits: int = Field(default=0, description="Fractional bits")
 
     def __init__(self, **data):
         super().__init__(**data)
-        # Update derived values based on resolution if it's different from default
-        if self.resolution in self.LAT_DICT:
-            self.adc_lat = self.LAT_DICT[self.resolution]
-            self.adc_pow_dyn = self.POW_DYN_DICT[self.resolution]
-            self.adc_pow_leak = self.POW_LEAK_DICT[self.resolution]
-            self.adc_area = self.AREA_DICT[self.resolution]
 
+        self.stored_bit = []
+        self.bits_per_cell = []
+    
+        self.num_bits = 0 # total bits number in the operand
+        self.reram_xbar_num_per_matrix = 0 # number of ReRAM xbars
+        self.sram_xbar_num_per_matrix = 0 # number of SRAM xbars
+        for i in self.storage_config:
+            self.stored_bit.append(self.num_bits)
+            if i == BitConfig.SRAM:
+                self.num_bits += 1
+                self.SRAM_xbar_num += 1
+                self.bits_per_cell.append(1)
+            else:
+                self.num_bits += int(i)
+                self.ReRAM_xbar_num += 1
+                self.bits_per_cell.append(int(i))
+
+        assert self.int_bits + self.frac_bits == self.num_bits, 'storage config invalid: check if total bits in storage config = int_bits + frac_bits'
 
 class DACConfig(BaseModel):
     """Digital-to-Analog Converter configuration"""
@@ -55,6 +70,99 @@ class DACConfig(BaseModel):
             self.dac_pow_dyn = self.POW_DYN_DICT[self.resolution]
             self.dac_pow_leak = self.POW_LEAK_DICT[self.resolution]
             self.dac_area = self.AREA_DICT[self.resolution]
+
+class XBARConfig(BaseModel):
+    """Crossbar and its IO register configuration"""
+    # XBAR in memory lookup tables
+    INMEM_LAT_DICT: ClassVar[Dict[int, int]] = {32: 1, 64: 1, 128: 1, 256: 1}
+    INMEM_POW_DYN_READ_DICT: ClassVar[Dict[int, int]] = {32: 0.3, 64: 0.7, 128: 1.7, 256: 4.7}
+    INMEM_POW_DYN_WRITE_DICT: ClassVar[Dict[int, int]] = {32: 0.1, 64: 0.1, 128: 0.16, 256: 0.2}
+    INMEM_POW_LEAK_DICT: ClassVar[Dict[int, int]] = {32: 0.009, 64: 0.02, 128: 0.04, 256: 0.075}
+    INMEM_AREA_DICT: ClassVar[Dict[int, int]] = {32: 0.00015, 64: 0.00033, 128: 0.00078, 256: 0.0019}
+
+    # XBAR lookup tables
+    XBAR_LAT_DICT: ClassVar[Dict[int, int]] = Field(default={
+        32: 32, 64: 64, 128: 128, 256: 256},
+        description="Crossbar latency lookup table"
+    )
+
+    XBAR_POW_DICT: ClassVar[Dict[int, int]] = Field(default={
+        32: 0.01875, 64: 0.075, 128: 0.3, 256: 1.2},
+        description="Crossbar power lookup table"
+    )
+
+    XBAR_AREA_DICT: ClassVar[Dict[int, int]] = Field(default={
+        32: 1.5625e-6, 64: 6.25e-6, 128: 2.5e-5, 256: 1.0e-4},
+        description="Crossbar area lookup table"
+    )
+
+    # XBAR out memory lookup tables
+    OUTMEM_LAT_DICT: ClassVar[Dict[int, int]] = {32: 1, 64: 1, 128: 1, 256: 1}
+    OUTMEM_POW_DYN_READ_DICT: ClassVar[Dict[int, int]] = {32: 0.3, 64: 0.7, 128: 1.7, 256: 4.7}
+    OUTMEM_POW_DYN_WRITE_DICT: ClassVar[Dict[int, int]] = {32: 0.1, 64: 0.1, 128: 0.16, 256: 0.2}
+    OUTMEM_POW_LEAK_DICT: ClassVar[Dict[int, int]] = {32: 0.009, 64: 0.02, 128: 0.04, 256: 0.075}
+    OUTMEM_AREA_DICT: ClassVar[Dict[int, int]] = {32: 0.00015, 64: 0.00033, 128: 0.00078, 256: 0.0019}
+
+    # Set default values for derived fields instead of None
+    xbar_ip_lat: float = Field(default=100.0, description="XBAR input processing latency")
+    xbar_ip_pow: float = Field(default=1.37 * 2.0, description="XBAR input processing power")
+    xbar_op_lat: float = Field(default=20.0 * 12.8, description="XBAR output processing latency")
+    xbar_op_pow: float = Field(default=4.44 * 3.27 / 12.8, description="XBAR output processing power")
+    xbar_rd_lat: float = Field(default=328.0 * 1000 * (1 / 32.0), description="XBAR read latency")
+    xbar_wr_lat: float = Field(default=351.0 * 1000 * (1 / 32.0), description="XBAR write latency")
+    xbar_rd_pow: float = Field(default=208.0 * 1000 * (1 / 32.0) / (328.0 * 1000 * (1 / 32.0)), description="XBAR read power")
+    xbar_wr_pow: float = Field(default=676.0 * 1000 * (1 / 32.0) / (328.0 * 1000 * (1 / 32.0)), description="XBAR write power")
+
+    ReRAM_conductance_min: float = Field(default=0, description="Min value of ReRAM conductance")
+    ReRAM_conductance_max: float = Field(default=1, description="Max value of ReRAM conductance")
+
+    xbar_size: int = Field(default=128, description="Crossbar size")
+    reram_read_sigma: float = Field(default=0, description="ReRAM read sigma")
+
+    def __init__(self, **data):
+        super().__init__(**data)
+
+        # Override xbar parameters based on xbar_size if it differs from default
+        if self.xbar_size in self.XBAR_LAT_DICT:
+            self.xbar_lat = self.XBAR_LAT_DICT[self.xbar_size]
+            self.xbar_pow = self.XBAR_POW_DICT[self.xbar_size]
+            self.xbar_area = self.XBAR_AREA_DICT[self.xbar_size]
+            self.inMem_lat = self.INMEM_LAT_DICT[self.xbar_size]
+            self.inMem_pow_dyn_read = self.INMEM_POW_DYN_READ_DICT[self.xbar_size]
+            self.inMem_pow_dyn_write = self.INMEM_POW_DYN_WRITE_DICT[self.xbar_size]
+            self.inMem_pow_leak = self.INMEM_POW_LEAK_DICT[self.xbar_size]
+            self.inMem_area = self.INMEM_AREA_DICT[self.xbar_size]
+            self.outMem_lat = self.OUTMEM_LAT_DICT[self.xbar_size]
+            self.outMem_pow_dyn_read = self.OUTMEM_POW_DYN_READ_DICT[self.xbar_size]
+            self.outMem_pow_dyn_write = self.OUTMEM_POW_DYN_WRITE_DICT[self.xbar_size]
+            self.outMem_pow_leak = self.OUTMEM_POW_LEAK_DICT[self.xbar_size]
+            self.outMem_area = self.OUTMEM_AREA_DICT[self.xbar_size]
+
+class ADCType(str, Enum):
+    NORMAL = "normal"
+    DIFFERENTIAL = "differential"
+
+class ADCConfig(BaseModel):
+    """Analog-to-Digital Converter configuration"""
+
+    ADC_TYPE: ADCType = Field(default=ADCType.NORMAL, description="ADC type")
+
+    # Class constants for lookup tables - using integers as keys instead of strings
+    LAT_DICT: ClassVar[Dict[int, int]] = {1: 1, 2: 1, 4: 1, 8: 1, 16: 1}
+    POW_DYN_DICT: ClassVar[Dict[int, float]] = {1: 1.8, 2: 1.8, 4: 1.8, 8: 1.8, 16: 1.8}
+    POW_LEAK_DICT: ClassVar[Dict[int, float]] = {1: 0.2, 2: 0.2, 4: 0.2, 8: 0.2, 16: 0.2}
+    AREA_DICT: ClassVar[Dict[int, float]] = {1: 0.0012, 2: 0.0012, 4: 0.0012, 8: 0.0012, 16: 0.0012}
+
+    resolution: int = Field(default=8, description="ADC resolution")
+
+    def __init__(self, **data):
+        super().__init__(**data)
+        # Update derived values based on resolution if it's different from default
+        if self.resolution in self.LAT_DICT:
+            self.adc_lat = self.LAT_DICT[self.resolution]
+            self.adc_pow_dyn = self.POW_DYN_DICT[self.resolution]
+            self.adc_pow_leak = self.POW_LEAK_DICT[self.resolution]
+            self.adc_area = self.AREA_DICT[self.resolution]
 
 
 class NOCConfig(BaseModel):
@@ -100,53 +208,85 @@ class NOCConfig(BaseModel):
         # Update inter-node latency based on intra-node latency
         self.noc_inter_lat = self.noc_ht_lat + self.noc_intra_lat
 
+class TileConfig(BaseModel):
+    """Tile configuration"""
 
-class IMAConfig(BaseModel):
-    """In-Memory Accelerator configuration"""
+    # Tile Control unit
+    tcu_pow: float = Field(default=0.25*0.2, description="Tile control unit power")
+    tcu_area: float = Field(default=0.00145, description="Tile control unit area")
 
-    # XBAR lookup tables with numeric keys instead of strings
-    XBAR_LAT_DICT: ClassVar[Dict[int, int]] = {
-        2: {32: 32, 64: 64, 128: 128, 256: 256},
-        4: {32: 32, 64: 64, 128: 128, 256: 256},
-        6: {32: 32, 64: 64, 128: 128, 256: 256},
-    }
+    # EDRAM lookup tables
+    EDRAM_LAT_DICT: ClassVar[Dict[int, int]] = {8: 2, 64: 2, 128: 2, 2048: 2, 8192: 2, 16384: 2}
+    EDRAM_POW_DYN_DICT: ClassVar[Dict[int, float]] = {8: 17.2 / 2, 64: 17.2 / 2, 128: 25.35 / 2, 2048: 25.35 / 2, 8192: 25.35 / 2, 16384: 25.35 / 2}
+    EDRAM_POW_LEAK_DICT: ClassVar[Dict[int, float]] = {8: 0.46, 64: 0.46, 128: 0.77, 2048: 0.77, 8192: 0.77, 16384: 0.77}
+    EDRAM_AREA_DICT: ClassVar[Dict[int, float]] = {8: 0.086, 64: 0.086, 128: 0.121, 2048: 0.121, 8192: 0.121, 16384: 0.121}
 
-    XBAR_POW_DICT: ClassVar[Dict[int, float]] = {
-        2: {32: 0.01875, 64: 0.075, 128: 0.3, 256: 1.2},
-        4: {32: 0.01875, 64: 0.075, 128: 0.3, 256: 1.2},
-        6: {32: 0.01875, 64: 0.075, 128: 0.3, 256: 1.2},
-    }
+    # Tile instruction memory lookup tables
+    INSTRN_MEM_LAT_DICT: ClassVar[Dict[int, int]] = {256: 1, 512: 1, 1024: 1, 2048: 1, 4096: 1, 8192: 1, 16384: 1, 32768: 1, 65536: 1, 131072: 1}
+    INSTRN_MEM_POW_DYN_DICT: ClassVar[Dict[int, float]] = {256: 0.16, 512: 0.24, 1024: 0.33, 2048: 0.57, 4096: 1, 8192: 1, 16384: 1, 32768: 1, 65536: 1, 131072: 1}
+    INSTRN_MEM_POW_LEAK_DICT: ClassVar[Dict[int, float]] = {256: 0.044, 512: 0.078, 1024: 0.147, 2048: 0.33, 4096: 1, 8192: 1, 16384: 1, 32768: 1, 65536: 1, 131072: 1}
+    INSTRN_MEM_AREA_DICT: ClassVar[Dict[int, float]] = {256: 0.00056, 512: 0.00108, 1024: 0.00192, 2048: 0.00392, 4096: 1, 8192: 1, 16384: 1, 32768: 1, 65536: 1, 131072: 1}
 
-    XBAR_AREA_DICT: ClassVar[Dict[int, float]] = {
-        2: {32: 1.5625e-6, 64: 6.25e-6, 128: 2.5e-5, 256: 1.0e-4},
-        4: {32: 1.5625e-6, 64: 6.25e-6, 128: 2.5e-5, 256: 1.0e-4},
-        6: {32: 1.5625e-6, 64: 6.25e-6, 128: 2.5e-5, 256: 1.0e-4},
-    }
+    # EDRAM counter buffer values
+    counter_buff_lat: float = Field(default=1 * math.sqrt(8), description="Counter buffer latency")
+    counter_buff_pow_dyn: float = Field(default=0.65 / 2 * math.sqrt(8), description="Counter buffer dynamic power")
+    counter_buff_pow_leak: float = Field(default=0.33 / 2 * math.sqrt(8), description="Counter buffer leakage power")
+    counter_buff_area: float = Field(default=0.0041 * math.sqrt(8), description="Counter buffer area")
+
+    # EDRAM to IMA bus values
+    edram_bus_lat: float = Field(default=1, description="EDRAM bus latency")
+    edram_bus_pow_dyn: float = Field(default=6 / 2, description="EDRAM bus dynamic power")  # bus width = 384, same as issac (over two cycles)
+    edram_bus_pow_leak: float = Field(default=1 / 2, description="EDRAM bus leakage power")  # bus width = 384, same as issac
+    edram_bus_area: float = Field(default=0.090, description="EDRAM bus area")
+
+    # EDRAM controller values
+    edram_ctrl_lat: float = Field(default=1, description="EDRAM controller latency")
+    edram_ctrl_pow_dyn: float = Field(default=0.475, description="EDRAM controller dynamic power")
+    edram_ctrl_pow_leak: float = Field(default=0.05, description="EDRAM controller leakage power")
+    edram_ctrl_area: float = Field(default=0.00145, description="EDRAM controller area")
+
+    # Receive buffer value dictionary
+    receive_buffer_lat: float = Field(default=1 * math.sqrt(4), description="Receive buffer latency")
+    receive_buffer_pow_dyn: float = Field(default=4.48 * math.sqrt(4), description="Receive buffer dynamic power")
+    receive_buffer_pow_leak: float = Field(default=0.09 * math.sqrt(4), description="Receive buffer leakage power")
+    receive_buffer_area: float = Field(default=0.0022 * math.sqrt(4), description="Receive buffer area")
+
+    edram_size: int = Field(default=8192, description="EDRAM size")
+    instrnMem_size: int = Field(default=131072, description="Tile instruction memory size")
+
+    def __init__(self, **data):
+        super().__init__(**data)
+
+        if self.edram_size in self.EDRAM_LAT_DICT:
+            self.edram_lat = self.EDRAM_LAT_DICT[self.edram_size]
+            self.edram_pow_dyn = self.EDRAM_POW_DYN_DICT[self.edram_size]
+            self.edram_pow_leak = self.EDRAM_POW_LEAK_DICT[self.edram_size]
+            self.edram_area = self.EDRAM_AREA_DICT[self.edram_size]
+
+        if self.instrnMem_size in self.INSTRN_MEM_LAT_DICT:
+            self.instrnMem_lat = self.INSTRN_MEM_LAT_DICT[self.instrnMem_size]
+            self.instrnMem_pow_dyn = self.INSTRN_MEM_POW_DYN_DICT[self.instrnMem_size]
+            self.instrnMem_pow_leak = self.INSTRN_MEM_POW_LEAK_DICT[self.instrnMem_size]
+            self.instrnMem_area = self.INSTRN_MEM_AREA_DICT[self.instrnMem_size]
+
+
+class CoreConfig(BaseModel):
+    """Core configuration"""
+
+    # Core Control unit (control unit and pipeline registers)
+    ccu_pow: float = Field(default=1.25*0.2, description="Core control unit power")
+    ccu_area: float = Field(default=0.00145*2.25, description="Core control unit area")
 
     # Memory lookup tables with numeric keys
-    DATA_MEM_LAT_DICT: ClassVar[Dict[int, int]] = {256: 1, 512: 1, 1024: 1, 2048: 1}
-    DATA_MEM_POW_DYN_DICT: ClassVar[Dict[int, float]] = {256: 0.16, 512: 0.24, 1024: 0.33, 2048: 0.57}
-    DATA_MEM_POW_LEAK_DICT: ClassVar[Dict[int, float]] = {256: 0.044, 512: 0.078, 1024: 0.147, 2048: 0.33}
-    DATA_MEM_AREA_DICT: ClassVar[Dict[int, float]] = {256: 0.00056, 512: 0.00108, 1024: 0.00192, 2048: 0.00392}
+    DATA_MEM_LAT_DICT: ClassVar[Dict[int, int]] = {256: 1, 512: 1, 1024: 1, 2048: 1, 4096: 1}
+    DATA_MEM_POW_DYN_DICT: ClassVar[Dict[int, float]] = {256: 0.16, 512: 0.24, 1024: 0.33, 2048: 0.57, 4096: 1}
+    DATA_MEM_POW_LEAK_DICT: ClassVar[Dict[int, float]] = {256: 0.044, 512: 0.078, 1024: 0.147, 2048: 0.33, 4096: 1}
+    DATA_MEM_AREA_DICT: ClassVar[Dict[int, float]] = {256: 0.00056, 512: 0.00108, 1024: 0.00192, 2048: 0.00392, 4096: 0.008}
 
-    xbar_size: int = Field(default=128, description="Crossbar size")
-    dataMem_size: int = Field(default=4096, description="Data memory size")
-    instrnMem_size: int = Field(default=131072, description="Instruction memory size")
-    xbar_bits: int = Field(default=4, description="Crossbar bits")
-
-    # Set default values for derived fields instead of None
-    ima_xbar_ip_lat: float = Field(default=100.0, description="XBAR input processing latency")
-    ima_xbar_ip_pow: float = Field(default=1.37 * 2.0, description="XBAR input processing power")
-    ima_xbar_op_lat: float = Field(default=20.0 * 12.8, description="XBAR output processing latency")
-    ima_xbar_op_pow: float = Field(default=4.44 * 3.27 / 12.8, description="XBAR output processing power")
-    ima_xbar_rd_lat: float = Field(default=328.0 * 1000 * (1 / 32.0), description="XBAR read latency")
-    ima_xbar_wr_lat: float = Field(default=351.0 * 1000 * (1 / 32.0), description="XBAR write latency")
-    ima_xbar_rd_pow: float = Field(
-        default=208.0 * 1000 * (1 / 32.0) / (328.0 * 1000 * (1 / 32.0)), description="XBAR read power"
-    )
-    ima_xbar_wr_pow: float = Field(
-        default=676.0 * 1000 * (1 / 32.0) / (328.0 * 1000 * (1 / 32.0)), description="XBAR write power"
-    )
+    INSTRN_MEM_LAT_DICT: ClassVar[Dict[int, int]] = {256: 1, 512: 1, 1024: 1, 2048: 1, 4096: 1, 8192: 1, 16384: 1, 32768: 1, 65536: 1, 131072: 1}
+    INSTRN_MEM_POW_DYN_DICT: ClassVar[Dict[int, float]] = {256: 0.16, 512: 0.24, 1024: 0.33, 2048: 0.57, 4096: 1, 8192: 1, 16384: 1, 32768: 1, 65536: 1, 131072: 1}
+    INSTRN_MEM_POW_LEAK_DICT: ClassVar[Dict[int, float]] = {256: 0.044, 512: 0.078, 1024: 0.147, 2048: 0.33, 4096: 1, 8192: 1, 16384: 1, 32768: 1, 65536: 1, 131072: 1}
+    INSTRN_MEM_AREA_DICT: ClassVar[Dict[int, float]] = {256: 0.00056, 512: 0.00108, 1024: 0.00192, 2048: 0.00392, 4096: 1, 8192: 1, 16384: 1, 32768: 1, 65536: 1, 131072: 1}
 
     # ALU parameters with default fields
     ima_alu_lat: int = Field(default=1, description="ALU latency")
@@ -154,33 +294,61 @@ class IMAConfig(BaseModel):
     ima_alu_pow_leak: float = Field(default=0.27 * 32 / 45, description="ALU leakage power")
     ima_alu_area: float = Field(default=0.00567 * 32 / 45, description="ALU area")
 
+    dataMem_size: int = Field(default=4096, description="Data memory size")
+    instrnMem_size: int = Field(default=131072, description="Core instruction memory size")
+
     def __init__(self, **data):
         super().__init__(**data)
 
         # Override dataMem parameters based on dataMem_size if it differs from default
         if self.dataMem_size in self.DATA_MEM_LAT_DICT:
-            self.ima_dataMem_lat = self.DATA_MEM_LAT_DICT[self.dataMem_size]
-            self.ima_dataMem_pow_dyn = self.DATA_MEM_POW_DYN_DICT[self.dataMem_size]
-            self.ima_dataMem_pow_leak = self.DATA_MEM_POW_LEAK_DICT[self.dataMem_size]
-            self.ima_dataMem_area = self.DATA_MEM_AREA_DICT[self.dataMem_size]
+            self.dataMem_lat = self.DATA_MEM_LAT_DICT[self.dataMem_size]
+            self.dataMem_pow_dyn = self.DATA_MEM_POW_DYN_DICT[self.dataMem_size]
+            self.dataMem_pow_leak = self.DATA_MEM_POW_LEAK_DICT[self.dataMem_size]
+            self.dataMem_area = self.DATA_MEM_AREA_DICT[self.dataMem_size]
+        
+        if self.instrnMem_size in self.INSTRN_MEM_LAT_DICT:
+            self.instrnMem_lat = self.INSTRN_MEM_LAT_DICT[self.instrnMem_size]
+            self.instrnMem_pow_dyn = self.INSTRN_MEM_POW_DYN_DICT[self.instrnMem_size]
+            self.instrnMem_pow_leak = self.INSTRN_MEM_POW_LEAK_DICT[self.instrnMem_size]
+            self.instrnMem_area = self.INSTRN_MEM_AREA_DICT[self.instrnMem_size]
+
+
+class MVMUConfig(BaseModel):
+    """Matrix-Vector Multiply Unit configuration"""
+
+    snh_lat: float = Field(default=1, description="Single sample and holder processing latency")
+    snh_pow_leak: float = Field(default=9.7 * 10**(-7), description="Single sample and holder leakage power")
+    snh_pow_dyn: float = Field(default=9.7 * 10**(-6) - snh_pow_leak, description="Single sample and holder dynamic power")
+    snh_area: float = Field(defaul=0.00004 / 8 / 128, description="Single sample and holder area")
+
+    mux_lat: float = Field(default=0, description="Single MUX processing latency")
+    mux_pow_leak: float = Field(default=0, description="Single MUX leakage power")
+    mux_pow_dyn: float = Field(default=0, description="Single MUX dynamic power")
+    mux_area: float = Field(default=0, description="Single MUX area")
+
+    sna_lat: float = Field(default=1, description="Single shift and adder processing latency")
+    sna_pow_leak: float = Field(default=0.005, description="Single shift and adder leakage power")
+    sna_pow_dyn: float = Field(default=0.05 - sna_pow_leak, description="Single shift and adder dynamic power")
+    sna_area: float = Field(default=0.00006, description="Single shift and adder area")
+
+    num_column_per_adc: int = Field(default=16, description="Number of columns per ADC")
 
 
 class Config(BaseModel):
     model_config = ConfigDict(frozen=True)
     """Configuration for the RAMwich Simulator"""
     num_nodes: int = Field(default=1, description="Number of nodes in the system")
-    num_tiles_per_node: int = Field(default=4, description="Number of tiles per node")
-    num_cores_per_tile: int = Field(default=2, description="Number of cores per tile")
-    num_imas_per_core: int = Field(default=2, description="Number of IMAs per core")
-    num_xbars_per_ima: int = Field(default=4, description="Number of crossbars per IMA")
-    alu_execution_time: int = Field(default=2, description="Execution time for ALU operations")
-    load_execution_time: int = Field(default=5, description="Execution time for Load operations")
-    set_execution_time: int = Field(default=1, description="Execution time for Set operations")
-    mvm_execution_time: int = Field(default=10, description="Execution time for MVM operations")
-    simulation_time: int = Field(default=1000, description="Maximum simulation time")
+    num_tiles_per_node: int = Field(description="Number of tiles per node")
+    num_cores_per_tile: int = Field(default=8, description="Number of cores per tile")
+    num_mvmus_per_core: int = Field(default=6, description="Number of MVMUs per core")
 
     # Add configuration for components with default factories
-    adc_config: ADCConfig = Field(default_factory=ADCConfig)
+    data_config: DataConfig = Field(default_factory=DataConfig)
     dac_config: DACConfig = Field(default_factory=DACConfig)
+    xbar_config: XBARConfig = Field(default_factory=XBARConfig)
+    adc_config: ADCConfig = Field(default_factory=ADCConfig)
     noc_config: NOCConfig = Field(default_factory=NOCConfig)
-    ima_config: IMAConfig = Field(default_factory=IMAConfig)
+    tile_config: TileConfig = Field(default_factory=TileConfig)
+    core_config: CoreConfig = Field(default_factory=CoreConfig)
+    mvmu_config: MVMUConfig = Field(default_factory=MVMUConfig)
