@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import sys
 from typing import List
 
 import simpy
@@ -10,7 +11,7 @@ from .config import Config
 from .core import Core
 from .mvmu import MVMU
 from .node import Node
-from .ops import CoreOp, OpType, TileOp
+from .ops import CoreOp, OpType, TileOp, Operation
 from .stats import Stats
 from .tile import Tile
 from .utils.visualize import summarize_results
@@ -96,7 +97,8 @@ class RAMwich:
         for op_data in data:
             try:
                 # Parse the operation using Pydantic discriminated union
-                op = OpType.model_validate(op_data)
+                operation = Operation.model_validate({"op": op_data})
+                op = operation.op
 
                 # Access the node and tile
                 node = self.get_node(op.node)
@@ -113,7 +115,7 @@ class RAMwich:
 
             except ValueError as e:
                 logger.warning(str(e))
-
+                
     def run(self, ops_file: str):
         """Run the simulation with operations from the specified file"""
         # Load operations into node/tile/core hierarchy

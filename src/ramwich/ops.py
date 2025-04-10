@@ -7,7 +7,7 @@ from pydantic import BaseModel, ConfigDict
 class BaseOp(BaseModel, ABC):
     model_config = ConfigDict(frozen=True)
     type: str
-    node: int
+    node: int = 0
 
     @abstractmethod
     def accept(self, visitor):
@@ -116,7 +116,7 @@ class Recv(TileOp):
         return tile.execute_receive(self)
 
 
-class Halt():
+class Halt(TileOp):
     type: Literal["halt"] = "halt"
 
     def accept(self, tile):
@@ -129,3 +129,8 @@ class Halt():
 CoreOpType = Union[Load, Store, Set, Copy, MVM, ALU, Hlt]
 TileOpType = Union[Send, Recv, Halt]
 OpType = Union[CoreOpType, TileOpType]
+
+class Operation(BaseModel):
+    model_config = ConfigDict(frozen=True)
+    
+    op: Union[Load, Store, Set, Copy, MVM, ALU, Hlt, Send, Recv, Halt]
