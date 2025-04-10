@@ -68,7 +68,7 @@ class Copy(CoreOp):
 
 class MVM(CoreOp):
     type: Literal["mvm"] = "mvm"
-    xbar: List[Tuple[int, Literal['f', 'b', 'd']]]  # The MVMUs and its matrixs to be activated (e.g. [(0, 'f'), (1, 'b')])
+    xbar: List[int]  # The MVMUs to be activated
 
     def accept(self, visitor):
         return visitor.visit_mvm(self)
