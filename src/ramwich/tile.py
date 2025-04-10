@@ -25,7 +25,7 @@ class Tile:
 
     def get_core(self, core_id):
         """Get a specific core by ID"""
-        raise self.cores[core_id]
+        return self.cores[core_id]
 
     def get_stats(self) -> Stats:
         """Get statistics for this Tile and optionally its components"""
