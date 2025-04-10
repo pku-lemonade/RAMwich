@@ -44,16 +44,8 @@ class ADCStats(BaseModel):
 class ADC:
     """Hardware implementation of the ADC component"""
 
-    def __init__(self, adc_config=None, adc_id=0):
+    def __init__(self, adc_config=None):
         self.adc_config = adc_config if adc_config else ADCConfig()
-        self.adc_id = adc_id
-
-        # Check if this ADC has a specific resolution setting
-        matrix_key = f"matrix_adc_{adc_id}"
-        if matrix_key in self.adc_config.res_new:
-            self.resolution = self.adc_config.res_new[matrix_key]
-        else:
-            self.resolution = self.adc_config.resolution
 
         # Initialize stats
         self.stats = ADCStats()
