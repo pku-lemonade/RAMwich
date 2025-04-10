@@ -233,7 +233,7 @@ class TileConfig(BaseModel):
     counter_buff_pow_leak: float = Field(default=0.33 / 2 * math.sqrt(8), description="Counter buffer leakage power")
     counter_buff_area: float = Field(default=0.0041 * math.sqrt(8), description="Counter buffer area")
 
-    # EDRAM to IMA bus values
+    # EDRAM to MVMU bus values
     edram_bus_lat: float = Field(default=1, description="EDRAM bus latency")
     edram_bus_pow_dyn: float = Field(default=6 / 2, description="EDRAM bus dynamic power")  # bus width = 384, same as issac (over two cycles)
     edram_bus_pow_leak: float = Field(default=1 / 2, description="EDRAM bus leakage power")  # bus width = 384, same as issac
@@ -252,6 +252,7 @@ class TileConfig(BaseModel):
     receive_buffer_area: float = Field(default=0.0022 * math.sqrt(4), description="Receive buffer area")
 
     edram_size: int = Field(default=8192, description="EDRAM size")
+    edram_bus_size: int = Field(default=256, description="EDRAM bus size")
     instrnMem_size: int = Field(default=131072, description="Tile instruction memory size")
 
     def __init__(self, **data):
@@ -289,10 +290,10 @@ class CoreConfig(BaseModel):
     INSTRN_MEM_AREA_DICT: ClassVar[Dict[int, float]] = {256: 0.00056, 512: 0.00108, 1024: 0.00192, 2048: 0.00392, 4096: 1, 8192: 1, 16384: 1, 32768: 1, 65536: 1, 131072: 1}
 
     # ALU parameters with default fields
-    ima_alu_lat: int = Field(default=1, description="ALU latency")
-    ima_alu_pow_dyn: float = Field(default=2.4 * 32 / 45, description="ALU dynamic power")
-    ima_alu_pow_leak: float = Field(default=0.27 * 32 / 45, description="ALU leakage power")
-    ima_alu_area: float = Field(default=0.00567 * 32 / 45, description="ALU area")
+    alu_lat: int = Field(default=1, description="ALU latency")
+    alu_pow_dyn: float = Field(default=2.4 * 32 / 45, description="ALU dynamic power")
+    alu_pow_leak: float = Field(default=0.27 * 32 / 45, description="ALU leakage power")
+    alu_area: float = Field(default=0.00567 * 32 / 45, description="ALU area")
 
     dataMem_size: int = Field(default=4096, description="Data memory size")
     instrnMem_size: int = Field(default=131072, description="Core instruction memory size")
@@ -319,7 +320,7 @@ class MVMUConfig(BaseModel):
 
     snh_lat: float = Field(default=1, description="Single sample and holder processing latency")
     snh_pow_leak: float = Field(default=9.7 * 10**(-7), description="Single sample and holder leakage power")
-    snh_pow_dyn: float = Field(default=9.7 * 10**(-6) - snh_pow_leak, description="Single sample and holder dynamic power")
+    snh_pow_dyn: float = Field(default=9.7 * 10**(-6) - 9.7 * 10**(-7), description="Single sample and holder dynamic power")
     snh_area: float = Field(defaul=0.00004 / 8 / 128, description="Single sample and holder area")
 
     mux_lat: float = Field(default=0, description="Single MUX processing latency")
@@ -329,10 +330,10 @@ class MVMUConfig(BaseModel):
 
     sna_lat: float = Field(default=1, description="Single shift and adder processing latency")
     sna_pow_leak: float = Field(default=0.005, description="Single shift and adder leakage power")
-    sna_pow_dyn: float = Field(default=0.05 - sna_pow_leak, description="Single shift and adder dynamic power")
+    sna_pow_dyn: float = Field(default=0.05 - 0.005, description="Single shift and adder dynamic power")
     sna_area: float = Field(default=0.00006, description="Single shift and adder area")
 
-    num_column_per_adc: int = Field(default=16, description="Number of columns per ADC")
+    num_columns_per_adc: int = Field(default=16, description="Number of columns per ADC")
 
 
 class Config(BaseModel):
@@ -343,6 +344,10 @@ class Config(BaseModel):
     num_cores_per_tile: int = Field(default=8, description="Number of cores per tile")
     num_mvmus_per_core: int = Field(default=6, description="Number of MVMUs per core")
 
+    addr_width: int = Field(default=32, description="Address width")
+    data_width: int = Field(description="Address width")
+    instrn_width: int = Field(default=48, description="Instruction width")
+
     # Add configuration for components with default factories
     data_config: DataConfig = Field(default_factory=DataConfig)
     dac_config: DACConfig = Field(default_factory=DACConfig)
@@ -352,3 +357,8 @@ class Config(BaseModel):
     tile_config: TileConfig = Field(default_factory=TileConfig)
     core_config: CoreConfig = Field(default_factory=CoreConfig)
     mvmu_config: MVMUConfig = Field(default_factory=MVMUConfig)
+
+    def __init__(self, **data):
+        super().__init__(**data)
+
+        assert(self.data_width == self.data_config.num_bits), 'data width and data config mismatch'
