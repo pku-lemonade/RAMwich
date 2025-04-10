@@ -21,9 +21,6 @@ logger = logging.getLogger(__name__)
 
 class RAMwich:
     def __init__(self, config_file: str):
-        # Default configuration
-        self.config: Config = Config()
-
         # Load configuration from file
         if not os.path.exists(config_file):
             raise FileNotFoundError(f"Configuration file {config_file} not found")
@@ -55,7 +52,14 @@ class RAMwich:
 
                     for mvmu_id in range(self.config.num_mvmus_per_core):
                         # Create MVMU with its xbars
-                        mvmu = MVMU(id=mvmu_id)
+                        mvmu = MVMU(
+                            id=mvmu_id,
+                            data_config=self.config.data_config,
+                            dac_config=self.config.dac_config,
+                            xbar_config=self.config.xbar_config,
+                            adc_config=self.config.adc_config,
+                            mvmu_config=self.config.mvmu_config
+                        )
                         mvmus.append(mvmu)
 
                     # Create Core with its MVMUs and config
