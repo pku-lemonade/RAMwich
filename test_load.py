@@ -1,12 +1,10 @@
 import argparse
 import logging
 
-import sys
-import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
-
 from ramwich import RAMwich
 from ramwich.utils.visualize import summarize_results
+
+from ramwich.ops import Send
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
@@ -21,6 +19,16 @@ def main():
 
     simulator = RAMwich(config_file=args.config)
     simulator.load_operations(file_path=args.ops)
+    validate_op = Send(
+        type="send",
+        node=0,
+        tile=0,
+        mem_addr=768,
+        target_tile=3,
+        width=16,
+        vec=1
+    )
+    assert (simulator.get_node(0).get_tile(0).operations[0] == validate_op), "Operation not loaded correctly"
 
 
 if __name__ == "__main__":

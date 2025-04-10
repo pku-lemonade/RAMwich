@@ -133,4 +133,4 @@ OpType = Union[CoreOpType, TileOpType]
 class Operation(BaseModel):
     model_config = ConfigDict(frozen=True)
     
-    op: Union[Load, Store, Set, Copy, MVM, ALU, Hlt, Send, Recv, Halt]
+    op: OpType
