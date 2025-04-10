@@ -1,0 +1,6036 @@
+[
+    {
+        "mem_addr": 768,
+        "target_tile": 3,
+        "tile": 0,
+        "type": "send",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "mem_addr": 640,
+        "target_tile": 3,
+        "tile": 0,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 512,
+        "target_tile": 3,
+        "tile": 0,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 384,
+        "target_tile": 3,
+        "tile": 0,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 256,
+        "target_tile": 3,
+        "tile": 0,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 128,
+        "target_tile": 3,
+        "tile": 0,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 0,
+        "target_tile": 3,
+        "tile": 0,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "tile": 0,
+        "type": "halt"
+    },
+    {
+        "core": 0,
+        "tile": 0,
+        "type": "hlt"
+    },
+    {
+        "core": 1,
+        "tile": 0,
+        "type": "hlt"
+    },
+    {
+        "core": 2,
+        "tile": 0,
+        "type": "hlt"
+    },
+    {
+        "core": 3,
+        "tile": 0,
+        "type": "hlt"
+    },
+    {
+        "core": 4,
+        "tile": 0,
+        "type": "hlt"
+    },
+    {
+        "core": 5,
+        "tile": 0,
+        "type": "hlt"
+    },
+    {
+        "core": 6,
+        "tile": 0,
+        "type": "hlt"
+    },
+    {
+        "core": 7,
+        "tile": 0,
+        "type": "hlt"
+    },
+    {
+        "mem_addr": 0,
+        "source_tile": 4,
+        "tile": 1,
+        "type": "receive",
+        "vec": 1,
+        "width": 10
+    },
+    {
+        "tile": 1,
+        "type": "halt"
+    },
+    {
+        "core": 0,
+        "tile": 1,
+        "type": "hlt"
+    },
+    {
+        "core": 1,
+        "tile": 1,
+        "type": "hlt"
+    },
+    {
+        "core": 2,
+        "tile": 1,
+        "type": "hlt"
+    },
+    {
+        "core": 3,
+        "tile": 1,
+        "type": "hlt"
+    },
+    {
+        "core": 4,
+        "tile": 1,
+        "type": "hlt"
+    },
+    {
+        "core": 5,
+        "tile": 1,
+        "type": "hlt"
+    },
+    {
+        "core": 6,
+        "tile": 1,
+        "type": "hlt"
+    },
+    {
+        "core": 7,
+        "tile": 1,
+        "type": "hlt"
+    },
+    {
+        "mem_addr": 2304,
+        "source_tile": 3,
+        "tile": 2,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 2176,
+        "source_tile": 3,
+        "tile": 2,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 2048,
+        "source_tile": 3,
+        "tile": 2,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 1920,
+        "source_tile": 3,
+        "tile": 2,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 1792,
+        "source_tile": 3,
+        "tile": 2,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 1664,
+        "source_tile": 3,
+        "tile": 2,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 768,
+        "target_tile": 3,
+        "tile": 2,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 2432,
+        "source_tile": 3,
+        "tile": 2,
+        "type": "receive",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "mem_addr": 1536,
+        "target_tile": 3,
+        "tile": 2,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 1408,
+        "target_tile": 3,
+        "tile": 2,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 1280,
+        "target_tile": 3,
+        "tile": 2,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 1152,
+        "target_tile": 3,
+        "tile": 2,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 1024,
+        "target_tile": 3,
+        "tile": 2,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 896,
+        "target_tile": 3,
+        "tile": 2,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "tile": 2,
+        "type": "halt"
+    },
+    {
+        "dest": 1537,
+        "imm": 2304,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 640,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                5,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1408,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 2176,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 512,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                4,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 1280,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 2048,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 384,
+        "read": 1793,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                3,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1793,
+        "read": 1152,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1921,
+        "imm": 1920,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1921,
+        "read": 1921,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 256,
+        "read": 1921,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                2,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1921,
+        "read": 1024,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2049,
+        "imm": 1792,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 2049,
+        "read": 2049,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 128,
+        "read": 2049,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                1,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 2049,
+        "read": 896,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2177,
+        "imm": 1664,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 2177,
+        "read": 2177,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 0,
+        "read": 2177,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                0,
+                "f"
+            ]
+        ]
+    },
+    {
+        "core": 0,
+        "dest": 2049,
+        "opcode": "add",
+        "read_1": 2049,
+        "read_2": 768,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1921,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 2049,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1793,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1921,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 0,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 2,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 0,
+        "tile": 2,
+        "type": "hlt"
+    },
+    {
+        "dest": 1537,
+        "imm": 2176,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 640,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                5,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1408,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 2048,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 512,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                4,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 1280,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 1920,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 384,
+        "read": 1793,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                3,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1793,
+        "read": 1152,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1921,
+        "imm": 1792,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1921,
+        "read": 1921,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 256,
+        "read": 1921,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                2,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1921,
+        "read": 1024,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2049,
+        "imm": 1664,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 2049,
+        "read": 2049,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 128,
+        "read": 2049,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                1,
+                "f"
+            ]
+        ]
+    },
+    {
+        "core": 1,
+        "dest": 1921,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 896,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1793,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1921,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 128,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 2,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 1537,
+        "imm": 2432,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 2,
+        "type": "load",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "dest": 0,
+        "read": 1537,
+        "type": "copy",
+        "vec": 16
+    },
+    {
+        "core": 1,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                0,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 768,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 0,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 896,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 2,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 1,
+        "tile": 2,
+        "type": "hlt"
+    },
+    {
+        "dest": 1537,
+        "imm": 2048,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 640,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                5,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1408,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 1920,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 512,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                4,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 1280,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 1792,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 384,
+        "read": 1793,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                3,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1793,
+        "read": 1152,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1921,
+        "imm": 1664,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1921,
+        "read": 1921,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 256,
+        "read": 1921,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                2,
+                "f"
+            ]
+        ]
+    },
+    {
+        "core": 2,
+        "dest": 1793,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1024,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 256,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 2,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 1537,
+        "imm": 2432,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 2,
+        "type": "load",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "dest": 128,
+        "read": 1537,
+        "type": "copy",
+        "vec": 16
+    },
+    {
+        "core": 2,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                1,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 896,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 2304,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 0,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                0,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 768,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 128,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 1024,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 2,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "tile": 2,
+        "type": "hlt"
+    },
+    {
+        "dest": 1537,
+        "imm": 1920,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 640,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                5,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1408,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 1792,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 512,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                4,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 1280,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 1664,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 384,
+        "read": 1793,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                3,
+                "f"
+            ]
+        ]
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1152,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 384,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 2,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 1537,
+        "imm": 2432,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 2,
+        "type": "load",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "dest": 256,
+        "read": 1537,
+        "type": "copy",
+        "vec": 16
+    },
+    {
+        "core": 3,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                2,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1024,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 2304,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 128,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                1,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 896,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 2176,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 0,
+        "read": 1793,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                0,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1793,
+        "read": 768,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1921,
+        "imm": 256,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1921,
+        "read": 1921,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 3,
+        "dest": 1793,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1921,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 1152,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 2,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 3,
+        "tile": 2,
+        "type": "hlt"
+    },
+    {
+        "dest": 1537,
+        "imm": 1792,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 640,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                5,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1408,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 1664,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 512,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                4,
+                "f"
+            ]
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1280,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 512,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 2,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 1537,
+        "imm": 2432,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 2,
+        "type": "load",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "dest": 384,
+        "read": 1537,
+        "type": "copy",
+        "vec": 16
+    },
+    {
+        "core": 4,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                3,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1152,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 2304,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 256,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                2,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 1024,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 2176,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 128,
+        "read": 1793,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                1,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1793,
+        "read": 896,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1921,
+        "imm": 2048,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1921,
+        "read": 1921,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 0,
+        "read": 1921,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                0,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1921,
+        "read": 768,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2049,
+        "imm": 384,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 2049,
+        "read": 2049,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "dest": 1921,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 2049,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1793,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1921,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 1280,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 2,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "tile": 2,
+        "type": "hlt"
+    },
+    {
+        "dest": 1537,
+        "imm": 1664,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 640,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                5,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1408,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 640,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 2,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 1537,
+        "imm": 2432,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 2,
+        "type": "load",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "dest": 512,
+        "read": 1537,
+        "type": "copy",
+        "vec": 16
+    },
+    {
+        "core": 5,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                4,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1280,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 2304,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 384,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                3,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 1152,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 2176,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 256,
+        "read": 1793,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                2,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1793,
+        "read": 1024,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1921,
+        "imm": 2048,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1921,
+        "read": 1921,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 128,
+        "read": 1921,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                1,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1921,
+        "read": 896,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2049,
+        "imm": 1920,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 2049,
+        "read": 2049,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 0,
+        "read": 2049,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                0,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 2049,
+        "read": 768,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2177,
+        "imm": 512,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 2177,
+        "read": 2177,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 5,
+        "dest": 2049,
+        "opcode": "add",
+        "read_1": 2049,
+        "read_2": 2177,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1921,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 2049,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1793,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1921,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 1408,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 2,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 5,
+        "tile": 2,
+        "type": "hlt"
+    },
+    {
+        "dest": 1537,
+        "imm": 2432,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 2,
+        "type": "load",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "dest": 640,
+        "read": 1537,
+        "type": "copy",
+        "vec": 16
+    },
+    {
+        "core": 6,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                5,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1408,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 2304,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 512,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                4,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 1280,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 2176,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 384,
+        "read": 1793,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                3,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1793,
+        "read": 1152,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1921,
+        "imm": 2048,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 1921,
+        "read": 1921,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 256,
+        "read": 1921,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                2,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1921,
+        "read": 1024,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2049,
+        "imm": 1920,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 2049,
+        "read": 2049,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 128,
+        "read": 2049,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                1,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 2049,
+        "read": 896,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2177,
+        "imm": 1792,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 2177,
+        "read": 2177,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 0,
+        "read": 2177,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                0,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 2177,
+        "read": 768,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2305,
+        "imm": 640,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 2305,
+        "read": 2305,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 6,
+        "dest": 2177,
+        "opcode": "add",
+        "read_1": 2177,
+        "read_2": 2305,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 2049,
+        "opcode": "add",
+        "read_1": 2049,
+        "read_2": 2177,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1921,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 2049,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1793,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1921,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 1536,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 2,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 6,
+        "tile": 2,
+        "type": "hlt"
+    },
+    {
+        "dest": 1537,
+        "imm": 2304,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 640,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                5,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1408,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 2176,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 512,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                4,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 1280,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 2048,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 384,
+        "read": 1793,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                3,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1793,
+        "read": 1152,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1921,
+        "imm": 1920,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1921,
+        "read": 1921,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 256,
+        "read": 1921,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                2,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1921,
+        "read": 1024,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2049,
+        "imm": 1792,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 2049,
+        "read": 2049,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 128,
+        "read": 2049,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                1,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 2049,
+        "read": 896,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2177,
+        "imm": 1664,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 2177,
+        "read": 2177,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 0,
+        "read": 2177,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            [
+                0,
+                "f"
+            ]
+        ]
+    },
+    {
+        "core": 7,
+        "dest": 2049,
+        "opcode": "add",
+        "read_1": 2049,
+        "read_2": 768,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "dest": 1921,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 2049,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "dest": 1793,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1921,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 2,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 768,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 2,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 7,
+        "tile": 2,
+        "type": "hlt"
+    },
+    {
+        "mem_addr": 4184,
+        "source_tile": 0,
+        "tile": 3,
+        "type": "receive",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "mem_addr": 4056,
+        "source_tile": 0,
+        "tile": 3,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 3928,
+        "source_tile": 0,
+        "tile": 3,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 3800,
+        "source_tile": 0,
+        "tile": 3,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 3672,
+        "source_tile": 0,
+        "tile": 3,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 3544,
+        "source_tile": 0,
+        "tile": 3,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 3416,
+        "source_tile": 0,
+        "tile": 3,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 640,
+        "target_tile": 2,
+        "tile": 3,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 512,
+        "target_tile": 2,
+        "tile": 3,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 384,
+        "target_tile": 2,
+        "tile": 3,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 256,
+        "target_tile": 2,
+        "tile": 3,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 128,
+        "target_tile": 2,
+        "tile": 3,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 0,
+        "target_tile": 2,
+        "tile": 3,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 2520,
+        "source_tile": 2,
+        "tile": 3,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 768,
+        "target_tile": 2,
+        "tile": 3,
+        "type": "send",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "mem_addr": 3288,
+        "source_tile": 2,
+        "tile": 3,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 3160,
+        "source_tile": 2,
+        "tile": 3,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 3032,
+        "source_tile": 2,
+        "tile": 3,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 2904,
+        "source_tile": 2,
+        "tile": 3,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 2776,
+        "source_tile": 2,
+        "tile": 3,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 2648,
+        "source_tile": 2,
+        "tile": 3,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 2448,
+        "target_tile": 4,
+        "tile": 3,
+        "type": "send",
+        "vec": 6,
+        "width": 12
+    },
+    {
+        "mem_addr": 2320,
+        "target_tile": 4,
+        "tile": 3,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "tile": 3,
+        "type": "halt"
+    },
+    {
+        "dest": 1537,
+        "imm": 3928,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 640,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                5,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 1408,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 3800,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 512,
+        "read": 1793,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                4,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1921,
+        "read": 1280,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2049,
+        "imm": 3672,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 2049,
+        "read": 2049,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 384,
+        "read": 2049,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                3,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 2177,
+        "read": 1152,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2305,
+        "imm": 3544,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 2305,
+        "read": 2305,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 256,
+        "read": 2305,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                2,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 2433,
+        "read": 1024,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2561,
+        "imm": 3416,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 2561,
+        "read": 2561,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 128,
+        "read": 2561,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                1,
+                "f"
+            ]
+        ]
+    },
+    {
+        "core": 0,
+        "dest": 2433,
+        "opcode": "add",
+        "read_1": 2433,
+        "read_2": 896,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 2177,
+        "opcode": "add",
+        "read_1": 2177,
+        "read_2": 2433,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1921,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 2177,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1921,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1921,
+        "imm": 784,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1921,
+        "read": 1665,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 1665,
+        "imm": 768,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "dest": 0,
+        "read": 1665,
+        "type": "copy",
+        "vec": 16
+    },
+    {
+        "core": 0,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                0,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 768,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1921,
+        "imm": 2520,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "dest": 1922,
+        "imm": 512,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1922,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 1537,
+        "imm": 384,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "read": 1793,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 1537,
+        "imm": 256,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "read": 2049,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 1537,
+        "imm": 128,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "read": 2305,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 1537,
+        "imm": 0,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "read": 2561,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "read": 1921,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1537,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 912,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 0,
+        "tile": 3,
+        "type": "hlt"
+    },
+    {
+        "dest": 1537,
+        "imm": 4184,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "dest": 128,
+        "read": 1537,
+        "type": "copy",
+        "vec": 16
+    },
+    {
+        "core": 1,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                1,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1553,
+        "read": 896,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1681,
+        "imm": 4056,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1681,
+        "read": 1681,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 0,
+        "read": 1681,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                0,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1809,
+        "read": 768,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1937,
+        "imm": 784,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1937,
+        "read": 1937,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 1,
+        "dest": 1809,
+        "opcode": "add",
+        "read_1": 1809,
+        "read_2": 1937,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1553,
+        "opcode": "add",
+        "read_1": 1553,
+        "read_2": 1809,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1553,
+        "opcode": "relu",
+        "read_1": 1553,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1809,
+        "imm": 1040,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1809,
+        "read": 1553,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 1553,
+        "imm": 768,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1553,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "dest": 1537,
+        "imm": 640,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "read": 1681,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 1537,
+        "imm": 3032,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 640,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                5,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1408,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 2904,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 512,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                4,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 1280,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 2776,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 384,
+        "read": 1793,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                3,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1793,
+        "read": 1152,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1921,
+        "imm": 2648,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1921,
+        "read": 1921,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 256,
+        "read": 1921,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                2,
+                "f"
+            ]
+        ]
+    },
+    {
+        "core": 1,
+        "dest": 1793,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1024,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 1168,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 1,
+        "tile": 3,
+        "type": "hlt"
+    },
+    {
+        "dest": 1537,
+        "imm": 2776,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 640,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                5,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1408,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 2648,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 512,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                4,
+                "f"
+            ]
+        ]
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1280,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 1296,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 1537,
+        "imm": 1040,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 384,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                3,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1152,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 912,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 256,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                2,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 1024,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 3288,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 128,
+        "read": 1793,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                1,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1793,
+        "read": 896,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1921,
+        "imm": 3160,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1921,
+        "read": 1921,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 0,
+        "read": 1921,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                0,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1921,
+        "read": 768,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2049,
+        "imm": 1168,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 2049,
+        "read": 2049,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "dest": 1921,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 2049,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1793,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1921,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 1680,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "tile": 3,
+        "type": "hlt"
+    },
+    {
+        "dest": 1537,
+        "imm": 1040,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 640,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                5,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1408,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 912,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 512,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                4,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 1280,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 3288,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 384,
+        "read": 1793,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                3,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1793,
+        "read": 1152,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1921,
+        "imm": 3160,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1921,
+        "read": 1921,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 256,
+        "read": 1921,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                2,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1921,
+        "read": 1024,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2049,
+        "imm": 3032,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 2049,
+        "read": 2049,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 128,
+        "read": 2049,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                1,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 2049,
+        "read": 896,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2177,
+        "imm": 2904,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 2177,
+        "read": 2177,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 0,
+        "read": 2177,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                0,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 2177,
+        "read": 768,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2305,
+        "imm": 1296,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 2305,
+        "read": 2305,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 3,
+        "dest": 2177,
+        "opcode": "add",
+        "read_1": 2177,
+        "read_2": 2305,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 2049,
+        "opcode": "add",
+        "read_1": 2049,
+        "read_2": 2177,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1921,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 2049,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1793,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1921,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 1808,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 3,
+        "tile": 3,
+        "type": "hlt"
+    },
+    {
+        "dest": 1537,
+        "imm": 3288,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 640,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                5,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1408,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 3160,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 512,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                4,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 1280,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 3032,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 384,
+        "read": 1793,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                3,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1793,
+        "read": 1152,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1921,
+        "imm": 2904,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1921,
+        "read": 1921,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 256,
+        "read": 1921,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                2,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1921,
+        "read": 1024,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2049,
+        "imm": 2776,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 2049,
+        "read": 2049,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 128,
+        "read": 2049,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                1,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 2049,
+        "read": 896,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2177,
+        "imm": 2648,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 2177,
+        "read": 2177,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 0,
+        "read": 2177,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                0,
+                "f"
+            ]
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 2049,
+        "opcode": "add",
+        "read_1": 2049,
+        "read_2": 768,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1921,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 2049,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1793,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1921,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 1424,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "hlt"
+    },
+    {
+        "dest": 1537,
+        "imm": 3032,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 640,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                5,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1408,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 2904,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 512,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                4,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 1280,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 2776,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 384,
+        "read": 1793,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                3,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1793,
+        "read": 1152,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1921,
+        "imm": 2648,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1921,
+        "read": 1921,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 256,
+        "read": 1921,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                2,
+                "f"
+            ]
+        ]
+    },
+    {
+        "core": 5,
+        "dest": 1793,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1024,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 1552,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 1537,
+        "imm": 1040,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 128,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                1,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 896,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 912,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 0,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                0,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 768,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 1424,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 5,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 1936,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 5,
+        "tile": 3,
+        "type": "hlt"
+    },
+    {
+        "dest": 1537,
+        "imm": 1040,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 384,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                3,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1152,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 912,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 256,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                2,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 1024,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 3288,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 128,
+        "read": 1793,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                1,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1793,
+        "read": 896,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1921,
+        "imm": 3160,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 1921,
+        "read": 1921,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 0,
+        "read": 1921,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                0,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1921,
+        "read": 768,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 2049,
+        "imm": 1552,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 2049,
+        "read": 2049,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 6,
+        "dest": 1921,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 2049,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1793,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1921,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 2064,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 1537,
+        "imm": 1808,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 640,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                5,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 1408,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 1680,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 512,
+        "read": 1665,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                4,
+                "f"
+            ]
+        ]
+    },
+    {
+        "core": 6,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1280,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 2192,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 6,
+        "tile": 3,
+        "type": "hlt"
+    },
+    {
+        "dest": 1537,
+        "imm": 2064,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 640,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                5,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 1408,
+        "type": "copy",
+        "vec": 72
+    },
+    {
+        "dest": 1737,
+        "imm": 1936,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1737,
+        "read": 1737,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 512,
+        "read": 1737,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                4,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1865,
+        "read": 1280,
+        "type": "copy",
+        "vec": 72
+    },
+    {
+        "dest": 1937,
+        "imm": 1808,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1937,
+        "read": 1937,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 384,
+        "read": 1937,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                3,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1937,
+        "read": 1152,
+        "type": "copy",
+        "vec": 72
+    },
+    {
+        "dest": 2009,
+        "imm": 1680,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 2009,
+        "read": 2009,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 256,
+        "read": 2009,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                2,
+                "f"
+            ]
+        ]
+    },
+    {
+        "core": 7,
+        "dest": 1937,
+        "opcode": "add",
+        "read_1": 1937,
+        "read_2": 1024,
+        "tile": 3,
+        "type": "alu",
+        "vec": 72
+    },
+    {
+        "core": 7,
+        "dest": 1865,
+        "opcode": "add",
+        "read_1": 1865,
+        "read_2": 1937,
+        "tile": 3,
+        "type": "alu",
+        "vec": 72
+    },
+    {
+        "core": 7,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1865,
+        "tile": 3,
+        "type": "alu",
+        "vec": 72
+    },
+    {
+        "core": 7,
+        "dest": 1665,
+        "opcode": "relu",
+        "read_1": 1665,
+        "tile": 3,
+        "type": "alu",
+        "vec": 72
+    },
+    {
+        "dest": 1865,
+        "imm": 2448,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1865,
+        "read": 1665,
+        "tile": 3,
+        "type": "store",
+        "vec": 6,
+        "width": 12
+    },
+    {
+        "dest": 128,
+        "read": 1537,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                1,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 896,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 0,
+        "read": 1737,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            [
+                0,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1665,
+        "read": 768,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "dest": 1793,
+        "imm": 2192,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 7,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "alu",
+        "vec": 128
+    },
+    {
+        "dest": 1665,
+        "imm": 2320,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 7,
+        "tile": 3,
+        "type": "hlt"
+    },
+    {
+        "mem_addr": 128,
+        "source_tile": 3,
+        "tile": 4,
+        "type": "receive",
+        "vec": 6,
+        "width": 12
+    },
+    {
+        "mem_addr": 0,
+        "source_tile": 3,
+        "tile": 4,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 200,
+        "target_tile": 1,
+        "tile": 4,
+        "type": "send",
+        "vec": 1,
+        "width": 10
+    },
+    {
+        "tile": 4,
+        "type": "halt"
+    },
+    {
+        "dest": 1537,
+        "imm": 128,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 4,
+        "type": "load",
+        "vec": 6,
+        "width": 12
+    },
+    {
+        "dest": 128,
+        "read": 1537,
+        "type": "copy",
+        "vec": 72
+    },
+    {
+        "core": 0,
+        "tile": 4,
+        "type": "mvm",
+        "xbar": [
+            [
+                1,
+                "f"
+            ]
+        ]
+    },
+    {
+        "dest": 1537,
+        "read": 896,
+        "type": "copy",
+        "vec": 10
+    },
+    {
+        "dest": 1547,
+        "imm": 0,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1547,
+        "read": 1547,
+        "tile": 4,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "dest": 0,
+        "read": 1547,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "tile": 4,
+        "type": "mvm",
+        "xbar": [
+            [
+                0,
+                "f"
+            ]
+        ]
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 768,
+        "tile": 4,
+        "type": "alu",
+        "vec": 10
+    },
+    {
+        "dest": 1547,
+        "imm": 200,
+        "is_address": true,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1547,
+        "read": 1537,
+        "tile": 4,
+        "type": "store",
+        "vec": 1,
+        "width": 10
+    },
+    {
+        "core": 0,
+        "tile": 4,
+        "type": "hlt"
+    },
+    {
+        "core": 1,
+        "tile": 4,
+        "type": "hlt"
+    },
+    {
+        "core": 2,
+        "tile": 4,
+        "type": "hlt"
+    },
+    {
+        "core": 3,
+        "tile": 4,
+        "type": "hlt"
+    },
+    {
+        "core": 4,
+        "tile": 4,
+        "type": "hlt"
+    },
+    {
+        "core": 5,
+        "tile": 4,
+        "type": "hlt"
+    },
+    {
+        "core": 6,
+        "tile": 4,
+        "type": "hlt"
+    },
+    {
+        "core": 7,
+        "tile": 4,
+        "type": "hlt"
+    }
+]
