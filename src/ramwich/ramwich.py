@@ -8,7 +8,7 @@ import yaml
 
 from .config import Config
 from .core import Core
-from .ima import IMA
+from .mvmu import MVMU
 from .node import Node
 from .ops import CoreOp, OpType, TileOp
 from .stats import Stats
@@ -51,15 +51,15 @@ class RAMwich:
                 cores = []
 
                 for core_id in range(self.config.num_cores_per_tile):
-                    imas = []
+                    mvmus = []
 
-                    for ima_id in range(self.config.num_imas_per_core):
-                        # Create IMA with its xbars
-                        ima = IMA(id=ima_id)
-                        imas.append(ima)
+                    for mvmu_id in range(self.config.num_mvmus_per_core):
+                        # Create MVMU with its xbars
+                        mvmu = MVMU(id=mvmu_id)
+                        mvmus.append(mvmu)
 
-                    # Create Core with its IMAs and config
-                    core = Core(id=core_id, imas=imas, config=self.config)
+                    # Create Core with its MVMUs and config
+                    core = Core(id=core_id, mvmus=mvmus, config=self.config)
                     cores.append(core)
 
                 # Create Tile with its Cores and config

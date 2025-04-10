@@ -3,7 +3,7 @@ from typing import List
 
 from .blocks.dram import DRAM
 from .blocks.sram import SRAM
-from .ima import IMA
+from .mvmu import MVMU
 from .ops import ALU, MVM, CoreOp, Load, Set, Store
 from .stats import Stats
 
@@ -73,13 +73,13 @@ class CoreExecution:
         return True
 
     def visit_mvm(self, op):
-        if 0 <= op.ima < len(self.core.imas):
-            success = self.core.imas[op.ima].execute_mvm(op.xbar)
+        if 0 <= op.mvmu < len(self.core.mvmus):
+            success = self.core.mvmus[op.mvmu].execute_mvm(op.xbar)
             if success:
                 self.core.stats.increment_op_count("mvm")
             return success
         else:
-            print(f"MVM operation failed: Invalid IMA ID {op.ima}")
+            print(f"MVM operation failed: Invalid MVMU ID {op.mvmu}")
             return False
 
     def visit_store(self, op):
@@ -94,12 +94,12 @@ class CoreExecution:
 
 class Core:
     """
-    Core in the RAMwich architecture, containing multiple IMAs.
+    Core in the RAMwich architecture, containing multiple MVMUs.
     """
 
-    def __init__(self, id: int, imas: List[IMA], config, dram_capacity: int = 1024):
+    def __init__(self, id: int, mvmus: List[MVMU], config, dram_capacity: int = 1024):
         self.id = id
-        self.imas = imas
+        self.mvmus = mvmus
         self.config = config
         self.operations: List[CoreOp] = []
 
@@ -109,11 +109,11 @@ class Core:
         self.stats = Stats()
 
     def __repr__(self) -> str:
-        return f"Core({self.id}, imas={len(self.imas)})"
+        return f"Core({self.id}, mvmus={len(self.mvmus)})"
 
     def get_stats(self) -> Stats:
         """Get statistics for this Core by aggregating from all components"""
-        return self.stats.get_stats(self.imas + self.dram, self.sram)
+        return self.stats.get_stats(self.mvmus + self.dram, self.sram)
 
     def run(self, env):
         """
