@@ -268,9 +268,11 @@
         "type": "halt"
     },
     {
+        "core": 0,
         "dest": 1537,
         "imm": 2304,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -284,8 +286,10 @@
         "width": 16
     },
     {
+        "core": 0,
         "dest": 640,
         "read": 1537,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -294,22 +298,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                5,
-                "f"
-            ]
+            5
         ]
     },
     {
+        "core": 0,
         "dest": 1537,
         "read": 1408,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 0,
         "dest": 1665,
         "imm": 2176,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -323,8 +328,10 @@
         "width": 16
     },
     {
+        "core": 0,
         "dest": 512,
         "read": 1665,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -333,22 +340,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                4,
-                "f"
-            ]
+            4
         ]
     },
     {
+        "core": 0,
         "dest": 1665,
         "read": 1280,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 0,
         "dest": 1793,
         "imm": 2048,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -362,8 +370,10 @@
         "width": 16
     },
     {
+        "core": 0,
         "dest": 384,
         "read": 1793,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -372,22 +382,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                3,
-                "f"
-            ]
+            3
         ]
     },
     {
+        "core": 0,
         "dest": 1793,
         "read": 1152,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 0,
         "dest": 1921,
         "imm": 1920,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -401,8 +412,10 @@
         "width": 16
     },
     {
+        "core": 0,
         "dest": 256,
         "read": 1921,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -411,22 +424,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                2,
-                "f"
-            ]
+            2
         ]
     },
     {
+        "core": 0,
         "dest": 1921,
         "read": 1024,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 0,
         "dest": 2049,
         "imm": 1792,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -440,8 +454,10 @@
         "width": 16
     },
     {
+        "core": 0,
         "dest": 128,
         "read": 2049,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -450,22 +466,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                1,
-                "f"
-            ]
+            1
         ]
     },
     {
+        "core": 0,
         "dest": 2049,
         "read": 896,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 0,
         "dest": 2177,
         "imm": 1664,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -479,8 +496,10 @@
         "width": 16
     },
     {
+        "core": 0,
         "dest": 0,
         "read": 2177,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -489,10 +508,7 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                0,
-                "f"
-            ]
+            0
         ]
     },
     {
@@ -546,9 +562,11 @@
         "vec": 128
     },
     {
+        "core": 0,
         "dest": 1665,
         "imm": 0,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -567,9 +585,11 @@
         "type": "hlt"
     },
     {
+        "core": 1,
         "dest": 1537,
         "imm": 2176,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -583,8 +603,10 @@
         "width": 16
     },
     {
+        "core": 1,
         "dest": 640,
         "read": 1537,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -593,22 +615,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                5,
-                "f"
-            ]
+            5
         ]
     },
     {
+        "core": 1,
         "dest": 1537,
         "read": 1408,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 1,
         "dest": 1665,
         "imm": 2048,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -622,8 +645,10 @@
         "width": 16
     },
     {
+        "core": 1,
         "dest": 512,
         "read": 1665,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -632,22 +657,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                4,
-                "f"
-            ]
+            4
         ]
     },
     {
+        "core": 1,
         "dest": 1665,
         "read": 1280,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 1,
         "dest": 1793,
         "imm": 1920,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -661,8 +687,10 @@
         "width": 16
     },
     {
+        "core": 1,
         "dest": 384,
         "read": 1793,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -671,22 +699,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                3,
-                "f"
-            ]
+            3
         ]
     },
     {
+        "core": 1,
         "dest": 1793,
         "read": 1152,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 1,
         "dest": 1921,
         "imm": 1792,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -700,8 +729,10 @@
         "width": 16
     },
     {
+        "core": 1,
         "dest": 256,
         "read": 1921,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -710,22 +741,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                2,
-                "f"
-            ]
+            2
         ]
     },
     {
+        "core": 1,
         "dest": 1921,
         "read": 1024,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 1,
         "dest": 2049,
         "imm": 1664,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -739,8 +771,10 @@
         "width": 16
     },
     {
+        "core": 1,
         "dest": 128,
         "read": 2049,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -749,10 +783,7 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                1,
-                "f"
-            ]
+            1
         ]
     },
     {
@@ -796,9 +827,11 @@
         "vec": 128
     },
     {
+        "core": 1,
         "dest": 1665,
         "imm": 128,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -812,9 +845,11 @@
         "width": 16
     },
     {
+        "core": 1,
         "dest": 1537,
         "imm": 2432,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -828,8 +863,10 @@
         "width": 16
     },
     {
+        "core": 1,
         "dest": 0,
         "read": 1537,
+        "tile": 2,
         "type": "copy",
         "vec": 16
     },
@@ -838,22 +875,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                0,
-                "f"
-            ]
+            0
         ]
     },
     {
+        "core": 1,
         "dest": 1537,
         "read": 768,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 1,
         "dest": 1665,
         "imm": 0,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -886,9 +924,11 @@
         "vec": 128
     },
     {
+        "core": 1,
         "dest": 1665,
         "imm": 896,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -907,9 +947,11 @@
         "type": "hlt"
     },
     {
+        "core": 2,
         "dest": 1537,
         "imm": 2048,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -923,8 +965,10 @@
         "width": 16
     },
     {
+        "core": 2,
         "dest": 640,
         "read": 1537,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -933,22 +977,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                5,
-                "f"
-            ]
+            5
         ]
     },
     {
+        "core": 2,
         "dest": 1537,
         "read": 1408,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 2,
         "dest": 1665,
         "imm": 1920,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -962,8 +1007,10 @@
         "width": 16
     },
     {
+        "core": 2,
         "dest": 512,
         "read": 1665,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -972,22 +1019,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                4,
-                "f"
-            ]
+            4
         ]
     },
     {
+        "core": 2,
         "dest": 1665,
         "read": 1280,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 2,
         "dest": 1793,
         "imm": 1792,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1001,8 +1049,10 @@
         "width": 16
     },
     {
+        "core": 2,
         "dest": 384,
         "read": 1793,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -1011,22 +1061,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                3,
-                "f"
-            ]
+            3
         ]
     },
     {
+        "core": 2,
         "dest": 1793,
         "read": 1152,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 2,
         "dest": 1921,
         "imm": 1664,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1040,8 +1091,10 @@
         "width": 16
     },
     {
+        "core": 2,
         "dest": 256,
         "read": 1921,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -1050,10 +1103,7 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                2,
-                "f"
-            ]
+            2
         ]
     },
     {
@@ -1087,9 +1137,11 @@
         "vec": 128
     },
     {
+        "core": 2,
         "dest": 1665,
         "imm": 256,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1103,9 +1155,11 @@
         "width": 16
     },
     {
+        "core": 2,
         "dest": 1537,
         "imm": 2432,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1119,8 +1173,10 @@
         "width": 16
     },
     {
+        "core": 2,
         "dest": 128,
         "read": 1537,
+        "tile": 2,
         "type": "copy",
         "vec": 16
     },
@@ -1129,22 +1185,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                1,
-                "f"
-            ]
+            1
         ]
     },
     {
+        "core": 2,
         "dest": 1537,
         "read": 896,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 2,
         "dest": 1665,
         "imm": 2304,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1158,8 +1215,10 @@
         "width": 16
     },
     {
+        "core": 2,
         "dest": 0,
         "read": 1665,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -1168,22 +1227,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                0,
-                "f"
-            ]
+            0
         ]
     },
     {
+        "core": 2,
         "dest": 1665,
         "read": 768,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 2,
         "dest": 1793,
         "imm": 128,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1226,9 +1286,11 @@
         "vec": 128
     },
     {
+        "core": 2,
         "dest": 1665,
         "imm": 1024,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1247,9 +1309,11 @@
         "type": "hlt"
     },
     {
+        "core": 3,
         "dest": 1537,
         "imm": 1920,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1263,8 +1327,10 @@
         "width": 16
     },
     {
+        "core": 3,
         "dest": 640,
         "read": 1537,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -1273,22 +1339,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                5,
-                "f"
-            ]
+            5
         ]
     },
     {
+        "core": 3,
         "dest": 1537,
         "read": 1408,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 3,
         "dest": 1665,
         "imm": 1792,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1302,8 +1369,10 @@
         "width": 16
     },
     {
+        "core": 3,
         "dest": 512,
         "read": 1665,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -1312,22 +1381,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                4,
-                "f"
-            ]
+            4
         ]
     },
     {
+        "core": 3,
         "dest": 1665,
         "read": 1280,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 3,
         "dest": 1793,
         "imm": 1664,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1341,8 +1411,10 @@
         "width": 16
     },
     {
+        "core": 3,
         "dest": 384,
         "read": 1793,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -1351,10 +1423,7 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                3,
-                "f"
-            ]
+            3
         ]
     },
     {
@@ -1378,9 +1447,11 @@
         "vec": 128
     },
     {
+        "core": 3,
         "dest": 1665,
         "imm": 384,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1394,9 +1465,11 @@
         "width": 16
     },
     {
+        "core": 3,
         "dest": 1537,
         "imm": 2432,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1410,8 +1483,10 @@
         "width": 16
     },
     {
+        "core": 3,
         "dest": 256,
         "read": 1537,
+        "tile": 2,
         "type": "copy",
         "vec": 16
     },
@@ -1420,22 +1495,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                2,
-                "f"
-            ]
+            2
         ]
     },
     {
+        "core": 3,
         "dest": 1537,
         "read": 1024,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 3,
         "dest": 1665,
         "imm": 2304,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1449,8 +1525,10 @@
         "width": 16
     },
     {
+        "core": 3,
         "dest": 128,
         "read": 1665,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -1459,22 +1537,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                1,
-                "f"
-            ]
+            1
         ]
     },
     {
+        "core": 3,
         "dest": 1665,
         "read": 896,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 3,
         "dest": 1793,
         "imm": 2176,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1488,8 +1567,10 @@
         "width": 16
     },
     {
+        "core": 3,
         "dest": 0,
         "read": 1793,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -1498,22 +1579,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                0,
-                "f"
-            ]
+            0
         ]
     },
     {
+        "core": 3,
         "dest": 1793,
         "read": 768,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 3,
         "dest": 1921,
         "imm": 256,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1566,9 +1648,11 @@
         "vec": 128
     },
     {
+        "core": 3,
         "dest": 1665,
         "imm": 1152,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1587,9 +1671,11 @@
         "type": "hlt"
     },
     {
+        "core": 4,
         "dest": 1537,
         "imm": 1792,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1603,8 +1689,10 @@
         "width": 16
     },
     {
+        "core": 4,
         "dest": 640,
         "read": 1537,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -1613,22 +1701,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                5,
-                "f"
-            ]
+            5
         ]
     },
     {
+        "core": 4,
         "dest": 1537,
         "read": 1408,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 4,
         "dest": 1665,
         "imm": 1664,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1642,8 +1731,10 @@
         "width": 16
     },
     {
+        "core": 4,
         "dest": 512,
         "read": 1665,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -1652,10 +1743,7 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                4,
-                "f"
-            ]
+            4
         ]
     },
     {
@@ -1669,9 +1757,11 @@
         "vec": 128
     },
     {
+        "core": 4,
         "dest": 1665,
         "imm": 512,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1685,9 +1775,11 @@
         "width": 16
     },
     {
+        "core": 4,
         "dest": 1537,
         "imm": 2432,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1701,8 +1793,10 @@
         "width": 16
     },
     {
+        "core": 4,
         "dest": 384,
         "read": 1537,
+        "tile": 2,
         "type": "copy",
         "vec": 16
     },
@@ -1711,22 +1805,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                3,
-                "f"
-            ]
+            3
         ]
     },
     {
+        "core": 4,
         "dest": 1537,
         "read": 1152,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 4,
         "dest": 1665,
         "imm": 2304,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1740,8 +1835,10 @@
         "width": 16
     },
     {
+        "core": 4,
         "dest": 256,
         "read": 1665,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -1750,22 +1847,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                2,
-                "f"
-            ]
+            2
         ]
     },
     {
+        "core": 4,
         "dest": 1665,
         "read": 1024,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 4,
         "dest": 1793,
         "imm": 2176,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1779,8 +1877,10 @@
         "width": 16
     },
     {
+        "core": 4,
         "dest": 128,
         "read": 1793,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -1789,22 +1889,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                1,
-                "f"
-            ]
+            1
         ]
     },
     {
+        "core": 4,
         "dest": 1793,
         "read": 896,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 4,
         "dest": 1921,
         "imm": 2048,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1818,8 +1919,10 @@
         "width": 16
     },
     {
+        "core": 4,
         "dest": 0,
         "read": 1921,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -1828,22 +1931,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                0,
-                "f"
-            ]
+            0
         ]
     },
     {
+        "core": 4,
         "dest": 1921,
         "read": 768,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 4,
         "dest": 2049,
         "imm": 384,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1906,9 +2010,11 @@
         "vec": 128
     },
     {
+        "core": 4,
         "dest": 1665,
         "imm": 1280,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1927,9 +2033,11 @@
         "type": "hlt"
     },
     {
+        "core": 5,
         "dest": 1537,
         "imm": 1664,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1943,8 +2051,10 @@
         "width": 16
     },
     {
+        "core": 5,
         "dest": 640,
         "read": 1537,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -1953,22 +2063,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                5,
-                "f"
-            ]
+            5
         ]
     },
     {
+        "core": 5,
         "dest": 1537,
         "read": 1408,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 5,
         "dest": 1665,
         "imm": 640,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1982,9 +2093,11 @@
         "width": 16
     },
     {
+        "core": 5,
         "dest": 1537,
         "imm": 2432,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -1998,8 +2111,10 @@
         "width": 16
     },
     {
+        "core": 5,
         "dest": 512,
         "read": 1537,
+        "tile": 2,
         "type": "copy",
         "vec": 16
     },
@@ -2008,22 +2123,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                4,
-                "f"
-            ]
+            4
         ]
     },
     {
+        "core": 5,
         "dest": 1537,
         "read": 1280,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 5,
         "dest": 1665,
         "imm": 2304,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2037,8 +2153,10 @@
         "width": 16
     },
     {
+        "core": 5,
         "dest": 384,
         "read": 1665,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -2047,22 +2165,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                3,
-                "f"
-            ]
+            3
         ]
     },
     {
+        "core": 5,
         "dest": 1665,
         "read": 1152,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 5,
         "dest": 1793,
         "imm": 2176,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2076,8 +2195,10 @@
         "width": 16
     },
     {
+        "core": 5,
         "dest": 256,
         "read": 1793,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -2086,22 +2207,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                2,
-                "f"
-            ]
+            2
         ]
     },
     {
+        "core": 5,
         "dest": 1793,
         "read": 1024,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 5,
         "dest": 1921,
         "imm": 2048,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2115,8 +2237,10 @@
         "width": 16
     },
     {
+        "core": 5,
         "dest": 128,
         "read": 1921,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -2125,22 +2249,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                1,
-                "f"
-            ]
+            1
         ]
     },
     {
+        "core": 5,
         "dest": 1921,
         "read": 896,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 5,
         "dest": 2049,
         "imm": 1920,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2154,8 +2279,10 @@
         "width": 16
     },
     {
+        "core": 5,
         "dest": 0,
         "read": 2049,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -2164,22 +2291,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                0,
-                "f"
-            ]
+            0
         ]
     },
     {
+        "core": 5,
         "dest": 2049,
         "read": 768,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 5,
         "dest": 2177,
         "imm": 512,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2252,9 +2380,11 @@
         "vec": 128
     },
     {
+        "core": 5,
         "dest": 1665,
         "imm": 1408,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2273,9 +2403,11 @@
         "type": "hlt"
     },
     {
+        "core": 6,
         "dest": 1537,
         "imm": 2432,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2289,8 +2421,10 @@
         "width": 16
     },
     {
+        "core": 6,
         "dest": 640,
         "read": 1537,
+        "tile": 2,
         "type": "copy",
         "vec": 16
     },
@@ -2299,22 +2433,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                5,
-                "f"
-            ]
+            5
         ]
     },
     {
+        "core": 6,
         "dest": 1537,
         "read": 1408,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 6,
         "dest": 1665,
         "imm": 2304,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2328,8 +2463,10 @@
         "width": 16
     },
     {
+        "core": 6,
         "dest": 512,
         "read": 1665,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -2338,22 +2475,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                4,
-                "f"
-            ]
+            4
         ]
     },
     {
+        "core": 6,
         "dest": 1665,
         "read": 1280,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 6,
         "dest": 1793,
         "imm": 2176,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2367,8 +2505,10 @@
         "width": 16
     },
     {
+        "core": 6,
         "dest": 384,
         "read": 1793,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -2377,22 +2517,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                3,
-                "f"
-            ]
+            3
         ]
     },
     {
+        "core": 6,
         "dest": 1793,
         "read": 1152,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 6,
         "dest": 1921,
         "imm": 2048,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2406,8 +2547,10 @@
         "width": 16
     },
     {
+        "core": 6,
         "dest": 256,
         "read": 1921,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -2416,22 +2559,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                2,
-                "f"
-            ]
+            2
         ]
     },
     {
+        "core": 6,
         "dest": 1921,
         "read": 1024,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 6,
         "dest": 2049,
         "imm": 1920,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2445,8 +2589,10 @@
         "width": 16
     },
     {
+        "core": 6,
         "dest": 128,
         "read": 2049,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -2455,22 +2601,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                1,
-                "f"
-            ]
+            1
         ]
     },
     {
+        "core": 6,
         "dest": 2049,
         "read": 896,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 6,
         "dest": 2177,
         "imm": 1792,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2484,8 +2631,10 @@
         "width": 16
     },
     {
+        "core": 6,
         "dest": 0,
         "read": 2177,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -2494,22 +2643,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                0,
-                "f"
-            ]
+            0
         ]
     },
     {
+        "core": 6,
         "dest": 2177,
         "read": 768,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 6,
         "dest": 2305,
         "imm": 640,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2592,9 +2742,11 @@
         "vec": 128
     },
     {
+        "core": 6,
         "dest": 1665,
         "imm": 1536,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2613,9 +2765,11 @@
         "type": "hlt"
     },
     {
+        "core": 7,
         "dest": 1537,
         "imm": 2304,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2629,8 +2783,10 @@
         "width": 16
     },
     {
+        "core": 7,
         "dest": 640,
         "read": 1537,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -2639,22 +2795,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                5,
-                "f"
-            ]
+            5
         ]
     },
     {
+        "core": 7,
         "dest": 1537,
         "read": 1408,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 7,
         "dest": 1665,
         "imm": 2176,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2668,8 +2825,10 @@
         "width": 16
     },
     {
+        "core": 7,
         "dest": 512,
         "read": 1665,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -2678,22 +2837,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                4,
-                "f"
-            ]
+            4
         ]
     },
     {
+        "core": 7,
         "dest": 1665,
         "read": 1280,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 7,
         "dest": 1793,
         "imm": 2048,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2707,8 +2867,10 @@
         "width": 16
     },
     {
+        "core": 7,
         "dest": 384,
         "read": 1793,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -2717,22 +2879,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                3,
-                "f"
-            ]
+            3
         ]
     },
     {
+        "core": 7,
         "dest": 1793,
         "read": 1152,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 7,
         "dest": 1921,
         "imm": 1920,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2746,8 +2909,10 @@
         "width": 16
     },
     {
+        "core": 7,
         "dest": 256,
         "read": 1921,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -2756,22 +2921,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                2,
-                "f"
-            ]
+            2
         ]
     },
     {
+        "core": 7,
         "dest": 1921,
         "read": 1024,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 7,
         "dest": 2049,
         "imm": 1792,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2785,8 +2951,10 @@
         "width": 16
     },
     {
+        "core": 7,
         "dest": 128,
         "read": 2049,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -2795,22 +2963,23 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                1,
-                "f"
-            ]
+            1
         ]
     },
     {
+        "core": 7,
         "dest": 2049,
         "read": 896,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 7,
         "dest": 2177,
         "imm": 1664,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -2824,8 +2993,10 @@
         "width": 16
     },
     {
+        "core": 7,
         "dest": 0,
         "read": 2177,
+        "tile": 2,
         "type": "copy",
         "vec": 128
     },
@@ -2834,10 +3005,7 @@
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            [
-                0,
-                "f"
-            ]
+            0
         ]
     },
     {
@@ -2891,9 +3059,11 @@
         "vec": 128
     },
     {
+        "core": 7,
         "dest": 1665,
         "imm": 768,
         "is_address": true,
+        "tile": 2,
         "type": "set",
         "vec": 1
     },
@@ -3100,9 +3270,11 @@
         "type": "halt"
     },
     {
+        "core": 0,
         "dest": 1537,
         "imm": 3928,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3116,8 +3288,10 @@
         "width": 16
     },
     {
+        "core": 0,
         "dest": 640,
         "read": 1537,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -3126,22 +3300,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                5,
-                "f"
-            ]
+            5
         ]
     },
     {
+        "core": 0,
         "dest": 1665,
         "read": 1408,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 0,
         "dest": 1793,
         "imm": 3800,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3155,8 +3330,10 @@
         "width": 16
     },
     {
+        "core": 0,
         "dest": 512,
         "read": 1793,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -3165,22 +3342,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                4,
-                "f"
-            ]
+            4
         ]
     },
     {
+        "core": 0,
         "dest": 1921,
         "read": 1280,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 0,
         "dest": 2049,
         "imm": 3672,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3194,8 +3372,10 @@
         "width": 16
     },
     {
+        "core": 0,
         "dest": 384,
         "read": 2049,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -3204,22 +3384,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                3,
-                "f"
-            ]
+            3
         ]
     },
     {
+        "core": 0,
         "dest": 2177,
         "read": 1152,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 0,
         "dest": 2305,
         "imm": 3544,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3233,8 +3414,10 @@
         "width": 16
     },
     {
+        "core": 0,
         "dest": 256,
         "read": 2305,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -3243,22 +3426,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                2,
-                "f"
-            ]
+            2
         ]
     },
     {
+        "core": 0,
         "dest": 2433,
         "read": 1024,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 0,
         "dest": 2561,
         "imm": 3416,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3272,8 +3456,10 @@
         "width": 16
     },
     {
+        "core": 0,
         "dest": 128,
         "read": 2561,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -3282,10 +3468,7 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                1,
-                "f"
-            ]
+            1
         ]
     },
     {
@@ -3329,9 +3512,11 @@
         "vec": 128
     },
     {
+        "core": 0,
         "dest": 1921,
         "imm": 784,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3345,9 +3530,11 @@
         "width": 16
     },
     {
+        "core": 0,
         "dest": 1665,
         "imm": 768,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3361,8 +3548,10 @@
         "width": 16
     },
     {
+        "core": 0,
         "dest": 0,
         "read": 1665,
+        "tile": 3,
         "type": "copy",
         "vec": 16
     },
@@ -3371,29 +3560,32 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                0,
-                "f"
-            ]
+            0
         ]
     },
     {
+        "core": 0,
         "dest": 1665,
         "read": 768,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 0,
         "dest": 1921,
         "imm": 2520,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
     {
+        "core": 0,
         "dest": 1922,
         "imm": 512,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3407,9 +3599,11 @@
         "width": 16
     },
     {
+        "core": 0,
         "dest": 1537,
         "imm": 384,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3423,9 +3617,11 @@
         "width": 16
     },
     {
+        "core": 0,
         "dest": 1537,
         "imm": 256,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3439,9 +3635,11 @@
         "width": 16
     },
     {
+        "core": 0,
         "dest": 1537,
         "imm": 128,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3455,9 +3653,11 @@
         "width": 16
     },
     {
+        "core": 0,
         "dest": 1537,
         "imm": 0,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3499,9 +3699,11 @@
         "vec": 128
     },
     {
+        "core": 0,
         "dest": 1665,
         "imm": 912,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3520,9 +3722,11 @@
         "type": "hlt"
     },
     {
+        "core": 1,
         "dest": 1537,
         "imm": 4184,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3536,8 +3740,10 @@
         "width": 16
     },
     {
+        "core": 1,
         "dest": 128,
         "read": 1537,
+        "tile": 3,
         "type": "copy",
         "vec": 16
     },
@@ -3546,22 +3752,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                1,
-                "f"
-            ]
+            1
         ]
     },
     {
+        "core": 1,
         "dest": 1553,
         "read": 896,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 1,
         "dest": 1681,
         "imm": 4056,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3575,8 +3782,10 @@
         "width": 16
     },
     {
+        "core": 1,
         "dest": 0,
         "read": 1681,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -3585,22 +3794,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                0,
-                "f"
-            ]
+            0
         ]
     },
     {
+        "core": 1,
         "dest": 1809,
         "read": 768,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 1,
         "dest": 1937,
         "imm": 784,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3643,9 +3853,11 @@
         "vec": 128
     },
     {
+        "core": 1,
         "dest": 1809,
         "imm": 1040,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3659,9 +3871,11 @@
         "width": 16
     },
     {
+        "core": 1,
         "dest": 1553,
         "imm": 768,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3675,9 +3889,11 @@
         "width": 16
     },
     {
+        "core": 1,
         "dest": 1537,
         "imm": 640,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3691,9 +3907,11 @@
         "width": 16
     },
     {
+        "core": 1,
         "dest": 1537,
         "imm": 3032,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3707,8 +3925,10 @@
         "width": 16
     },
     {
+        "core": 1,
         "dest": 640,
         "read": 1537,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -3717,22 +3937,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                5,
-                "f"
-            ]
+            5
         ]
     },
     {
+        "core": 1,
         "dest": 1537,
         "read": 1408,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 1,
         "dest": 1665,
         "imm": 2904,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3746,8 +3967,10 @@
         "width": 16
     },
     {
+        "core": 1,
         "dest": 512,
         "read": 1665,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -3756,22 +3979,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                4,
-                "f"
-            ]
+            4
         ]
     },
     {
+        "core": 1,
         "dest": 1665,
         "read": 1280,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 1,
         "dest": 1793,
         "imm": 2776,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3785,8 +4009,10 @@
         "width": 16
     },
     {
+        "core": 1,
         "dest": 384,
         "read": 1793,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -3795,22 +4021,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                3,
-                "f"
-            ]
+            3
         ]
     },
     {
+        "core": 1,
         "dest": 1793,
         "read": 1152,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 1,
         "dest": 1921,
         "imm": 2648,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3824,8 +4051,10 @@
         "width": 16
     },
     {
+        "core": 1,
         "dest": 256,
         "read": 1921,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -3834,10 +4063,7 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                2,
-                "f"
-            ]
+            2
         ]
     },
     {
@@ -3871,9 +4097,11 @@
         "vec": 128
     },
     {
+        "core": 1,
         "dest": 1665,
         "imm": 1168,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3892,9 +4120,11 @@
         "type": "hlt"
     },
     {
+        "core": 2,
         "dest": 1537,
         "imm": 2776,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3908,8 +4138,10 @@
         "width": 16
     },
     {
+        "core": 2,
         "dest": 640,
         "read": 1537,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -3918,22 +4150,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                5,
-                "f"
-            ]
+            5
         ]
     },
     {
+        "core": 2,
         "dest": 1537,
         "read": 1408,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 2,
         "dest": 1665,
         "imm": 2648,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3947,8 +4180,10 @@
         "width": 16
     },
     {
+        "core": 2,
         "dest": 512,
         "read": 1665,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -3957,10 +4192,7 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                4,
-                "f"
-            ]
+            4
         ]
     },
     {
@@ -3974,9 +4206,11 @@
         "vec": 128
     },
     {
+        "core": 2,
         "dest": 1665,
         "imm": 1296,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -3990,9 +4224,11 @@
         "width": 16
     },
     {
+        "core": 2,
         "dest": 1537,
         "imm": 1040,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4006,8 +4242,10 @@
         "width": 16
     },
     {
+        "core": 2,
         "dest": 384,
         "read": 1537,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4016,22 +4254,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                3,
-                "f"
-            ]
+            3
         ]
     },
     {
+        "core": 2,
         "dest": 1537,
         "read": 1152,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 2,
         "dest": 1665,
         "imm": 912,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4045,8 +4284,10 @@
         "width": 16
     },
     {
+        "core": 2,
         "dest": 256,
         "read": 1665,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4055,22 +4296,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                2,
-                "f"
-            ]
+            2
         ]
     },
     {
+        "core": 2,
         "dest": 1665,
         "read": 1024,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 2,
         "dest": 1793,
         "imm": 3288,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4084,8 +4326,10 @@
         "width": 16
     },
     {
+        "core": 2,
         "dest": 128,
         "read": 1793,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4094,22 +4338,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                1,
-                "f"
-            ]
+            1
         ]
     },
     {
+        "core": 2,
         "dest": 1793,
         "read": 896,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 2,
         "dest": 1921,
         "imm": 3160,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4123,8 +4368,10 @@
         "width": 16
     },
     {
+        "core": 2,
         "dest": 0,
         "read": 1921,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4133,22 +4380,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                0,
-                "f"
-            ]
+            0
         ]
     },
     {
+        "core": 2,
         "dest": 1921,
         "read": 768,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 2,
         "dest": 2049,
         "imm": 1168,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4211,9 +4459,11 @@
         "vec": 128
     },
     {
+        "core": 2,
         "dest": 1665,
         "imm": 1680,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4232,9 +4482,11 @@
         "type": "hlt"
     },
     {
+        "core": 3,
         "dest": 1537,
         "imm": 1040,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4248,8 +4500,10 @@
         "width": 16
     },
     {
+        "core": 3,
         "dest": 640,
         "read": 1537,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4258,22 +4512,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                5,
-                "f"
-            ]
+            5
         ]
     },
     {
+        "core": 3,
         "dest": 1537,
         "read": 1408,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 3,
         "dest": 1665,
         "imm": 912,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4287,8 +4542,10 @@
         "width": 16
     },
     {
+        "core": 3,
         "dest": 512,
         "read": 1665,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4297,22 +4554,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                4,
-                "f"
-            ]
+            4
         ]
     },
     {
+        "core": 3,
         "dest": 1665,
         "read": 1280,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 3,
         "dest": 1793,
         "imm": 3288,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4326,8 +4584,10 @@
         "width": 16
     },
     {
+        "core": 3,
         "dest": 384,
         "read": 1793,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4336,22 +4596,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                3,
-                "f"
-            ]
+            3
         ]
     },
     {
+        "core": 3,
         "dest": 1793,
         "read": 1152,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 3,
         "dest": 1921,
         "imm": 3160,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4365,8 +4626,10 @@
         "width": 16
     },
     {
+        "core": 3,
         "dest": 256,
         "read": 1921,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4375,22 +4638,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                2,
-                "f"
-            ]
+            2
         ]
     },
     {
+        "core": 3,
         "dest": 1921,
         "read": 1024,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 3,
         "dest": 2049,
         "imm": 3032,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4404,8 +4668,10 @@
         "width": 16
     },
     {
+        "core": 3,
         "dest": 128,
         "read": 2049,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4414,22 +4680,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                1,
-                "f"
-            ]
+            1
         ]
     },
     {
+        "core": 3,
         "dest": 2049,
         "read": 896,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 3,
         "dest": 2177,
         "imm": 2904,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4443,8 +4710,10 @@
         "width": 16
     },
     {
+        "core": 3,
         "dest": 0,
         "read": 2177,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4453,22 +4722,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                0,
-                "f"
-            ]
+            0
         ]
     },
     {
+        "core": 3,
         "dest": 2177,
         "read": 768,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 3,
         "dest": 2305,
         "imm": 1296,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4551,9 +4821,11 @@
         "vec": 128
     },
     {
+        "core": 3,
         "dest": 1665,
         "imm": 1808,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4572,9 +4844,11 @@
         "type": "hlt"
     },
     {
+        "core": 4,
         "dest": 1537,
         "imm": 3288,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4588,8 +4862,10 @@
         "width": 16
     },
     {
+        "core": 4,
         "dest": 640,
         "read": 1537,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4598,22 +4874,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                5,
-                "f"
-            ]
+            5
         ]
     },
     {
+        "core": 4,
         "dest": 1537,
         "read": 1408,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 4,
         "dest": 1665,
         "imm": 3160,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4627,8 +4904,10 @@
         "width": 16
     },
     {
+        "core": 4,
         "dest": 512,
         "read": 1665,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4637,22 +4916,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                4,
-                "f"
-            ]
+            4
         ]
     },
     {
+        "core": 4,
         "dest": 1665,
         "read": 1280,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 4,
         "dest": 1793,
         "imm": 3032,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4666,8 +4946,10 @@
         "width": 16
     },
     {
+        "core": 4,
         "dest": 384,
         "read": 1793,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4676,22 +4958,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                3,
-                "f"
-            ]
+            3
         ]
     },
     {
+        "core": 4,
         "dest": 1793,
         "read": 1152,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 4,
         "dest": 1921,
         "imm": 2904,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4705,8 +4988,10 @@
         "width": 16
     },
     {
+        "core": 4,
         "dest": 256,
         "read": 1921,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4715,22 +5000,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                2,
-                "f"
-            ]
+            2
         ]
     },
     {
+        "core": 4,
         "dest": 1921,
         "read": 1024,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 4,
         "dest": 2049,
         "imm": 2776,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4744,8 +5030,10 @@
         "width": 16
     },
     {
+        "core": 4,
         "dest": 128,
         "read": 2049,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4754,22 +5042,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                1,
-                "f"
-            ]
+            1
         ]
     },
     {
+        "core": 4,
         "dest": 2049,
         "read": 896,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 4,
         "dest": 2177,
         "imm": 2648,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4783,8 +5072,10 @@
         "width": 16
     },
     {
+        "core": 4,
         "dest": 0,
         "read": 2177,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4793,10 +5084,7 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                0,
-                "f"
-            ]
+            0
         ]
     },
     {
@@ -4850,9 +5138,11 @@
         "vec": 128
     },
     {
+        "core": 4,
         "dest": 1665,
         "imm": 1424,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4871,9 +5161,11 @@
         "type": "hlt"
     },
     {
+        "core": 5,
         "dest": 1537,
         "imm": 3032,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4887,8 +5179,10 @@
         "width": 16
     },
     {
+        "core": 5,
         "dest": 640,
         "read": 1537,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4897,22 +5191,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                5,
-                "f"
-            ]
+            5
         ]
     },
     {
+        "core": 5,
         "dest": 1537,
         "read": 1408,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 5,
         "dest": 1665,
         "imm": 2904,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4926,8 +5221,10 @@
         "width": 16
     },
     {
+        "core": 5,
         "dest": 512,
         "read": 1665,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4936,22 +5233,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                4,
-                "f"
-            ]
+            4
         ]
     },
     {
+        "core": 5,
         "dest": 1665,
         "read": 1280,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 5,
         "dest": 1793,
         "imm": 2776,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -4965,8 +5263,10 @@
         "width": 16
     },
     {
+        "core": 5,
         "dest": 384,
         "read": 1793,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -4975,22 +5275,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                3,
-                "f"
-            ]
+            3
         ]
     },
     {
+        "core": 5,
         "dest": 1793,
         "read": 1152,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 5,
         "dest": 1921,
         "imm": 2648,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5004,8 +5305,10 @@
         "width": 16
     },
     {
+        "core": 5,
         "dest": 256,
         "read": 1921,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -5014,10 +5317,7 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                2,
-                "f"
-            ]
+            2
         ]
     },
     {
@@ -5051,9 +5351,11 @@
         "vec": 128
     },
     {
+        "core": 5,
         "dest": 1665,
         "imm": 1552,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5067,9 +5369,11 @@
         "width": 16
     },
     {
+        "core": 5,
         "dest": 1537,
         "imm": 1040,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5083,8 +5387,10 @@
         "width": 16
     },
     {
+        "core": 5,
         "dest": 128,
         "read": 1537,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -5093,22 +5399,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                1,
-                "f"
-            ]
+            1
         ]
     },
     {
+        "core": 5,
         "dest": 1537,
         "read": 896,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 5,
         "dest": 1665,
         "imm": 912,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5122,8 +5429,10 @@
         "width": 16
     },
     {
+        "core": 5,
         "dest": 0,
         "read": 1665,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -5132,22 +5441,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                0,
-                "f"
-            ]
+            0
         ]
     },
     {
+        "core": 5,
         "dest": 1665,
         "read": 768,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 5,
         "dest": 1793,
         "imm": 1424,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5190,9 +5500,11 @@
         "vec": 128
     },
     {
+        "core": 5,
         "dest": 1665,
         "imm": 1936,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5211,9 +5523,11 @@
         "type": "hlt"
     },
     {
+        "core": 6,
         "dest": 1537,
         "imm": 1040,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5227,8 +5541,10 @@
         "width": 16
     },
     {
+        "core": 6,
         "dest": 384,
         "read": 1537,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -5237,22 +5553,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                3,
-                "f"
-            ]
+            3
         ]
     },
     {
+        "core": 6,
         "dest": 1537,
         "read": 1152,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 6,
         "dest": 1665,
         "imm": 912,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5266,8 +5583,10 @@
         "width": 16
     },
     {
+        "core": 6,
         "dest": 256,
         "read": 1665,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -5276,22 +5595,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                2,
-                "f"
-            ]
+            2
         ]
     },
     {
+        "core": 6,
         "dest": 1665,
         "read": 1024,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 6,
         "dest": 1793,
         "imm": 3288,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5305,8 +5625,10 @@
         "width": 16
     },
     {
+        "core": 6,
         "dest": 128,
         "read": 1793,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -5315,22 +5637,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                1,
-                "f"
-            ]
+            1
         ]
     },
     {
+        "core": 6,
         "dest": 1793,
         "read": 896,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 6,
         "dest": 1921,
         "imm": 3160,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5344,8 +5667,10 @@
         "width": 16
     },
     {
+        "core": 6,
         "dest": 0,
         "read": 1921,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -5354,22 +5679,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                0,
-                "f"
-            ]
+            0
         ]
     },
     {
+        "core": 6,
         "dest": 1921,
         "read": 768,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 6,
         "dest": 2049,
         "imm": 1552,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5432,9 +5758,11 @@
         "vec": 128
     },
     {
+        "core": 6,
         "dest": 1665,
         "imm": 2064,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5448,9 +5776,11 @@
         "width": 16
     },
     {
+        "core": 6,
         "dest": 1537,
         "imm": 1808,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5464,8 +5794,10 @@
         "width": 16
     },
     {
+        "core": 6,
         "dest": 640,
         "read": 1537,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -5474,22 +5806,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                5,
-                "f"
-            ]
+            5
         ]
     },
     {
+        "core": 6,
         "dest": 1537,
         "read": 1408,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 6,
         "dest": 1665,
         "imm": 1680,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5503,8 +5836,10 @@
         "width": 16
     },
     {
+        "core": 6,
         "dest": 512,
         "read": 1665,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -5513,10 +5848,7 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                4,
-                "f"
-            ]
+            4
         ]
     },
     {
@@ -5530,9 +5862,11 @@
         "vec": 128
     },
     {
+        "core": 6,
         "dest": 1665,
         "imm": 2192,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5551,9 +5885,11 @@
         "type": "hlt"
     },
     {
+        "core": 7,
         "dest": 1537,
         "imm": 2064,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5567,8 +5903,10 @@
         "width": 16
     },
     {
+        "core": 7,
         "dest": 640,
         "read": 1537,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -5577,22 +5915,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                5,
-                "f"
-            ]
+            5
         ]
     },
     {
+        "core": 7,
         "dest": 1665,
         "read": 1408,
+        "tile": 3,
         "type": "copy",
         "vec": 72
     },
     {
+        "core": 7,
         "dest": 1737,
         "imm": 1936,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5606,8 +5945,10 @@
         "width": 16
     },
     {
+        "core": 7,
         "dest": 512,
         "read": 1737,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -5616,22 +5957,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                4,
-                "f"
-            ]
+            4
         ]
     },
     {
+        "core": 7,
         "dest": 1865,
         "read": 1280,
+        "tile": 3,
         "type": "copy",
         "vec": 72
     },
     {
+        "core": 7,
         "dest": 1937,
         "imm": 1808,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5645,8 +5987,10 @@
         "width": 16
     },
     {
+        "core": 7,
         "dest": 384,
         "read": 1937,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -5655,22 +5999,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                3,
-                "f"
-            ]
+            3
         ]
     },
     {
+        "core": 7,
         "dest": 1937,
         "read": 1152,
+        "tile": 3,
         "type": "copy",
         "vec": 72
     },
     {
+        "core": 7,
         "dest": 2009,
         "imm": 1680,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5684,8 +6029,10 @@
         "width": 16
     },
     {
+        "core": 7,
         "dest": 256,
         "read": 2009,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -5694,10 +6041,7 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                2,
-                "f"
-            ]
+            2
         ]
     },
     {
@@ -5740,9 +6084,11 @@
         "vec": 72
     },
     {
+        "core": 7,
         "dest": 1865,
         "imm": 2448,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5756,8 +6102,10 @@
         "width": 12
     },
     {
+        "core": 7,
         "dest": 128,
         "read": 1537,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -5766,21 +6114,22 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                1,
-                "f"
-            ]
+            1
         ]
     },
     {
+        "core": 7,
         "dest": 1537,
         "read": 896,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 7,
         "dest": 0,
         "read": 1737,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
@@ -5789,22 +6138,23 @@
         "tile": 3,
         "type": "mvm",
         "xbar": [
-            [
-                0,
-                "f"
-            ]
+            0
         ]
     },
     {
+        "core": 7,
         "dest": 1665,
         "read": 768,
+        "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 7,
         "dest": 1793,
         "imm": 2192,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5847,9 +6197,11 @@
         "vec": 128
     },
     {
+        "core": 7,
         "dest": 1665,
         "imm": 2320,
         "is_address": true,
+        "tile": 3,
         "type": "set",
         "vec": 1
     },
@@ -5896,9 +6248,11 @@
         "type": "halt"
     },
     {
+        "core": 0,
         "dest": 1537,
         "imm": 128,
         "is_address": true,
+        "tile": 4,
         "type": "set",
         "vec": 1
     },
@@ -5912,8 +6266,10 @@
         "width": 12
     },
     {
+        "core": 0,
         "dest": 128,
         "read": 1537,
+        "tile": 4,
         "type": "copy",
         "vec": 72
     },
@@ -5922,22 +6278,23 @@
         "tile": 4,
         "type": "mvm",
         "xbar": [
-            [
-                1,
-                "f"
-            ]
+            1
         ]
     },
     {
+        "core": 0,
         "dest": 1537,
         "read": 896,
+        "tile": 4,
         "type": "copy",
         "vec": 10
     },
     {
+        "core": 0,
         "dest": 1547,
         "imm": 0,
         "is_address": true,
+        "tile": 4,
         "type": "set",
         "vec": 1
     },
@@ -5951,8 +6308,10 @@
         "width": 16
     },
     {
+        "core": 0,
         "dest": 0,
         "read": 1547,
+        "tile": 4,
         "type": "copy",
         "vec": 128
     },
@@ -5961,10 +6320,7 @@
         "tile": 4,
         "type": "mvm",
         "xbar": [
-            [
-                0,
-                "f"
-            ]
+            0
         ]
     },
     {
@@ -5978,9 +6334,11 @@
         "vec": 10
     },
     {
+        "core": 0,
         "dest": 1547,
         "imm": 200,
         "is_address": true,
+        "tile": 4,
         "type": "set",
         "vec": 1
     },
