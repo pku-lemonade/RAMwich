@@ -30,7 +30,7 @@ class Core:
 
     def __repr__(self) -> str:
         return f"Core({self.id}, mvmus={len(self.mvmus)})"
-    
+
     def get_mvmu(self, mvmu_id: int):
         """Get the MVMU instance by ID"""
         return self.mvmus[mvmu_id]

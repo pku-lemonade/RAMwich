@@ -1,7 +1,6 @@
 from typing import List
 
 import numpy as np
-
 from pydantic import BaseModel, Field
 
 from ..stats import Stats
@@ -32,7 +31,7 @@ class Xbar:
         self.pos_xbar = np.zeros((size, size))
         self.neg_xbar = np.zeros((size, size))
         self.stats = XbarStats()
-    
+
     def load_weights(self, weights: np.ndarray):
         """Load weights into the crossbar"""
         for i in range(self.size):

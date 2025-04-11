@@ -1,7 +1,6 @@
 import json
 import logging
 import os
-import sys
 from typing import List
 
 import simpy
@@ -11,7 +10,7 @@ from .config import Config
 from .core import Core
 from .mvmu import MVMU
 from .node import Node
-from .ops import CoreOp, OpType, TileOp, Operation, Weight
+from .ops import CoreOp, Operation, TileOp, Weight
 from .stats import Stats
 from .tile import Tile
 from .utils.visualize import summarize_results
@@ -108,7 +107,7 @@ class RAMwich:
 
             except ValueError as e:
                 logger.warning(str(e))
-    
+
     def load_weights(self, file_path: str):
         """Load weights from a JSON file and organize by node/tile/core/mvmu hierarchy"""
         if not os.path.exists(file_path):
@@ -121,7 +120,7 @@ class RAMwich:
             else:
                 logger.error(f"Unsupported file format: {file_path}. Only JSON is supported.")
                 return
-        
+
         for weight_data in data:
             weight = Weight.model_validate(weight_data)
             node = self.get_node(weight.node)
@@ -130,7 +129,7 @@ class RAMwich:
             mvmu = core.get_mvmu(weight.mvmu)
 
             mvmu.load_weights(weight.value)
-                
+
     def run(self, ops_file: str, weights_file: str = None):
         """Run the simulation with operations from the specified file"""
         # Load operations into node/tile/core hierarchy
