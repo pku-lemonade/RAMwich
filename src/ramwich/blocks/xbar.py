@@ -29,6 +29,9 @@ class Xbar:
         self.size = size
         self.memory = [0] * size
         self.stats = XbarStats()
+    
+    def load_weights(self, weights: List[List[float]]):
+        """Load weights into the crossbar"""
 
     def __repr__(self):
         return f"Xbar({self.id}, size={self.size})"

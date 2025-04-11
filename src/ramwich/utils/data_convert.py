@@ -1,10 +1,9 @@
 import numpy as np
 
-def bin2conductance(binary_string: str, bits: int, conductance_min: float = 0, conductance_max: float = 1):
-    assert (len(binary_string) == bits), 'length of input binary string should be same with bits'
-    level = int(binary_string, 2)
-    step = float((conductance_max - conductance_min)) / (2 ** bits - 1)
-    return conductance_min + (level * step)
+def int2conductance(int_data: int, bits: int, conductance_min: float = 0, conductance_max: float = 1):
+    assert int_data < (2 ** bits), "int_data must be less than 2^bits"
+    step = (conductance_max - conductance_min) / (2 ** bits - 1)
+    return conductance_min + (int_data * step)
 
 # this function is used to convert a bin to its 2s compliment
 
@@ -31,13 +30,13 @@ def bin2int (binary_string: str, bits: int, compliment: bool = True):
     return val
 
 def int2bin (int_data: int, bits: int):
-    data_str = bin(int_data & (2**bits-1))[2:].zfill(bits)
+    data_str = bin(int_data & (2 ** bits - 1))[2:].zfill(bits)
     return data_str
 
 def float2fixed (float_data: float, int_bits: int, frac_bits: int):
     temp = float_data * (2 ** frac_bits)
     temp = int(round(temp))
-    return int2bin (temp, (int_bits + frac_bits))
+    return int2bin(temp, (int_bits + frac_bits))
 
 def fixed2float (binary_string: str, int_bits: int, frac_bits: int, compliment: bool = True):
     temp = bin2int (binary_string, (int_bits + frac_bits), compliment)

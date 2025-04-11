@@ -5,7 +5,7 @@ from .blocks.dac import DAC
 from .blocks.xbar import Xbar
 from .config import DataConfig, DACConfig, XBARConfig, ADCConfig, MVMUConfig, Config
 from .stats import Stats
-from .utils.data_convert import float2fixed, bin2conductance
+from .utils.data_convert import int2conductance
 
 
 class MVMU:
@@ -61,27 +61,15 @@ class MVMU:
 
         for i in range(self.xbar_config.xbar_size):
             for j in range(self.xbar_config.xbar_size):
-                negative = False # mark if we are storing a negative number, positive and negative are stored separately
-                if log_xbar[i][j] < 0:
-                    negative = True
-                    temp_val = float2fixed(-1 * log_xbar[i][j], self.data_config.int_bits, self.data_config.frac_bits)
-                else:
-                    temp_val = float2fixed(log_xbar[i][j], self.data_config.int_bits, self.data_config.frac_bits)
+                sign = 1 if log_xbar[i][j] >= 0 else -1 # mark if we are storing a negative number, positive and negative are stored separately
+                int_val = int(sign * log_xbar[i][j] * (2 ** self.data_config.frac_bits))
                     
-                assert(len(temp_val) == self.data_config.num_bits)
                 for k in range(self.data_config.reram_xbar_num_per_matrix):
-                    if k == 0:
-                        val = temp_val[-1 * self.data_config.stored_bit[k + 1]:]
-                    elif k == self.data_config.reram_xbar_num_per_matrix - 1:
-                        val = temp_val[:self.data_config.bits_per_cell[k]]
-                    else:
-                        val = temp_val[-1 * self.data_config.stored_bit[k + 1]: -1 * self.data_config.stored_bit[k + 1] + self.data_config.bits_per_cell[k]]
-                        # we storage negative resistance values here.
-                        # when programing to xbar it will be separated to a positive xbar and a negative xbar
-                        if negative:
-                            phy_xbar[k][i][j] = -1 * bin2conductance(val, self.data_config.bits_per_cell[k], self.xbar_config.reram_conductance_min, self.xbar_config.reram_conductance_max)
-                        else:
-                            phy_xbar[k][i][j] = bin2conductance(val, self.data_config.bits_per_cell[k], self.xbar_config.reram_conductance_min, self.xbar_config.reram_conductance_max)
+                    val = int_val >> (self.data_config.num_bits >> self.data_config.stored_bit[k]) & ((1 << self.data_config.bits_per_cell[k]) - 1)
+
+                    # we storage negative resistance values here.
+                    # when programing to xbar it will be separated to a positive xbar and a negative xbar
+                    phy_xbar[k][i][j] = sign * int2conductance(val, self.data_config.bits_per_cell[k], self.xbar_config.reram_conductance_min, self.xbar_config.reram_conductance_max)
         
         for i in range(self.data_config.reram_xbar_num_per_matrix):
             self.xbars[i].load_weights(phy_xbar[i])

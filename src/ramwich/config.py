@@ -29,19 +29,22 @@ class DataConfig(BaseModel):
         self.stored_bit = []
         self.bits_per_cell = []
     
-        self.num_bits = 0 # total bits number in the operand
+        bits = 0 # total bits number in the operand
         self.reram_xbar_num_per_matrix = 0 # number of ReRAM xbars
         self.sram_xbar_num_per_matrix = 0 # number of SRAM xbars
         for i in self.storage_config:
-            self.stored_bit.append(self.num_bits)
+            self.stored_bit.append(bits)
             if i == BitConfig.SRAM:
-                self.num_bits += 1
                 self.sram_xbar_num_per_matrix += 1
                 self.bits_per_cell.append(1)
+                bits += 1
             else:
-                self.num_bits += int(i)
                 self.reram_xbar_num_per_matrix += 1
                 self.bits_per_cell.append(int(i))
+                bits += int(i)
+        self.stored_bit.append(bits)
+
+        self.num_bits = bits
 
         assert self.int_bits + self.frac_bits == self.num_bits, 'storage config invalid: check if total bits in storage config = int_bits + frac_bits'
 
