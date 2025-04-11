@@ -1,7 +1,7 @@
 from .blocks.adc import ADC
 from .blocks.dac import DAC
 from .blocks.xbar import Xbar
-from .config import DataConfig, DACConfig, XBARConfig, ADCConfig, MVMUConfig
+from .config import DataConfig, DACConfig, XBARConfig, ADCConfig, MVMUConfig, Config
 from .stats import Stats
 
 
@@ -10,21 +10,14 @@ class MVMU:
     Matrix-Vector Multiply unit with multiple crossbar arrays with detailed hardware simulation.
     """
 
-    def __init__(
-        self, id: int = 0,
-        data_config: DataConfig = None,
-        mvmu_config: MVMUConfig = None,
-        dac_config: DACConfig = None,
-        xbar_config: XBARConfig = None,
-        adc_config: ADCConfig = None
-    ):
+    def __init__(self, id: int = 0, config: Config = None):
         # Basic MVMU properties
         self.id = id
-        self.data_config = data_config or DataConfig()
-        self.dac_config = dac_config or DACConfig()
-        self.xbar_config = xbar_config or XBARConfig()
-        self.adc_config = adc_config or ADCConfig()
-        self.mvmu_config = mvmu_config or MVMUConfig()
+        self.data_config = config.data_config or DataConfig()
+        self.dac_config = config.dac_config or DACConfig()
+        self.xbar_config = config.xbar_config or XBARConfig()
+        self.adc_config = config.adc_config or ADCConfig()
+        self.mvmu_config = config.mvmu_config or MVMUConfig()
 
         # Initialize Xbar arrays
         self.xbars = [
@@ -44,6 +37,9 @@ class MVMU:
 
     def __repr__(self):
         return f"MVMU({self.id}, xbars={len(self.xbars)})"
+    
+    def load_weights(self, values: List[float]):
+        """Load weights into the crossbar arrays"""
 
     def _execute_mvm(self, instruction):
         """Execute a detailed matrix-vector multiplication instruction"""

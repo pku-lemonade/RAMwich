@@ -11,7 +11,7 @@ from .config import Config
 from .core import Core
 from .mvmu import MVMU
 from .node import Node
-from .ops import CoreOp, OpType, TileOp, Operation
+from .ops import CoreOp, OpType, TileOp, Operation, Weight
 from .stats import Stats
 from .tile import Tile
 from .utils.visualize import summarize_results
@@ -53,14 +53,7 @@ class RAMwich:
 
                     for mvmu_id in range(self.config.num_mvmus_per_core):
                         # Create MVMU with its xbars
-                        mvmu = MVMU(
-                            id=mvmu_id,
-                            data_config=self.config.data_config,
-                            dac_config=self.config.dac_config,
-                            xbar_config=self.config.xbar_config,
-                            adc_config=self.config.adc_config,
-                            mvmu_config=self.config.mvmu_config
-                        )
+                        mvmu = MVMU(id=mvmu_id, config=self.config)
                         mvmus.append(mvmu)
 
                     # Create Core with its MVMUs and config
@@ -115,8 +108,30 @@ class RAMwich:
 
             except ValueError as e:
                 logger.warning(str(e))
+    
+    def load_weights(self, file_path: str):
+        """Load weights from a JSON file and organize by node/tile/core/mvmu hierarchy"""
+        if not os.path.exists(file_path):
+            logger.error(f"Weight file {file_path} not found")
+            return
+
+        with open(file_path, "r") as f:
+            if file_path.endswith(".json"):
+                data = json.load(f)
+            else:
+                logger.error(f"Unsupported file format: {file_path}. Only JSON is supported.")
+                return
+        
+        for weight_data in data:
+            weight = Weight.model_validate(weight_data)
+            node = self.get_node(weight.node)
+            tile = node.get_tile(weight.tile)
+            core = tile.get_core(weight.core)
+            mvmu = core.get_mvmu(weight.mvmu)
+
+            mvmu.load_weights(weight.value)
                 
-    def run(self, ops_file: str):
+    def run(self, ops_file: str, weights_file: str = None):
         """Run the simulation with operations from the specified file"""
         # Load operations into node/tile/core hierarchy
         self.load_operations(ops_file)
