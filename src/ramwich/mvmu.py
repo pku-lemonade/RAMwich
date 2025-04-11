@@ -1,5 +1,7 @@
 from typing import List
 
+import numpy as np
+
 from .blocks.adc import ADC
 from .blocks.dac import DAC
 from .blocks.xbar import Xbar
@@ -49,27 +51,20 @@ class MVMU:
         if len(values) != expected_length:
             raise ValueError(f"Expected {expected_length} weight values for a {self.xbar_config.xbar_size}×{self.xbar_config.xbar_size} crossbar, but got {len(values)}")
 
-        log_xbar = []
-        for i in range(self.xbar_config.xbar_size):
-            start_idx = i * self.xbar_config.xbar_size
-            end_idx = start_idx + self.xbar_config.xbar_size
-            log_xbar.append(values[start_idx:end_idx])
-        
-        phy_xbar = [[[0.0 for _ in range(self.xbar_config.xbar_size)] 
-                for _ in range(self.xbar_config.xbar_size)] 
-                for _ in range(self.data_config.reram_xbar_num_per_matrix)]
+        logical_xbar = np.array(values).reshape(self.xbar_config.xbar_size, self.xbar_config.xbar_size)
+        phy_xbar = np.zeros((self.data_config.reram_xbar_num_per_matrix, self.xbar_config.xbar_size, self.xbar_config.xbar_size))
 
         for i in range(self.xbar_config.xbar_size):
             for j in range(self.xbar_config.xbar_size):
-                sign = 1 if log_xbar[i][j] >= 0 else -1 # mark if we are storing a negative number, positive and negative are stored separately
-                int_val = int(sign * log_xbar[i][j] * (2 ** self.data_config.frac_bits))
+                sign = 1 if logical_xbar[i][j] >= 0 else -1 # mark if we are storing a negative number, positive and negative are stored separately
+                int_val = int(sign * logical_xbar[i][j] * (2 ** self.data_config.frac_bits))
                     
                 for k in range(self.data_config.reram_xbar_num_per_matrix):
-                    val = int_val >> (self.data_config.num_bits >> self.data_config.stored_bit[k]) & ((1 << self.data_config.bits_per_cell[k]) - 1)
+                    clipped_val = int_val >> (self.data_config.num_bits >> self.data_config.stored_bit[k]) & ((1 << self.data_config.bits_per_cell[k]) - 1)
 
                     # we storage negative resistance values here.
                     # when programing to xbar it will be separated to a positive xbar and a negative xbar
-                    phy_xbar[k][i][j] = sign * int2conductance(val, self.data_config.bits_per_cell[k], self.xbar_config.reram_conductance_min, self.xbar_config.reram_conductance_max)
+                    phy_xbar[k][i][j] = sign * int2conductance(clipped_val, self.data_config.bits_per_cell[k], self.xbar_config.reram_conductance_min, self.xbar_config.reram_conductance_max)
         
         for i in range(self.data_config.reram_xbar_num_per_matrix):
             self.xbars[i].load_weights(phy_xbar[i])
