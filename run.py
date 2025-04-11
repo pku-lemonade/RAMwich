@@ -13,10 +13,14 @@ def main():
     parser = argparse.ArgumentParser(description="RAMwich Simulator")
     parser.add_argument("--ops", required=True, help="OP file (JSON)")
     parser.add_argument("--config", required=True, help="Configuration file (YAML)")
+    parser.add_argument("--weight", required=False, help="Weight file (JSON)")
     args = parser.parse_args()
 
     simulator = RAMwich(config_file=args.config)
-    simulator.run(ops_file=args.ops)
+    if args.weight:
+        simulator.run(ops_file=args.ops, weight_file=args.weight)
+    else:
+        simulator.run(ops_file=args.ops)
 
     # Get statistics and pass to visualization
     stats = simulator.get_stats()
