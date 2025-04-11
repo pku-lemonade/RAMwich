@@ -134,3 +134,12 @@ class Operation(BaseModel):
     model_config = ConfigDict(frozen=True)
     
     op: OpType
+
+class Weight(BaseModel):
+    model_config = ConfigDict(frozen=True)
+    
+    node: int = 0
+    tile: int
+    core: int
+    mvmu: int
+    value: List[float]
