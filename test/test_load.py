@@ -31,7 +31,9 @@ def main():
         width=16,
         vec=1
     )
+    validate_weight = 1
     assert (simulator.get_node(0).get_tile(0).operations[0] == validate_op), "Operation not loaded correctly"
+    assert (simulator.get_node(0).get_tile(2).cores[0].mvmus[0].xbars[0].neg_xbar[0][0] == validate_weight), "Weight not loaded correctly"
 
 
 if __name__ == "__main__":

@@ -52,22 +52,25 @@ class MVMU:
             raise ValueError(f"Expected {expected_length} weight values for a {self.xbar_config.xbar_size}×{self.xbar_config.xbar_size} crossbar, but got {len(values)}")
 
         logical_xbar = np.array(values).reshape(self.xbar_config.xbar_size, self.xbar_config.xbar_size)
-        phy_xbar = np.zeros((self.data_config.reram_xbar_num_per_matrix, self.xbar_config.xbar_size, self.xbar_config.xbar_size))
+        physical_xbar = np.zeros((self.data_config.reram_xbar_num_per_matrix, self.xbar_config.xbar_size, self.xbar_config.xbar_size))
 
         for i in range(self.xbar_config.xbar_size):
             for j in range(self.xbar_config.xbar_size):
-                sign = 1 if logical_xbar[i][j] >= 0 else -1 # mark if we are storing a negative number, positive and negative are stored separately
+
+                # Mark if we are storing a negative number
+                sign = 1 if logical_xbar[i][j] >= 0 else -1
                 int_val = int(sign * logical_xbar[i][j] * (2 ** self.data_config.frac_bits))
                     
                 for k in range(self.data_config.reram_xbar_num_per_matrix):
-                    clipped_val = int_val >> (self.data_config.num_bits >> self.data_config.stored_bit[k]) & ((1 << self.data_config.bits_per_cell[k]) - 1)
 
-                    # we storage negative resistance values here.
-                    # when programing to xbar it will be separated to a positive xbar and a negative xbar
-                    phy_xbar[k][i][j] = sign * int2conductance(clipped_val, self.data_config.bits_per_cell[k], self.xbar_config.reram_conductance_min, self.xbar_config.reram_conductance_max)
+                    clipped_val = (int_val >> self.data_config.stored_bit[k]) & ((1 << self.data_config.bits_per_cell[k]) - 1)
+
+                    # Here we storage negative resistance values to physical xbar.
+                    # When programing to xbar it will be separated to a positive xbar and a negative xbar
+                    physical_xbar[k][i][j] = sign * int2conductance(clipped_val, self.data_config.bits_per_cell[k], self.xbar_config.reram_conductance_min, self.xbar_config.reram_conductance_max)
         
         for i in range(self.data_config.reram_xbar_num_per_matrix):
-            self.xbars[i].load_weights(phy_xbar[i])
+            self.xbars[i].load_weights(physical_xbar[i])
 
     def _execute_mvm(self, instruction):
         """Execute a detailed matrix-vector multiplication instruction"""
