@@ -22,8 +22,14 @@ ETA: 2 days
 - [ ] modify stats class according to puma simulator
 
 ETA: 1 week (1 day for each unit)
-- [ ] move the puma simulator functional simultion logic to RAMwich (add details in mvmu/adc/alu, need to decompose this task into smaller tasks later)
+- [ ] move the puma simulator functional simultion logic to RAMwich (add details in mvmu/adc/alu, need to decompose this task into smaller tasks later) Here is a more detailed plan:
+  - [ ] run timing simulation, check with puma that cycles match
+  - [ ] run functional simulation, verify that accuracy match
+
 - [ ] test the RAMwich simulator with mlp, verify that cylces, energy, and area are aligned with puma
 
 ETA: 2 days
 - [ ] test the RAMwich simulator with mlp, verify that accuracy is aligned
+
+misc:
+- [ ] save/load weight in npy
