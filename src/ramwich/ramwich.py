@@ -8,9 +8,9 @@ import yaml
 
 from .config import Config
 from .core import Core
-from .ima import IMA
+from .mvmu import MVMU
 from .node import Node
-from .ops import CoreOp, OpType, TileOp
+from .ops import CoreOp, Operation, TileOp, Weight
 from .stats import Stats
 from .tile import Tile
 from .utils.visualize import summarize_results
@@ -21,9 +21,6 @@ logger = logging.getLogger(__name__)
 
 class RAMwich:
     def __init__(self, config_file: str):
-        # Default configuration
-        self.config: Config = Config()
-
         # Load configuration from file
         if not os.path.exists(config_file):
             raise FileNotFoundError(f"Configuration file {config_file} not found")
@@ -51,15 +48,15 @@ class RAMwich:
                 cores = []
 
                 for core_id in range(self.config.num_cores_per_tile):
-                    imas = []
+                    mvmus = []
 
-                    for ima_id in range(self.config.num_imas_per_core):
-                        # Create IMA with its xbars
-                        ima = IMA(id=ima_id)
-                        imas.append(ima)
+                    for mvmu_id in range(self.config.num_mvmus_per_core):
+                        # Create MVMU with its xbars
+                        mvmu = MVMU(id=mvmu_id, config=self.config)
+                        mvmus.append(mvmu)
 
-                    # Create Core with its IMAs and config
-                    core = Core(id=core_id, imas=imas, config=self.config)
+                    # Create Core with its MVMUs and config
+                    core = Core(id=core_id, mvmus=mvmus, config=self.config)
                     cores.append(core)
 
                 # Create Tile with its Cores and config
@@ -92,7 +89,8 @@ class RAMwich:
         for op_data in data:
             try:
                 # Parse the operation using Pydantic discriminated union
-                op = OpType.model_validate(op_data)
+                operation = Operation.model_validate({"op": op_data})
+                op = operation.op
 
                 # Access the node and tile
                 node = self.get_node(op.node)
@@ -110,7 +108,29 @@ class RAMwich:
             except ValueError as e:
                 logger.warning(str(e))
 
-    def run(self, ops_file: str):
+    def load_weights(self, file_path: str):
+        """Load weights from a JSON file and organize by node/tile/core/mvmu hierarchy"""
+        if not os.path.exists(file_path):
+            logger.error(f"Weight file {file_path} not found")
+            return
+
+        with open(file_path, "r") as f:
+            if file_path.endswith(".json"):
+                data = json.load(f)
+            else:
+                logger.error(f"Unsupported file format: {file_path}. Only JSON is supported.")
+                return
+
+        for weight_data in data:
+            weight = Weight.model_validate(weight_data)
+            node = self.get_node(weight.node)
+            tile = node.get_tile(weight.tile)
+            core = tile.get_core(weight.core)
+            mvmu = core.get_mvmu(weight.mvmu)
+
+            mvmu.load_weights(weight.value)
+
+    def run(self, ops_file: str, weights_file: str = None):
         """Run the simulation with operations from the specified file"""
         # Load operations into node/tile/core hierarchy
         self.load_operations(ops_file)

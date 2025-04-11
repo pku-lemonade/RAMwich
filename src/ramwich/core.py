@@ -3,7 +3,7 @@ from typing import List
 
 from .blocks.dram import DRAM
 from .blocks.sram import SRAM
-from .ima import IMA
+from .mvmu import MVMU
 from .ops import CoreOp
 from .pipeline import Pipeline, StageConfig
 from .stats import Stats
@@ -14,12 +14,12 @@ logger = logging.getLogger(__name__)
 
 class Core:
     """
-    Core in the RAMwich architecture, containing multiple IMAs.
+    Core in the RAMwich architecture, containing multiple MVMUs.
     """
 
-    def __init__(self, id: int, imas: List[IMA], config, dram_capacity: int = 1024):
+    def __init__(self, id: int, mvmus: List[MVMU], config, dram_capacity: int = 1024):
         self.id = id
-        self.imas = imas
+        self.mvmus = mvmus
         self.config = config
         self.operations: List[CoreOp] = []
 
@@ -29,11 +29,15 @@ class Core:
         self.stats = Stats()
 
     def __repr__(self) -> str:
-        return f"Core({self.id}, imas={len(self.imas)})"
+        return f"Core({self.id}, mvmus={len(self.mvmus)})"
+
+    def get_mvmu(self, mvmu_id: int):
+        """Get the MVMU instance by ID"""
+        return self.mvmus[mvmu_id]
 
     def get_stats(self) -> Stats:
         """Get statistics for this Core by aggregating from all components"""
-        return self.stats.get_stats(self.imas + [self.dram, self.sram])
+        return self.stats.get_stats(self.mvmus + [self.dram, self.sram])
 
     def run(self, env):
         """

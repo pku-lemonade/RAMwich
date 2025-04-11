@@ -189,12 +189,12 @@ class CoreExecutionFunctionalVisitor(CoreVisitor):
     def visit_mvm(self, op):
         try:
             for xbar_id, matrix_type in op.xbar:
-                if 0 <= xbar_id < len(self.core.imas):
-                    success = self.core.imas[xbar_id].execute_mvm(matrix_type)
+                if 0 <= xbar_id < len(self.core.mvmus):
+                    success = self.core.mvmus[xbar_id].execute_mvm(matrix_type)
                     if not success:
                         return
                 else:
-                    logger.error(f"MVM operation failed: Invalid IMA ID {xbar_id}")
+                    logger.error(f"MVM operation failed: Invalid MVMU ID {xbar_id}")
                     return
             self.core.stats.increment_op_count("mvm")
         except Exception as e:

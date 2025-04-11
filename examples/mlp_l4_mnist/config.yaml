@@ -1,0 +1,57 @@
+# This is the configuration file for running the RAMwich simulator with the 4 layer MLP using MNIST dataset.
+
+# System Architecture
+num_nodes: 1
+num_tiles_per_node: 5
+num_cores_per_tile: 8
+num_mvmus_per_core: 6
+
+addr_width: 32
+data_width: 16
+instrn_width: 48
+
+# Data Configuration
+data_config:
+  storage_config: ["2", "2", "2", "2", "2", "2", "2", "2"] # 8 MLCs
+  int_bits: 8
+  frac_bits: 8
+
+# DAC Configuration
+dac_config:
+  resolution: 1  # DAC resolution in bits
+  # Other parameters (dac_lat, dac_pow_dyn, dac_pow_leak, dac_area) are derived
+
+# Crossbar Configuration
+xbar_config:
+  xbar_size: 128  # Crossbar size
+  # Other parameters (mvmu_xbar_ip_lat, mvmu_alu_lat, etc.) are derived
+
+# ADC Configuration
+adc_config:
+  adc_type: "normal"  # ADC type, can be "normal" or "differential"
+  resolution: 8  # ADC resolution in bits
+  # Other parameters (adc_lat, adc_pow_dyn, adc_pow_leak, adc_area) are derived
+
+# Network-on-Chip Configuration
+noc_config:
+  inj_rate: 0.005  # Injection rate
+  num_port: 4      # Number of ports
+  # Other parameters (noc_intra_lat, noc_intra_pow_dyn, etc.) are derived
+
+# Tile Configuration
+tile_config:
+  num_tiles_per_node: 5
+  num_cores_per_tile: 8
+  num_mvmus_per_core: 6
+  # Other parameters (tile_lat, tile_pow_dyn, etc.) are derived
+
+# Core Configuration
+core_config:
+  dataMem_size: 4096
+  instrnMem_size: 131072
+  # Other parameters (core_lat, core_pow_dyn, etc.) are derived
+
+# MVMU Configuration
+mvmu_config:
+  num_columns_per_adc: 16
+  # Other parameters (snh_lat, mux_lat, sna_lat, etc.) are derived
