@@ -129,8 +129,8 @@ class XBARConfig(BaseModel):
     xbar_rd_pow: float = Field(default=208.0 * 1000 * (1 / 32.0) / (328.0 * 1000 * (1 / 32.0)), description="XBAR read power")
     xbar_wr_pow: float = Field(default=676.0 * 1000 * (1 / 32.0) / (328.0 * 1000 * (1 / 32.0)), description="XBAR write power")
 
-    ReRAM_conductance_min: float = Field(default=0, description="Min value of ReRAM conductance")
-    ReRAM_conductance_max: float = Field(default=1, description="Max value of ReRAM conductance")
+    reram_conductance_min: float = Field(default=0, description="Min value of ReRAM conductance")
+    reram_conductance_max: float = Field(default=1, description="Max value of ReRAM conductance")
 
     xbar_size: int = Field(default=128, description="Crossbar size")
     reram_read_sigma: float = Field(default=0, description="ReRAM read sigma")
