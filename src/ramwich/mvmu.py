@@ -7,7 +7,7 @@ from .blocks.dac import DAC
 from .blocks.xbar import Xbar
 from .config import ADCConfig, Config, DACConfig, DataConfig, MVMUConfig, XBARConfig
 from .stats import Stats
-from .utils.data_convert import int2conductance
+from .utils.data_convert import extract_bits, float_to_fixed, int_to_conductance
 
 
 class MVMU:
@@ -46,45 +46,40 @@ class MVMU:
     def __repr__(self):
         return f"MVMU({self.id}, xbars={len(self.xbars)})"
 
-    def load_weights(self, values: List[float]):
+    def load_weights(self, weights: List[float]):
         """Load weights into the crossbar arrays"""
 
         # Validate input length
         expected_length = self.xbar_config.xbar_size * self.xbar_config.xbar_size
-        if len(values) != expected_length:
+        if len(weights) != expected_length:
             raise ValueError(
                 f"Expected {expected_length} weight values for a {self.xbar_config.xbar_size}×{self.xbar_config.xbar_size} crossbar, but got {len(values)}"
             )
 
-        logical_xbar = np.array(values).reshape(self.xbar_config.xbar_size, self.xbar_config.xbar_size)
-        physical_xbar = np.zeros(
+        weights = np.array(weights).reshape(self.xbar_config.xbar_size, self.xbar_config.xbar_size)
+        xbar_weights = np.zeros(
             (self.data_config.reram_xbar_num_per_matrix, self.xbar_config.xbar_size, self.xbar_config.xbar_size)
         )
 
         for i in range(self.xbar_config.xbar_size):
             for j in range(self.xbar_config.xbar_size):
-
-                # Mark if we are storing a negative number
-                sign = 1 if logical_xbar[i][j] >= 0 else -1
-                int_val = int(sign * logical_xbar[i][j] * (2**self.data_config.frac_bits))
-
+                int_weight = float_to_fixed(weights[i][j], self.data_config.frac_bits)
+                sign = 1 if int_weight >= 0 else -1
                 for k in range(self.data_config.reram_xbar_num_per_matrix):
-
-                    clipped_val = (int_val >> self.data_config.stored_bit[k]) & (
-                        (1 << self.data_config.bits_per_cell[k]) - 1
+                    xbar_int_weight = extract_bits(
+                        int_weight, self.data_config.stored_bit[k], self.data_config.stored_bit[k + 1]
                     )
-
                     # Here we storage negative resistance values to physical xbar.
                     # When programing to xbar it will be separated to a positive xbar and a negative xbar
-                    physical_xbar[k][i][j] = sign * int2conductance(
-                        clipped_val,
+                    xbar_weights[k][i][j] = sign * int_to_conductance(
+                        xbar_int_weight,
                         self.data_config.bits_per_cell[k],
                         self.xbar_config.reram_conductance_min,
                         self.xbar_config.reram_conductance_max,
                     )
 
-        for i in range(self.data_config.reram_xbar_num_per_matrix):
-            self.xbars[i].load_weights(physical_xbar[i])
+        for k in range(self.data_config.reram_xbar_num_per_matrix):
+            self.xbars[k].load_weights(xbar_weights[k])
 
     def _execute_mvm(self, instruction):
         """Execute a detailed matrix-vector multiplication instruction"""
