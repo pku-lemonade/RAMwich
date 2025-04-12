@@ -27,7 +27,7 @@ class MVMU:
         # Initialize Xbar arrays
         self.xbars = [
             Xbar(i, self.xbar_config.xbar_size if hasattr(self.mvmu_config, "xbar_size") else 32)
-            for i in range(self.data_config.reram_xbar_num_per_matrix)
+            for i in range(self.data_config.num_rram_xbar_per_matrix)
         ]
 
         self.stats = Stats()
@@ -58,14 +58,14 @@ class MVMU:
 
         weights = np.array(weights).reshape(self.xbar_config.xbar_size, self.xbar_config.xbar_size)
         xbar_weights = np.zeros(
-            (self.data_config.reram_xbar_num_per_matrix, self.xbar_config.xbar_size, self.xbar_config.xbar_size)
+            (self.data_config.num_rram_xbar_per_matrix, self.xbar_config.xbar_size, self.xbar_config.xbar_size)
         )
 
         for i in range(self.xbar_config.xbar_size):
             for j in range(self.xbar_config.xbar_size):
                 int_weight = float_to_fixed(weights[i][j], self.data_config.frac_bits)
                 sign = 1 if int_weight >= 0 else -1
-                for k in range(self.data_config.reram_xbar_num_per_matrix):
+                for k in range(self.data_config.num_rram_xbar_per_matrix):
                     xbar_int_weight = extract_bits(
                         int_weight, self.data_config.stored_bit[k], self.data_config.stored_bit[k + 1]
                     )
@@ -78,7 +78,7 @@ class MVMU:
                         self.xbar_config.reram_conductance_max,
                     )
 
-        for k in range(self.data_config.reram_xbar_num_per_matrix):
+        for k in range(self.data_config.num_rram_xbar_per_matrix):
             self.xbars[k].load_weights(xbar_weights[k])
 
     def _execute_mvm(self, instruction):
