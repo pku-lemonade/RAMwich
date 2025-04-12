@@ -26,7 +26,7 @@ class DataConfig(BaseModel):
     bits_per_cell: list = Field(default=None, init=False, description="Bits per cell")
     num_bits: int = Field(default=None, init=False, description="Total bits in operand")
     num_rram_xbar_per_matrix: int = Field(default=None, init=False, description="Number of ReRAM xbars")
-    sram_xbar_num_per_matrix: int = Field(default=None, init=False, description="Number of SRAM xbars")
+    num_sram_xbar_per_matrix: int = Field(default=None, init=False, description="Number of SRAM xbars")
 
     def __init__(self, **data):
         super().__init__(**data)
@@ -36,11 +36,11 @@ class DataConfig(BaseModel):
 
         bits = 0  # total bits number in the operand
         self.num_rram_xbar_per_matrix = 0  # number of ReRAM xbars
-        self.sram_xbar_num_per_matrix = 0  # number of SRAM xbars
+        self.num_sram_xbar_per_matrix = 0  # number of SRAM xbars
         for i in self.storage_config:
             self.stored_bit.append(bits)
             if i == BitConfig.SRAM:
-                self.sram_xbar_num_per_matrix += 1
+                self.num_sram_xbar_per_matrix += 1
                 self.bits_per_cell.append(1)
                 bits += 1
             else:
