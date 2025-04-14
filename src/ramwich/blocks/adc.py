@@ -11,20 +11,18 @@ class ADCStats(BaseModel):
 
     # Basic metrics
     conversions: int = Field(default=0, description="Number of A/D conversions performed")
-    samples_processed: int = Field(default=0, description="Total number of analog samples processed")
-    out_of_range_samples: int = Field(default=0, description="Number of samples that were out of ADC range")
-    quantization_errors: float = Field(default=0.0, description="Accumulated quantization error")
+    overflow_times: int = Field(default=0, description="Number of overflows that happens when converting")
+    conversion_errors: float = Field(default=0.0, description="Accumulated conversion error")
 
     # Performance metrics
     active_cycles: int = Field(default=0, description="Number of active cycles")
     energy_consumption: float = Field(default=0.0, description="Energy consumption in pJ")
 
-    def record_conversion(self, num_samples: int = 1, out_of_range: int = 0, quant_error: float = 0.0):
+    def record_conversion(self, overflow: int = 0, error: float = 0.0):
         """Record an ADC conversion operation"""
         self.conversions += 1
-        self.samples_processed += num_samples
-        self.out_of_range_samples += out_of_range
-        self.quantization_errors += quant_error
+        self.out_of_range_samples += overflow
+        self.conversion_errors += error
 
     def get_stats(self, adc_id: Optional[int] = None) -> Stats:
         """Get ADC-specific statistics"""
@@ -45,36 +43,34 @@ class ADC:
     """Hardware implementation of the ADC component"""
 
     def __init__(self, adc_config=None):
-        self.adc_config = adc_config if adc_config else ADCConfig()
+        self.adc_config = adc_config or ADCConfig()
 
         # Initialize stats
         self.stats = ADCStats()
 
     def convert(self, analog_value):
         """Simulate ADC conversion from analog to digital"""
-        # Calculate the number of cycles needed
-        cycles = self.adc_config.lat
 
         # Calculate max value based on resolution
-        max_value = (1 << self.resolution) - 1
-
-        # Check if value is out of range
-        out_of_range = 0
-        if analog_value < 0 or analog_value > 1:
-            out_of_range = 1
+        max_value = (1 << self.adc_config.resolution) - 1
 
         # Apply quantization based on resolution
-        capped_value = min(max(0, analog_value), 1)
-        ideal_value = capped_value * max_value
-        quantized = int(ideal_value)
-        quant_error = abs(ideal_value - quantized)
+        ideal_value = analog_value / self.adc_config.step
+        int_value = int(ideal_value)
+        error = ideal_value - int_value
+
+        # Check if overflow occurs
+        overflow = 0
+        if int_value > max_value:
+            int_value = max_value
+            overflow = 1
 
         # Update stats
-        self.stats.record_conversion(num_samples=1, out_of_range=out_of_range, quant_error=quant_error)
-        self.stats.active_cycles += cycles
-        self.stats.energy_consumption += self.adc_config.pow_dyn * cycles
+        self.stats.record_conversion(overflow=overflow, error=error)
+        self.stats.active_cycles += self.adc_config.lat
+        self.stats.energy_consumption += self.adc_config.pow_dyn
 
-        return quantized, cycles
+        return int_value
 
     def get_energy_consumption(self):
         """Return the total energy consumption in pJ"""
