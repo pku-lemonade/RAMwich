@@ -72,7 +72,7 @@ class MVMU:
         expected_length = self.xbar_config.xbar_size * self.xbar_config.xbar_size
         if len(weights) != expected_length:
             raise ValueError(
-                f"Expected {expected_length} weight values for a {self.xbar_config.xbar_size}×{self.xbar_config.xbar_size} crossbar, but got {len(values)}"
+                f"Expected {expected_length} weight values for a {self.xbar_config.xbar_size}×{self.xbar_config.xbar_size} crossbar, but got {len(weights)}"
             )
 
         weights = np.array(weights).reshape(self.xbar_config.xbar_size, self.xbar_config.xbar_size)
