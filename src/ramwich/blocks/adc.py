@@ -42,11 +42,13 @@ class ADCStats(BaseModel):
 class ADC:
     """Hardware implementation of the ADC component"""
 
-    def __init__(self, adc_config=None):
+    def __init__(self, adc_config=None, current_step: float = 0.01, adc_id: Optional[int] = None):
         self.adc_config = adc_config or ADCConfig()
 
         # Initialize stats
         self.stats = ADCStats()
+
+        self.current_step = current_step
 
     def convert(self, analog_value):
         """Simulate ADC conversion from analog to digital"""
@@ -55,7 +57,7 @@ class ADC:
         max_value = (1 << self.adc_config.resolution) - 1
 
         # Apply quantization based on resolution
-        ideal_value = analog_value / self.adc_config.step
+        ideal_value = analog_value / self.current_step
         int_value = int(ideal_value)
         error = ideal_value - int_value
 

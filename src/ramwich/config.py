@@ -202,9 +202,7 @@ class ADCConfig(BaseModel):
     pow_leak: float = Field(default=None, init=False, description="ADC leakage power")
     area: float = Field(default=None, init=False, description="ADC area")
 
-    step: float = Field(default=None, init=False, description="ADC step size")
-
-    def __init__(self, step: float = 0.01, **data):
+    def __init__(self, **data):
         super().__init__(**data)
         # Update derived values based on resolution if it's different from default
         if self.resolution in self.LAT_DICT:
@@ -213,7 +211,6 @@ class ADCConfig(BaseModel):
             self.pow_leak = self.POW_LEAK_DICT[self.resolution]
             self.area = self.AREA_DICT[self.resolution]
         
-        self.step = step
 
 
 class NOCConfig(BaseModel):
