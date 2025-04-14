@@ -204,7 +204,7 @@ class ADCConfig(BaseModel):
 
     step: float = Field(default=None, init=False, description="ADC step size")
 
-    def __init__(self, **data, step: float = 0.01):
+    def __init__(self, step: float = 0.01, **data):
         super().__init__(**data)
         # Update derived values based on resolution if it's different from default
         if self.resolution in self.LAT_DICT:
