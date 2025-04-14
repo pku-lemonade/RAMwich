@@ -25,7 +25,7 @@ class DataConfig(BaseModel):
     stored_bit: list = Field(default=None, init=False, description="Stored bit positions")
     bits_per_cell: list = Field(default=None, init=False, description="Bits per cell")
     num_bits: int = Field(default=None, init=False, description="Total bits in operand")
-    num_rram_xbar_per_matrix: int = Field(default=None, init=False, description="Number of ReRAM xbars")
+    num_rram_xbar_per_matrix: int = Field(default=None, init=False, description="Number of RRAM xbars")
     num_sram_xbar_per_matrix: int = Field(default=None, init=False, description="Number of SRAM xbars")
 
     def __init__(self, **data):
@@ -35,7 +35,7 @@ class DataConfig(BaseModel):
         self.bits_per_cell = []
 
         bits = 0  # total bits number in the operand
-        self.num_rram_xbar_per_matrix = 0  # number of ReRAM xbars
+        self.num_rram_xbar_per_matrix = 0  # number of RRAM xbars
         self.num_sram_xbar_per_matrix = 0  # number of SRAM xbars
         for i in self.storage_config:
             self.stored_bit.append(bits)
@@ -153,11 +153,11 @@ class XBARConfig(BaseModel):
         default=676.0 * 1000 * (1 / 32.0) / (328.0 * 1000 * (1 / 32.0)), description="XBAR write power"
     )
 
-    reram_conductance_min: float = Field(default=0, description="Min value of ReRAM conductance")
-    reram_conductance_max: float = Field(default=1, description="Max value of ReRAM conductance")
+    rram_conductance_min: float = Field(default=0, description="Min value of RRAM conductance")
+    rram_conductance_max: float = Field(default=1, description="Max value of RRAM conductance")
 
     xbar_size: int = Field(default=128, description="Crossbar size")
-    reram_read_sigma: float = Field(default=0, description="ReRAM read sigma")
+    rram_read_sigma: float = Field(default=0, description="RRAM read sigma")
 
     def __init__(self, **data):
         super().__init__(**data)
@@ -187,7 +187,7 @@ class ADCType(str, Enum):
 class ADCConfig(BaseModel):
     """Analog-to-Digital Converter configuration"""
 
-    ADC_TYPE: ADCType = Field(default=ADCType.NORMAL, description="ADC type")
+    type: ADCType = Field(default=ADCType.NORMAL, description="ADC type")
 
     # Class constants for lookup tables - using integers as keys instead of strings
     LAT_DICT: ClassVar[Dict[int, int]] = {1: 1, 2: 1, 4: 1, 8: 1, 16: 1}

@@ -1,6 +1,7 @@
 from typing import List
 
 import numpy as np
+import sys
 
 from .blocks.adc import ADC
 from .blocks.dac import DAC
@@ -22,10 +23,10 @@ class MVMU:
         self.dac_config = config.dac_config or DACConfig()
         self.xbar_config = config.xbar_config or XBARConfig()
         self.adc_config_list = []
-        for i in range(self.data_config.reram_xbar_num_per_matrix):
+        for i in range(self.data_config.num_rram_xbar_per_matrix):
             temp_adc_config = config.adc_config or ADCConfig()
             conductance_step = (
-                (self.xbar_config.reram_conductance_max - self.xbar_config.reram_conductance_min) /
+                (self.xbar_config.rram_conductance_max - self.xbar_config.rram_conductance_min) /
                 (2 ** self.data_config.bits_per_cell[i] - 1)
             )
             voltage_step = self.dac_config.VDD / (2 ** self.dac_config.resolution - 1)
@@ -44,11 +45,12 @@ class MVMU:
         # Initialize 2D array of ADCs organized as adcs[xbar_id][adc_id].
         # Each xbar has multiple ADCs based on the xbar_size divided by columns per ADC.
         # Number is multiplied by 2 for positive/negative crossbars for normal adcs, evens for positive and odds for negative.
+        adc_num_factor = 1 if self.adc_config_list[0].type == ADCType.DIFFERENTIAL else 2
         self.adcs = [[
                 ADC(self.adc_config_list[i])
-                for _ in range(int(self.xbar_config.xbar_size // self.mvmu_config.num_columns_per_adc * 2))
+                for _ in range(int(self.xbar_config.xbar_size // self.mvmu_config.num_columns_per_adc * adc_num_factor))
             ]
-            for i in range(self.data_config.reram_xbar_num_per_matrix)
+            for i in range(self.data_config.num_rram_xbar_per_matrix)
         ]
         # Initialize DACs.
         # MVMU has multiple DACs based on the xbar_size, 1 DAC per column.
@@ -80,8 +82,8 @@ class MVMU:
 
         for i in range(self.xbar_config.xbar_size):
             for j in range(self.xbar_config.xbar_size):
-                int_weight = float_to_fixed(weights[i][j], self.data_config.frac_bits)
-                sign = 1 if int_weight >= 0 else -1
+                sign = 1 if weights[i][j] >= 0 else -1
+                int_weight = float_to_fixed(sign * weights[i][j], self.data_config.frac_bits)
                 for k in range(self.data_config.num_rram_xbar_per_matrix):
                     xbar_int_weight = extract_bits(
                         int_weight, self.data_config.stored_bit[k], self.data_config.stored_bit[k + 1]
@@ -91,8 +93,8 @@ class MVMU:
                     xbar_weights[k][i][j] = sign * int_to_conductance(
                         xbar_int_weight,
                         self.data_config.bits_per_cell[k],
-                        self.xbar_config.reram_conductance_min,
-                        self.xbar_config.reram_conductance_max,
+                        self.xbar_config.rram_conductance_min,
+                        self.xbar_config.rram_conductance_max,
                     )
 
         for k in range(self.data_config.num_rram_xbar_per_matrix):
