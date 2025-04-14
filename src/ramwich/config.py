@@ -79,19 +79,19 @@ class DACConfig(BaseModel):
 
     resolution: int = Field(default=1, description="DAC resolution")
 
-    dac_lat: float = Field(default=None, init=False, description="DAC latency")
-    dac_pow_dyn: float = Field(default=None, init=False, description="DAC dynamic power")
-    dac_pow_leak: float = Field(default=None, init=False, description="DAC leakage power")
-    dac_area: float = Field(default=None, init=False, description="DAC area")
+    lat: float = Field(default=None, init=False, description="DAC latency")
+    pow_dyn: float = Field(default=None, init=False, description="DAC dynamic power")
+    pow_leak: float = Field(default=None, init=False, description="DAC leakage power")
+    area: float = Field(default=None, init=False, description="DAC area")
 
     def __init__(self, **data):
         super().__init__(**data)
         # Update derived values if resolution is different from default
         if self.resolution in self.LAT_DICT:
-            self.dac_lat = self.LAT_DICT[self.resolution]
-            self.dac_pow_dyn = self.POW_DYN_DICT[self.resolution]
-            self.dac_pow_leak = self.POW_LEAK_DICT[self.resolution]
-            self.dac_area = self.AREA_DICT[self.resolution]
+            self.lat = self.LAT_DICT[self.resolution]
+            self.pow_dyn = self.POW_DYN_DICT[self.resolution]
+            self.pow_leak = self.POW_LEAK_DICT[self.resolution]
+            self.area = self.AREA_DICT[self.resolution]
 
 
 class XBARConfig(BaseModel):
@@ -196,19 +196,19 @@ class ADCConfig(BaseModel):
 
     resolution: int = Field(default=8, description="ADC resolution")
 
-    adc_lat: float = Field(default=None, init=False, description="ADC latency")
-    adc_pow_dyn: float = Field(default=None, init=False, description="ADC dynamic power")
-    adc_pow_leak: float = Field(default=None, init=False, description="ADC leakage power")
-    adc_area: float = Field(default=None, init=False, description="ADC area")
+    lat: float = Field(default=None, init=False, description="ADC latency")
+    pow_dyn: float = Field(default=None, init=False, description="ADC dynamic power")
+    pow_leak: float = Field(default=None, init=False, description="ADC leakage power")
+    area: float = Field(default=None, init=False, description="ADC area")
 
     def __init__(self, **data):
         super().__init__(**data)
         # Update derived values based on resolution if it's different from default
         if self.resolution in self.LAT_DICT:
-            self.adc_lat = self.LAT_DICT[self.resolution]
-            self.adc_pow_dyn = self.POW_DYN_DICT[self.resolution]
-            self.adc_pow_leak = self.POW_LEAK_DICT[self.resolution]
-            self.adc_area = self.AREA_DICT[self.resolution]
+            self.lat = self.LAT_DICT[self.resolution]
+            self.pow_dyn = self.POW_DYN_DICT[self.resolution]
+            self.pow_leak = self.POW_LEAK_DICT[self.resolution]
+            self.area = self.AREA_DICT[self.resolution]
 
 
 class NOCConfig(BaseModel):
