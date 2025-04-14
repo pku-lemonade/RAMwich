@@ -78,6 +78,7 @@ class DACConfig(BaseModel):
     AREA_DICT: ClassVar[Dict[int, float]] = {1: 1.67e-7, 2: 1.67e-7, 4: 1.67e-7, 8: 1.67e-7, 16: 1.67e-7}
 
     resolution: int = Field(default=1, description="DAC resolution")
+    VDD: float = Field(default=1, description="Supply voltage")
 
     lat: float = Field(default=None, init=False, description="DAC latency")
     pow_dyn: float = Field(default=None, init=False, description="DAC dynamic power")
@@ -201,7 +202,9 @@ class ADCConfig(BaseModel):
     pow_leak: float = Field(default=None, init=False, description="ADC leakage power")
     area: float = Field(default=None, init=False, description="ADC area")
 
-    def __init__(self, **data):
+    step: float = Field(default=None, init=False, description="ADC step size")
+
+    def __init__(self, **data, step: float = 0.01):
         super().__init__(**data)
         # Update derived values based on resolution if it's different from default
         if self.resolution in self.LAT_DICT:
@@ -209,6 +212,8 @@ class ADCConfig(BaseModel):
             self.pow_dyn = self.POW_DYN_DICT[self.resolution]
             self.pow_leak = self.POW_LEAK_DICT[self.resolution]
             self.area = self.AREA_DICT[self.resolution]
+        
+        self.step = step
 
 
 class NOCConfig(BaseModel):
