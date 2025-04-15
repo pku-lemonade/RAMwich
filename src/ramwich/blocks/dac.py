@@ -1,8 +1,11 @@
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
 
 from pydantic import BaseModel, Field
 
-from ..config import DACConfig
+import numpy as np
+from numpy.typing import NDArray
+
+from ..config import MVMUConfig, DACConfig, XBARConfig
 from ..stats import Stats
 
 
@@ -11,24 +14,14 @@ class DACStats(BaseModel):
 
     # Basic metrics
     conversions: int = Field(default=0, description="Number of D/A conversions performed")
-    digital_values_processed: int = Field(default=0, description="Total number of digital values processed")
-    zero_values: int = Field(default=0, description="Number of zero values processed")
-    max_values: int = Field(default=0, description="Number of maximum values processed")
 
     # Performance metrics
     active_cycles: int = Field(default=0, description="Number of active cycles")
     energy_consumption: float = Field(default=0.0, description="Energy consumption in pJ")
 
-    def record_conversion(self, digital_value: int, max_digital_value: int):
+    def record_conversion(self):
         """Record a DAC conversion operation"""
         self.conversions += 1
-        self.digital_values_processed += 1
-
-        # Track range statistics
-        if digital_value == 0:
-            self.zero_values += 1
-        elif digital_value >= max_digital_value:
-            self.max_values += 1
 
     def get_stats(self) -> Stats:
         """Get DAC-specific statistics"""
@@ -48,35 +41,34 @@ class DACStats(BaseModel):
         return stats
 
 
-class DAC:
+class DACArray:
     """Hardware implementation of the DAC component"""
 
-    def __init__(self, dac_config=None, dac_id=0):
-        self.dac_config = dac_config if dac_config else DACConfig()
-        self.resolution = self.dac_config.resolution
-        self.dac_id = dac_id
+    def __init__(self, mvmu_config: MVMUConfig = None):
+        self.mvmu_config = mvmu_config or MVMUConfig()
+        self.dac_config = self.mvmu_config.dac_config
+        self.size = self.mvmu_config.xbar_config.xbar_size
+
+        # Calculate max value based on resolution
+        self.max_value = (1 << self.mvmu_config.dac_config.resolution) - 1
 
         # Initialize stats
         self.stats = DACStats()
 
-    def convert(self, digital_value):
+    def convert(self, digital_value: Union[NDArray[np.int_], np.ndarray]):
         """Simulate DAC conversion from digital to analog"""
-        # Calculate the number of cycles needed
-        cycles = self.dac_config.lat
-
-        # Calculate max value based on resolution
-        max_value = (1 << self.resolution) - 1
 
         # Apply analog conversion based on resolution
-        capped_value = min(max(0, digital_value), max_value)
-        analog = capped_value / max_value
+        fraction = digital_value / self.max_value
+        clipped_value = np.clip(fraction, 0, 1)
+        analog_value = clipped_value * self.mvmu_config.dac_config.VDD
 
         # Update stats
-        self.stats.record_conversion(digital_value, max_value)
-        self.stats.active_cycles += cycles
-        self.stats.energy_consumption += self.dac_config.pow_dyn * cycles
+        self.stats.record_conversion()
+        self.stats.active_cycles += self.dac_config.lat
+        self.stats.energy_consumption += self.dac_config.pow_dyn
 
-        return analog, cycles
+        return analog_value
 
     def get_energy_consumption(self):
         """Return the total energy consumption in pJ"""
