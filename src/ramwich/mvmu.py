@@ -1,7 +1,6 @@
 from typing import List
 
 import numpy as np
-import sys
 
 from .blocks.adc import ADC
 from .blocks.dac import DAC
@@ -20,10 +19,10 @@ class MVMU:
         # Basic MVMU properties
         self.id = id
         self.data_config = config.data_config or DataConfig()
-        self.dac_config = config.dac_config or DACConfig()
-        self.xbar_config = config.xbar_config or XBARConfig()
-        self.adc_config = config.adc_config or ADCConfig()
         self.mvmu_config = config.mvmu_config or MVMUConfig()
+        self.xbar_config = config.mvmu_config.xbar_config or XBARConfig()
+        self.dac_config = config.mvmu_config.dac_config or DACConfig()
+        self.adc_config = config.mvmu_config.adc_config or ADCConfig()
 
         # Initialize Xbar arrays
         self.xbars = [
@@ -36,19 +35,13 @@ class MVMU:
         # Initialize 2D array of ADCs organized as adcs[xbar_id][adc_id].
         # Each xbar has multiple ADCs based on the xbar_size divided by columns per ADC.
         # Number is multiplied by 2 for positive/negative crossbars for normal adcs, evens for positive and odds for negative.
-        self.adcs = []
-        adc_num_factor = 1 if self.adc_config_list[0].type == ADCType.DIFFERENTIAL else 2
-        for i in range(self.data_config.num_rram_xbar_per_matrix):
-            conductance_step = (
-                (self.xbar_config.rram_conductance_max - self.xbar_config.rram_conductance_min) /
-                (2 ** self.data_config.bits_per_cell[i] - 1)
-            )
-            voltage_step = self.dac_config.VDD / (2 ** self.dac_config.resolution - 1)
-            current_step = voltage_step * conductance_step
-            self.adcs.append([
-                ADC(self.adc_config, current_step)
+        adc_num_factor = 1 if self.adc_config.type == ADCType.DIFFERENTIAL else 2
+        self.adcs = [[
+                ADC(self.mvmu_config, self.data_config, i)
                 for _ in range(int(self.xbar_config.xbar_size // self.mvmu_config.num_columns_per_adc * adc_num_factor))
-            ])
+            ]
+            for i in range(self.data_config.num_rram_xbar_per_matrix)
+        ]
         # Initialize DACs.
         # MVMU has multiple DACs based on the xbar_size, 1 DAC per column.
         # The same column of different xbars share the same DAC.

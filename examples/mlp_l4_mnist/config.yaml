@@ -16,22 +16,6 @@ data_config:
   int_bits: 8
   frac_bits: 8
 
-# DAC Configuration
-dac_config:
-  resolution: 1  # DAC resolution in bits
-  # Other parameters (dac_lat, dac_pow_dyn, dac_pow_leak, dac_area) are derived
-
-# Crossbar Configuration
-xbar_config:
-  xbar_size: 128  # Crossbar size
-  # Other parameters (mvmu_xbar_ip_lat, mvmu_alu_lat, etc.) are derived
-
-# ADC Configuration
-adc_config:
-  adc_type: "normal"  # ADC type, can be "normal" or "differential"
-  resolution: 8  # ADC resolution in bits
-  # Other parameters (adc_lat, adc_pow_dyn, adc_pow_leak, adc_area) are derived
-
 # Network-on-Chip Configuration
 noc_config:
   inj_rate: 0.005  # Injection rate
@@ -55,3 +39,20 @@ core_config:
 mvmu_config:
   num_columns_per_adc: 16
   # Other parameters (snh_lat, mux_lat, sna_lat, etc.) are derived
+  
+  # Other mvmu fields
+  # DAC Configuration
+  dac_config:
+    resolution: 1  # DAC resolution in bits
+    # Other parameters (dac_lat, dac_pow_dyn, dac_pow_leak, dac_area) are derived
+
+  # Crossbar Configuration
+  xbar_config:
+    xbar_size: 128  # Crossbar size
+    # Other parameters (mvmu_xbar_ip_lat, mvmu_alu_lat, etc.) are derived
+
+  # ADC Configuration
+  adc_config:
+    adc_type: "normal"  # ADC type, can be "normal" or "differential"
+    resolution: 8  # ADC resolution in bits
+    # Other parameters (adc_lat, adc_pow_dyn, adc_pow_leak, adc_area) are derived
