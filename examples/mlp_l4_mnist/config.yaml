@@ -49,6 +49,7 @@ mvmu_config:
   # Crossbar Configuration
   xbar_config:
     xbar_size: 128  # Crossbar size
+    has_noise: false  # Whether the crossbar has noise
     # Other parameters (mvmu_xbar_ip_lat, mvmu_alu_lat, etc.) are derived
 
   # ADC Configuration
