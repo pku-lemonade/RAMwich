@@ -66,7 +66,7 @@ class DACArray:
         # Update stats
         self.stats.record_conversion()
         self.stats.active_cycles += self.dac_config.lat
-        self.stats.energy_consumption += self.dac_config.pow_dyn
+        self.stats.energy_consumption += self.dac_config.pow_dyn * self.size
 
         return analog_value
 
