@@ -1,8 +1,10 @@
 from typing import List
 
 import numpy as np
+from numpy.typing import NDArray
 from pydantic import BaseModel, Field
 
+from ..config import MVMUConfig, XBARConfig, DataConfig
 from ..stats import Stats
 
 
@@ -20,28 +22,34 @@ class XbarStats(BaseModel):
         return stats
 
 
-class Xbar:
+class XbarArray:
     """
     Crossbar array component that performs matrix-vector multiplication operations.
     """
 
-    def __init__(self, id: int, size: int = 32):
-        self.id = id
-        self.size = size
-        self.pos_xbar = np.zeros((size, size))
-        self.neg_xbar = np.zeros((size, size))
+    def __init__(self, mvmu_config: MVMUConfig=None, data_config: DataConfig=None):
+        self.mvmu_config = mvmu_config or MVMUConfig()
+        self.data_config = data_config or DataConfig()
+        self.xbar_config = self.mvmu_config.xbar_config
+        self.num_xbar = data_config.num_rram_xbar_per_matrix
+        self.xbar_size = self.xbar_config.xbar_size
+
+        # Initialize the crossbar
+        self.pos_xbar = np.zeros((self.num_xbar, self.xbar_size, self.xbar_size))
+        self.neg_xbar = np.zeros((self.num_xbar, self.xbar_size, self.xbar_size))
+
+        # Initialize stats
         self.stats = XbarStats()
 
-    def load_weights(self, weights: np.ndarray):
+    def load_weights(self, weights: NDArray[np.floating]):
         """Load weights into the crossbar"""
-        for i in range(self.size):
-            for j in range(self.size):
-                if weights[i][j] >= 0:
-                    self.pos_xbar[i][j] = weights[i][j]
-                    self.neg_xbar[i][j] = 0
-                else:
-                    self.neg_xbar[i][j] = -weights[i][j]
-                    self.pos_xbar[i][j] = 0
+
+        expected_shape = (self.num_xbar, self.xbar_size, self.xbar_size)
+        if weights.shape != expected_shape:
+            raise ValueError(f"Expected weights shape {expected_shape}, got {weights.shape}")
+        
+        self.pos_xbar = np.maximum(weights, 0)
+        self.neg_xbar = np.maximum(-weights, 0)
 
     def __repr__(self):
         return f"Xbar({self.id}, size={self.size})"
