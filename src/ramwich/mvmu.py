@@ -27,8 +27,6 @@ class MVMU:
         # Initialize Xbar arrays
         self.rram_xbar_array = XbarArray(self.mvmu_config, self.data_config)
 
-        self.stats = Stats()
-
         # Initialize ADCs.
         # Each xbar has multiple ADCs based on the xbar_size divided by columns per ADC.
         # Number is multiplied by 2 for positive/negative crossbars for normal adcs, evens for positive and odds for negative.
@@ -44,6 +42,9 @@ class MVMU:
         # self.xbar_memory = [[0.0 for _ in range(self.xbar_config.xbar_size)] for _ in range(self.mvmu_config.xbar_size)]
         # self.registers = [0 for _ in range(self.mvmu_config.num_registers)]
 
+        # Initialize stats
+        self.stats = Stats()
+
     def __repr__(self):
         return f"MVMU({self.id}, xbars={len(self.xbars)})"
 
@@ -57,28 +58,44 @@ class MVMU:
                 f"Expected {expected_length} weight values for a {self.xbar_config.xbar_size}×{self.xbar_config.xbar_size} crossbar, but got {len(weights)}"
             )
 
-        weights = np.array(weights).reshape(self.xbar_config.xbar_size, self.xbar_config.xbar_size)
+        # Reshape to 2D matrix
+        weights_matrix = np.array(weights).reshape(self.xbar_config.xbar_size, self.xbar_config.xbar_size)
+        
+        # Calculate signs of all weights at once
+        signs = np.sign(weights_matrix)
+        
+        # Prepare weights with positive magnitudes
+        abs_weights = np.abs(weights_matrix)
+        
+        # Convert all weights to fixed-point representation
+        int_weights = np.vectorize(lambda w: float_to_fixed(w, self.data_config.frac_bits))(abs_weights)
+        
+        # Initialize the output array
         xbar_weights = np.zeros(
             (self.data_config.num_rram_xbar_per_matrix, self.xbar_config.xbar_size, self.xbar_config.xbar_size)
         )
+        
+        # Process each crossbar
+        for k in range(self.data_config.num_rram_xbar_per_matrix):
+            # Extract bits for this crossbar (still need to loop over k)
+            xbar_int_weights = np.vectorize(
+                lambda w: extract_bits(w, self.data_config.stored_bit[k], self.data_config.stored_bit[k + 1])
+            )(int_weights)
+            
+            # Convert to conductance values (vectorized)
+            conductance_values = np.vectorize(
+                lambda w: int_to_conductance(
+                    w,
+                    self.data_config.bits_per_cell[k],
+                    self.xbar_config.rram_conductance_min,
+                    self.xbar_config.rram_conductance_max
+                )
+            )(xbar_int_weights)
+            
+            # Apply signs and store in result array
+            xbar_weights[k] = signs * conductance_values
 
-        for i in range(self.xbar_config.xbar_size):
-            for j in range(self.xbar_config.xbar_size):
-                sign = 1 if weights[i][j] >= 0 else -1
-                int_weight = float_to_fixed(sign * weights[i][j], self.data_config.frac_bits)
-                for k in range(self.data_config.num_rram_xbar_per_matrix):
-                    xbar_int_weight = extract_bits(
-                        int_weight, self.data_config.stored_bit[k], self.data_config.stored_bit[k + 1]
-                    )
-                    # Here we storage negative resistance values to physical xbar.
-                    # When programing to xbar it will be separated to a positive xbar and a negative xbar
-                    xbar_weights[k][i][j] = sign * int_to_conductance(
-                        xbar_int_weight,
-                        self.data_config.bits_per_cell[k],
-                        self.xbar_config.rram_conductance_min,
-                        self.xbar_config.rram_conductance_max,
-                    )
-
+        # Load the processed weights into the xbar array
         self.rram_xbar_array.load_weights(xbar_weights)
 
     def _execute_mvm(self, instruction):
