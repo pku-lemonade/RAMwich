@@ -5,6 +5,8 @@ import numpy as np
 from .blocks.adc import ADCArray
 from .blocks.dac import DACArray
 from .blocks.xbar import XbarArray
+from .blocks.inreg import InputRegisterArray
+from .blocks.outreg import OutputRegisterArray
 from .config import ADCType, ADCConfig, Config, DACConfig, DataConfig, MVMUConfig, XBARConfig
 from .stats import Stats
 from .utils.data_convert import extract_bits, float_to_fixed, int_to_conductance
@@ -39,8 +41,8 @@ class MVMU:
         self.dac_array = DACArray(self.mvmu_config)
 
         # Memory components
-        # self.xbar_memory = [[0.0 for _ in range(self.xbar_config.xbar_size)] for _ in range(self.mvmu_config.xbar_size)]
-        # self.registers = [0 for _ in range(self.mvmu_config.num_registers)]
+        self.input_register_array = InputRegisterArray(self.mvmu_config)
+        self.output_register_array = OutputRegisterArray(self.mvmu_config)
 
         # Initialize stats
         self.stats = Stats()
