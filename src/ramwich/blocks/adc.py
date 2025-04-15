@@ -1,9 +1,8 @@
 from typing import Any, Dict, Optional
 
-from pydantic import BaseModel, Field
-
 import numpy as np
 from numpy.typing import NDArray
+from pydantic import BaseModel, Field
 
 from ..config import DataConfig, MVMUConfig, XBARConfig, DACConfig, ADCConfig, ADCType
 from ..stats import Stats
