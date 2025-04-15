@@ -10,7 +10,6 @@ from ..stats import Stats
 
 class XbarStats(BaseModel):
     operations: int = Field(default=0, description="Total number of operations")
-    mvm_operations: int = Field(default=0, description="Number of MVM operations")
 
     def get_stats(self) -> Stats:
         stats = Stats()
@@ -54,11 +53,34 @@ class XbarArray:
     def __repr__(self):
         return f"Xbar({self.id}, size={self.size})"
 
-    def execute_mvm(self, xbar_data):
-        """Execute a matrix-vector multiplication operation"""
-        self.stats.operations += 1
-        self.stats.mvm_operations += 1
-        return True
+    def execute_mvm(self, input_vector: NDArray[np.floating]):
+        """Execute a matrix-vector multiplication operation
+
+        Args:
+            input_vector: 1D array of length xbar_size representing the input voltages
+        
+        Returns:
+            2D array with shape (num_xbar, xbar_size) containing the results of matrix-vector 
+            multiplication for each crossbar
+        """
+
+        # Validate input
+        if input_vector.ndim != 1:
+            raise ValueError(f"Expected 1D array, got {input_vector.ndim}D array")
+
+        if len(input_vector) != self.size:
+            raise ValueError(f"Expected input vector of shape ({self.xbar_size},), got {input_vector.shape}")
+        
+        # Use einsum for efficient matrix-vector multiplication across all crossbars
+        # 'ijk,k->ij' means: sum the product over the last dimension (k)
+        # i: crossbar index, j: crossbar row, k: crossbar column (multiplied by input)
+        pos_result = np.einsum('ijk,k->ij', self.pos_xbar, input_vector)
+        neg_result = np.einsum('ijk,k->ij', self.neg_xbar, input_vector)
+
+        # Update the statistics
+        self.stats.operations += self.num_xbar * 2  # Two operations per crossbar (one for pos and one for neg)
+
+        return pos_result, neg_result
 
     def update_execution_time(self, execution_time):
         """Update the execution time statistics"""
