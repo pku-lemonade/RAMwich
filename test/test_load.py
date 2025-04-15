@@ -26,6 +26,7 @@ def main():
     assert (
         simulator.get_node(0).get_tile(2).cores[0].mvmus[0].xbars[0].neg_xbar[0][0] == 1
     ), "Weight not loaded correctly"
+    print("Operation and weight loaded correctly.")
 
 
 if __name__ == "__main__":
