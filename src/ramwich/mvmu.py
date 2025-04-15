@@ -98,7 +98,7 @@ class MVMU:
         # Load the processed weights into the xbar array
         self.rram_xbar_array.load_weights(xbar_weights)
 
-    def _execute_mvm(self, instruction):
+    def _execute_mvm(self):
         """Execute a detailed matrix-vector multiplication instruction"""
         # dispatch DACs, crossbar, and ADCs
         pass
