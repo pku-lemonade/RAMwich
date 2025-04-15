@@ -80,6 +80,13 @@ class ADCArray:
     def convert(self, analog_value: NDArray[np.floating]):
         """Simulate ADC conversion from analog to digital"""
 
+        # Validate input
+        if analog_value.ndim != 1:
+            raise ValueError(f"Expected 1D array, got {analog_value.ndim}D array")
+
+        if len(analog_value) != self.size:
+            raise ValueError(f"Expected input vector of shape ({self.size},), got {analog_value.shape}")
+
         # Apply quantization based on resolution
         ideal_values = analog_value / self.current_step
         int_values = np.floor(ideal_values).astype(np.int_)

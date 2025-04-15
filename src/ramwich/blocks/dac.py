@@ -57,6 +57,13 @@ class DACArray:
     def convert(self, digital_value: NDArray[np.integer]):
         """Simulate DAC conversion from digital to analog"""
 
+        # Validate input
+        if digital_value.ndim != 1:
+            raise ValueError(f"Expected 1D array, got {digital_value.ndim}D array")
+
+        if len(digital_value) != self.size:
+            raise ValueError(f"Expected input vector of shape ({self.size},), got {digital_value.shape}")
+        
         # Apply analog conversion based on resolution
         fraction = digital_value / self.max_value
         clipped_value = np.clip(fraction, 0, 1)
