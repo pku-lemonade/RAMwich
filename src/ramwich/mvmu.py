@@ -2,7 +2,7 @@ from typing import List
 
 import numpy as np
 
-from .blocks.adc import ADC
+from .blocks.adc import ADCArray
 from .blocks.dac import DACArray
 from .blocks.xbar import Xbar
 from .config import ADCType, ADCConfig, Config, DACConfig, DataConfig, MVMUConfig, XBARConfig
@@ -32,16 +32,11 @@ class MVMU:
 
         self.stats = Stats()
 
-        # Initialize 2D array of ADCs organized as adcs[xbar_id][adc_id].
+        # Initialize ADCs.
         # Each xbar has multiple ADCs based on the xbar_size divided by columns per ADC.
         # Number is multiplied by 2 for positive/negative crossbars for normal adcs, evens for positive and odds for negative.
-        adc_num_factor = 1 if self.adc_config.type == ADCType.DIFFERENTIAL else 2
-        self.adcs = [[
-                ADC(self.mvmu_config, self.data_config, i)
-                for _ in range(int(self.xbar_config.xbar_size // self.mvmu_config.num_columns_per_adc * adc_num_factor))
-            ]
-            for i in range(self.data_config.num_rram_xbar_per_matrix)
-        ]
+        self.adc_array = ADCArray(self.mvmu_config, self.data_config)
+
         # Initialize DACs.
         # MVMU has multiple DACs based on the xbar_size, 1 DAC per column.
         # The same column of different xbars share the same DAC.

@@ -55,7 +55,7 @@ class DACArray:
         # Initialize stats
         self.stats = DACStats()
 
-    def convert(self, digital_value: Union[NDArray[np.int_], np.ndarray]):
+    def convert(self, digital_value: NDArray[np.integer]):
         """Simulate DAC conversion from digital to analog"""
 
         # Apply analog conversion based on resolution

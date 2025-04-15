@@ -1,4 +1,4 @@
-from .adc import ADC
+from .adc import ADCArray
 from .dac import DACArray
 from .dram import DRAM
 from .sram import SRAM
