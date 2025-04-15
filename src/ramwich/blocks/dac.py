@@ -1,9 +1,8 @@
 from typing import Any, Dict, Optional, Union
 
-from pydantic import BaseModel, Field
-
 import numpy as np
 from numpy.typing import NDArray
+from pydantic import BaseModel, Field
 
 from ..config import MVMUConfig, DACConfig, XBARConfig
 from ..stats import Stats
