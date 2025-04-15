@@ -4,7 +4,7 @@ from numpy.typing import NDArray
 from ..config import MVMUConfig
 from ..stats import Stats
 
-class OutRegisterArray:
+class OutputRegisterArray:
     """Hardware implementation of the MVMU input register component
     
     MVMU output register array is just arrayed normal registers."""

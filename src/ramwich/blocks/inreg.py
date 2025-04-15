@@ -1,10 +1,10 @@
 import numpy as np
 from numpy.typing import NDArray
 
-from ..config import MVMUConfig, XBARConfig
+from ..config import MVMUConfig
 from ..stats import Stats
 
-class InRegisterArray:
+class InputRegisterArray:
     """Hardware implementation of the MVMU input register component
     
     MVMU input register array reads differently from normal registers.
