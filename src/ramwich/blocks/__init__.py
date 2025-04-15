@@ -5,3 +5,4 @@ from .sram import SRAM
 from .xbar import XbarArray
 from .inreg import InputRegisterArray
 from .outreg import OutputRegisterArray
+from .mux import MuxArray
