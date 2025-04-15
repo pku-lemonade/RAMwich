@@ -59,7 +59,7 @@ class ADCArray:
         else:
             num_adc_per_xbar *= 2
         
-        self.size = self.data_config.num_rram_xbar_per_matrix * num_adc_per_xbar
+        self.size = self.mvmu_config.num_rram_xbar_per_mvmu * num_adc_per_xbar
 
         # Create array mapping each ADC to its corresponding xbar
         xbar_indices = np.array([i // num_adc_per_xbar for i in range(self.size)])

@@ -531,6 +531,9 @@ class MVMUConfig(BaseModel):
 
     num_columns_per_adc: int = Field(default=16, description="Number of columns per ADC")
 
+    num_rram_xbar_per_mvmu: int = Field(default=None, init=False, description="Number of RRAM xbars")
+    num_sram_xbar_per_mvmu: int = Field(default=None, init=False, description="Number of SRAM xbars")
+
     dac_config: DACConfig = Field(default_factory=DACConfig)
     xbar_config: XBARConfig = Field(default_factory=XBARConfig)
     adc_config: ADCConfig = Field(default_factory=ADCConfig)
@@ -557,5 +560,8 @@ class Config(BaseModel):
 
     def __init__(self, **data):
         super().__init__(**data)
+
+        self.mvmu_config.num_sram_xbar_per_mvmu = self.data_config.num_sram_xbar_per_matrix
+        self.mvmu_config.num_rram_xbar_per_mvmu = self.data_config.num_rram_xbar_per_matrix
 
         assert self.data_width == self.data_config.num_bits, "data width and data config mismatch"

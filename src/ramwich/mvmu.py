@@ -27,7 +27,7 @@ class MVMU:
         self.adc_config = config.mvmu_config.adc_config or ADCConfig()
 
         # Initialize Xbar arrays
-        self.rram_xbar_array = XbarArray(self.mvmu_config, self.data_config)
+        self.rram_xbar_array = XbarArray(self.mvmu_config)
 
         # Initialize ADCs.
         # Each xbar has multiple ADCs based on the xbar_size divided by columns per ADC.
@@ -74,11 +74,11 @@ class MVMU:
         
         # Initialize the output array
         xbar_weights = np.zeros(
-            (self.data_config.num_rram_xbar_per_matrix, self.xbar_config.xbar_size, self.xbar_config.xbar_size)
+            (self.mvmu_config.num_rram_xbar_per_mvmu, self.xbar_config.xbar_size, self.xbar_config.xbar_size)
         )
         
         # Process each crossbar
-        for k in range(self.data_config.num_rram_xbar_per_matrix):
+        for k in range(self.mvmu_config.num_rram_xbar_per_mvmu):
             # Extract bits for this crossbar (still need to loop over k)
             xbar_int_weights = np.vectorize(
                 lambda w: extract_bits(w, self.data_config.stored_bit[k], self.data_config.stored_bit[k + 1])
