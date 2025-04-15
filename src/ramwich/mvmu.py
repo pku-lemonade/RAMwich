@@ -3,7 +3,7 @@ from typing import List
 import numpy as np
 
 from .blocks.adc import ADC
-from .blocks.dac import DAC
+from .blocks.dac import DACArray
 from .blocks.xbar import Xbar
 from .config import ADCType, ADCConfig, Config, DACConfig, DataConfig, MVMUConfig, XBARConfig
 from .stats import Stats
@@ -46,7 +46,7 @@ class MVMU:
         # MVMU has multiple DACs based on the xbar_size, 1 DAC per column.
         # The same column of different xbars share the same DAC.
         # Positive and negative crossbars also share the same DAC.
-        self.dacs = [DAC(self.dac_config) for _ in range(self.xbar_config.xbar_size)]
+        self.dac_array = DACArray(self.mvmu_config)
 
         # Memory components
         # self.xbar_memory = [[0.0 for _ in range(self.xbar_config.xbar_size)] for _ in range(self.mvmu_config.xbar_size)]
