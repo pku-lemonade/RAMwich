@@ -530,6 +530,10 @@ class MVMUConfig(BaseModel):
 
     num_columns_per_adc: int = Field(default=16, description="Number of columns per ADC")
 
+    dac_config: DACConfig = Field(default_factory=DACConfig)
+    xbar_config: XBARConfig = Field(default_factory=XBARConfig)
+    adc_config: ADCConfig = Field(default_factory=ADCConfig)
+
 
 class Config(BaseModel):
     model_config = ConfigDict(frozen=True)
@@ -545,9 +549,6 @@ class Config(BaseModel):
 
     # Add configuration for components with default factories
     data_config: DataConfig = Field(default_factory=DataConfig)
-    dac_config: DACConfig = Field(default_factory=DACConfig)
-    xbar_config: XBARConfig = Field(default_factory=XBARConfig)
-    adc_config: ADCConfig = Field(default_factory=ADCConfig)
     noc_config: NOCConfig = Field(default_factory=NOCConfig)
     tile_config: TileConfig = Field(default_factory=TileConfig)
     core_config: CoreConfig = Field(default_factory=CoreConfig)

@@ -2,7 +2,7 @@ from typing import Any, Dict, Optional
 
 from pydantic import BaseModel, Field
 
-from ..config import ADCConfig
+from ..config import DataConfig, MVMUConfig, XBARConfig, DACConfig, ADCConfig
 from ..stats import Stats
 
 
@@ -21,7 +21,7 @@ class ADCStats(BaseModel):
     def record_conversion(self, overflow: int = 0, error: float = 0.0):
         """Record an ADC conversion operation"""
         self.conversions += 1
-        self.out_of_range_samples += overflow
+        self.overflow_times += overflow
         self.conversion_errors += error
 
     def get_stats(self, adc_id: Optional[int] = None) -> Stats:
@@ -42,13 +42,21 @@ class ADCStats(BaseModel):
 class ADC:
     """Hardware implementation of the ADC component"""
 
-    def __init__(self, adc_config=None, current_step: float = 0.01, adc_id: Optional[int] = None):
-        self.adc_config = adc_config or ADCConfig()
+    def __init__(self, mvmu_config: MVMUConfig=None, data_config: DataConfig= None, position: int=None):
+        self.mvmu_config = mvmu_config or MVMUConfig()
+        self.data_config = data_config or DataConfig()
+        self.adc_config = self.mvmu_config.adc_config
+        self.position = position or 0
 
         # Initialize stats
         self.stats = ADCStats()
 
-        self.current_step = current_step
+        conductance_step = (
+            (self.mvmu_config.xbar_config.rram_conductance_max - self.mvmu_config.xbar_config.rram_conductance_min) /
+            (2 ** self.data_config.bits_per_cell[self.position] - 1)
+        )
+        voltage_step = self.mvmu_config.dac_config.VDD / (2 ** self.mvmu_config.dac_config.resolution - 1)
+        self.current_step = voltage_step * conductance_step
 
     def convert(self, analog_value):
         """Simulate ADC conversion from analog to digital"""
