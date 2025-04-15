@@ -4,7 +4,7 @@ import numpy as np
 
 from .blocks.adc import ADCArray
 from .blocks.dac import DACArray
-from .blocks.xbar import Xbar
+from .blocks.xbar import XbarArray
 from .config import ADCType, ADCConfig, Config, DACConfig, DataConfig, MVMUConfig, XBARConfig
 from .stats import Stats
 from .utils.data_convert import extract_bits, float_to_fixed, int_to_conductance
@@ -25,10 +25,7 @@ class MVMU:
         self.adc_config = config.mvmu_config.adc_config or ADCConfig()
 
         # Initialize Xbar arrays
-        self.xbars = [
-            Xbar(i, self.xbar_config.xbar_size if hasattr(self.mvmu_config, "xbar_size") else 32)
-            for i in range(self.data_config.num_rram_xbar_per_matrix)
-        ]
+        self.rram_xbar_array = XbarArray(self.mvmu_config, self.data_config)
 
         self.stats = Stats()
 
@@ -82,8 +79,7 @@ class MVMU:
                         self.xbar_config.rram_conductance_max,
                     )
 
-        for k in range(self.data_config.num_rram_xbar_per_matrix):
-            self.xbars[k].load_weights(xbar_weights[k])
+        self.rram_xbar_array.load_weights(xbar_weights)
 
     def _execute_mvm(self, instruction):
         """Execute a detailed matrix-vector multiplication instruction"""
