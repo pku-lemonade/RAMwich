@@ -11,7 +11,7 @@ class MuxArray:
         self.mvmu_config = mvmu_config or MVMUConfig()
         self.num_xbar = self.mvmu_config.num_rram_xbar_per_mvmu
         self.num_input_per_mux = self.mvmu_config.num_columns_per_adc
-        self.num_mux_per_xbar = self.mvmu_config.xbar_config.xbar_size // self.num_input_per_mux
+        self.num_mux_per_xbar = self.mvmu_config.num_adc_per_xbar
         
         # Define 2D shape
 
