@@ -98,7 +98,7 @@ class ADCArray:
         errors = np.abs(ideal_values - int_values)
 
         # Check if overflow occurs
-        overflow_mask = int_values > self.max_value or int_values < self.min_value
+        overflow_mask = (int_values > self.max_value) | (int_values < self.min_value)
         overflow_count = np.sum(overflow_mask)
 
         # Calculate total error
