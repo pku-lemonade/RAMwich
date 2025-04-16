@@ -72,17 +72,18 @@ class XbarArray:
             raise ValueError(f"Expected input vector of shape ({self.xbar_size},), got {input_vector.shape}")
         
         # Use einsum for efficient matrix-vector multiplication across all crossbars
-        # 'ijk,k->ij' means: sum the product over the last dimension (k)
         # i: crossbar index, j: crossbar row, k: crossbar column (multiplied by input)
+        # 'ijk,k->ij' for transpose multiplication
+        # 'ikj,j->ik' for standard multiplication
         if self.has_noise:
             rng = np.random.default_rng()
             pos_mat = self.pos_xbar + rng.normal(0, self.xbar_config.noise_sigma, self.pos_xbar.shape)
             neg_mat = self.neg_xbar + rng.normal(0, self.xbar_config.noise_sigma, self.neg_xbar.shape)          
-            pos_result = np.einsum('ijk,k->ij', pos_mat, input_vector)
-            neg_result = np.einsum('ijk,k->ij', neg_mat, input_vector)
+            pos_result = np.einsum('ikj,j->ik', pos_mat, input_vector)
+            neg_result = np.einsum('ikj,j->ik', neg_mat, input_vector)
         else:
-            pos_result = np.einsum('ijk,k->ij', self.pos_xbar, input_vector)
-            neg_result = np.einsum('ijk,k->ij', self.neg_xbar, input_vector)
+            pos_result = np.einsum('ikj,j->ik', self.pos_xbar, input_vector)
+            neg_result = np.einsum('ikj,j->ik', self.neg_xbar, input_vector)
 
         # Update the statistics
         self.stats.operations += self.num_xbar * 2  # Two operations per crossbar (one for pos and one for neg)
