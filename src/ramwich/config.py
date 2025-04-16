@@ -21,6 +21,12 @@ class DataConfig(BaseModel):
     )
     int_bits: int = Field(default=8, description="Integer bits")
     frac_bits: int = Field(default=0, description="Fractional bits")
+    data_bits: int = Field(default=None, init=False, description="Data bits")
+
+    def __init__(self, **data):
+        super().__init__(**data)
+
+        self.data_bits = self.int_bits + self.frac_bits
 
 
 class DACConfig(BaseModel):
