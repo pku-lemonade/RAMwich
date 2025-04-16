@@ -92,8 +92,8 @@ class ADCArray:
         ideal_values_pos = analog_value_pos / self.current_step
         ideal_values_neg = analog_value_neg / self.current_step
         ideal_values = ideal_values_pos - ideal_values_neg
-        int_values_pos = np.floor(ideal_values_pos).astype(np.int_)
-        int_values_neg = np.floor(ideal_values_neg).astype(np.int_)
+        int_values_pos = np.round(ideal_values_pos).astype(np.int_)
+        int_values_neg = np.round(ideal_values_neg).astype(np.int_)
         int_values = int_values_pos - int_values_neg
         errors = np.abs(ideal_values - int_values)
 
@@ -105,7 +105,7 @@ class ADCArray:
         total_error = np.sum(errors)
 
         # Clip values to max_value
-        int_values = np.clip(int_values, 0, self.max_value)
+        int_values = np.clip(int_values, self.min_value, self.max_value)
 
         # Update stats
         self.stats.record_conversion(overflow=overflow_count, error=total_error)
