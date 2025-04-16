@@ -50,6 +50,18 @@ class OutputRegisterArray:
         
         return self.registers[indices]
     
+    def read_clipped(self, discard_bits: int, indices: Optional[NDArray[np.integer]]=None):
+        """Read specific indices from the register array and discard bits"""
+        if indices is None:
+            # If no indices are provided, read the entire register array
+            return self.registers >> discard_bits
+        
+        # Validate indices
+        if np.any(indices >= self.size) or np.any(indices < 0):
+            raise ValueError("Index out of bounds")
+        
+        return (self.registers[indices] >> discard_bits).astype(np.int32)
+    
     def reset(self):
         """Reset the register array to zero"""
         self.registers = np.zeros(self.size, dtype=np.int32)
