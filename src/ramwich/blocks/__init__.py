@@ -6,3 +6,5 @@ from .xbar import XbarArray
 from .inreg import InputRegisterArray
 from .outreg import OutputRegisterArray
 from .mux import MuxArray
+from .sna import SNAArray
+from .snh import SNHArray
