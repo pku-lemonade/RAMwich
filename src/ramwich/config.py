@@ -497,6 +497,7 @@ class MVMUConfig(BaseModel):
     sna_area: float = Field(default=0.00006, description="Single shift and adder area")
 
     num_columns_per_adc: int = Field(default=16, description="Number of columns per ADC")
+    num_adc_per_xbar: int = Field(default=None, init=False, description="Number of ADCs per crossbar")
 
     num_rram_xbar_per_mvmu: int = Field(default=None, init=False, description="Number of RRAM xbars")
     num_sram_xbar_per_mvmu: int = Field(default=None, init=False, description="Number of SRAM xbars")
@@ -509,6 +510,18 @@ class MVMUConfig(BaseModel):
     dac_config: DACConfig = Field(default_factory=DACConfig)
     xbar_config: XBARConfig = Field(default_factory=XBARConfig)
     adc_config: ADCConfig = Field(default_factory=ADCConfig)
+
+    def __init__(self, **data):
+        super().__init__(**data)
+
+        self.num_adc_per_xbar = self.xbar_config.xbar_size // self.num_columns_per_adc
+
+        # Then verify it's a clean division
+        if self.xbar_config.xbar_size % self.num_columns_per_adc != 0:
+            raise ValueError(
+                f"xbar_size ({self.xbar_config.xbar_size}) must be exactly divisible by "
+                f"num_columns_per_adc ({self.num_columns_per_adc})"
+            )
 
 
 class Config(BaseModel):

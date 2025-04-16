@@ -53,9 +53,7 @@ class ADCArray:
         self.min_value = -self.max_value
 
         # calculate size of ADC array
-        num_adc_per_xbar = self.mvmu_config.xbar_config.xbar_size // self.mvmu_config.num_columns_per_adc
-        
-        self.shape = (self.mvmu_config.num_rram_xbar_per_mvmu, num_adc_per_xbar)
+        self.shape = (self.mvmu_config.num_rram_xbar_per_mvmu, self.mvmu_config.num_adc_per_xbar)
         self.size = np.prod(self.shape)
 
         if self.adc_config.type == ADCType.DIFFERENTIAL:
