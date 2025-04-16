@@ -32,7 +32,7 @@ class MVMU:
         # Initialize ADCs.
         # Each xbar has multiple ADCs based on the xbar_size divided by columns per ADC.
         # Number is multiplied by 2 for positive/negative crossbars for normal adcs, evens for positive and odds for negative.
-        self.adc_array = ADCArray(self.mvmu_config, self.data_config)
+        self.adc_array = ADCArray(self.mvmu_config)
 
         # Initialize DACs.
         # MVMU has multiple DACs based on the xbar_size, 1 DAC per column.
@@ -81,14 +81,14 @@ class MVMU:
         for k in range(self.mvmu_config.num_rram_xbar_per_mvmu):
             # Extract bits for this crossbar (still need to loop over k)
             xbar_int_weights = np.vectorize(
-                lambda w: extract_bits(w, self.data_config.stored_bit[k], self.data_config.stored_bit[k + 1])
+                lambda w: extract_bits(w, self.mvmu_config.stored_bit[k], self.mvmu_config.stored_bit[k + 1])
             )(int_weights)
             
             # Convert to conductance values (vectorized)
             conductance_values = np.vectorize(
                 lambda w: int_to_conductance(
                     w,
-                    self.data_config.bits_per_cell[k],
+                    self.mvmu_config.bits_per_cell[k],
                     self.xbar_config.rram_conductance_min,
                     self.xbar_config.rram_conductance_max
                 )

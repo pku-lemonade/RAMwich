@@ -44,9 +44,8 @@ class ADCStats(BaseModel):
 class ADCArray:
     """Hardware implementation of the ADC component"""
 
-    def __init__(self, mvmu_config: MVMUConfig=None, data_config: DataConfig=None):
+    def __init__(self, mvmu_config: MVMUConfig=None):
         self.mvmu_config = mvmu_config or MVMUConfig()
-        self.data_config = data_config or DataConfig()
         self.adc_config = self.mvmu_config.adc_config
 
         # calculate max value based on resolution
@@ -65,7 +64,7 @@ class ADCArray:
         xbar_indices = np.array([i // num_adc_per_xbar for i in range(self.size)])
 
         # Vectorized calculation of conductance steps
-        xbar_bits = np.array([self.data_config.bits_per_cell[idx] for idx in xbar_indices])
+        xbar_bits = np.array([self.mvmu_config.bits_per_cell[idx] for idx in xbar_indices])
 
         voltage_step = self.mvmu_config.dac_config.VDD / (2 ** self.mvmu_config.dac_config.resolution - 1)
         conductance_range = self.mvmu_config.xbar_config.rram_conductance_max - self.mvmu_config.xbar_config.rram_conductance_min

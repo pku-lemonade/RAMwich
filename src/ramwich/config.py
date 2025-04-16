@@ -22,39 +22,6 @@ class DataConfig(BaseModel):
     int_bits: int = Field(default=8, description="Integer bits")
     frac_bits: int = Field(default=0, description="Fractional bits")
 
-    stored_bit: list = Field(default=None, init=False, description="Stored bit positions")
-    bits_per_cell: list = Field(default=None, init=False, description="Bits per cell")
-    num_bits: int = Field(default=None, init=False, description="Total bits in operand")
-    num_rram_xbar_per_matrix: int = Field(default=None, init=False, description="Number of RRAM xbars")
-    num_sram_xbar_per_matrix: int = Field(default=None, init=False, description="Number of SRAM xbars")
-
-    def __init__(self, **data):
-        super().__init__(**data)
-
-        self.stored_bit = []
-        self.bits_per_cell = []
-
-        bits = 0  # total bits number in the operand
-        self.num_rram_xbar_per_matrix = 0  # number of RRAM xbars
-        self.num_sram_xbar_per_matrix = 0  # number of SRAM xbars
-        for i in self.storage_config:
-            self.stored_bit.append(bits)
-            if i == BitConfig.SRAM:
-                self.num_sram_xbar_per_matrix += 1
-                self.bits_per_cell.append(1)
-                bits += 1
-            else:
-                self.num_rram_xbar_per_matrix += 1
-                self.bits_per_cell.append(int(i))
-                bits += int(i)
-        self.stored_bit.append(bits)
-
-        self.num_bits = bits
-
-        assert (
-            self.int_bits + self.frac_bits == self.num_bits
-        ), "storage config invalid: check if total bits in storage config = int_bits + frac_bits"
-
 
 class DACConfig(BaseModel):
     """Digital-to-Analog Converter configuration"""
@@ -533,6 +500,11 @@ class MVMUConfig(BaseModel):
 
     num_rram_xbar_per_mvmu: int = Field(default=None, init=False, description="Number of RRAM xbars")
     num_sram_xbar_per_mvmu: int = Field(default=None, init=False, description="Number of SRAM xbars")
+    num_xbar_per_mvmu: int = Field(default=None, init=False, description="Number of crossbars per MVMU")
+
+    stored_bit: list = Field(default=None, init=False, description="Stored bit positions")
+    bits_per_cell: list = Field(default=None, init=False, description="Bits per cell")
+    is_xbar_rram: list = Field(default=None, init=False, description="Is crossbar RRAM")
 
     dac_config: DACConfig = Field(default_factory=DACConfig)
     xbar_config: XBARConfig = Field(default_factory=XBARConfig)
@@ -561,7 +533,32 @@ class Config(BaseModel):
     def __init__(self, **data):
         super().__init__(**data)
 
-        self.mvmu_config.num_sram_xbar_per_mvmu = self.data_config.num_sram_xbar_per_matrix
-        self.mvmu_config.num_rram_xbar_per_mvmu = self.data_config.num_rram_xbar_per_matrix
+        self.mvmu_config.stored_bit = []
+        self.mvmu_config.bits_per_cell = []
+        self.mvmu_config.is_xbar_rram = []
 
-        assert self.data_width == self.data_config.num_bits, "data width and data config mismatch"
+        bits = 0  # total bits number in the operand
+        self.mvmu_config.num_rram_xbar_per_mvmu = 0  # number of RRAM xbars
+        self.mvmu_config.num_sram_xbar_per_mvmu = 0  # number of SRAM xbars
+        for i in self.data_config.storage_config:
+            self.mvmu_config.stored_bit.append(bits)
+            if i == BitConfig.SRAM:
+                self.mvmu_config.num_sram_xbar_per_mvmu += 1
+                self.mvmu_config.bits_per_cell.append(1)
+                self.mvmu_config.is_xbar_rram.append(False)
+                bits += 1
+            else:
+                self.mvmu_config.num_rram_xbar_per_mvmu += 1
+                self.mvmu_config.bits_per_cell.append(int(i))
+                self.mvmu_config.is_xbar_rram.append(True)
+                bits += int(i)
+        self.mvmu_config.stored_bit.append(bits)
+
+        self.mvmu_config.num_xbar_per_mvmu = (
+            self.mvmu_config.num_sram_xbar_per_mvmu + self.mvmu_config.num_rram_xbar_per_mvmu
+        )
+
+        assert (bits == self.data_width), "storage config invalid: check if total bits in storage config = data width"
+        assert (
+            self.data_config.int_bits + self.data_config.frac_bits == self.data_width
+        ), "storage config invalid: check if total bits in storage config = int_bits + frac_bits"
