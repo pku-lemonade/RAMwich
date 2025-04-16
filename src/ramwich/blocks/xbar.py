@@ -68,7 +68,7 @@ class XbarArray:
         if input_vector.ndim != 1:
             raise ValueError(f"Expected 1D array, got {input_vector.ndim}D array")
 
-        if len(input_vector) != self.size:
+        if len(input_vector) != self.xbar_size:
             raise ValueError(f"Expected input vector of shape ({self.xbar_size},), got {input_vector.shape}")
         
         # Use einsum for efficient matrix-vector multiplication across all crossbars

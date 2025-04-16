@@ -1,3 +1,5 @@
+from typing import Optional
+
 import numpy as np
 from numpy.typing import NDArray
 
@@ -17,29 +19,32 @@ class OutputRegisterArray:
         self.registers = np.zeros(self.size, dtype=np.int32)
 
         # Initialize stats
-
-    def write(self, value: NDArray[np.integer]):
-        """Write values to register array"""
-
-        if value.shape != self.registers.shape:
-            raise ValueError("Value shape does not match register array shape")
-        
-        # Write the value to the registers
-        self.registers = np.copy(value)
     
-    def write(self, value: NDArray[np.integer], indices: NDArray[np.integer]):
+    def write(self, value: NDArray[np.integer], indices: Optional[NDArray[np.integer]]=None):
         """Write values to specific indices in the register array"""
-        if np.any(indices >= self.size) or np.any(indices < 0):
-            raise ValueError("Index out of bounds")
-        
-        self.registers[indices] = value
 
-    def read(self):
-        """Read the register array"""
-        return self.registers
+        if indices is None:
+            # If no indices are provided, write the entire value
+            # Validate input
+            if value.shape != self.registers.shape:
+                raise ValueError("Value shape does not match register array shape")
+            
+            self.registers = np.copy(value)
+        
+        else:
+            # Validate indices
+            if np.any(indices >= self.size) or np.any(indices < 0):
+                raise ValueError("Index out of bounds")
+        
+            self.registers[indices] = np.copy(value)
     
-    def read(self, indices: NDArray[np.integer]):
+    def read(self, indices: Optional[NDArray[np.integer]]=None):
         """Read specific indices from the register array"""
+        if indices is None:
+            # If no indices are provided, read the entire register array
+            return self.registers
+        
+        # Validate indices
         if np.any(indices >= self.size) or np.any(indices < 0):
             raise ValueError("Index out of bounds")
         
