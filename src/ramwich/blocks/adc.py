@@ -50,21 +50,25 @@ class ADCArray:
 
         # calculate max value based on resolution
         self.max_value = (1 << self.adc_config.resolution) - 1
+        self.min_value = -self.max_value
+
+        # calculate size of ADC array
+        num_adc_per_xbar = self.mvmu_config.xbar_config.xbar_size // self.mvmu_config.num_columns_per_adc
+        
+        self.shape = (self.mvmu_config.num_rram_xbar_per_mvmu, num_adc_per_xbar)
+        self.size = np.prod(self.shape)
+
+        if self.adc_config.type == ADCType.DIFFERENTIAL:
+            self.size *= 1
+        else:
+            self.size *= 2
 
         # Calculate current step for each ADC
-        num_adc_per_xbar = self.mvmu_config.xbar_config.xbar_size // self.mvmu_config.num_columns_per_adc
-        if self.adc_config.type == ADCType.DIFFERENTIAL:
-            num_adc_per_xbar *= 1
-        else:
-            num_adc_per_xbar *= 2
-        
-        self.size = self.mvmu_config.num_rram_xbar_per_mvmu * num_adc_per_xbar
-
         # Create array mapping each ADC to its corresponding xbar
-        xbar_indices = np.array([i // num_adc_per_xbar for i in range(self.size)])
+        xbar_indices = np.where(self.mvmu_config.is_xbar_rram)[0]
 
         # Vectorized calculation of conductance steps
-        xbar_bits = np.array([self.mvmu_config.bits_per_cell[idx] for idx in xbar_indices])
+        xbar_bits = np.array([self.mvmu_config.bits_per_cell[idx] for idx in xbar_indices])[:, np.newaxis]
 
         voltage_step = self.mvmu_config.dac_config.VDD / (2 ** self.mvmu_config.dac_config.resolution - 1)
         conductance_range = self.mvmu_config.xbar_config.rram_conductance_max - self.mvmu_config.xbar_config.rram_conductance_min
@@ -76,23 +80,27 @@ class ADCArray:
         # Initialize stats
         self.stats = ADCStats()
 
-    def convert(self, analog_value: NDArray[np.floating]):
+    def convert(self, analog_value_pos: NDArray[np.floating], analog_value_neg: NDArray[np.floating]):
         """Simulate ADC conversion from analog to digital"""
 
         # Validate input
-        if analog_value.ndim != 1:
-            raise ValueError(f"Expected 1D array, got {analog_value.ndim}D array")
+        if analog_value_pos.shape != analog_value_neg.shape:
+            raise ValueError(f"Expected input vectors of the same shape, got {analog_value_pos.shape} and {analog_value_neg.shape}")
 
-        if len(analog_value) != self.size:
-            raise ValueError(f"Expected input vector of shape ({self.size},), got {analog_value.shape}")
+        if analog_value_pos.shape != self.shape:
+            raise ValueError(f"Expected input vectors of shape {self.shape}, got {analog_value_pos.shape}")
 
         # Apply quantization based on resolution
-        ideal_values = analog_value / self.current_step
-        int_values = np.floor(ideal_values).astype(np.int_)
-        errors = ideal_values - int_values
+        ideal_values_pos = analog_value_pos / self.current_step
+        ideal_values_neg = analog_value_neg / self.current_step
+        ideal_values = ideal_values_pos - ideal_values_neg
+        int_values_pos = np.floor(ideal_values_pos).astype(np.int_)
+        int_values_neg = np.floor(ideal_values_neg).astype(np.int_)
+        int_values = int_values_pos - int_values_neg
+        errors = np.abs(ideal_values - int_values)
 
         # Check if overflow occurs
-        overflow_mask = int_values > self.max_value
+        overflow_mask = int_values > self.max_value or int_values < self.min_value
         overflow_count = np.sum(overflow_mask)
 
         # Calculate total error
