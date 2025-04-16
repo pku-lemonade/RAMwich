@@ -26,10 +26,24 @@ class OutputRegisterArray:
         
         # Write the value to the registers
         self.registers = np.copy(value)
+    
+    def write(self, value: NDArray[np.integer], indices: NDArray[np.integer]):
+        """Write values to specific indices in the register array"""
+        if np.any(indices >= self.size) or np.any(indices < 0):
+            raise ValueError("Index out of bounds")
+        
+        self.registers[indices] = value
 
     def read(self):
         """Read the register array"""
         return self.registers
+    
+    def read(self, indices: NDArray[np.integer]):
+        """Read specific indices from the register array"""
+        if np.any(indices >= self.size) or np.any(indices < 0):
+            raise ValueError("Index out of bounds")
+        
+        return self.registers[indices]
     
     def reset(self):
         """Reset the register array to zero"""
