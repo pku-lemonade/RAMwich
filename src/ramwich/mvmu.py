@@ -4,13 +4,21 @@ import numpy as np
 
 from .blocks.adc import ADCArray
 from .blocks.dac import DACArray
-from .blocks.xbar import XbarArray
 from .blocks.inreg import InputRegisterArray
-from .blocks.outreg import OutputRegisterArray
-from .blocks.snh import SNHArray
-from .blocks.sna import SNAArray
 from .blocks.mux import MuxArray
-from .config import ADCType, ADCConfig, Config, DACConfig, DataConfig, MVMUConfig, XBARConfig
+from .blocks.outreg import OutputRegisterArray
+from .blocks.sna import SNAArray
+from .blocks.snh import SNHArray
+from .blocks.xbar import XbarArray
+from .config import (
+    ADCConfig,
+    ADCType,
+    Config,
+    DACConfig,
+    DataConfig,
+    MVMUConfig,
+    XBARConfig,
+)
 from .stats import Stats
 from .utils.data_convert import extract_bits, float_to_fixed, int_to_conductance
 
@@ -71,38 +79,36 @@ class MVMU:
 
         # Reshape to 2D matrix
         weights_matrix = np.array(weights).reshape(xbar_size, xbar_size)
-        
+
         # Calculate signs of all weights at once
         signs = np.sign(weights_matrix)
-        
+
         # Prepare weights with positive magnitudes
         abs_weights = np.abs(weights_matrix)
-        
+
         # Convert all weights to fixed-point representation
         int_weights = np.vectorize(lambda w: float_to_fixed(w, self.data_config.frac_bits))(abs_weights)
-        
+
         # Initialize the output array
-        xbar_weights = np.zeros(
-            (self.mvmu_config.num_rram_xbar_per_mvmu, xbar_size, xbar_size)
-        )
-        
+        xbar_weights = np.zeros((self.mvmu_config.num_rram_xbar_per_mvmu, xbar_size, xbar_size))
+
         # Process each crossbar
         for k in range(self.mvmu_config.num_rram_xbar_per_mvmu):
             # Extract bits for this crossbar (still need to loop over k)
             xbar_int_weights = np.vectorize(
                 lambda w: extract_bits(w, self.mvmu_config.stored_bit[k], self.mvmu_config.stored_bit[k + 1])
             )(int_weights)
-            
+
             # Convert to conductance values (vectorized)
             conductance_values = np.vectorize(
                 lambda w: int_to_conductance(
                     w,
                     self.mvmu_config.bits_per_cell[k],
                     self.mvmu_config.xbar_config.rram_conductance_min,
-                    self.mvmu_config.xbar_config.rram_conductance_max
+                    self.mvmu_config.xbar_config.rram_conductance_max,
                 )
             )(xbar_int_weights)
-            
+
             # Apply signs and store in result array
             xbar_weights[k] = signs * conductance_values
 
@@ -140,9 +146,6 @@ class MVMU:
                 # Step 7: ADC conversion
                 adc_output = self.adc_array.convert(mux_output_pos, mux_output_neg)
 
-                #if i == 0:
-                    #print(f"ADC output: {adc_output}")
-
                 # Step 8: Read current value from output register array
                 mask = np.arange(j, self.mvmu_config.xbar_config.xbar_size, self.mvmu_config.num_columns_per_adc)
                 current_output = self.output_register_array.read(mask)
@@ -152,7 +155,7 @@ class MVMU:
 
                 # Step 10: Write back to the output register array
                 self.output_register_array.write(sna_output, mask)
-            
+
         # Step 11: Do the clipping since we preserved full precision during the shift and add
         # No code here, just to use read_clipped method in the output register array
 

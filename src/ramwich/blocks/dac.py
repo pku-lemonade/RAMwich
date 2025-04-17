@@ -4,7 +4,7 @@ import numpy as np
 from numpy.typing import NDArray
 from pydantic import BaseModel, Field
 
-from ..config import MVMUConfig, DACConfig, XBARConfig
+from ..config import DACConfig, MVMUConfig, XBARConfig
 from ..stats import Stats
 
 
@@ -63,7 +63,7 @@ class DACArray:
 
         if len(digital_value) != self.size:
             raise ValueError(f"Expected input vector of shape ({self.size},), got {digital_value.shape}")
-        
+
         # Apply analog conversion based on resolution
         fraction = digital_value / self.max_value
         clipped_value = np.clip(fraction, 0, 1)

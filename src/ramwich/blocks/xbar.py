@@ -4,7 +4,7 @@ import numpy as np
 from numpy.typing import NDArray
 from pydantic import BaseModel, Field
 
-from ..config import MVMUConfig, XBARConfig, DataConfig
+from ..config import DataConfig, MVMUConfig, XBARConfig
 from ..stats import Stats
 
 
@@ -26,7 +26,7 @@ class XbarArray:
     Crossbar array component that performs matrix-vector multiplication operations.
     """
 
-    def __init__(self, mvmu_config: MVMUConfig=None):
+    def __init__(self, mvmu_config: MVMUConfig = None):
         self.mvmu_config = mvmu_config or MVMUConfig()
         self.xbar_config = self.mvmu_config.xbar_config
         self.num_xbar = self.mvmu_config.num_rram_xbar_per_mvmu
@@ -46,7 +46,7 @@ class XbarArray:
         expected_shape = (self.num_xbar, self.xbar_size, self.xbar_size)
         if weights.shape != expected_shape:
             raise ValueError(f"Expected weights shape {expected_shape}, got {weights.shape}")
-        
+
         self.pos_xbar = np.maximum(weights, 0)
         self.neg_xbar = np.maximum(-weights, 0)
 
@@ -58,9 +58,9 @@ class XbarArray:
 
         Args:
             input_vector: 1D array of length xbar_size representing the input voltages
-        
+
         Returns:
-            2D array with shape (num_xbar, xbar_size) containing the results of matrix-vector 
+            2D array with shape (num_xbar, xbar_size) containing the results of matrix-vector
             multiplication for each crossbar
         """
 
@@ -70,7 +70,7 @@ class XbarArray:
 
         if len(input_vector) != self.xbar_size:
             raise ValueError(f"Expected input vector of shape ({self.xbar_size},), got {input_vector.shape}")
-        
+
         # Use einsum for efficient matrix-vector multiplication across all crossbars
         # i: crossbar index, j: crossbar row, k: crossbar column (multiplied by input)
         # 'ijk,k->ij' for transpose multiplication
@@ -78,12 +78,12 @@ class XbarArray:
         if self.has_noise:
             rng = np.random.default_rng()
             pos_mat = self.pos_xbar + rng.normal(0, self.xbar_config.noise_sigma, self.pos_xbar.shape)
-            neg_mat = self.neg_xbar + rng.normal(0, self.xbar_config.noise_sigma, self.neg_xbar.shape)          
-            pos_result = np.einsum('ikj,j->ik', pos_mat, input_vector)
-            neg_result = np.einsum('ikj,j->ik', neg_mat, input_vector)
+            neg_mat = self.neg_xbar + rng.normal(0, self.xbar_config.noise_sigma, self.neg_xbar.shape)
+            pos_result = np.einsum("ikj,j->ik", pos_mat, input_vector)
+            neg_result = np.einsum("ikj,j->ik", neg_mat, input_vector)
         else:
-            pos_result = np.einsum('ikj,j->ik', self.pos_xbar, input_vector)
-            neg_result = np.einsum('ikj,j->ik', self.neg_xbar, input_vector)
+            pos_result = np.einsum("ikj,j->ik", self.pos_xbar, input_vector)
+            neg_result = np.einsum("ikj,j->ik", self.neg_xbar, input_vector)
 
         # Update the statistics
         self.stats.operations += self.num_xbar * 2  # Two operations per crossbar (one for pos and one for neg)
