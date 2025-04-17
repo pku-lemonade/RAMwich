@@ -1,5 +1,8 @@
 import logging
-from typing import List
+from typing import List, Union
+
+import numpy as np
+from numpy.typing import NDArray
 
 from .blocks.dram import DRAM
 from .blocks.sram import SRAM
@@ -26,9 +29,19 @@ class Core:
         self.core_config = self.config.core_config
         self.operations: List[CoreOp] = []
 
-        self.cache = SRAM(self.config)
+        # Initialize some useful parameters
+        # Address 0 to num_mvmus_per_core * xbar_size - 1 are the MVMU input registers
+        # Address num_mvmus_per_core * xbar_size to num_mvmus_per_core * xbar_size * 2 - 1 are the MVMU output registers
+        # From num_mvmus_per_core * xbar_size * 2 and above are core cache
+        self.mvmu_outreg_start = self.config.mvmu_config.xbar_config.xbar_size * self.config.num_mvmus_per_core
+        self.cache_start = self.mvmu_outreg_start * 2
+        self.total_registers = self.cache_start + self.config.core_config.dataMem_size
+
+        # Initialize components
+        self.cache = SRAM(self.core_config)
         self.vfu = VFU(self.config)
 
+        # Initialize stats
         self.stats = Stats()
 
     def __repr__(self) -> str:
@@ -41,6 +54,51 @@ class Core:
     def get_stats(self) -> Stats:
         """Get statistics for this Core by aggregating from all components"""
         return self.stats.get_stats(self.mvmus + [self.dram, self.sram])
+
+    def _overlaps_output_registers(self, start: int, end: int) -> bool:
+        """Check if address range overlaps with MVMU output registers"""
+        # Check if the range [start, end) overlaps with output register range
+        return (
+            (start >= self.mvmu_outreg_start and start < self.cache_start)
+            or (end > self.mvmu_outreg_start and end <= self.cache_start)
+            or (start <= self.mvmu_outreg_start and end >= self.cache_start)
+        )
+
+    def write_to_register(self, start: int, data: Union[NDArray[np.integer], int]):
+        """Write data to the register file of the MVMU."""
+        # Convert to numpy array if it's a single value
+        if isinstance(data, int):
+            data = np.array([data], dtype=np.int32)
+
+        length = len(data)
+        end = start + length
+
+        # Validate input
+        if start < 0 or end > self.total_registers:
+            raise IndexError(f"Write operation out of range ({start}, {length})")
+
+        if self._overlaps_output_registers(start, end):
+            raise IndexError(f"Write operation to MVMU output register ({start}, {length}) is not allowed")
+
+        # Depending on address, write to the appropriate register
+        if start >= self.cache_start:
+            # Write to cache
+            internal_start = start - self.cache_start
+            self.cache.write(internal_start, data)
+        else:
+            # Write to MVMU input registers
+            # First get the MVMU ID and check if it is only writing to one MVMU
+            mvmu_id_start = start // self.config.mvmu_config.xbar_config.xbar_size
+            mvmu_id_end = end // self.config.mvmu_config.xbar_config.xbar_size
+            if mvmu_id_start != mvmu_id_end:
+                raise IndexError(f"Write operation spans multiple MVMUs ({mvmu_id_start}, {mvmu_id_end})")
+
+            mvmu_id = mvmu_id_start
+            mvmu = self.get_mvmu(mvmu_id)
+            internal_start = start % self.config.mvmu_config.xbar_config.xbar_size
+
+            # Write to the input register of the MVMU
+            mvmu.write_input(internal_start, data)
 
     def run(self, env):
         """

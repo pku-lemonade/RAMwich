@@ -1,3 +1,5 @@
+from typing import Union
+
 import numpy as np
 from numpy.typing import NDArray
 
@@ -20,14 +22,25 @@ class InputRegisterArray:
 
         # Initialize stats
 
-    def write(self, value: NDArray[np.integer]):
+    def write(self, value: Union[NDArray[np.integer], int], start: int = 0):
         """Write values to register array"""
 
-        if value.shape != self.registers.shape:
-            raise ValueError("Value shape does not match register array shape")
+        # Convert to numpy array if it's a single value
+        if isinstance(value, int):
+            value = np.array([value], dtype=np.int32)
+
+        length = len(value)
+        end = start + length
+
+        # Validate input
+        if start < 0 or end > self.size:
+            raise IndexError(f"Write operation out of range ({start}, {len(value)})")
 
         # Write the value to the registers
-        self.registers = np.copy(value)
+        self.registers[start:end] = value.copy()
+
+        # Update stats
+        self._update_stats("read", length)
 
     def read(self, bits: int):
         """Read the LSBs from register array and then shift the registers to the right by bits"""
@@ -42,6 +55,16 @@ class InputRegisterArray:
     def reset(self):
         """Reset the register array to zero"""
         self.registers = np.zeros(self.size, dtype=np.int32)
+
+        # Update stats
+        self._update_stats("write", self.size)
+
+    def _update_stats(self, operation_type: str, length) -> None:
+        self.stats.total_operations += length
+        if operation_type == "read":
+            self.stats.read_operations += length
+        elif operation_type == "write":
+            self.stats.write_operations += length
 
     def read_all(self):
         """Read all the registers

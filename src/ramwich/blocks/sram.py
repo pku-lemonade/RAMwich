@@ -4,7 +4,7 @@ import numpy as np
 from numpy.typing import NDArray
 from pydantic import BaseModel, Field
 
-from ..config import Config
+from ..config import CoreConfig
 from ..stats import Stats
 
 
@@ -28,14 +28,9 @@ class SRAMStats(BaseModel):
 class SRAM:
     """SRAM register file component for the Core"""
 
-    def __init__(self, config: Config = None):
-        self.config = config or Config()
-        self.size = self.config.core_config.dataMem_size
-        # Address bias for the SRAM registers
-        # Address 0 to num_mvmus_per_core * xbar_size - 1 is for the MVMU input registers
-        # Address num_mvmus_per_core * xbar_size to num_mvmus_per_core * xbar_size * 2 - 1 is for the MVMU output registers
-        # From num_mvmus_per_core * xbar_size * 2 and above is for the core cache
-        self.address_bias = self.config.num_mvmus_per_core * self.config.mvmu_config.xbar_config.xbar_size * 2
+    def __init__(self, core_config: CoreConfig = None):
+        self.core_config = core_config or CoreConfig()
+        self.size = self.core_config.dataMem_size
 
         # Initialize registers
         self.registers = np.zeros(self.size, dtype=np.int32)
@@ -46,20 +41,18 @@ class SRAM:
     def read(self, start: int, length: int):
         """Read a block of registers from SRAM"""
 
+        end = start + length
+
         # Validate input
-        if start < self.address_bias or start + length > self.address_bias + self.size:
+        if start < 0 or end > self.size:
             raise IndexError(f"Read operation out of range ({start}, {length})")
         if length <= 0:
             raise ValueError("Length must be a positive integer")
 
-        # Calculate internal indices
-        internal_start = start - self.address_bias
-        internal_end = internal_start + length
-
         # Update stats
-        self._update_stats("read")
+        self._update_stats("read", length)
 
-        return self.registers[internal_start:internal_end].copy()
+        return self.registers[start:end].copy()
 
     def write(self, start: int, values: Union[NDArray[np.integer], int]):
         """Write values to a block of registers in SRAM"""
@@ -68,28 +61,24 @@ class SRAM:
             values = np.array([values], dtype=np.int32)
 
         length = len(values)
+        end = start + length
 
         # Validate input
-        if start < self.address_bias or start + length > self.address_bias + self.size:
+        if start < 0 or end > self.size:
             raise IndexError(f"Write operation out of range ({start}, {length})")
 
-        # Calculate internal indices
-        internal_start = start - self.address_bias
-        internal_end = internal_start + length
-
         # Write values
-        self.registers[internal_start:internal_end] = values
+        self.registers[start:end] = values.copy()
 
         # Update stats
-        self._update_stats("write")
+        self._update_stats("write", length)
 
-    def _update_stats(self, operation_type: str) -> None:
-        self.stats.total_operations += 1
+    def _update_stats(self, operation_type: str, length) -> None:
+        self.stats.total_operations += length
         if operation_type == "read":
-            self.stats.read_operations += 1
+            self.stats.read_operations += length
         elif operation_type == "write":
-            self.stats.write_operations += 1
-        self.stats.latency += self.latency
+            self.stats.write_operations += length
 
     def get_stats(self) -> Stats:
         return self.stats.get_stats()
