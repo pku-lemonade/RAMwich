@@ -1,7 +1,7 @@
 import logging
 from abc import ABC, abstractmethod
 
-from .ops import ALU, MVM, Copy, Hlt, Load, Set, Store
+from .ops import MVM, VFU, Copy, Hlt, Load, Set, Store
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +30,7 @@ class CoreVisitor(ABC):
         pass
 
     @abstractmethod
-    def visit_alu(self, op: ALU):
+    def visit_vfu(self, op: VFU):
         pass
 
     @abstractmethod
@@ -61,7 +61,7 @@ class CommonVisitor(CoreVisitor):
     def visit_mvm(self, op: MVM):
         return self._visit_common(op)
 
-    def visit_alu(self, op: ALU):
+    def visit_vfu(self, op: VFU):
         return self._visit_common(op)
 
     def visit_hlt(self, op: Hlt):
@@ -106,8 +106,8 @@ class CoreExecutionTimingVisitor(CommonVisitor):
     def visit_copy(self, op):
         return self.config.set_execution_time  # Assuming copy uses set time
 
-    def visit_alu(self, op):
-        return self.config.alu_execution_time
+    def visit_vfu(self, op):
+        return self.config.vfu_execution_time
 
     def visit_mvm(self, op):
         return self.config.mvm_execution_time
@@ -153,7 +153,7 @@ class CoreExecutionFunctionalVisitor(CoreVisitor):
         except IndexError as e:
             logger.error(f"Copy operation failed: {e}")
 
-    def visit_alu(self, op):
+    def visit_vfu(self, op):
         try:
             r1 = self.core.sram.read(op.read_1)
             result = 0
@@ -175,16 +175,16 @@ class CoreExecutionFunctionalVisitor(CoreVisitor):
                     result = r1 * r2
                 elif op.opcode == "div":
                     if r2 == 0:
-                        logger.error("ALU division by zero")
+                        logger.error("VFU division by zero")
                         return
                     result = r1 / r2
                 elif op.opcode == "max":
                     result = max(r1, r2)
 
             self.core.sram.write(op.dest, result)
-            self.core.stats.increment_op_count("alu")
+            self.core.stats.increment_op_count("vfu")
         except IndexError as e:
-            logger.error(f"ALU operation failed: {e}")
+            logger.error(f"VFU operation failed: {e}")
 
     def visit_mvm(self, op):
         try:

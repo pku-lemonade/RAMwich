@@ -7,4 +7,5 @@ from .outreg import OutputRegisterArray
 from .sna import SNAArray
 from .snh import SNHArray
 from .sram import SRAM
+from .vfu import VFU
 from .xbar import XbarArray

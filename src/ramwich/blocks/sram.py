@@ -35,7 +35,7 @@ class SRAM:
         # Address 0 to num_mvmus_per_core * xbar_size - 1 is for the MVMU input registers
         # Address num_mvmus_per_core * xbar_size to num_mvmus_per_core * xbar_size * 2 - 1 is for the MVMU output registers
         # From num_mvmus_per_core * xbar_size * 2 and above is for the core cache
-        self.address_bias = self.config.num_mvmus_per_core * self.config.mvmu_config.xbar_size * 2
+        self.address_bias = self.config.num_mvmus_per_core * self.config.mvmu_config.xbar_config.xbar_size * 2
 
         # Initialize registers
         self.registers = np.zeros(self.size, dtype=np.int32)

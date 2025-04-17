@@ -458,9 +458,14 @@ class CoreConfig(BaseModel):
     instrnMem_pow_leak: float = Field(default=None, init=False, description="Core instruction memory leakage power")
     instrnMem_area: float = Field(default=None, init=False, description="Core instruction memory area")
 
-    # ALU parameters with default fields
+    # VFU parameters with default fields
     alu_lat: int = Field(default=1, description="ALU latency")
     alu_pow_dyn: float = Field(default=2.4 * 32 / 45, description="ALU dynamic power")
+    alu_pow_div_dyn: float = Field(default=1.52 * 32 / 45, description="ALU division dynamic power")
+    alu_pow_mul_dyn: float = Field(default=0.795 * 32 / 45, description="ALU multiplication dynamic power")
+    act_pow_leak: float = Field(default=0.026, description="Activation unit leakage power")
+    act_pow_dyn: float = Field(default=0.26 - 0.026, description="Activation unit dynamic power")
+    alu_pow_others_dyn: float = Field(default=0.373 * 32 / 45, description="ALU other operations dynamic power")
     alu_pow_leak: float = Field(default=0.27 * 32 / 45, description="ALU leakage power")
     alu_area: float = Field(default=0.00567 * 32 / 45, description="ALU area")
 

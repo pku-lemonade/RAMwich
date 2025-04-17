@@ -74,9 +74,12 @@ class MVM(CoreOp):
         return visitor.visit_mvm(self)
 
 
-class ALU(CoreOp):
-    type: Literal["alu"] = "alu"
-    opcode: Literal["add", "sub", "mul", "div", "max", "sig", "tanh", "relu"]
+VFUOpType = Literal["and", "or", "not", "add", "sub", "mul", "div", "min", "max", "sig", "tanh", "relu"]
+
+
+class VFU(CoreOp):
+    type: Literal["vfu"] = "vfu"
+    opcode: VFUOpType  # VFU operation type
     dest: int  # Target register where the result vector will be stored
     read_1: int  # Register that stores operator 1
     read_2: Optional[int] = None  # Register that stores operator 2, Not needed in sig, tanh and relu
@@ -84,7 +87,7 @@ class ALU(CoreOp):
     vec: int  # Length of vector
 
     def accept(self, visitor):
-        return visitor.visit_alu(self)
+        return visitor.visit_vfu(self)
 
 
 class Hlt(CoreOp):
@@ -126,7 +129,7 @@ class Halt(TileOp):
 # Removed TimingVisitor and ExecutionVisitor classes as they are now in core.py
 
 # Create discriminated union types
-CoreOpType = Union[Load, Store, Set, Copy, MVM, ALU, Hlt]
+CoreOpType = Union[Load, Store, Set, Copy, MVM, VFU, Hlt]
 TileOpType = Union[Send, Recv, Halt]
 OpType = Union[CoreOpType, TileOpType]
 
