@@ -32,7 +32,7 @@ def main():
     matrix = np.load(matrix_path)
 
     mvmu.input_register_array.write(input_vec)
-    mvmu._execute_mvm()
+    mvmu.execute_mvm()
     output = mvmu.output_register_array.read_clipped(8) * (2**-8)
     expected_output = np.dot(matrix, input_vec * (2**-8))
     error = output - expected_output
