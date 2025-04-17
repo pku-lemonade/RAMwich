@@ -1,6 +1,7 @@
 from typing import List
 
 import numpy as np
+from numpy.typing import NDArray
 
 from .blocks.adc import ADCArray
 from .blocks.dac import DACArray
@@ -115,7 +116,7 @@ class MVMU:
         # Load the processed weights into the xbar array
         self.rram_xbar_array.load_weights(xbar_weights)
 
-    def _execute_mvm(self):
+    def execute_mvm(self):
         """Execute a detailed matrix-vector multiplication instruction"""
 
         # Step 1: Reset the output register array
@@ -158,6 +159,14 @@ class MVMU:
 
         # Step 11: Do the clipping since we preserved full precision during the shift and add
         # No code here, just to use read_clipped method in the output register array
+
+    def write_input(self, value: NDArray[np.integer]):
+        """Write values to the input register array"""
+        self.input_register_array.write(value)
+
+    def read_output(self):
+        """Read the clipped output from the output register array"""
+        return self.output_register_array.read_clipped(self.data_config.frac_bits)
 
     def get_stats(self) -> Stats:
         return self.stats.get_stats(self.xbars + self.adcs + self.dacs)
