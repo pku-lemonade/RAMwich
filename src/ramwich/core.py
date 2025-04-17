@@ -88,17 +88,43 @@ class Core:
         else:
             # Write to MVMU input registers
             # First get the MVMU ID and check if it is only writing to one MVMU
-            mvmu_id_start = start // self.config.mvmu_config.xbar_config.xbar_size
+            mvmu_id = start // self.config.mvmu_config.xbar_config.xbar_size
             mvmu_id_end = end // self.config.mvmu_config.xbar_config.xbar_size
-            if mvmu_id_start != mvmu_id_end:
-                raise IndexError(f"Write operation spans multiple MVMUs ({mvmu_id_start}, {mvmu_id_end})")
+            if mvmu_id != mvmu_id_end:
+                raise IndexError(f"Write operation spans multiple MVMUs ({mvmu_id}, {mvmu_id_end})")
 
-            mvmu_id = mvmu_id_start
-            mvmu = self.get_mvmu(mvmu_id)
             internal_start = start % self.config.mvmu_config.xbar_config.xbar_size
 
             # Write to the input register of the MVMU
-            mvmu.write_input(internal_start, data)
+            self.mvmus[mvmu_id].write_input(internal_start, data)
+
+    def read_from_register(self, start: int, length: int) -> NDArray[np.integer]:
+        """Read data from the register file of the MVMU."""
+        end = start + length
+
+        # Validate input
+        if start < 0 or end > self.total_registers:
+            raise IndexError(f"Read operation out of range ({start}, {length})")
+
+        if start < self.mvmu_outreg_start:
+            raise IndexError(f"Read operation from MVMU input register ({start}, {length}) is not allowed")
+
+        # Depending on address, read from the appropriate register
+        if start >= self.cache_start:
+            # Read from cache
+            internal_start = start - self.cache_start
+            return self.cache.read(internal_start, length)
+        else:
+            # Read from MVMU output registers
+            mvmu_id = start // self.config.mvmu_config.xbar_config.xbar_size - self.config.num_mvmus_per_core
+            mvmu_id_end = end // self.config.mvmu_config.xbar_config.xbar_size - self.config.num_mvmus_per_core
+            if mvmu_id != mvmu_id_end:
+                raise IndexError(f"Read operation spans multiple MVMUs ({mvmu_id}, {mvmu_id_end})")
+
+            internal_start = start % self.config.mvmu_config.xbar_config.xbar_size
+
+            # Read from the input register of the MVMU
+            return self.mvmus[mvmu_id].read_output(internal_start, length)
 
     def run(self, env):
         """
