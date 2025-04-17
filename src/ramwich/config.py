@@ -184,7 +184,6 @@ class ADCConfig(BaseModel):
             self.pow_dyn = self.POW_DYN_DICT[self.resolution]
             self.pow_leak = self.POW_LEAK_DICT[self.resolution]
             self.area = self.AREA_DICT[self.resolution]
-        
 
 
 class NOCConfig(BaseModel):
@@ -577,7 +576,7 @@ class Config(BaseModel):
             self.mvmu_config.num_sram_xbar_per_mvmu + self.mvmu_config.num_rram_xbar_per_mvmu
         )
 
-        assert (bits == self.data_width), "storage config invalid: check if total bits in storage config = data width"
+        assert bits == self.data_width, "storage config invalid: check if total bits in storage config = data width"
         assert (
             self.data_config.int_bits + self.data_config.frac_bits == self.data_width
         ), "storage config invalid: check if total bits in storage config = int_bits + frac_bits"

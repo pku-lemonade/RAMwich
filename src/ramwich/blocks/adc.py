@@ -4,7 +4,7 @@ import numpy as np
 from numpy.typing import NDArray
 from pydantic import BaseModel, Field
 
-from ..config import DataConfig, MVMUConfig, XBARConfig, DACConfig, ADCConfig, ADCType
+from ..config import ADCConfig, ADCType, DACConfig, DataConfig, MVMUConfig, XBARConfig
 from ..stats import Stats
 
 
@@ -44,7 +44,7 @@ class ADCStats(BaseModel):
 class ADCArray:
     """Hardware implementation of the ADC component"""
 
-    def __init__(self, mvmu_config: MVMUConfig=None):
+    def __init__(self, mvmu_config: MVMUConfig = None):
         self.mvmu_config = mvmu_config or MVMUConfig()
         self.adc_config = self.mvmu_config.adc_config
 
@@ -68,9 +68,11 @@ class ADCArray:
         # Vectorized calculation of conductance steps
         xbar_bits = np.array([self.mvmu_config.bits_per_cell[idx] for idx in xbar_indices])[:, np.newaxis]
 
-        voltage_step = self.mvmu_config.dac_config.VDD / (2 ** self.mvmu_config.dac_config.resolution - 1)
-        conductance_range = self.mvmu_config.xbar_config.rram_conductance_max - self.mvmu_config.xbar_config.rram_conductance_min
-        conductance_steps = conductance_range / ((2 ** xbar_bits) - 1)
+        voltage_step = self.mvmu_config.dac_config.VDD / (2**self.mvmu_config.dac_config.resolution - 1)
+        conductance_range = (
+            self.mvmu_config.xbar_config.rram_conductance_max - self.mvmu_config.xbar_config.rram_conductance_min
+        )
+        conductance_steps = conductance_range / ((2**xbar_bits) - 1)
 
         # Calculate current step for each ADC
         self.current_step = voltage_step * conductance_steps
@@ -83,7 +85,9 @@ class ADCArray:
 
         # Validate input
         if analog_value_pos.shape != analog_value_neg.shape:
-            raise ValueError(f"Expected input vectors of the same shape, got {analog_value_pos.shape} and {analog_value_neg.shape}")
+            raise ValueError(
+                f"Expected input vectors of the same shape, got {analog_value_pos.shape} and {analog_value_neg.shape}"
+            )
 
         if analog_value_pos.shape != self.shape:
             raise ValueError(f"Expected input vectors of shape {self.shape}, got {analog_value_pos.shape}")

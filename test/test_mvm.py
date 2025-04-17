@@ -1,6 +1,6 @@
-import os
 import argparse
 import logging
+import os
 
 import numpy as np
 
@@ -38,7 +38,6 @@ def main():
     error = output - expected_output
 
     print(error)
-
 
 
 if __name__ == "__main__":

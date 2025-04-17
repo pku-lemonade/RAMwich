@@ -39,7 +39,7 @@ core_config:
 mvmu_config:
   num_columns_per_adc: 16
   # Other parameters (snh_lat, mux_lat, sna_lat, etc.) are derived
-  
+
   # Other mvmu fields
   # DAC Configuration
   dac_config:

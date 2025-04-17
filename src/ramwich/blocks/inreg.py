@@ -4,13 +4,14 @@ from numpy.typing import NDArray
 from ..config import MVMUConfig
 from ..stats import Stats
 
+
 class InputRegisterArray:
     """Hardware implementation of the MVMU input register component
-    
+
     MVMU input register array reads differently from normal registers.
     For each read, it reads a several bits and then shifts the register"""
 
-    def __init__(self, mvmu_config: MVMUConfig=None):
+    def __init__(self, mvmu_config: MVMUConfig = None):
         self.mvmu_config = mvmu_config or MVMUConfig()
         self.size = self.mvmu_config.xbar_config.xbar_size
 
@@ -24,7 +25,7 @@ class InputRegisterArray:
 
         if value.shape != self.registers.shape:
             raise ValueError("Value shape does not match register array shape")
-        
+
         # Write the value to the registers
         self.registers = np.copy(value)
 
@@ -37,11 +38,11 @@ class InputRegisterArray:
         self.registers >>= bits
 
         return lsb
-    
+
     def reset(self):
         """Reset the register array to zero"""
         self.registers = np.zeros(self.size, dtype=np.int32)
-    
+
     def read_all(self):
         """Read all the registers
         This a hack function used for debugging purposes"""
