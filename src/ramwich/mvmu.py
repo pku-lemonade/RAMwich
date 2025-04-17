@@ -160,13 +160,14 @@ class MVMU:
         # Step 11: Do the clipping since we preserved full precision during the shift and add
         # No code here, just to use read_clipped method in the output register array
 
-    def write_input(self, start: int, value: Union[NDArray[np.integer], int]):
+    def write_to_inreg(self, start: int, value: Union[NDArray[np.integer], int]):
         """Write values to the input register array"""
         self.input_register_array.write(value, start)
 
-    def read_output(self):
+    def read_from_outreg(self, start: int, length: int):
         """Read the clipped output from the output register array"""
-        return self.output_register_array.read_clipped(self.data_config.frac_bits)
+        indices = np.arange(start, start + length)
+        return self.output_register_array.read_clipped(self.data_config.frac_bits, indices)
 
     def get_stats(self) -> Stats:
         return self.stats.get_stats(self.xbars + self.adcs + self.dacs)
