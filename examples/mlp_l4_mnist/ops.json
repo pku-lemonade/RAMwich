@@ -518,7 +518,7 @@
         "read_1": 2049,
         "read_2": 768,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -528,7 +528,7 @@
         "read_1": 1921,
         "read_2": 2049,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -538,7 +538,7 @@
         "read_1": 1793,
         "read_2": 1921,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -548,7 +548,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -558,7 +558,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -793,7 +793,7 @@
         "read_1": 1921,
         "read_2": 896,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -803,7 +803,7 @@
         "read_1": 1793,
         "read_2": 1921,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -813,7 +813,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -823,7 +823,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -911,7 +911,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -920,7 +920,7 @@
         "opcode": "relu",
         "read_1": 1537,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -1113,7 +1113,7 @@
         "read_1": 1793,
         "read_2": 1024,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -1123,7 +1123,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -1133,7 +1133,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -1263,7 +1263,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -1273,7 +1273,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -1282,7 +1282,7 @@
         "opcode": "relu",
         "read_1": 1537,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -1433,7 +1433,7 @@
         "read_1": 1665,
         "read_2": 1152,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -1443,7 +1443,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -1615,7 +1615,7 @@
         "read_1": 1793,
         "read_2": 1921,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -1625,7 +1625,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -1635,7 +1635,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -1644,7 +1644,7 @@
         "opcode": "relu",
         "read_1": 1537,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -1753,7 +1753,7 @@
         "read_1": 1537,
         "read_2": 1280,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -1967,7 +1967,7 @@
         "read_1": 1921,
         "read_2": 2049,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -1977,7 +1977,7 @@
         "read_1": 1793,
         "read_2": 1921,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -1987,7 +1987,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -1997,7 +1997,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -2006,7 +2006,7 @@
         "opcode": "relu",
         "read_1": 1537,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -2327,7 +2327,7 @@
         "read_1": 2049,
         "read_2": 2177,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -2337,7 +2337,7 @@
         "read_1": 1921,
         "read_2": 2049,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -2347,7 +2347,7 @@
         "read_1": 1793,
         "read_2": 1921,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -2357,7 +2357,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -2367,7 +2367,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -2376,7 +2376,7 @@
         "opcode": "relu",
         "read_1": 1537,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -2679,7 +2679,7 @@
         "read_1": 2177,
         "read_2": 2305,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -2689,7 +2689,7 @@
         "read_1": 2049,
         "read_2": 2177,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -2699,7 +2699,7 @@
         "read_1": 1921,
         "read_2": 2049,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -2709,7 +2709,7 @@
         "read_1": 1793,
         "read_2": 1921,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -2719,7 +2719,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -2729,7 +2729,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -2738,7 +2738,7 @@
         "opcode": "relu",
         "read_1": 1537,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -3015,7 +3015,7 @@
         "read_1": 2049,
         "read_2": 768,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -3025,7 +3025,7 @@
         "read_1": 1921,
         "read_2": 2049,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -3035,7 +3035,7 @@
         "read_1": 1793,
         "read_2": 1921,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -3045,7 +3045,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -3055,7 +3055,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 2,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -3478,7 +3478,7 @@
         "read_1": 2433,
         "read_2": 896,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -3488,7 +3488,7 @@
         "read_1": 2177,
         "read_2": 2433,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -3498,7 +3498,7 @@
         "read_1": 1921,
         "read_2": 2177,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -3508,7 +3508,7 @@
         "read_1": 1665,
         "read_2": 1921,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -3686,7 +3686,7 @@
         "read_1": 1665,
         "read_2": 1537,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -3695,7 +3695,7 @@
         "opcode": "relu",
         "read_1": 1537,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -3830,7 +3830,7 @@
         "read_1": 1809,
         "read_2": 1937,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -3840,7 +3840,7 @@
         "read_1": 1553,
         "read_2": 1809,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -3849,7 +3849,7 @@
         "opcode": "relu",
         "read_1": 1553,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -4073,7 +4073,7 @@
         "read_1": 1793,
         "read_2": 1024,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -4083,7 +4083,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -4093,7 +4093,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -4202,7 +4202,7 @@
         "read_1": 1537,
         "read_2": 1280,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -4416,7 +4416,7 @@
         "read_1": 1921,
         "read_2": 2049,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -4426,7 +4426,7 @@
         "read_1": 1793,
         "read_2": 1921,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -4436,7 +4436,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -4446,7 +4446,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -4455,7 +4455,7 @@
         "opcode": "relu",
         "read_1": 1537,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -4758,7 +4758,7 @@
         "read_1": 2177,
         "read_2": 2305,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -4768,7 +4768,7 @@
         "read_1": 2049,
         "read_2": 2177,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -4778,7 +4778,7 @@
         "read_1": 1921,
         "read_2": 2049,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -4788,7 +4788,7 @@
         "read_1": 1793,
         "read_2": 1921,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -4798,7 +4798,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -4808,7 +4808,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -4817,7 +4817,7 @@
         "opcode": "relu",
         "read_1": 1537,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -5094,7 +5094,7 @@
         "read_1": 2049,
         "read_2": 768,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -5104,7 +5104,7 @@
         "read_1": 1921,
         "read_2": 2049,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -5114,7 +5114,7 @@
         "read_1": 1793,
         "read_2": 1921,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -5124,7 +5124,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -5134,7 +5134,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -5327,7 +5327,7 @@
         "read_1": 1793,
         "read_2": 1024,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -5337,7 +5337,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -5347,7 +5347,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -5477,7 +5477,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -5487,7 +5487,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -5496,7 +5496,7 @@
         "opcode": "relu",
         "read_1": 1537,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -5715,7 +5715,7 @@
         "read_1": 1921,
         "read_2": 2049,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -5725,7 +5725,7 @@
         "read_1": 1793,
         "read_2": 1921,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -5735,7 +5735,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -5745,7 +5745,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -5754,7 +5754,7 @@
         "opcode": "relu",
         "read_1": 1537,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -5858,7 +5858,7 @@
         "read_1": 1537,
         "read_2": 1280,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -6051,7 +6051,7 @@
         "read_1": 1937,
         "read_2": 1024,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 72
     },
     {
@@ -6061,7 +6061,7 @@
         "read_1": 1865,
         "read_2": 1937,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 72
     },
     {
@@ -6071,7 +6071,7 @@
         "read_1": 1665,
         "read_2": 1865,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 72
     },
     {
@@ -6080,7 +6080,7 @@
         "opcode": "relu",
         "read_1": 1665,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 72
     },
     {
@@ -6174,7 +6174,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -6184,7 +6184,7 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -6193,7 +6193,7 @@
         "opcode": "relu",
         "read_1": 1537,
         "tile": 3,
-        "type": "alu",
+        "type": "vfu",
         "vec": 128
     },
     {
@@ -6330,7 +6330,7 @@
         "read_1": 1537,
         "read_2": 768,
         "tile": 4,
-        "type": "alu",
+        "type": "vfu",
         "vec": 10
     },
     {

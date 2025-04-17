@@ -1,10 +1,9 @@
 import logging
 from typing import List
 
-from .blocks.alu import ALU
 from .blocks.dram import DRAM
-from .blocks.dram_interface import DRAMInterface
 from .blocks.sram import SRAM
+from .blocks.vfu import VFU
 from .config import Config, CoreConfig
 from .mvmu import MVMU
 from .ops import CoreOp
@@ -28,8 +27,7 @@ class Core:
         self.operations: List[CoreOp] = []
 
         self.cache = SRAM(self.config)
-        self.alu = ALU()
-        self.dram_interface = DRAMInterface()
+        self.vfu = VFU(self.config)
 
         self.stats = Stats()
 
