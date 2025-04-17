@@ -1,8 +1,11 @@
 import logging
 from typing import List
 
+from .blocks.alu import ALU
 from .blocks.dram import DRAM
+from .blocks.dram_interface import DRAMInterface
 from .blocks.sram import SRAM
+from .config import Config, CoreConfig
 from .mvmu import MVMU
 from .ops import CoreOp
 from .pipeline import Pipeline, StageConfig
@@ -17,14 +20,16 @@ class Core:
     Core in the RAMwich architecture, containing multiple MVMUs.
     """
 
-    def __init__(self, id: int, mvmus: List[MVMU], config, dram_capacity: int = 1024):
+    def __init__(self, id: int, mvmus: List[MVMU], config: Config = None):
         self.id = id
         self.mvmus = mvmus
-        self.config = config
+        self.config = config or Config()
+        self.core_config = self.config.core_config
         self.operations: List[CoreOp] = []
 
-        self.sram = SRAM()
-        self.dram = DRAM(capacity=dram_capacity)
+        self.cache = SRAM(self.config)
+        self.alu = ALU()
+        self.dram_interface = DRAMInterface()
 
         self.stats = Stats()
 
