@@ -35,7 +35,8 @@ class OutputRegisterArray:
             np.copyto(self.registers, value)
 
             # Update stats
-            self._update_stats("write", self.size)
+            self.stats.write_operations += self.size
+            self.stats.total_operations += self.size
 
         else:
             # Validate indices
@@ -45,14 +46,17 @@ class OutputRegisterArray:
             self.registers[indices] = value
 
             # Update stats
-            self._update_stats("write", len(indices))
+            length = len(indices)
+            self.stats.write_operations += length
+            self.stats.total_operations += length
 
     def read(self, indices: Optional[NDArray[np.int32]] = None):
         """Read specific indices from the register array"""
         if indices is None:
             # If no indices are provided, read the entire register array
             # Update stats
-            self._update_stats("read", self.size)
+            self.stats.read_operations += self.size
+            self.stats.total_operations += self.size
 
             return self.registers.copy()
 
@@ -61,7 +65,9 @@ class OutputRegisterArray:
             raise ValueError("Index out of bounds")
 
         # Update stats
-        self._update_stats("read", len(indices))
+        length = len(indices)
+        self.stats.read_operations += length
+        self.stats.total_operations += length
 
         return self.registers[indices].copy()
         # Technically, .copy() is not needed.
@@ -72,11 +78,8 @@ class OutputRegisterArray:
         self.registers.fill(0)
 
         # Update stats
-        self._update_stats("write", self.size)
+        self.stats.write_operations += self.size
+        self.stats.total_operations += self.size
 
-    def _update_stats(self, operation_type: str, length) -> None:
-        self.stats.total_operations += length
-        if operation_type == "read":
-            self.stats.read_operations += length
-        elif operation_type == "write":
-            self.stats.write_operations += length
+    def get_stats(self):
+        return self.stats.get_stats()

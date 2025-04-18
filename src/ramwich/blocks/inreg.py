@@ -42,7 +42,8 @@ class InputRegisterArray:
         self.registers[start:end] = value
 
         # Update stats
-        self._update_stats("write", length)
+        self.stats.write_operations += length
+        self.stats.total_operations += length
 
     def read(self, bits: int):
         """Read the LSBs from register array and then shift the registers to the right by bits"""
@@ -52,6 +53,10 @@ class InputRegisterArray:
         # Shift the registers to the right by bits
         self.registers >>= bits
 
+        # Update stats
+        self.stats.total_operations += self.size
+        self.stats.read_operations += self.size
+
         return lsb
 
     def reset(self):
@@ -59,16 +64,13 @@ class InputRegisterArray:
         self.registers.fill(0)
 
         # Update stats
-        self._update_stats("write", self.size)
-
-    def _update_stats(self, operation_type: str, length) -> None:
-        self.stats.total_operations += length
-        if operation_type == "read":
-            self.stats.read_operations += length
-        elif operation_type == "write":
-            self.stats.write_operations += length
+        self.stats.write_operations += self.size
+        self.stats.total_operations += self.size
 
     def read_all(self):
         """Read all the registers
         This a hack function used for debugging purposes"""
         return self.registers
+
+    def get_stats(self):
+        return self.stats.get_stats()

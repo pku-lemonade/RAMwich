@@ -20,12 +20,6 @@ class ADCStats(BaseModel):
     active_cycles: int = Field(default=0, description="Number of active cycles")
     energy_consumption: float = Field(default=0.0, description="Energy consumption in pJ")
 
-    def record_conversion(self, overflow: int = 0, error: float = 0.0):
-        """Record an ADC conversion operation"""
-        self.conversions += 1
-        self.overflow_times += overflow
-        self.conversion_errors += error
-
     def get_stats(self, adc_id: Optional[int] = None) -> Stats:
         """Get ADC-specific statistics"""
         stats = Stats()
@@ -112,7 +106,9 @@ class ADCArray:
         int_values = np.clip(int_values, self.min_value, self.max_value)
 
         # Update stats
-        self.stats.record_conversion(overflow=overflow_count, error=total_error)
+        self.stats.conversions += self.size
+        self.stats.overflow_times += overflow_count
+        self.stats.conversion_errors += total_error
         self.stats.active_cycles += self.adc_config.lat
         self.stats.energy_consumption += self.adc_config.pow_dyn * self.size
 
