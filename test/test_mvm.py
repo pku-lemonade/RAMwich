@@ -40,7 +40,12 @@ def main():
     expected_output = np.dot(matrix, input_vec * (2**-8))
     error_ratio = np.abs((output - expected_output) / expected_output)
 
+    output_precise = core.get_mvmu(0).output_register_array.read() * (2**-16)
+    error_ratio_precise = np.abs((output_precise - expected_output) / expected_output)
+
     print(error_ratio)
+    print("___________________________________________________")
+    print(error_ratio_precise)
 
 
 if __name__ == "__main__":
