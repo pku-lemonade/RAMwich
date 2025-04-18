@@ -7,7 +7,7 @@ from numpy.typing import NDArray
 from .blocks.dram import DRAM
 from .blocks.sram import SRAM
 from .blocks.vfu import VFU
-from .config import Config, CoreConfig
+from .config import Config
 from .mvmu import MVMU
 from .ops import CoreOp
 from .pipeline import Pipeline, StageConfig
