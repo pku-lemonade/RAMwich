@@ -46,4 +46,4 @@ python run.py --config <config_file> --ops <ops_file> --weight <weight_file>
 
 ### misc
 
-- [ ] save/load weight in npy
+- [x] save/load weight in npy
