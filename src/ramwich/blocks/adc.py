@@ -80,7 +80,7 @@ class ADCArray:
         # Initialize stats
         self.stats = ADCStats()
 
-    def convert(self, analog_value_pos: NDArray[np.floating], analog_value_neg: NDArray[np.floating]):
+    def convert(self, analog_value_pos: NDArray[np.float64], analog_value_neg: NDArray[np.float64]):
         """Simulate ADC conversion from analog to digital"""
 
         # Validate input

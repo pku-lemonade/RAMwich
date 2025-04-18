@@ -40,7 +40,7 @@ class XbarArray:
         # Initialize stats
         self.stats = XbarStats()
 
-    def load_weights(self, weights: NDArray[np.floating]):
+    def load_weights(self, weights: NDArray[np.float64]):
         """Load weights into the crossbar"""
 
         expected_shape = (self.num_xbar, self.xbar_size, self.xbar_size)
@@ -53,7 +53,7 @@ class XbarArray:
     def __repr__(self):
         return f"Xbar({self.id}, size={self.size})"
 
-    def execute_mvm(self, input_vector: NDArray[np.floating]):
+    def execute_mvm(self, input_vector: NDArray[np.float64]):
         """Execute a matrix-vector multiplication operation
 
         Args:

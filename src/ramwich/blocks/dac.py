@@ -54,7 +54,7 @@ class DACArray:
         # Initialize stats
         self.stats = DACStats()
 
-    def convert(self, digital_value: NDArray[np.integer]):
+    def convert(self, digital_value: NDArray[np.int32]):
         """Simulate DAC conversion from digital to analog"""
 
         # Validate input

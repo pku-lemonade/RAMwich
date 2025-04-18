@@ -23,7 +23,7 @@ class MuxArray:
         # Initialize stats
         self.stats = Stats()
 
-    def select(self, input_array: NDArray[np.floating], index: int):
+    def select(self, input_array: NDArray[np.float64], index: int):
         """Selects the value at the given index from the input array using a multiplexer"""
 
         # Validate input

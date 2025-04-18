@@ -64,7 +64,7 @@ class Core:
             or (start <= self.mvmu_outreg_start and end >= self.cache_start)
         )
 
-    def write_to_register(self, start: int, data: Union[NDArray[np.integer], int]):
+    def write_to_register(self, start: int, data: Union[NDArray[np.int32], int]):
         """Write data to the register file of the MVMU."""
         # Convert to numpy array if it's a single value
         if isinstance(data, int):
@@ -98,7 +98,7 @@ class Core:
             # Write to the input register of the MVMU
             self.mvmus[mvmu_id].write_input(internal_start, data)
 
-    def read_from_register(self, start: int, length: int) -> NDArray[np.integer]:
+    def read_from_register(self, start: int, length: int) -> NDArray[np.int32]:
         """Read data from the register file of the MVMU."""
         end = start + length
 
