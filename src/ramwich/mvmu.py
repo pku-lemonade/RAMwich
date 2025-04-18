@@ -117,7 +117,12 @@ class MVMU:
         self.rram_xbar_array.load_weights(xbar_weights)
 
     def execute_mvm(self):
-        """Execute a detailed matrix-vector multiplication instruction"""
+        """Execute a detailed matrix-vector multiplication instruction
+
+        Note: We use int to represent the fixed point values, the output will be in int format.
+        Therefore, the output will have 2 times the number of franctional bits as the input.
+        The output register is keeping the full precision of the output.
+        """
 
         # Step 1: Reset the output register array
         self.output_register_array.reset()
@@ -157,17 +162,21 @@ class MVMU:
                 # Step 10: Write back to the output register array
                 self.output_register_array.write(sna_output, mask)
 
-        # Step 11: Do the clipping since we preserved full precision during the shift and add
-        # No code here, just to use read_clipped method in the output register array
-
     def write_to_inreg(self, start: int, value: Union[NDArray[np.int32], int]):
         """Write values to the input register array"""
         self.input_register_array.write(value, start)
 
     def read_from_outreg(self, start: int, length: int):
-        """Read the clipped output from the output register array"""
+        """Read the clipped output from the output register array
+
+        We kept full precision of the output in the output register array when calculating.
+        Therefore when core reads the output register array, it should only read the clipped output.
+        Needs to do a right shift to discard fractional bits of LSBs.
+
+        On hardware, the core just reads the middle bits of the output register array. No additional energy cost.
+        """
         indices = np.arange(start, start + length)
-        return self.output_register_array.read_clipped(self.data_config.frac_bits, indices)
+        return self.output_register_array.read(self.data_config.frac_bits, indices) >> self.data_config.frac_bits
 
     def get_stats(self) -> Stats:
         return self.stats.get_stats(self.xbars + self.adcs + self.dacs)

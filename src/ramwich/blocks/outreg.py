@@ -67,24 +67,6 @@ class OutputRegisterArray:
         # Technically, .copy() is not needed.
         # But we keep it for clearence and maintain consistency with the write method
 
-    def read_clipped(self, discard_bits: int, indices: Optional[NDArray[np.int32]] = None):
-        """Read specific indices from the register array and discard bits"""
-        if indices is None:
-            # If no indices are provided, read the entire register array
-            # Update stats
-            self._update_stats("read", self.size)
-
-            return self.registers >> discard_bits
-
-        # Validate indices
-        if np.any(indices >= self.size) or np.any(indices < 0):
-            raise ValueError("Index out of bounds")
-
-        # Update stats
-        self._update_stats("read", len(indices))
-
-        return self.registers[indices] >> discard_bits
-
     def reset(self):
         """Reset the register array to zero"""
         self.registers.fill(0)
