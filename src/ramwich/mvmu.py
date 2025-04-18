@@ -176,7 +176,7 @@ class MVMU:
         On hardware, the core just reads the middle bits of the output register array. No additional energy cost.
         """
         indices = np.arange(start, start + length)
-        return self.output_register_array.read(self.data_config.frac_bits, indices) >> self.data_config.frac_bits
+        return self.output_register_array.read(indices) >> self.data_config.frac_bits
 
     def get_stats(self) -> Stats:
         return self.stats.get_stats(self.xbars + self.adcs + self.dacs)
