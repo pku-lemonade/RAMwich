@@ -54,7 +54,7 @@ class SRAM:
 
         return self.registers[start:end].copy()
 
-    def write(self, start: int, values: Union[NDArray[np.integer], int]):
+    def write(self, start: int, values: Union[NDArray[np.int32], int]):
         """Write values to a block of registers in SRAM"""
         # Convert to numpy array if it's a single value
         if isinstance(values, int):

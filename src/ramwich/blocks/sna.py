@@ -18,7 +18,7 @@ class SNAArray:
         # Initialize stats
         self.stats = Stats()
 
-    def calculate(self, input_data: NDArray[np.integer], current_value: NDArray[np.integer], bits: int):
+    def calculate(self, input_data: NDArray[np.int32], current_value: NDArray[np.int32], bits: int):
         """Performs the Shift and Add (SNA) operation on the input data
 
         Each SNA unit combines data from multiple xbars for one ADC position:

@@ -23,7 +23,7 @@ class OutputRegisterArray:
         # Initialize stats
         self.stats = SRAMStats()
 
-    def write(self, value: NDArray[np.integer], indices: Optional[NDArray[np.integer]] = None):
+    def write(self, value: NDArray[np.int32], indices: Optional[NDArray[np.int32]] = None):
         """Write values to specific indices in the register array"""
 
         if indices is None:
@@ -47,7 +47,7 @@ class OutputRegisterArray:
             # Update stats
             self._update_stats("write", len(indices))
 
-    def read(self, indices: Optional[NDArray[np.integer]] = None):
+    def read(self, indices: Optional[NDArray[np.int32]] = None):
         """Read specific indices from the register array"""
         if indices is None:
             # If no indices are provided, read the entire register array
@@ -65,7 +65,7 @@ class OutputRegisterArray:
 
         return self.registers[indices]
 
-    def read_clipped(self, discard_bits: int, indices: Optional[NDArray[np.integer]] = None):
+    def read_clipped(self, discard_bits: int, indices: Optional[NDArray[np.int32]] = None):
         """Read specific indices from the register array and discard bits"""
         if indices is None:
             # If no indices are provided, read the entire register array

@@ -58,8 +58,8 @@ class VFU:
         }
 
     def calculate(
-        self, opcode: VFUOpType, a: Union[NDArray[np.integer], int], b: Optional[Union[NDArray[np.integer], int]] = None
-    ) -> NDArray[np.integer]:
+        self, opcode: VFUOpType, a: Union[NDArray[np.int32], int], b: Optional[Union[NDArray[np.int32], int]] = None
+    ) -> NDArray[np.int32]:
         """Perform a calculation using the ALU and activation unit"""
         # Example operation: multiplication
         if isinstance(a, int):
@@ -100,42 +100,42 @@ class VFU:
 
         return result
 
-    def _handle_and(self, a: NDArray[np.integer], b: NDArray[np.integer]) -> NDArray[np.integer]:
+    def _handle_and(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
         return a & b
 
-    def _handle_or(self, a: NDArray[np.integer], b: NDArray[np.integer]) -> NDArray[np.integer]:
+    def _handle_or(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
         return a | b
 
-    def _handle_not(self, a: NDArray[np.integer], _) -> NDArray[np.integer]:
+    def _handle_not(self, a: NDArray[np.int32], _) -> NDArray[np.int32]:
         return ~a
 
-    def _handle_add(self, a: NDArray[np.integer], b: NDArray[np.integer]) -> NDArray[np.integer]:
+    def _handle_add(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
         return a + b
 
-    def _handle_sub(self, a: NDArray[np.integer], b: NDArray[np.integer]) -> NDArray[np.integer]:
+    def _handle_sub(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
         return a - b
 
-    def _handle_mul(self, a: NDArray[np.integer], b: NDArray[np.integer]) -> NDArray[np.integer]:
+    def _handle_mul(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
         return (a * b) >> self.frac_bits
 
-    def _handle_div(self, a: NDArray[np.integer], b: NDArray[np.integer]) -> NDArray[np.integer]:
+    def _handle_div(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
         if np.any(b == 0):
             raise ZeroDivisionError("Division by zero")
         return (a // b) << self.frac_bits
 
-    def _handle_min(self, a: NDArray[np.integer], b: NDArray[np.integer]) -> NDArray[np.integer]:
+    def _handle_min(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
         return np.minimum(a, b)
 
-    def _handle_max(self, a: NDArray[np.integer], b: NDArray[np.integer]) -> NDArray[np.integer]:
+    def _handle_max(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
         return np.maximum(a, b)
 
-    def _handle_sig(self, a: NDArray[np.integer], _) -> NDArray[np.integer]:
+    def _handle_sig(self, a: NDArray[np.int32], _) -> NDArray[np.int32]:
         return 1 / (1 + np.exp(-a))
 
-    def _handle_tanh(self, a: NDArray[np.integer], _) -> NDArray[np.integer]:
+    def _handle_tanh(self, a: NDArray[np.int32], _) -> NDArray[np.int32]:
         return np.tanh(a)
 
-    def _handle_relu(self, a: NDArray[np.integer], _) -> NDArray[np.integer]:
+    def _handle_relu(self, a: NDArray[np.int32], _) -> NDArray[np.int32]:
         return np.maximum(0, a)
 
     def _update_stats(self, operation_type: str) -> None:

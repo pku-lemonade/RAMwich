@@ -24,7 +24,7 @@ class InputRegisterArray:
         # Initialize stats
         self.stats = SRAMStats()
 
-    def write(self, value: Union[NDArray[np.integer], int], start: int = 0):
+    def write(self, value: Union[NDArray[np.int32], int], start: int = 0):
         """Write values to register array"""
 
         # Convert to numpy array if it's a single value
