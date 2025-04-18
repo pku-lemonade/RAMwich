@@ -3,6 +3,7 @@ import logging
 import os
 from typing import List
 
+import numpy as np
 import simpy
 import yaml
 
@@ -109,26 +110,31 @@ class RAMwich:
                 logger.warning(str(e))
 
     def load_weights(self, file_path: str):
-        """Load weights from a JSON file and organize by node/tile/core/mvmu hierarchy"""
+        """Load weights from a NPZ file and organize by node/tile/core/mvmu hierarchy"""
         if not os.path.exists(file_path):
             logger.error(f"Weight file {file_path} not found")
             return
 
-        with open(file_path, "r") as f:
-            if file_path.endswith(".json"):
-                data = json.load(f)
-            else:
-                logger.error(f"Unsupported file format: {file_path}. Only JSON is supported.")
-                return
+        # Load weights from JSON file
+        if file_path.endswith(".npz"):
+            weight_data = np.load(file_path)
 
-        for weight_data in data:
-            weight = Weight.model_validate(weight_data)
-            node = self.get_node(weight.node)
-            tile = node.get_tile(weight.tile)
-            core = tile.get_core(weight.core)
-            mvmu = core.get_mvmu(weight.mvmu)
+            for key in weight_data.files:
+                parts = key.split("_")
+                node_id = int(parts[0].replace("node", ""))
+                tile_id = int(parts[1].replace("tile", ""))
+                core_id = int(parts[2].replace("core", ""))
+                mvmu_id = int(parts[3].replace("mvmu", ""))
 
-            mvmu.load_weights(weight.value)
+                node = self.get_node(node_id)
+                tile = node.get_tile(tile_id)
+                core = tile.get_core(core_id)
+                mvmu = core.get_mvmu(mvmu_id)
+
+                mvmu.load_weights(weight_data[key])
+
+        else:
+            logger.error(f"Unsupported file format: {file_path}. Only NPZ is supported.")
 
     def run(self, ops_file: str, weights_file: str = None):
         """Run the simulation with operations from the specified file"""

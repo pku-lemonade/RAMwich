@@ -14,7 +14,7 @@ def main():
     parser = argparse.ArgumentParser(description="RAMwich Simulator")
     parser.add_argument("--ops", required=True, help="OP file (JSON)")
     parser.add_argument("--config", required=True, help="Configuration file (YAML)")
-    parser.add_argument("--weights", required=False, help="Weight file (JSON)")
+    parser.add_argument("--weights", required=False, help="Weight file (NPZ)")
     args = parser.parse_args()
 
     simulator = RAMwich(config_file=args.config)

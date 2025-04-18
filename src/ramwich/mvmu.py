@@ -67,25 +67,19 @@ class MVMU:
     def __repr__(self):
         return f"MVMU({self.id}, xbars={len(self.xbars)})"
 
-    def load_weights(self, weights: List[float]):
+    def load_weights(self, weights: NDArray[np.float64]):
         """Load weights into the crossbar arrays"""
 
         # Validate input length
         xbar_size = self.mvmu_config.xbar_config.xbar_size
-        expected_length = xbar_size * xbar_size
-        if len(weights) != expected_length:
-            raise ValueError(
-                f"Expected {expected_length} weight values for a {xbar_size}×{xbar_size} crossbar, but got {len(weights)}"
-            )
-
-        # Reshape to 2D matrix
-        weights_matrix = np.array(weights).reshape(xbar_size, xbar_size)
+        if weights.shape != (xbar_size, xbar_size):
+            raise ValueError(f"Expected weights shape ({xbar_size}, {xbar_size}), got {weights.shape}")
 
         # Calculate signs of all weights at once
-        signs = np.sign(weights_matrix)
+        signs = np.sign(weights)
 
         # Prepare weights with positive magnitudes
-        abs_weights = np.abs(weights_matrix)
+        abs_weights = np.abs(weights)
 
         # Convert all weights to fixed-point representation
         int_weights = np.vectorize(lambda w: float_to_fixed(w, self.data_config.frac_bits))(abs_weights)
