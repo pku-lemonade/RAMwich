@@ -39,10 +39,10 @@ class InputRegisterArray:
             raise IndexError(f"Write operation out of range ({start}, {len(value)})")
 
         # Write the value to the registers
-        self.registers[start:end] = value.copy()
+        self.registers[start:end] = value
 
         # Update stats
-        self._update_stats("read", length)
+        self._update_stats("write", length)
 
     def read(self, bits: int):
         """Read the LSBs from register array and then shift the registers to the right by bits"""
@@ -56,7 +56,7 @@ class InputRegisterArray:
 
     def reset(self):
         """Reset the register array to zero"""
-        self.registers = np.zeros(self.size, dtype=np.int32)
+        self.registers.fill(0)
 
         # Update stats
         self._update_stats("write", self.size)

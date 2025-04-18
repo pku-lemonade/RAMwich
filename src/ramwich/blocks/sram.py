@@ -68,7 +68,7 @@ class SRAM:
             raise IndexError(f"Write operation out of range ({start}, {length})")
 
         # Write values
-        self.registers[start:end] = values.copy()
+        self.registers[start:end] = values
 
         # Update stats
         self._update_stats("write", length)

@@ -32,7 +32,7 @@ class OutputRegisterArray:
             if value.shape != self.registers.shape:
                 raise ValueError("Value shape does not match register array shape")
 
-            self.registers = np.copy(value)
+            np.copyto(self.registers, value)
 
             # Update stats
             self._update_stats("write", self.size)
@@ -42,7 +42,7 @@ class OutputRegisterArray:
             if np.any(indices >= self.size) or np.any(indices < 0):
                 raise ValueError("Index out of bounds")
 
-            self.registers[indices] = np.copy(value)
+            self.registers[indices] = value
 
             # Update stats
             self._update_stats("write", len(indices))
@@ -54,7 +54,7 @@ class OutputRegisterArray:
             # Update stats
             self._update_stats("read", self.size)
 
-            return self.registers
+            return self.registers.copy()
 
         # Validate indices
         if np.any(indices >= self.size) or np.any(indices < 0):
@@ -63,7 +63,9 @@ class OutputRegisterArray:
         # Update stats
         self._update_stats("read", len(indices))
 
-        return self.registers[indices]
+        return self.registers[indices].copy()
+        # Technically, .copy() is not needed.
+        # But we keep it for clearence and maintain consistency with the write method
 
     def read_clipped(self, discard_bits: int, indices: Optional[NDArray[np.int32]] = None):
         """Read specific indices from the register array and discard bits"""
@@ -81,11 +83,11 @@ class OutputRegisterArray:
         # Update stats
         self._update_stats("read", len(indices))
 
-        return (self.registers[indices] >> discard_bits).astype(np.int32)
+        return self.registers[indices] >> discard_bits
 
     def reset(self):
         """Reset the register array to zero"""
-        self.registers = np.zeros(self.size, dtype=np.int32)
+        self.registers.fill(0)
 
         # Update stats
         self._update_stats("write", self.size)
