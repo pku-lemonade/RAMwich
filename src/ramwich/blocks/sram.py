@@ -50,7 +50,8 @@ class SRAM:
             raise ValueError("Length must be a positive integer")
 
         # Update stats
-        self._update_stats("read", length)
+        self.stats.read_operations += length
+        self.stats.total_operations += length
 
         return self.registers[start:end].copy()
 
@@ -71,14 +72,8 @@ class SRAM:
         self.registers[start:end] = values
 
         # Update stats
-        self._update_stats("write", length)
-
-    def _update_stats(self, operation_type: str, length) -> None:
+        self.stats.write_operations += length
         self.stats.total_operations += length
-        if operation_type == "read":
-            self.stats.read_operations += length
-        elif operation_type == "write":
-            self.stats.write_operations += length
 
     def get_stats(self) -> Stats:
         return self.stats.get_stats()

@@ -18,10 +18,6 @@ class DACStats(BaseModel):
     active_cycles: int = Field(default=0, description="Number of active cycles")
     energy_consumption: float = Field(default=0.0, description="Energy consumption in pJ")
 
-    def record_conversion(self):
-        """Record a DAC conversion operation"""
-        self.conversions += 1
-
     def get_stats(self) -> Stats:
         """Get DAC-specific statistics"""
         stats = Stats()
@@ -70,7 +66,7 @@ class DACArray:
         analog_value = clipped_value * self.mvmu_config.dac_config.VDD
 
         # Update stats
-        self.stats.record_conversion()
+        self.stats.conversions += self.size
         self.stats.active_cycles += self.dac_config.lat
         self.stats.energy_consumption += self.dac_config.pow_dyn * self.size
 
