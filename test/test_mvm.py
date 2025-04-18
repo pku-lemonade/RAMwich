@@ -17,27 +17,30 @@ def main():
     parser = argparse.ArgumentParser(description="RAMwich Simulator")
     parser.add_argument("--ops", required=True, help="OP file (JSON)")
     parser.add_argument("--config", required=True, help="Configuration file (YAML)")
-    parser.add_argument("--weights", required=False, help="Weight file (JSON)")
+    parser.add_argument("--weights", required=False, help="Weight file (NPZ)")
     args = parser.parse_args()
 
     simulator = RAMwich(config_file=args.config)
     simulator.load_operations(file_path=args.ops)
     simulator.load_weights(file_path=args.weights)
 
-    mvmu = simulator.get_node(0).get_tile(2).get_core(0).mvmus[0]
+    core = simulator.get_node(0).get_tile(2).get_core(0)
 
-    input_vec = np.random.randint(0, 2**15 - 1, size=(mvmu.mvmu_config.xbar_config.xbar_size,), dtype=np.int16)
+    input_vec = np.random.randint(0, 2**15 - 1, size=(core.config.mvmu_config.xbar_config.xbar_size,), dtype=np.int32)
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    matrix_path = os.path.join(script_dir, "mvm_test_matrix.npy")
-    matrix = np.load(matrix_path)
+    weights = np.load(args.weights)
+    matrix = weights["node0_tile2_core0_mvmu0"].astype(np.float64)
 
-    mvmu.write_to_inreg(0, input_vec)
-    mvmu.execute_mvm()
-    output = mvmu.read_from_outreg(0, mvmu.mvmu_config.xbar_config.xbar_size) * (2**-8)
+    core.write_to_register(0, input_vec)
+    core.get_mvmu(0).execute_mvm()
+    output = core.read_from_register(
+        core.config.num_mvmus_per_core * core.config.mvmu_config.xbar_config.xbar_size,
+        core.config.mvmu_config.xbar_config.xbar_size,
+    ) * (2**-8)
     expected_output = np.dot(matrix, input_vec * (2**-8))
-    error = output - expected_output
+    error_ratio = np.abs((output - expected_output) / expected_output)
 
-    print(error)
+    print(error_ratio)
 
 
 if __name__ == "__main__":
