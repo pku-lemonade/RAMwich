@@ -1,5 +1,5 @@
 import logging
-from typing import List, Union
+from typing import List
 
 import numpy as np
 from numpy.typing import NDArray
@@ -69,11 +69,18 @@ class Core:
             or (start <= self.mvmu_outreg_start and end >= self.cache_start)
         )
 
-    def write_to_register(self, start: int, data: Union[NDArray[np.int32], int]):
+    def _get_mvmu_id_from_address(self, start: int, end: int) -> int:
+        """Get the MVMU ID for a given address range"""
+        # Validate input
+        mvmu_id = start // self.config.mvmu_config.xbar_config.xbar_size
+        mvmu_id_end = (end - 1) // self.config.mvmu_config.xbar_config.xbar_size
+        if mvmu_id != mvmu_id_end:
+            raise IndexError(f"Address spans multiple MVMUs ({mvmu_id}, {mvmu_id_end})")
+
+        return mvmu_id % self.config.num_mvmus_per_core
+
+    def write_to_register(self, start: int, data: NDArray[np.int32]):
         """Write data to the register file of the MVMU."""
-        # Convert to numpy array if it's a single value
-        if isinstance(data, int):
-            data = np.array([data], dtype=np.int32)
 
         length = len(data)
         end = start + length
@@ -92,16 +99,11 @@ class Core:
             self.cache.write(internal_start, data)
         else:
             # Write to MVMU input registers
-            # First get the MVMU ID and check if it is only writing to one MVMU
-            mvmu_id = start // self.config.mvmu_config.xbar_config.xbar_size
-            mvmu_id_end = end // self.config.mvmu_config.xbar_config.xbar_size
-            if mvmu_id != mvmu_id_end:
-                raise IndexError(f"Write operation spans multiple MVMUs ({mvmu_id}, {mvmu_id_end})")
-
+            mvmu_id = self._get_mvmu_id_from_address(start, end)
             internal_start = start % self.config.mvmu_config.xbar_config.xbar_size
 
             # Write to the input register of the MVMU
-            self.mvmus[mvmu_id].write_input(internal_start, data)
+            self.mvmus[mvmu_id].write_to_inreg(internal_start, data)
 
     def read_from_register(self, start: int, length: int) -> NDArray[np.int32]:
         """Read data from the register file of the MVMU."""
@@ -121,15 +123,11 @@ class Core:
             return self.cache.read(internal_start, length)
         else:
             # Read from MVMU output registers
-            mvmu_id = start // self.config.mvmu_config.xbar_config.xbar_size - self.config.num_mvmus_per_core
-            mvmu_id_end = end // self.config.mvmu_config.xbar_config.xbar_size - self.config.num_mvmus_per_core
-            if mvmu_id != mvmu_id_end:
-                raise IndexError(f"Read operation spans multiple MVMUs ({mvmu_id}, {mvmu_id_end})")
-
+            mvmu_id = self._get_mvmu_id_from_address(start, end)
             internal_start = start % self.config.mvmu_config.xbar_config.xbar_size
 
             # Read from the input register of the MVMU
-            return self.mvmus[mvmu_id].read_output(internal_start, length)
+            return self.mvmus[mvmu_id].read_from_outreg(internal_start, length)
 
     def run(self, env):
         """
