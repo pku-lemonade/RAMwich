@@ -49,6 +49,11 @@ class Core:
 
     def get_mvmu(self, mvmu_id: int):
         """Get the MVMU instance by ID"""
+
+        # Validate MVMU ID
+        if mvmu_id < 0 or mvmu_id >= len(self.mvmus):
+            raise IndexError(f"MVMU ID {mvmu_id} out of range")
+
         return self.mvmus[mvmu_id]
 
     def get_stats(self) -> Stats:
