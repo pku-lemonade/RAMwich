@@ -36,6 +36,7 @@ python run.py --config <config_file> --ops <ops_file> --weight <weight_file>
   - [ ] implement all tile visitor methods
     - [ ] implement noc
     - [ ] implement visitor method for send and receive
+  - [ ] test the run time, make sure it is faster than original simulator.
   - [ ] run timing simulation, check with puma that cycles match
   - [ ] run functional simulation, verify that accuracy match
 - [ ] test the RAMwich simulator with mlp, verify that cylces, energy, and area are aligned with puma
