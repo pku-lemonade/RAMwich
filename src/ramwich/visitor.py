@@ -1,6 +1,8 @@
 import logging
 from abc import ABC, abstractmethod
 
+import numpy as np
+
 from .ops import MVM, VFU, Copy, Hlt, Load, Set, Store
 
 logger = logging.getLogger(__name__)
@@ -140,78 +142,53 @@ class CoreExecutionFunctionalVisitor(CoreVisitor):
 
     def visit_set(self, op):
         try:
-            self.core.sram.write(op.dest, op.imm)
+            # create a vector of size vec with the immediate value
+            vector = np.full(op.vec, op.imm)
+            # write the vector to the destination address
+            self.core.write_to_register(op.dest, vector)
+
+            # Update operation count
             self.core.stats.increment_op_count("set")
         except IndexError as e:
             logger.error(f"Set operation failed: {e}")
 
     def visit_copy(self, op):
         try:
-            value = self.core.sram.read(op.read)
-            self.core.sram.write(op.dest, value)
+            vector = self.core.read_from_register(op.read, op.vec)
+            self.core.write_to_register(op.dest, vector)
+
+            # Update operation count
             self.core.stats.increment_op_count("copy")
         except IndexError as e:
             logger.error(f"Copy operation failed: {e}")
 
     def visit_vfu(self, op):
         try:
-            r1 = self.core.sram.read(op.read_1)
-            result = 0
-
-            if op.opcode in ["sig", "tanh", "relu"]:
-                if op.opcode == "sig":
-                    result = self._sigmoid(r1)
-                elif op.opcode == "tanh":
-                    result = self._tanh(r1)
-                elif op.opcode == "relu":
-                    result = max(0, r1)
+            a = self.core.read_from_register(op.read_1, op.vec)
+            if op.read_2 is not None:
+                b = self.core.read_from_register(op.read_2, op.vec)
+                result = self.core.vfu.calculate(op.opcode, a, b)
             else:
-                r2 = self.core.sram.read(op.read_2) if op.read_2 is not None else op.imm
-                if op.opcode == "add":
-                    result = r1 + r2
-                elif op.opcode == "sub":
-                    result = r1 - r2
-                elif op.opcode == "mul":
-                    result = r1 * r2
-                elif op.opcode == "div":
-                    if r2 == 0:
-                        logger.error("VFU division by zero")
-                        return
-                    result = r1 / r2
-                elif op.opcode == "max":
-                    result = max(r1, r2)
+                result = self.core.vfu.calculate(op.opcode, a)
+            self.core.write_to_register(op.dest, result)
 
-            self.core.sram.write(op.dest, result)
+            # Update operation count
             self.core.stats.increment_op_count("vfu")
         except IndexError as e:
             logger.error(f"VFU operation failed: {e}")
 
     def visit_mvm(self, op):
         try:
-            for xbar_id, matrix_type in op.xbar:
-                if 0 <= xbar_id < len(self.core.mvmus):
-                    success = self.core.mvmus[xbar_id].execute_mvm(matrix_type)
-                    if not success:
-                        return
-                else:
-                    logger.error(f"MVM operation failed: Invalid MVMU ID {xbar_id}")
-                    return
+            for mvmu_id in op.xbar:
+                self.core.get_mvmu(mvmu_id).execute_mvm()
+
+            # Update operation count
             self.core.stats.increment_op_count("mvm")
         except Exception as e:
             logger.error(f"MVM operation failed: {e}")
 
     def visit_hlt(self, op):
         pass
-
-    def _sigmoid(self, x):
-        import math
-
-        return 1 / (1 + math.exp(-x))
-
-    def _tanh(self, x):
-        import math
-
-        return math.tanh(x)
 
 
 class CoreExecutionVisitor(CommonVisitor):
