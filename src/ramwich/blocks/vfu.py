@@ -139,7 +139,6 @@ class VFU:
         return np.maximum(0, a)
 
     def _update_stats(self, operation_type: str) -> None:
-        self.stats.total_operations += 1
         if operation_type == "mul":
             self.stats.mul_operations += 1
         elif operation_type == "div":
