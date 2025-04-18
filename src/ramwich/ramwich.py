@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import re
 from typing import List
 
 import numpy as np
@@ -119,19 +120,33 @@ class RAMwich:
         if file_path.endswith(".npz"):
             weight_data = np.load(file_path)
 
+            # Define the expected format pattern
+            pattern = r"^node(\d+)_tile(\d+)_core(\d+)_mvmu(\d+)$"
+
             for key in weight_data.files:
-                parts = key.split("_")
-                node_id = int(parts[0].replace("node", ""))
-                tile_id = int(parts[1].replace("tile", ""))
-                core_id = int(parts[2].replace("core", ""))
-                mvmu_id = int(parts[3].replace("mvmu", ""))
+                # Validate the key format
+                match = re.match(pattern, key)
+                if not match:
+                    logger.warning(f"Skipping weight with invalid key format: {key}")
+                    continue
 
-                node = self.get_node(node_id)
-                tile = node.get_tile(tile_id)
-                core = tile.get_core(core_id)
-                mvmu = core.get_mvmu(mvmu_id)
+                # Extract IDs from regex groups
+                node_id = int(match.group(1))
+                tile_id = int(match.group(2))
+                core_id = int(match.group(3))
+                mvmu_id = int(match.group(4))
 
-                mvmu.load_weights(weight_data[key])
+                try:
+                    node = self.get_node(node_id)
+                    tile = node.get_tile(tile_id)
+                    core = tile.get_core(core_id)
+                    mvmu = core.get_mvmu(mvmu_id)
+
+                    mvmu.load_weights(weight_data[key])
+                except IndexError:
+                    logger.error(f"Invalid component ID in key: {key}")
+                except Exception as e:
+                    logger.error(f"Error loading weights for {key}: {str(e)}")
 
         else:
             logger.error(f"Unsupported file format: {file_path}. Only NPZ is supported.")
