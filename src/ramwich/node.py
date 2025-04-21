@@ -1,6 +1,7 @@
 import logging
 from typing import List
 
+from .config import Config
 from .stats import Stats
 from .tile import Tile
 
@@ -12,10 +13,12 @@ class Node:
     Node in the RAMwich architecture, containing multiple tiles.
     """
 
-    def __init__(self, id: int, tiles: List[Tile], config):
+    def __init__(self, id: int, config: Config = None):
         self.id = id
-        self.tiles = tiles
-        self.config = config
+        self.config = config or Config()
+        self.tiles = [Tile(id=i, config=config) for i in range(config.num_tiles_per_node)]
+
+        # Initialize stats
         self.stats = Stats()
 
     def __repr__(self):

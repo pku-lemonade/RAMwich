@@ -1,6 +1,7 @@
 import logging
 from typing import List
 
+from .blocks.dram_controller import DRAMController
 from .blocks.memory import DRAM
 from .config import Config
 from .core import Core
@@ -15,15 +16,21 @@ class Tile:
     Tile in the RAMwich architecture, containing multiple cores.
     """
 
-    def __init__(self, id: int, cores: List[Core], config: Config = None):
+    def __init__(self, id: int, config: Config = None):
         self.id = id
-        self.cores = cores
         self.config = config or Config()
         self.tile_config = self.config.tile_config
         self.operations: List[TileOpType] = []
 
         # Initialize components
         self.edram = DRAM(self.tile_config)
+        self.dram_controller = DRAMController(dram=self.edram, tile_config=self.tile_config)
+
+        # Initialize cores
+        self.cores = [
+            Core(id=i, dram_controller=self.dram_controller, config=self.config)
+            for i in range(self.config.num_cores_per_tile)
+        ]
 
         # Initialize stats
         self.stats = Stats()
