@@ -4,12 +4,15 @@ import numpy as np
 import simpy
 from numpy.typing import NDArray
 from pydantic import BaseModel, Field
+from pydantic.config import ConfigDict
 
 from ..config import TileConfig
 from .memory import DRAM
 
 
 class Request(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
     core_id: int
     start: int
     submit_time: float
@@ -31,7 +34,7 @@ class ReadRequest(Request):
         return self.batch_size * self.num_batches
 
 
-class WriteRequest(BaseModel):
+class WriteRequest(Request):
     data: NDArray[np.int32]
 
     @property
@@ -104,7 +107,7 @@ class DRAMController:
         """Process that continuously handles memory requests"""
         while True:
             # Get the next request
-            request = yield self.ready_requests.get()
+            request = yield self.requests.get()
 
             # Depending on the type of request, call the appropriate handler
             if isinstance(request, ReadRequest):
@@ -173,5 +176,5 @@ class DRAMController:
             for request in self.pending_reads:
                 # If the data is valid, add it to the ready requests
                 if np.all(self.valid[request.start : request.start + request.length]):
-                    self.ready_requests.put(request)
+                    self.requests.put(request)
                     self.pending_reads.remove(request)
