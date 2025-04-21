@@ -1,17 +1,48 @@
-from enum import Enum
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Optional
 
 import numpy as np
 import simpy
 from numpy.typing import NDArray
+from pydantic import BaseModel, Field
 
 from ..config import TileConfig
 from .memory import DRAM
 
 
-class RequestType(Enum):
-    READ = 0
-    WRITE = 1
+class Request(BaseModel):
+    core_id: int
+    start: int
+    submit_time: float
+    done_event: simpy.Event
+
+    @property
+    def length(self) -> Optional[int]:
+        """Operride in subclasses"""
+        return None
+
+
+class ReadRequest(Request):
+    batch_size: int
+    num_batches: int
+
+    @property
+    def length(self) -> int:
+        """Calculate the length of the read request"""
+        return self.batch_size * self.num_batches
+
+
+class WriteRequest(BaseModel):
+    data: NDArray[np.int32]
+
+    @property
+    def length(self) -> int:
+        """Calculate the length of the read request"""
+        return self.data.size
+
+    @property
+    def num_batches(self) -> int:
+        """Calculate the batch size of the read request"""
+        return self.data.shape[0]
 
 
 class DRAMController:
@@ -35,8 +66,9 @@ class DRAMController:
         # Validity array for the DRAM
         self.valid = np.zeros(dram.size, dtype=np.bool_)
 
-        # Queue for pending requests (core_id, request_type, address, length/data)
-        self.request_queue = []
+        # Request queue
+        self.ready_requests = simpy.Store(env)
+        self.pending_reads = []
 
     def submit_read_request(self, core_id: int, start: int, batch_size: int, num_batches: int) -> simpy.Event:
         """Submit a read request to the DRAM controller"""
@@ -44,20 +76,22 @@ class DRAMController:
         done_event = self.env.event()
 
         # Add request to queue with completion event
-        self.request_queue.append(
-            {
-                "core_id": core_id,
-                "type": RequestType.READ,
-                "start": start,
-                "batch_size": batch_size,
-                "num_batches": num_batches,
-                "submit_time": self.env.now,
-                "done_event": done_event,
-            }
+        request = ReadRequest(
+            core_id=core_id,
+            start=start,
+            batch_size=batch_size,
+            num_batches=num_batches,
+            submit_time=self.env.now,
+            done_event=done_event,
         )
 
-        self.waiting_requests += 1
-        self.request_count += 1
+        # Add the request to queue depending on the validity of the data
+        if np.all(self.valid[start : start + request.length]):
+            # If the data is valid, add it to the ready requests
+            self.ready_requests.put(request)
+        else:
+            # If the data is not valid, add it to the pending reads
+            self.pending_reads.append(request)
 
         # Return event that the core can yield on
         return done_event
@@ -68,19 +102,10 @@ class DRAMController:
         done_event = self.env.event()
 
         # Add request to queue with completion event
-        self.request_queue.append(
-            {
-                "core_id": core_id,
-                "type": RequestType.WRITE,
-                "start": start,
-                "data": data,
-                "submit_time": self.env.now,
-                "done_event": done_event,
-            }
-        )
+        request = WriteRequest(core_id=core_id, start=start, data=data, submit_time=self.env.now, done_event=done_event)
 
-        self.waiting_requests += 1
-        self.request_count += 1
+        # Add the request to the ready requests
+        self.ready_requests.put(request)
 
         # Return event that the core can yield on
         return done_event
@@ -88,70 +113,69 @@ class DRAMController:
     def request_handler(self):
         """Process that continuously handles memory requests"""
         while True:
-            if self.request_queue:
-                # Get the next request
-                request = self.request_queue.pop(0)
-                self.waiting_requests -= 1
+            # Get the next request
+            request = yield self.ready_requests.get()
 
-                # Calculate wait time for statistics
-                wait_time = self.env.now - request["submit_time"]
-                self.total_wait_time += wait_time
+            # Depending on the type of request, call the appropriate handler
+            if isinstance(request, ReadRequest):
+                # Handle read request
+                self.env.process(self._read_thread(request))
+            elif isinstance(request, WriteRequest):
+                # Handle write request
+                self.env.process(self._write_thread(request))
 
-                # Request exclusive access to the memory bus
-                with self.memory_bus.request() as req:
-                    # Wait for the bus to be available
-                    yield req
+    def _read_thread(self, request: ReadRequest):
+        """Thread to handle read requests"""
+        # Request exclusive access to the memory bus
+        with self.memory_bus.request() as req:
+            # Wait for the bus to be available
+            yield req
 
-                    # Process the request
-                    if request["type"] == RequestType.READ:
-                        # Calculate the total length of the read request
-                        length = request["batch_size"] * request["num_batches"]
-                        start = request["start"]
+            # Calculate read latency based on number of batches
+            latency = self.tile_config.edram_lat * request.num_batches
 
-                        while not np.all(self.valid[start : start + length]):
-                            # Wait for the data to be valid
-                            yield self.env.timeout(1)
+            # Simulate the time it takes to read
+            yield self.env.timeout(latency)
 
-                            # Re-request the memory bus
-                            with self.memory_bus.request() as poll_req:
-                                yield poll_req
+            # Perform the actual read
+            data = self.dram.read(request.start, request.length)
 
-                        # Calculate read latency based on number of batches
-                        latency = self.tile_config.edram_latency * request["num_batches"]
+            # Notify waiting core with result
+            request.done_event.succeed(data)
 
-                        # Simulate the time it takes to read
-                        yield self.env.timeout(latency)
+    def _write_thread(self, request: WriteRequest):
+        """Thread to handle write requests"""
+        # Request exclusive access to the memory bus
+        with self.memory_bus.request() as req:
+            # Wait for the bus to be available
+            yield req
 
-                        # Perform the actual read
-                        data = self.dram.read(start, length)
+            # Calculate write latency based on number of rows
+            latency = self.tile_config.edram_lat * request.num_batches
 
-                        # Notify waiting core with result
-                        request["done_event"].succeed(data)
+            # Simulate the time it takes to write
+            yield self.env.timeout(latency)
 
-                    elif request["type"] == RequestType.WRITE:
-                        start = request["start"]
-                        data = request["data"]
+            # Perform the actual write
+            data = request.data.flatten()
+            self.dram.write(request.start, data)
 
-                        # Get dimensions of the data matrix
-                        num_rows = data.shape[0]
-                        num_cols = data.shape[1]
-                        total_elements = num_rows * num_cols
+            # Update the validity array
+            self.valid[request.start : request.start + request.length] = True
 
-                        # Calculate latency based on number of rows
-                        latency = self.tile_config.edram_latency * num_rows
+            # Update the ready requests
+            self._update_ready_requests()
 
-                        # Simulate the time it takes to write
-                        yield self.env.timeout(latency)
+            # Notify waiting core that write is complete
+            request.done_event.succeed()
 
-                        # Perform the actual write
-                        data = data.flatten()
-                        self.dram.write(start, data)
-
-                        # Update the validity array
-                        self.valid[start : start + total_elements] = True
-
-                        # Notify waiting core that write is complete
-                        request["done_event"].succeed()
-            else:
-                # No requests, yield control and wait for next request
-                yield self.env.timeout(1)
+    def _update_ready_requests(self):
+        """Update the ready requests in the queue"""
+        # Check if there are any pending reads
+        if self.pending_reads:
+            # If there are pending reads, add them to the ready requests
+            for request in self.pending_reads:
+                # If the data is valid, add it to the ready requests
+                if np.all(self.valid[request.start : request.start + request.length]):
+                    self.ready_requests.put(request)
+                    self.pending_reads.remove(request)
