@@ -44,29 +44,7 @@ class RAMwich:
         nodes = []
 
         for node_id in range(self.config.num_nodes):
-            tiles = []
-
-            for tile_id in range(self.config.num_tiles_per_node):
-                cores = []
-
-                for core_id in range(self.config.num_cores_per_tile):
-                    mvmus = []
-
-                    for mvmu_id in range(self.config.num_mvmus_per_core):
-                        # Create MVMU with its xbars
-                        mvmu = MVMU(id=mvmu_id, config=self.config)
-                        mvmus.append(mvmu)
-
-                    # Create Core with its MVMUs and config
-                    core = Core(id=core_id, mvmus=mvmus, config=self.config)
-                    cores.append(core)
-
-                # Create Tile with its Cores and config
-                tile = Tile(id=tile_id, cores=cores, config=self.config)
-                tiles.append(tile)
-
-            # Create Node with its Tiles and config
-            node = Node(id=node_id, tiles=tiles, config=self.config)
+            node = Node(id=node_id, config=self.config)
             nodes.append(node)
 
         return nodes
