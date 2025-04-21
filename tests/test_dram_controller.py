@@ -23,7 +23,8 @@ class TestDRAMController:
         dram = DRAM(tile_config)
 
         # Create controller
-        controller = DRAMController(env, dram, tile_config)
+        controller = DRAMController(dram, tile_config)
+        controller.run(env)
 
         return env, dram, controller
 

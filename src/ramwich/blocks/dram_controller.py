@@ -49,27 +49,42 @@ class WriteRequest(Request):
 
 
 class DRAMController:
-    def __init__(self, env: simpy.Environment, dram: DRAM, tile_config: TileConfig = None):
+    def __init__(self, dram: DRAM, tile_config: TileConfig = None):
         # Configuration
-        self.env = env
         self.dram = dram
         self.tile_config = tile_config or TileConfig()
-
-        # Resource that enforces exclusive access to DRAM
-        self.memory_bus = simpy.Resource(env, capacity=1)
-
-        # Start the request handler process
-        self.env.process(self.request_handler())
+        self.is_running = False
 
         # Validity array for the DRAM
         self.valid = np.zeros(dram.size, dtype=np.bool_)
 
-        # Request queue
-        self.requests = simpy.Store(env)
+        # Placeholders for simpy objects, will be initialized in run()
+        self.env = None  # Environment
+        self.memory_bus = None  # Memory bus resource for exclusive access to DRAM
+        self.requests = None  # Request queue
+
+        # Request queue for reads that is not valid yet
         self.pending_reads = []
+
+    def run(self, env: simpy.Environment):
+        """Initialize the DRAM controller with the simulation environment"""
+        if self.is_running:
+            return
+
+        self.env = env
+        self.memory_bus = simpy.Resource(env, capacity=1)
+        self.requests = simpy.Store(env)
+        self.is_running = True
+
+        # Start the request handler process
+        self.env.process(self.request_handler())
 
     def submit_read_request(self, core_id: int, start: int, batch_size: int, num_batches: int) -> simpy.Event:
         """Submit a read request to the DRAM controller"""
+
+        if not self.is_running:
+            raise RuntimeError("DRAM controller not running. Call run() first.")
+
         # Create an event that will be triggered when request completes
         done_event = self.env.event()
 
@@ -91,6 +106,10 @@ class DRAMController:
 
     def submit_write_request(self, core_id: int, start: int, data: NDArray[np.int32]) -> simpy.Event:
         """Submit a write request to the DRAM controller"""
+
+        if not self.is_running:
+            raise RuntimeError("DRAM controller not running. Call run() first.")
+
         # Create an event that will be triggered when request completes
         done_event = self.env.event()
 
