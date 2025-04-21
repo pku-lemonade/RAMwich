@@ -1,6 +1,8 @@
 import logging
 from typing import List
 
+from .blocks.memory import DRAM
+from .config import Config
 from .core import Core
 from .ops import Recv, Send, TileOpType
 from .stats import Stats
@@ -13,11 +15,17 @@ class Tile:
     Tile in the RAMwich architecture, containing multiple cores.
     """
 
-    def __init__(self, id: int, cores: List[Core], config):
+    def __init__(self, id: int, cores: List[Core], config: Config = None):
         self.id = id
         self.cores = cores
-        self.config = config
+        self.config = config or Config()
+        self.tile_config = self.config.tile_config
         self.operations: List[TileOpType] = []
+
+        # Initialize components
+        self.edram = DRAM(self.tile_config)
+
+        # Initialize stats
         self.stats = Stats()
 
     def __repr__(self):

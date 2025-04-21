@@ -4,8 +4,7 @@ from typing import List
 import numpy as np
 from numpy.typing import NDArray
 
-from .blocks.dram import DRAM
-from .blocks.sram import SRAM
+from .blocks.memory import SRAM
 from .blocks.vfu import VFU
 from .config import Config
 from .mvmu import MVMU

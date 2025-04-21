@@ -4,39 +4,40 @@ import numpy as np
 from numpy.typing import NDArray
 from pydantic import BaseModel, Field
 
-from ..config import CoreConfig
+from ..config import CoreConfig, TileConfig
 from ..stats import Stats
 
 
-class SRAMStats(BaseModel):
-    """Statistics for SRAM operations"""
+class MemoryStats(BaseModel):
+    """Statistics for DRAM operations"""
 
     read_operations: int = Field(default=0, description="Number of read operations")
     write_operations: int = Field(default=0, description="Number of write operations")
     total_operations: int = Field(default=0, description="Total number of operations")
 
     def get_stats(self) -> Stats:
-        """Convert SRAMStats to general Stats object"""
+        """Convert MemoryStats to general Stats object"""
         stats = Stats()
-        stats.latency = 0.0  # Will be updated through execution
+        stats.latency = 0.0  # Will be updated through update_execution_time
+        stats.energy = 0.0  # Placeholder for energy consumption
+        stats.area = 0.0  # Placeholder for area usage
         stats.operations = self.total_operations
         stats.read_operations = self.read_operations
         stats.write_operations = self.write_operations
         return stats
 
 
-class SRAM:
-    """SRAM register file component for the Core"""
+class Memory:
+    """Base memory component"""
 
-    def __init__(self, core_config: CoreConfig = None):
-        self.core_config = core_config or CoreConfig()
-        self.size = self.core_config.dataMem_size
+    def __init__(self, size: int):
+        self.size = size
 
-        # Initialize registers
-        self.registers = np.zeros(self.size, dtype=np.int32)
+        # Initialize memory cells
+        self.cells = np.zeros(self.size, dtype=np.int32)
 
         # Initialize stats
-        self.stats = SRAMStats()
+        self.stats = MemoryStats()
 
     def read(self, start: int, length: int):
         """Read a block of registers from SRAM"""
@@ -53,7 +54,7 @@ class SRAM:
         self.stats.read_operations += length
         self.stats.total_operations += length
 
-        return self.registers[start:end].copy()
+        return self.cells[start:end].copy()
 
     def write(self, start: int, values: Union[NDArray[np.int32], int]):
         """Write values to a block of registers in SRAM"""
@@ -69,7 +70,7 @@ class SRAM:
             raise IndexError(f"Write operation out of range ({start}, {length})")
 
         # Write values
-        self.registers[start:end] = values
+        self.cells[start:end] = values
 
         # Update stats
         self.stats.write_operations += length
@@ -77,3 +78,21 @@ class SRAM:
 
     def get_stats(self) -> Stats:
         return self.stats.get_stats()
+
+
+class SRAM(Memory):
+    """SRAM registers file component for the Core"""
+
+    def __init__(self, core_config: CoreConfig = None):
+        self.core_config = core_config or CoreConfig()
+        size = self.core_config.dataMem_size
+        super().__init__(size)
+
+
+class DRAM(Memory):
+    """DRAM array component for the Tile"""
+
+    def __init__(self, tile_config: TileConfig = None):
+        self.tile_config = tile_config or TileConfig()
+        size = self.tile_config.edram_size
+        super().__init__(size)

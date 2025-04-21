@@ -5,7 +5,7 @@ from numpy.typing import NDArray
 
 from ..config import MVMUConfig
 from ..stats import Stats
-from .sram import SRAMStats
+from .memory import MemoryStats
 
 
 class InputRegisterArray:
@@ -22,7 +22,7 @@ class InputRegisterArray:
         self.registers = np.zeros(self.size, dtype=np.int32)
 
         # Initialize stats
-        self.stats = SRAMStats()
+        self.stats = MemoryStats()
 
     def write(self, value: Union[NDArray[np.int32], int], start: int = 0):
         """Write values to register array"""
