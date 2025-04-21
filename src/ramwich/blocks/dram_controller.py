@@ -55,11 +55,6 @@ class DRAMController:
         # Resource that enforces exclusive access to DRAM
         self.memory_bus = simpy.Resource(env, capacity=1)
 
-        # Request queue statistics
-        self.waiting_requests = 0
-        self.total_wait_time = 0
-        self.request_count = 0
-
         # Start the request handler process
         self.env.process(self.request_handler())
 
@@ -67,7 +62,7 @@ class DRAMController:
         self.valid = np.zeros(dram.size, dtype=np.bool_)
 
         # Request queue
-        self.ready_requests = simpy.Store(env)
+        self.requests = simpy.Store(env)
         self.pending_reads = []
 
     def submit_read_request(self, core_id: int, start: int, batch_size: int, num_batches: int) -> simpy.Event:
@@ -85,13 +80,8 @@ class DRAMController:
             done_event=done_event,
         )
 
-        # Add the request to queue depending on the validity of the data
-        if np.all(self.valid[start : start + request.length]):
-            # If the data is valid, add it to the ready requests
-            self.ready_requests.put(request)
-        else:
-            # If the data is not valid, add it to the pending reads
-            self.pending_reads.append(request)
+        # Add the request to the ready requests
+        self.requests.put(request)
 
         # Return event that the core can yield on
         return done_event
@@ -105,7 +95,7 @@ class DRAMController:
         request = WriteRequest(core_id=core_id, start=start, data=data, submit_time=self.env.now, done_event=done_event)
 
         # Add the request to the ready requests
-        self.ready_requests.put(request)
+        self.requests.put(request)
 
         # Return event that the core can yield on
         return done_event
@@ -118,8 +108,14 @@ class DRAMController:
 
             # Depending on the type of request, call the appropriate handler
             if isinstance(request, ReadRequest):
-                # Handle read request
-                self.env.process(self._read_thread(request))
+                # first check if the data is valid
+                if np.all(self.valid[request.start : request.start + request.length]):
+                    # If the data is valid, process the read request
+                    self.env.process(self._read_thread(request))
+                else:
+                    # If the data is not valid, add it to the pending reads
+                    self.pending_reads.append(request)
+
             elif isinstance(request, WriteRequest):
                 # Handle write request
                 self.env.process(self._write_thread(request))
