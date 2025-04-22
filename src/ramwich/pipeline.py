@@ -30,7 +30,7 @@ class Stage:
         while True:
             op = yield self.input_buffer.get()
 
-            if op is None:  # Check for termination signal
+            if op is None or op.type == "hlt":  # Check for termination signal
                 if self.output_buffer:
                     # Propagate the termination signal
                     yield self.output_buffer.put(None)
