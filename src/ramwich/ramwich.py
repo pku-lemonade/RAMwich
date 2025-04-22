@@ -144,8 +144,8 @@ class RAMwich:
             processes.append(self.env.process(node.run(self.env)))
 
         # Run simulation until all node processes complete
-        if node_processes:
-            self.env.run(until=simpy.events.AllOf(self.env, node_processes))
+        if processes:
+            self.env.run(until=simpy.events.AllOf(self.env, processes))
         else:
             logger.warning("No node processes to run. Please check the operations file.")
 
