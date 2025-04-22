@@ -26,16 +26,14 @@ python run.py --config <config_file> --ops <ops_file> --weight <weight_file>
 ### ETA: 1 week (1 day for each unit)
 
 - [ ] move the puma simulator functional simultion logic to RAMwich (add details in mvmu/adc/alu, need to decompose this task into smaller tasks later) Here is a more detailed plan:
-  - [ ] implement all core visitor methods
+  - [x] implement all core visitor methods
     - [x] implement and test MVMU components(xbar, adc, dac, sna etc.)
     - [x] implement mvm method in MVMU for visitor
     - [x] implement and test core components for calculation(cache, alu)
     - [x] implement visitor method for set, copy, mvm and vfu
-    - [ ] implement and test core and tile components for load and store(dram, dram controller etc.)
-    - [ ] implement visitor method for load and store
-  - [ ] implement all tile visitor methods
-    - [ ] implement noc
-    - [ ] implement visitor method for send and receive
+    - [x] implement and test core and tile components for load and store(dram, dram controller etc.)
+    - [x] implement visitor method for load and store
+  - [ ] implement all tile visitor methods (send and receive)
   - [ ] test the run time, make sure it is faster than original simulator.
   - [ ] run timing simulation, check with puma that cycles match
   - [ ] run functional simulation, verify that accuracy match
