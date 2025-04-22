@@ -134,13 +134,20 @@ class RAMwich:
         # Load operations into node/tile/core hierarchy
         self.load_operations(ops_file)
 
+        # Load weights if provided
+        if weights_file:
+            self.load_weights(weights_file)
+
         # Create and schedule parallel processes for each node
         processes = []
         for node in self.nodes:
             processes.append(self.env.process(node.run(self.env)))
 
-        # Run simulation
-        self.env.run(until=self.config.simulation_time)
+        # Run simulation until all node processes complete
+        if node_processes:
+            self.env.run(until=simpy.events.AllOf(self.env, node_processes))
+        else:
+            logger.warning("No node processes to run. Please check the operations file.")
 
         logger.info(f"Simulation completed at time {self.env.now}")
         summarize_results(self.nodes)

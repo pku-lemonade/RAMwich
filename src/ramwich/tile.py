@@ -73,6 +73,7 @@ class Tile:
         logger.info(f"Tile {self.id} starting execution at time {env.now}")
 
         core_processes = [env.process(core.run(env)) for core in self.cores]
+        self.dram_controller.run(env)
 
         for op in self.operations:
             exec_time = 1
@@ -91,5 +92,6 @@ class Tile:
 
         if core_processes:
             yield env.all_of(core_processes)
+        self.dram_controller.stop()
 
         logger.info(f"Tile {self.id} finished execution at time {env.now}")
