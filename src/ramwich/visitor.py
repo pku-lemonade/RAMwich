@@ -126,19 +126,78 @@ class CoreExecutionFunctionalVisitor(CoreVisitor):
 
     def visit_load(self, op):
         try:
-            value = self.core.dram.read(op.read)
-            self.core.sram.write(op.dest, value)
+            # Create an event to signal when the load operation is complete
+            done_event = self.core.env.event()
+
+            # First read the DRAM address from the register
+            dram_address = self.core.read_from_register(op.read, 1)
+            dram_address = dram_address[0]  # return value from read is a vector
+
+            # Send read request to DRAM controller
+            read_event = self.core.dram_controller.submit_read_request(
+                core_id=self.core.id,
+                start=dram_address,
+                batch_size=op.width,
+                num_batches=op.vec,
+            )
+
+            # Create callback function to handle result when data arrives
+            def on_dram_read_complete(event):
+                try:
+                    # Write to register when data is available
+                    data = read_event.value  # Get data from event
+                    self.core.write_to_register(op.dest, data)
+                    # Signal completion
+                    done_event.succeed()
+                except Exception as e:
+                    logger.error(f"Load completion failed: {e}")
+                    done_event.fail(e)
+
+            # Schedule callback when read completes
+            read_event.callbacks.append(on_dram_read_complete)
+
+            # Update operation count
             self.core.stats.increment_op_count("load")
+
+            # Return the done event to the caller
+            return done_event
+
         except IndexError as e:
             logger.error(f"Load operation failed: {e}")
+            # Create and fail an event on error
+            fail_event = self.env.event()
+            fail_event.fail(e)
+            return fail_event
 
     def visit_store(self, op):
         try:
-            value = self.core.sram.read(op.read)
-            self.core.dram.write(op.dest, value)
+            # First read the DRAM address from the register
+            dram_address = self.core.read_from_register(op.dest, 1)
+            dram_address = dram_address[0]  # return value from read is a vector
+
+            # Read data from the register to be stored and reshape it
+            data = self.core.read_from_register(op.read, op.width * op.vec)
+            data = np.reshape(data, (op.vec, op.width))
+
+            # Send write request to DRAM controller
+            write_event = self.core.dram_controller.submit_write_request(
+                core_id=self.core.id,
+                start=dram_address,
+                data=data,
+            )
+
+            # Update operation count
             self.core.stats.increment_op_count("store")
+
+            # Return the done event to the caller
+            return write_event
+
         except IndexError as e:
             logger.error(f"Store operation failed: {e}")
+            # Create and fail an event on error
+            fail_event = self.env.event()
+            fail_event.fail(e)
+            return fail_event
 
     def visit_set(self, op):
         try:
@@ -149,6 +208,7 @@ class CoreExecutionFunctionalVisitor(CoreVisitor):
 
             # Update operation count
             self.core.stats.increment_op_count("set")
+
         except IndexError as e:
             logger.error(f"Set operation failed: {e}")
 
@@ -159,6 +219,7 @@ class CoreExecutionFunctionalVisitor(CoreVisitor):
 
             # Update operation count
             self.core.stats.increment_op_count("copy")
+
         except IndexError as e:
             logger.error(f"Copy operation failed: {e}")
 
@@ -174,6 +235,7 @@ class CoreExecutionFunctionalVisitor(CoreVisitor):
 
             # Update operation count
             self.core.stats.increment_op_count("vfu")
+
         except IndexError as e:
             logger.error(f"VFU operation failed: {e}")
 
@@ -184,6 +246,7 @@ class CoreExecutionFunctionalVisitor(CoreVisitor):
 
             # Update operation count
             self.core.stats.increment_op_count("mvm")
+
         except Exception as e:
             logger.error(f"MVM operation failed: {e}")
 
@@ -199,6 +262,11 @@ class CoreExecutionVisitor(CommonVisitor):
         self.timing_visitor = CoreExecutionTimingVisitor(config)
 
     def _visit_common(self, op):
-        op.accept(self.functional_visitor)
-        time = op.accept(self.timing_visitor)
-        return time
+        done_event = op.accept(self.functional_visitor)
+        if done_event:
+            # If a done event is returned, the stage will uses it to wait for completion
+            return done_event
+        else:
+            # If no event is returned, the stage will use a timeout to wait for completion
+            time = op.accept(self.timing_visitor)
+            return time

@@ -104,8 +104,6 @@ class Core:
             # Write to MVMU input registers
             mvmu_id = self._get_mvmu_id_from_address(start, end)
             internal_start = start % self.config.mvmu_config.xbar_config.xbar_size
-
-            # Write to the input register of the MVMU
             self.mvmus[mvmu_id].write_to_inreg(internal_start, data)
 
     def read_from_register(self, start: int, length: int) -> NDArray[np.int32]:
@@ -128,8 +126,6 @@ class Core:
             # Read from MVMU output registers
             mvmu_id = self._get_mvmu_id_from_address(start, end)
             internal_start = start % self.config.mvmu_config.xbar_config.xbar_size
-
-            # Read from the input register of the MVMU
             return self.mvmus[mvmu_id].read_from_outreg(internal_start, length)
 
     def run(self, env):
@@ -137,6 +133,9 @@ class Core:
         Execute all operations assigned to this core using a pipeline.
         This method should be called as a SimPy process.
         """
+        # Save the environment
+        self.env = env
+
         logger.info(f"Core {self.id} starting execution at time {env.now}")
 
         # Create pipeline stages
