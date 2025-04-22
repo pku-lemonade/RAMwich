@@ -459,7 +459,7 @@ class CoreConfig(BaseModel):
     instrnMem_area: float = Field(default=None, init=False, description="Core instruction memory area")
 
     # VFU parameters with default fields
-    alu_lat: int = Field(default=1, description="ALU latency")
+    vfu_lat: int = Field(default=1, description="ALU latency")
     alu_pow_dyn: float = Field(default=2.4 * 32 / 45, description="ALU dynamic power")
     alu_pow_div_dyn: float = Field(default=1.52 * 32 / 45, description="ALU division dynamic power")
     alu_pow_mul_dyn: float = Field(default=0.795 * 32 / 45, description="ALU multiplication dynamic power")
@@ -553,6 +553,16 @@ class Config(BaseModel):
     core_config: CoreConfig = Field(default_factory=CoreConfig)
     mvmu_config: MVMUConfig = Field(default_factory=MVMUConfig)
 
+    # The latencies for each operation based on config
+    load_execution_time: int = Field(default=None, init=False, description="Load execution time")
+    store_execution_time: int = Field(default=None, init=False, description="Store execution time")
+    set_execution_time: int = Field(default=None, init=False, description="Set execution time")
+    copy_execution_time: int = Field(default=None, init=False, description="Copy execution time")
+    vfu_execution_time: int = Field(default=None, init=False, description="VFU execution time")
+    mvm_execution_time: int = Field(default=None, init=False, description="MVM execution time")
+    send_execution_time: int = Field(default=None, init=False, description="Send execution time")
+    receive_execution_time: int = Field(default=None, init=False, description="Receive execution time")
+
     def __init__(self, **data):
         super().__init__(**data)
 
@@ -585,3 +595,17 @@ class Config(BaseModel):
         assert (
             self.data_config.int_bits + self.data_config.frac_bits == self.data_width
         ), "storage config invalid: check if total bits in storage config = int_bits + frac_bits"
+
+        # Set execution times based on configuration
+        # Load, Store, Send, and Receive execution times are not a fixed value, they are set to a very large number
+        self.load_execution_time = self.store_execution_time = self.send_execution_time = (
+            self.receive_execution_time
+        ) = 10000000
+        self.set_execution_time = self.copy_execution_time = self.core_config.dataMem_lat
+        self.vfu_execution_time = self.core_config.vfu_lat
+        # MVMU execution time (now synchronized with PUMA, needs to be updated)
+        # The MVMU execution is in pipeline, since needs to do bit-slicing
+        # The ADC latency is typically longest one, so we use it as one stage's latency
+        self.mvm_execution_time = self.mvmu_config.adc_config.lat * (
+            self.data_width / self.mvmu_config.dac_config.resolution + 2
+        )
