@@ -150,6 +150,8 @@ class Core:
 
         # Feed instructions into pipeline
         for op in self.operations:
-            yield pipeline.put(op)
+            pipeline.put(op)
+
+        yield pipeline.complete()
 
         logger.info(f"Core {self.id} finished execution at time {env.now}")

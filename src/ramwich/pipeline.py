@@ -22,6 +22,7 @@ class Stage:
         self.input_buffer = input_buffer
         self.output_buffer = output_buffer
         self.visitor = visitor
+        self.completion_event = self.env.event()
 
     def run(self):
         """
@@ -35,6 +36,11 @@ class Stage:
                     # Propagate the termination signal
                     yield self.output_buffer.put(None)
                 logger.debug(f"Stage {self.name} received termination signal")
+
+                # Signal completion for this stage
+                if not self.completion_event.triggered:
+                    self.completion_event.succeed()
+
                 break  # Exit the process loop
 
             result = op.accept(self.visitor)
@@ -46,6 +52,7 @@ class Stage:
                 time = result
                 yield self.env.timeout(time)
             else:
+                print(f"Stage {self.name} processing operation: {op}")
                 raise ValueError(f"Unexpected result type: {type(result)}")
 
             if self.output_buffer:
@@ -68,6 +75,7 @@ class Pipeline:
         self.config = config
         self.stages: List[Stage] = []
         self.first_stage_buffer = simpy.Store(self.env, capacity=1)
+        self.done_event = self.env.event()
         self._build()
 
     def _build(self):
@@ -91,6 +99,21 @@ class Pipeline:
         for stage in self.stages:
             self.env.process(stage.run())
 
+        self._monitor_for_completion()
+
     def put(self, op):
         """Feed an operation into the pipeline."""
         self.first_stage_buffer.put(op)
+
+    def _monitor_for_completion(self):
+        """Wait for all stages to complete."""
+        for stage in self.stages:
+            yield stage.completion_event
+
+        # Signal that the pipeline has completed
+        if not self.done_event.triggered:
+            self.done_event.succeed()
+
+    def complete(self):
+        """Get the event that signals when the pipeline has completed."""
+        return self.done_event

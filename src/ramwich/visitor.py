@@ -90,7 +90,7 @@ class CoreDecodeVisitor(CommonVisitor):
         return self.decode_time
 
 
-class CoreExecutionTimingVisitor(CommonVisitor):
+class CoreExecutionTimingVisitor(CoreVisitor):
     """Visitor for calculating operation execution timing"""
 
     def __init__(self, config):
@@ -100,13 +100,13 @@ class CoreExecutionTimingVisitor(CommonVisitor):
         return self.config.load_execution_time
 
     def visit_store(self, op):
-        return self.config.load_execution_time  # Assuming store uses load time
+        return self.config.store_execution_time
 
     def visit_set(self, op):
         return self.config.set_execution_time
 
     def visit_copy(self, op):
-        return self.config.set_execution_time  # Assuming copy uses set time
+        return self.config.copy_execution_time
 
     def visit_vfu(self, op):
         return self.config.vfu_execution_time
@@ -257,9 +257,9 @@ class CoreExecutionFunctionalVisitor(CoreVisitor):
 class CoreExecutionVisitor(CommonVisitor):
     """Visitor that performs functional execution and returns timing"""
 
-    def __init__(self, core, config):
+    def __init__(self, core):
         self.functional_visitor = CoreExecutionFunctionalVisitor(core)
-        self.timing_visitor = CoreExecutionTimingVisitor(config)
+        self.timing_visitor = CoreExecutionTimingVisitor(core.config)
 
     def _visit_common(self, op):
         done_event = op.accept(self.functional_visitor)
