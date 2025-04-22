@@ -587,6 +587,16 @@ class Config(BaseModel):
         ), "storage config invalid: check if total bits in storage config = int_bits + frac_bits"
 
     @property
+    def fetch_execution_time(self) -> int:
+        """fetch stage execution time"""
+        return 1
+
+    @property
+    def decode_execution_time(self) -> int:
+        """decode stage execution time"""
+        return self.core_config.instrnMem_lat
+
+    @property
     def load_execution_time(self) -> int:
         """load execution time is not a fixed number, and this should not be used. Returns a large value"""
         return 10000000
@@ -615,7 +625,9 @@ class Config(BaseModel):
     def mvm_execution_time(self) -> int:
         """Calculate MVM execution time"""
         # This is now synchronized with PUMA. Needs to be recalculated
-        return self.mvmu_config.adc_config.lat * (self.data_width / self.mvmu_config.dac_config.resolution + 2)
+        return self.mvmu_config.adc_config.lat * (
+            (self.data_width + self.mvmu_config.dac_config.resolution - 1) // self.mvmu_config.dac_config.resolution + 2
+        )
 
     @property
     def send_execution_time(self) -> int:
