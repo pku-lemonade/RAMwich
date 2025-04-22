@@ -121,7 +121,7 @@ class VFU:
     def _handle_div(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
         if np.any(b == 0):
             raise ZeroDivisionError("Division by zero")
-        return (a // b) << self.frac_bits
+        return (a << self.frac_bits) // b
 
     def _handle_min(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
         return np.minimum(a, b)
@@ -130,10 +130,22 @@ class VFU:
         return np.maximum(a, b)
 
     def _handle_sig(self, a: NDArray[np.int32], _) -> NDArray[np.int32]:
-        return 1 / (1 + np.exp(-a))
+        # Convert to float for tanh calculation
+        float_input = a / (1 << self.frac_bits)
+        # Calculate tanh
+        float_result = 1 / (1 + np.exp(-float_input))
+        # Scale back to int32
+        int_result = (float_result * (1 << self.frac_bits)).astype(np.int32)
+        return int_result
 
     def _handle_tanh(self, a: NDArray[np.int32], _) -> NDArray[np.int32]:
-        return np.tanh(a)
+        # Convert to float for tanh calculation
+        float_input = a / (1 << self.frac_bits)
+        # Calculate tanh
+        float_result = np.tanh(float_input)
+        # Scale back to int32
+        int_result = (float_result * (1 << self.frac_bits)).astype(np.int32)
+        return int_result
 
     def _handle_relu(self, a: NDArray[np.int32], _) -> NDArray[np.int32]:
         return np.maximum(0, a)
