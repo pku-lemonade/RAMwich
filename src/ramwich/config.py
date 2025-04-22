@@ -553,16 +553,6 @@ class Config(BaseModel):
     core_config: CoreConfig = Field(default_factory=CoreConfig)
     mvmu_config: MVMUConfig = Field(default_factory=MVMUConfig)
 
-    # The latencies for each operation based on config
-    load_execution_time: int = Field(default=None, init=False, description="Load execution time")
-    store_execution_time: int = Field(default=None, init=False, description="Store execution time")
-    set_execution_time: int = Field(default=None, init=False, description="Set execution time")
-    copy_execution_time: int = Field(default=None, init=False, description="Copy execution time")
-    vfu_execution_time: int = Field(default=None, init=False, description="VFU execution time")
-    mvm_execution_time: int = Field(default=None, init=False, description="MVM execution time")
-    send_execution_time: int = Field(default=None, init=False, description="Send execution time")
-    receive_execution_time: int = Field(default=None, init=False, description="Receive execution time")
-
     def __init__(self, **data):
         super().__init__(**data)
 
@@ -596,16 +586,43 @@ class Config(BaseModel):
             self.data_config.int_bits + self.data_config.frac_bits == self.data_width
         ), "storage config invalid: check if total bits in storage config = int_bits + frac_bits"
 
-        # Set execution times based on configuration
-        # Load, Store, Send, and Receive execution times are not a fixed value, they are set to a very large number
-        self.load_execution_time = self.store_execution_time = self.send_execution_time = (
-            self.receive_execution_time
-        ) = 10000000
-        self.set_execution_time = self.copy_execution_time = self.core_config.dataMem_lat
-        self.vfu_execution_time = self.core_config.vfu_lat
-        # MVMU execution time (now synchronized with PUMA, needs to be updated)
-        # The MVMU execution is in pipeline, since needs to do bit-slicing
-        # The ADC latency is typically longest one, so we use it as one stage's latency
-        self.mvm_execution_time = self.mvmu_config.adc_config.lat * (
-            self.data_width / self.mvmu_config.dac_config.resolution + 2
-        )
+    @property
+    def load_execution_time(self) -> int:
+        """load execution time is not a fixed number, and this should not be used. Returns a large value"""
+        return 10000000
+
+    @property
+    def store_execution_time(self) -> int:
+        """store execution time is not a fixed number, and this should not be used. Returns a large value"""
+        return 10000000  # Very large value as in your original code
+
+    @property
+    def set_execution_time(self) -> int:
+        """Calculate set execution time"""
+        return self.core_config.dataMem_lat
+
+    @property
+    def copy_execution_time(self) -> int:
+        """Calculate copy execution time"""
+        return self.core_config.dataMem_lat
+
+    @property
+    def vfu_execution_time(self) -> int:
+        """Calculate VFU execution time"""
+        return self.core_config.vfu_lat
+
+    @property
+    def mvm_execution_time(self) -> int:
+        """Calculate MVM execution time"""
+        # This is now synchronized with PUMA. Needs to be recalculated
+        return self.mvmu_config.adc_config.lat * (self.data_width / self.mvmu_config.dac_config.resolution + 2)
+
+    @property
+    def send_execution_time(self) -> int:
+        """send execution time is not a fixed number, and this should not be used. Returns a large value"""
+        return 10000000
+
+    @property
+    def receive_execution_time(self) -> int:
+        """receive execution time is not a fixed number, and this should not be used. Returns a large value"""
+        return 10000000
