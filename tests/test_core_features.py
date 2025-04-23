@@ -6,8 +6,8 @@ import simpy
 
 from ramwich.blocks.router import Network
 from ramwich.config import Config
+from ramwich.node import Node
 from ramwich.ops import MVM, VFU, Copy, Hlt, Load, Set, Store
-from ramwich.tile import Tile
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 def test_core_features():
     # Create configuration
     config = Config(
-        num_tiles_per_node=1,
+        num_tiles_per_node=3,
         num_cores_per_tile=2,
         num_mvmus_per_core=1,
         data_width=8,
@@ -26,8 +26,11 @@ def test_core_features():
     # Create SimPy environment
     env = simpy.Environment()
 
-    # Create tile
-    tile = Tile(network=Network(), node_id=0, id=2, config=config)
+    # Create Node
+    node = Node(id=0, config=config)
+
+    # Get tile
+    tile = node.get_tile(2)
 
     # Get cores
     core0 = tile.get_core(0)
@@ -62,25 +65,25 @@ def test_core_features():
 def load_test_ops(core0, core1):
     # Load test operations into core0 and core1
     core0.operations = [
-        Set(tile=0, core=0, dest=256, imm=0, vec=1, is_address=True),
-        Load(tile=0, core=0, dest=256, read=256, width=16, vec=8),
-        Copy(tile=0, core=0, dest=0, read=256, vec=128),
-        MVM(tile=0, core=0, xbar=[0]),
-        VFU(tile=0, core=0, opcode="relu", dest=256, read_1=128, vec=128),
-        Set(tile=0, core=0, dest=384, imm=128, vec=1, is_address=True),
-        Store(tile=0, core=0, dest=384, read=256, width=16, vec=8),
-        Hlt(tile=0, core=0),
+        Set(tile=2, core=0, dest=256, imm=0, vec=1, is_address=True),
+        Load(tile=2, core=0, dest=256, read=256, width=16, vec=8),
+        Copy(tile=2, core=0, dest=0, read=256, vec=128),
+        MVM(tile=2, core=0, xbar=[0]),
+        VFU(tile=2, core=0, opcode="relu", dest=256, read_1=128, vec=128),
+        Set(tile=2, core=0, dest=384, imm=128, vec=1, is_address=True),
+        Store(tile=2, core=0, dest=384, read=256, width=16, vec=8),
+        Hlt(tile=2, core=0),
     ]
 
     core1.operations = [
-        Set(tile=0, core=1, dest=256, imm=128, vec=1, is_address=True),
-        Load(tile=0, core=1, dest=256, read=256, width=16, vec=8),
-        Copy(tile=0, core=1, dest=0, read=256, vec=128),
-        MVM(tile=0, core=1, xbar=[0]),
-        VFU(tile=0, core=1, opcode="relu", dest=256, read_1=128, vec=128),
-        Set(tile=0, core=1, dest=384, imm=256, vec=1, is_address=True),
-        Store(tile=0, core=1, dest=384, read=256, width=16, vec=8),
-        Hlt(tile=0, core=1),
+        Set(tile=2, core=1, dest=256, imm=128, vec=1, is_address=True),
+        Load(tile=2, core=1, dest=256, read=256, width=16, vec=8),
+        Copy(tile=2, core=1, dest=0, read=256, vec=128),
+        MVM(tile=2, core=1, xbar=[0]),
+        VFU(tile=2, core=1, opcode="relu", dest=256, read_1=128, vec=128),
+        Set(tile=2, core=1, dest=384, imm=256, vec=1, is_address=True),
+        Store(tile=2, core=1, dest=384, read=256, width=16, vec=8),
+        Hlt(tile=2, core=1),
     ]
 
 

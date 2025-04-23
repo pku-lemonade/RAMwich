@@ -20,9 +20,9 @@ class Tile:
     Tile in the RAMwich architecture, containing multiple cores.
     """
 
-    def __init__(self, network: Network, node_id: int, id: int, config: Config = None):
+    def __init__(self, id: int, parent, config: Config = None):
         self.id = id
-        self.node_id = node_id
+        self.parent = parent
         self.config = config or Config()
         self.tile_config = self.config.tile_config
         self.operations: List[TileOpType] = []
@@ -30,17 +30,14 @@ class Tile:
         # Initialize components
         self.edram = DRAM(self.tile_config)
         self.dram_controller = DRAMController(dram=self.edram, tile_config=self.tile_config)
-        self.router = Router(network=network, node_id=self.node_id, tile_id=self.id, config=self.config)
+        self.router = Router(network=parent.network, id=self.id, config=self.config)
 
         # Initialize cores
         # for input and output tiles we don't need to create cores
-        if self.node_id == 0 and (self.id == 0 or self.id == 1):
+        if self.parent.id == 0 and (self.id == 0 or self.id == 1):
             self.cores = []
         else:
-            self.cores = [
-                Core(id=i, dram_controller=self.dram_controller, config=self.config)
-                for i in range(self.config.num_cores_per_tile)
-            ]
+            self.cores = [Core(id=i, parent=self, config=self.config) for i in range(self.config.num_cores_per_tile)]
 
         # Initialize stats
         self.stats = Stats()
