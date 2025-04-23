@@ -8,6 +8,7 @@ import numpy as np
 import simpy
 import yaml
 
+from .blocks.router import Network
 from .config import Config
 from .core import Core
 from .mvmu import MVMU
@@ -42,9 +43,10 @@ class RAMwich:
     def _build_architecture(self) -> List[Node]:
         """Build the hierarchical architecture based on configuration"""
         nodes = []
+        network = Network()
 
         for node_id in range(self.config.num_nodes):
-            node = Node(id=node_id, config=self.config)
+            node = Node(network=network, id=node_id, config=self.config)
             nodes.append(node)
 
         return nodes

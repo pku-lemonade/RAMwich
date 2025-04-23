@@ -38,9 +38,11 @@ class Network:
 class Router:
     """Base memory component"""
 
-    def __init__(self, network: Network, id: int, config: Config = None):
-        self.id = id
+    def __init__(self, network: Network, node_id: int, tile_id: int, config: Config = None):
+        self.node_id = node_id
+        self.tile_id = tile_id
         self.config = config or Config()
+        self.id = node_id * self.config.num_tiles_per_node + tile_id
         self.network = network  # this is a reference to the network
 
         # Register this router with the network

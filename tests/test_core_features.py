@@ -4,6 +4,7 @@ import logging
 import numpy as np
 import simpy
 
+from ramwich.blocks.router import Network
 from ramwich.config import Config
 from ramwich.ops import MVM, VFU, Copy, Load, Set, Store
 from ramwich.tile import Tile
@@ -30,7 +31,7 @@ def test_core_features():
     env = simpy.Environment()
 
     # Create tile
-    tile = Tile(id=0, config=config)
+    tile = Tile(network=Network(), node_id=0, id=0, config=config)
 
     # Get cores
     core0 = tile.get_core(0)

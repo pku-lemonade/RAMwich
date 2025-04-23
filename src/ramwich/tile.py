@@ -3,6 +3,7 @@ from typing import List
 
 from .blocks.dram_controller import DRAMController
 from .blocks.memory import DRAM
+from .blocks.router import Network, Router
 from .config import Config
 from .core import Core
 from .ops import Recv, Send, TileOpType
@@ -16,8 +17,9 @@ class Tile:
     Tile in the RAMwich architecture, containing multiple cores.
     """
 
-    def __init__(self, id: int, config: Config = None):
+    def __init__(self, network: Network, node_id: int, id: int, config: Config = None):
         self.id = id
+        self.node_id = node_id
         self.config = config or Config()
         self.tile_config = self.config.tile_config
         self.operations: List[TileOpType] = []
@@ -25,6 +27,7 @@ class Tile:
         # Initialize components
         self.edram = DRAM(self.tile_config)
         self.dram_controller = DRAMController(dram=self.edram, tile_config=self.tile_config)
+        self.router = Router(network=network, node_id=self.node_id, tile_id=self.id, config=self.config)
 
         # Initialize cores
         self.cores = [
@@ -56,13 +59,21 @@ class Tile:
 
         return aggregated_stats
 
-    def execute_send(self, op: Send) -> bool:
-        """Execute a Send operation (placeholder)"""
-        logger.debug(f"Tile {self.id} executing Send: {op}")
-        self.stats.increment_op_count("send")
-        return True
+    def execute_send(self, op: Send):
+        """Execute a Send operation"""
 
-    def execute_receive(self, op: Recv) -> bool:
+        # First read the data from the source
+        data_size = op.width * op.vec
+        read_event = self.dram_controller.submit_read_request(
+            core_id=-1, start=op.mem_addr, batch_size=data_size, num_batches=1
+        )
+        yield read_event
+        data = read_event.value
+
+        # Reshape the data to match the send operation
+        data = data.reshape((op.vec, op.width))
+
+    def execute_receive(self, op: Recv):
         """Execute a Receive operation (placeholder)"""
         logger.debug(f"Tile {self.id} executing Receive: {op}")
         self.stats.increment_op_count("receive")
