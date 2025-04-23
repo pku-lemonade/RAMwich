@@ -44,6 +44,7 @@ class Router:
         self.config = config or Config()
         self.id = node_id * self.config.num_tiles_per_node + tile_id
         self.network = network  # this is a reference to the network
+        self.is_running = False
 
         # Register this router with the network
         self.network.register_router(self)
@@ -53,6 +54,9 @@ class Router:
 
     def run(self, env: simpy.Environment):
         """Run the router simulation"""
+        if self.is_running:
+            return
+
         self.env = env
         self.send_queue = simpy.Store(env)
         self.receive_buffers = {}
@@ -62,7 +66,64 @@ class Router:
                 self.receive_buffers[i] = simpy.Store(env, capacity=1)
 
         # Start the send thread
-        env.process(self._send_thread())
+        self.sending_event = None
+        self.send_process = env.process(self._send_thread())
+
+        # Set the router to running state
+        self.is_running = True
+
+    def stop(self):
+        """Stop the router"""
+
+        if not self.is_running:
+            return
+
+        self.is_running = False
+        self.send_process.interrupt()  # Stop the send process
+
+    def stop_after_all_packets_sent(self):
+        """Stop the router after all packets have been sent"""
+        if not self.is_running:
+            return
+
+        # Create a specific event that will trigger when send queue empties
+        empty_event = self.env.event()
+
+        def check_queue():
+            if self.send_queue.items:
+                # Still items in queue, check again after some time
+                yield self.env.timeout(1)
+                self.env.process(check_queue())
+            else:
+                # Queue is empty, trigger the event
+                empty_event.succeed()
+
+        # Start the checking process
+        self.env.process(check_queue())
+
+        # Wait for the send queue to be empty
+        yield empty_event
+
+        # Wait for the sending event to finish
+        if self.sending_event:
+            yield self.sending_event
+
+        # Stop the send process
+        self.stop()
+
+    def _get_latency(self, source: int, target: int):
+        """Calculate the latency between two routers"""
+        # input and output tiles are considered to be on a different node with other tiles
+        if (
+            source == 0
+            or target == 1
+            or source // self.config.num_tiles_per_node != target // self.config.num_tiles_per_node
+        ):
+            # Inter-node communication
+            return self.config.noc_config.noc_intra_lat + self.config.noc_config.noc_inter_lat
+        else:
+            # Intra-node communication
+            return self.config.noc_config.noc_intra_lat
 
     def add_send_packet(self, target: int, data: NDArray[np.int32]):
         """Send a packet to the router"""
@@ -75,18 +136,30 @@ class Router:
 
     def _send_thread(self):
         """Thread to handle sending packets"""
-        while True:
-            # Get the next packet to send
-            packet = yield self.send_queue.get()
+        try:
+            while True:
+                # Get the next packet to send
+                packet = yield self.send_queue.get()
 
-            # Get the target router
-            target_router = self.network.get_router(packet[1])  # packet: tuple = (source, target, data)
+                # Once a packet is get, create a new sending event
+                self.sending_event = self.env.event()
 
-            # Send the packet to the target router
-            yield target_router.receive_packet(packet)
+                # Get the target router
+                target_router = self.network.get_router(packet[1])  # packet: tuple = (source, target, data)
 
-            # Update stats
-            self.stats.packets_sent += 1
+                # Simulate the time taken to send the packet
+                yield self.env.timeout(self._get_latency(packet[0], packet[1]))
+
+                # Send the packet to the target router
+                yield self.env.process(target_router.receive_packet(packet))
+
+                # Mark the send event as done
+                self.sending_event.succeed()
+
+                # Update stats
+                self.stats.packets_sent += 1
+        except simpy.Interrupt:
+            pass
 
     def receive_packet(self, packet):
         """Receive a packet from the network"""
