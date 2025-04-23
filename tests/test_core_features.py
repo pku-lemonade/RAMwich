@@ -50,14 +50,19 @@ def test_core_features():
     tile.dram_controller.valid[0:128] = True
 
     # Run the test process
+    start_time = env.now
+
     env.process(tile.run(env))
     env.run()
+
+    end_time = env.now
 
     # Check the results
     output = tile.edram.cells[256:384].copy()
     expected_output = np.maximum(0, np.dot(mat1, np.maximum(0, np.dot(mat0, activation))))
     print(f"Output: {output}")
     print(f"Expected Output: {expected_output}")
+    print(f"Execution Time: {end_time - start_time} cycles")
     assert np.array_equal(output, expected_output), f"Output mismatch: {output} != {expected_output}"
     print("Test passed: Output matches expected result.")
 
