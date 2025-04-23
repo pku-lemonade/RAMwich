@@ -13,10 +13,6 @@ from ramwich.ops import MVM, VFU, Copy, Halt, Hlt, Load, Recv, Send, Set, Store
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-# Configure logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
-logger = logging.getLogger(__name__)
-
 
 def test_tile_features():
     # Create configuration
