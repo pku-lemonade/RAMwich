@@ -9,7 +9,7 @@ from .blocks.memory import DRAM
 from .blocks.router import Network, Router
 from .config import Config
 from .core import Core
-from .ops import Recv, Send, TileOpType
+from .ops import Halt, Recv, Send, TileOpType
 from .stats import Stats
 
 logger = logging.getLogger(__name__)
@@ -59,7 +59,7 @@ class Tile:
 
         return aggregated_stats
 
-    def execute_send(self, env: simpy.Environment, op: Send):
+    def execute_send(self, op: Send):
         """Execute a Send operation"""
 
         # First read the data from the source
@@ -74,22 +74,22 @@ class Tile:
 
         for i in range(op.vec):
             # Add the package to router's send queue
-            yield env.process(self.router.add_send_packet(target=op.target_tile, data=data[i]))
+            yield self.env.process(self.router.add_send_packet(target=op.target_tile, data=data[i]))
 
         return True
 
-    def execute_receive(self, env: simpy.Environment, op: Recv):
+    def execute_receive(self, op: Recv):
         """Execute a Receive operation"""
 
         # creata a data buffer to store the received data
         received_data = np.zeros((op.vec, op.width), dtype=np.int32)
         for i in range(op.vec):
             # Wait for the data to be available in the router's receive buffer
-            data = yield env.process(self.router.read_packet(source=op.source_tile))
+            data = yield self.env.process(self.router.read_packet(source=op.source_tile))
 
             # Validate the data size matches the expected size
             if len(data) != op.width:
-                logger.error(f"Tile {self.id}: Data size mismatch for receive operation at time {env.now}")
+                logger.error(f"Tile {self.id}: Data size mismatch for receive operation at time {self.env.now}")
                 return False
 
             # Copy the data to the received_data buffer
@@ -100,15 +100,15 @@ class Tile:
 
         return True
 
-    def execute_halt(self, env):
+    def execute_halt(self, op: Halt):
         """Execute a Halt operation"""
 
         # wait for all cores, router and dram controller to finish
         if self.core_processes:
-            yield env.all_of(self.core_processes)
+            yield self.env.all_of(self.core_processes)
 
         # wait for router to stop
-        yield env.process(self.router.stop_after_all_packets_sent())
+        yield self.env.process(self.router.stop_after_all_packets_sent())
 
         # DRAM controller will be safe to stop since all cores are halted
         # Also no more send and receive operations will be submitted
@@ -120,12 +120,14 @@ class Tile:
         """Execute operations for this tile and its cores"""
         logger.info(f"Tile {self.id} starting execution at time {env.now}")
 
+        self.env = env
+
         self.core_processes = [env.process(core.run(env)) for core in self.cores]
         self.dram_controller.run(env)
         self.router.run(env)
 
         for op in self.operations:
-            success = yield env.process(op.accept(self, env))
+            success = yield env.process(op.accept(self))
             if not success:
                 logger.warning(f"Tile {self.id}: Operation {op} failed at time {env.now}")
             else:

@@ -38,6 +38,8 @@ class Node:
         """Execute operations for all tiles in this node"""
         logger.info(f"Starting operations for node {self.id}")
 
+        self.env = env
+
         processes = []
         for tile in self.tiles:
             processes.append(env.process(tile.run(env)))
