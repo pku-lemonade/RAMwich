@@ -28,7 +28,7 @@ def test_tile_features():
 
     # Create node
     network = Network()
-    node = Node(network=network, id=0, config=config)
+    node = Node(id=0, config=config)
 
     # Get tiles
     tile0 = node.get_tile(0)

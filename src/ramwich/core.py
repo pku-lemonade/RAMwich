@@ -4,7 +4,6 @@ from typing import List
 import numpy as np
 from numpy.typing import NDArray
 
-from .blocks.dram_controller import DRAMController
 from .blocks.memory import SRAM
 from .blocks.vfu import VFU
 from .config import Config
@@ -22,8 +21,9 @@ class Core:
     Core in the RAMwich architecture, containing multiple MVMUs.
     """
 
-    def __init__(self, id: int, dram_controller: DRAMController, config: Config = None):
+    def __init__(self, id: int, parent, config: Config = None):
         self.id = id
+        self.parent = parent
         self.config = config or Config()
         self.core_config = self.config.core_config
         self.operations: List[CoreOp] = []
@@ -39,7 +39,7 @@ class Core:
         # Initialize components
         self.cache = SRAM(self.core_config)
         self.vfu = VFU(self.config)
-        self.dram_controller = dram_controller
+        self.dram_controller = self.parent.dram_controller
 
         # Initialize MVMUs
         self.mvmus = [MVMU(id=i, config=self.config) for i in range(self.config.num_mvmus_per_core)]
