@@ -6,7 +6,7 @@ import simpy
 
 from ramwich.blocks.router import Network
 from ramwich.config import Config
-from ramwich.ops import MVM, VFU, Copy, Load, Set, Store
+from ramwich.ops import MVM, VFU, Copy, Hlt, Load, Set, Store
 from ramwich.tile import Tile
 
 # Configure logging
@@ -27,7 +27,7 @@ def test_core_features():
     env = simpy.Environment()
 
     # Create tile
-    tile = Tile(network=Network(), node_id=0, id=0, config=config)
+    tile = Tile(network=Network(), node_id=0, id=2, config=config)
 
     # Get cores
     core0 = tile.get_core(0)
@@ -40,7 +40,7 @@ def test_core_features():
     mat0, mat1 = load_test_weights(core0, core1)
 
     # Create a test activation
-    activation = np.random.randint(0, 3, size=(128,), dtype=np.int32)
+    activation = np.random.randint(0, 7, size=(128,), dtype=np.int32)
 
     # Add the activation to the tile eDRAM and mark it as valid
     tile.edram.write(0, activation)
@@ -53,6 +53,8 @@ def test_core_features():
     # Check the results
     output = tile.edram.cells[256:384].copy()
     expected_output = np.maximum(0, np.dot(mat1, np.maximum(0, np.dot(mat0, activation))))
+    print(f"Output: {output}")
+    print(f"Expected Output: {expected_output}")
     assert np.array_equal(output, expected_output), f"Output mismatch: {output} != {expected_output}"
     print("Test passed: Output matches expected result.")
 
@@ -67,6 +69,7 @@ def load_test_ops(core0, core1):
         VFU(tile=0, core=0, opcode="relu", dest=256, read_1=128, vec=128),
         Set(tile=0, core=0, dest=384, imm=128, vec=1, is_address=True),
         Store(tile=0, core=0, dest=384, read=256, width=16, vec=8),
+        Hlt(tile=0, core=0),
     ]
 
     core1.operations = [
@@ -77,6 +80,7 @@ def load_test_ops(core0, core1):
         VFU(tile=0, core=1, opcode="relu", dest=256, read_1=128, vec=128),
         Set(tile=0, core=1, dest=384, imm=256, vec=1, is_address=True),
         Store(tile=0, core=1, dest=384, read=256, width=16, vec=8),
+        Hlt(tile=0, core=1),
     ]
 
 
