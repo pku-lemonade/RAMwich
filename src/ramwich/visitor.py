@@ -125,130 +125,98 @@ class CoreExecutionFunctionalVisitor(CoreVisitor):
         self.core = core
 
     def visit_load(self, op):
-        try:
-            # Create an event to signal when the load operation is complete
-            done_event = self.core.env.event()
+        # Create an event to signal when the load operation is complete
+        done_event = self.core.env.event()
 
-            # First read the DRAM address from the register
-            dram_address = self.core.read_from_register(op.read, 1)
-            dram_address = dram_address[0]  # return value from read is a vector
+        # First read the DRAM address from the register
+        dram_address = self.core.read_from_register(op.read, 1)
+        dram_address = dram_address[0]  # return value from read is a vector
 
-            # Send read request to DRAM controller
-            read_event = self.core.dram_controller.submit_read_request(
-                core_id=self.core.id,
-                start=dram_address,
-                batch_size=op.width,
-                num_batches=op.vec,
-            )
+        # Send read request to DRAM controller
+        read_event = self.core.dram_controller.submit_read_request(
+            core_id=self.core.id,
+            start=dram_address,
+            batch_size=op.width,
+            num_batches=op.vec,
+        )
 
-            # Create callback function to handle result when data arrives
-            def on_dram_read_complete(event):
-                try:
-                    # Write to register when data is available
-                    data = read_event.value  # Get data from event
-                    self.core.write_to_register(op.dest, data)
-                    # Signal completion
-                    done_event.succeed()
-                except Exception as e:
-                    logger.error(f"Load completion failed: {e}")
-                    done_event.fail(e)
+        # Create callback function to handle result when data arrives
+        def on_dram_read_complete(event):
+            try:
+                # Write to register when data is available
+                data = read_event.value  # Get data from event
+                self.core.write_to_register(op.dest, data)
+                # Signal completion
+                done_event.succeed()
+            except Exception as e:
+                logger.error(f"Load completion failed: {e}")
+                done_event.fail(e)
 
-            # Schedule callback when read completes
-            read_event.callbacks.append(on_dram_read_complete)
+        # Schedule callback when read completes
+        read_event.callbacks.append(on_dram_read_complete)
 
-            # Update operation count
-            self.core.stats.increment_op_count("load")
+        # Update operation count
+        self.core.stats.increment_op_count("load")
 
-            # Return the done event to the caller
-            return done_event
-
-        except IndexError as e:
-            logger.error(f"Load operation failed: {e}")
-            # Create and fail an event on error
-            fail_event = self.env.event()
-            fail_event.fail(e)
-            return fail_event
+        # Return the done event to the caller
+        return done_event
 
     def visit_store(self, op):
-        try:
-            # First read the DRAM address from the register
-            dram_address = self.core.read_from_register(op.dest, 1)
-            dram_address = dram_address[0]  # return value from read is a vector
+        # First read the DRAM address from the register
+        dram_address = self.core.read_from_register(op.dest, 1)
+        dram_address = dram_address[0]  # return value from read is a vector
 
-            # Read data from the register to be stored and reshape it
-            data = self.core.read_from_register(op.read, op.width * op.vec)
-            data = np.reshape(data, (op.vec, op.width))
+        # Read data from the register to be stored and reshape it
+        data = self.core.read_from_register(op.read, op.width * op.vec)
+        data = np.reshape(data, (op.vec, op.width))
 
-            # Send write request to DRAM controller
-            write_event = self.core.dram_controller.submit_write_request(
-                core_id=self.core.id,
-                start=dram_address,
-                data=data,
-            )
+        # Send write request to DRAM controller
+        write_event = self.core.dram_controller.submit_write_request(
+            core_id=self.core.id,
+            start=dram_address,
+            data=data,
+        )
 
-            # Update operation count
-            self.core.stats.increment_op_count("store")
+        # Update operation count
+        self.core.stats.increment_op_count("store")
 
-            # Return the done event to the caller
-            return write_event
-
-        except IndexError as e:
-            logger.error(f"Store operation failed: {e}")
-            # Create and fail an event on error
-            fail_event = self.env.event()
-            fail_event.fail(e)
-            return fail_event
+        # Return the done event to the caller
+        return write_event
 
     def visit_set(self, op):
-        try:
-            # create a vector of size vec with the immediate value
-            vector = np.full(op.vec, op.imm)
-            # write the vector to the destination address
-            self.core.write_to_register(op.dest, vector)
+        # create a vector of size vec with the immediate value
+        vector = np.full(op.vec, op.imm)
+        # write the vector to the destination address
+        self.core.write_to_register(op.dest, vector)
 
-            # Update operation count
-            self.core.stats.increment_op_count("set")
-
-        except IndexError as e:
-            logger.error(f"Set operation failed: {e}")
+        # Update operation count
+        self.core.stats.increment_op_count("set")
 
     def visit_copy(self, op):
-        try:
-            vector = self.core.read_from_register(op.read, op.vec)
-            self.core.write_to_register(op.dest, vector)
+        vector = self.core.read_from_register(op.read, op.vec)
+        self.core.write_to_register(op.dest, vector)
 
-            # Update operation count
-            self.core.stats.increment_op_count("copy")
-
-        except IndexError as e:
-            logger.error(f"Copy operation failed: {e}")
+        # Update operation count
+        self.core.stats.increment_op_count("copy")
 
     def visit_vfu(self, op):
-        try:
-            a = self.core.read_from_register(op.read_1, op.vec)
-            if op.read_2 is not None:
-                b = self.core.read_from_register(op.read_2, op.vec)
-                result = self.core.vfu.calculate(op.opcode, a, b)
-            else:
-                result = self.core.vfu.calculate(op.opcode, a)
-            self.core.write_to_register(op.dest, result)
+        a = self.core.read_from_register(op.read_1, op.vec)
+        if op.read_2 is not None:
+            b = self.core.read_from_register(op.read_2, op.vec)
+            result = self.core.vfu.calculate(op.opcode, a, b)
+        else:
+            result = self.core.vfu.calculate(op.opcode, a)
+        self.core.write_to_register(op.dest, result)
 
-            # Update operation count
-            self.core.stats.increment_op_count("vfu")
-
-        except IndexError as e:
-            logger.error(f"VFU operation failed: {e}")
+        # Update operation count
+        self.core.stats.increment_op_count("vfu")
 
     def visit_mvm(self, op):
-        try:
-            for mvmu_id in op.xbar:
-                self.core.get_mvmu(mvmu_id).execute_mvm()
+        for mvmu_id in op.xbar:
+            self.core.get_mvmu(mvmu_id).execute_mvm()
 
-            # Update operation count
-            self.core.stats.increment_op_count("mvm")
-
-        except Exception as e:
-            logger.error(f"MVM operation failed: {e}")
+        # Update operation count
+        self.core.stats.increment_op_count("mvm")
 
     def visit_hlt(self, op):
         pass
