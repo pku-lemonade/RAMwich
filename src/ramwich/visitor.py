@@ -73,21 +73,23 @@ class CommonVisitor(CoreVisitor):
 class CoreFetchVisitor(CommonVisitor):
     """Visitor for calculating fetch timing"""
 
-    def __init__(self, config):
-        self.fetch_time = config.fetch_execution_time
+    def __init__(self, core):
+        self.core = core
+        self.fetch_time = core.config.core_config.instrnMem_lat
 
     def _visit_common(self, op):
-        return self.fetch_time
+        return self.core.env.timeout(self.fetch_time)
 
 
 class CoreDecodeVisitor(CommonVisitor):
     """Visitor for calculating decode timing"""
 
-    def __init__(self, config):
-        self.decode_time = config.decode_execution_time
+    def __init__(self, core):
+        self.core = core
+        self.decode_time = core.config.core_config.instrnMem_lat
 
     def _visit_common(self, op):
-        return self.decode_time
+        return self.core.env.timeout(self.decode_time)
 
 
 class CoreExecutionTimingVisitor(CoreVisitor):
@@ -97,32 +99,44 @@ class CoreExecutionTimingVisitor(CoreVisitor):
         self.config = config
 
     def visit_load(self, op):
-        return self.config.load_execution_time
+        # This should not be used for load operations
+        raise NotImplementedError("Load operations should not use this visitor")
 
     def visit_store(self, op):
-        return self.config.store_execution_time
+        # This should not be used for store operations
+        raise NotImplementedError("Store operations should not use this visitor")
 
     def visit_set(self, op):
-        return self.config.set_execution_time
+        """Calculate set execution time"""
+        return self.config.core_config.dataMem_lat
 
     def visit_copy(self, op):
-        return self.config.copy_execution_time
+        """Calculate copy execution time"""
+        return self.config.core_config.dataMem_lat
 
     def visit_vfu(self, op):
-        return self.config.vfu_execution_time
+        """Calculate VFU execution time"""
+        return self.config.core_config.vfu_lat
 
     def visit_mvm(self, op):
-        return self.config.mvm_execution_time
+        """Calculate MVM execution time"""
+        # This is now synchronized with PUMA. Needs to be recalculated
+        return self.config.mvmu_config.adc_config.lat * (
+            (self.config.data_width + self.config.mvmu_config.dac_config.resolution - 1)
+            // self.config.mvmu_config.dac_config.resolution
+            + 2
+        )
 
     def visit_hlt(self, op):
         return 1  # Minimal time unit for halt
 
 
-class CoreExecutionFunctionalVisitor(CoreVisitor):
+class CoreExecutionVisitor(CoreVisitor):
     """Visitor for executing operations functionally"""
 
     def __init__(self, core):
         self.core = core
+        self.timing_visitor = CoreExecutionTimingVisitor(core.config)
 
     def visit_load(self, op):
         # Create an event to signal when the load operation is complete
@@ -192,12 +206,20 @@ class CoreExecutionFunctionalVisitor(CoreVisitor):
         # Update operation count
         self.core.stats.increment_op_count("set")
 
+        # return the done event to the caller
+        # done_event is a timeout event since this operation takes fixed time
+        return self.core.env.timeout(op.accept(self.timing_visitor))
+
     def visit_copy(self, op):
         vector = self.core.read_from_register(op.read, op.vec)
         self.core.write_to_register(op.dest, vector)
 
         # Update operation count
         self.core.stats.increment_op_count("copy")
+
+        # return the done event to the caller
+        # done_event is a timeout event since this operation takes fixed time
+        return self.core.env.timeout(op.accept(self.timing_visitor))
 
     def visit_vfu(self, op):
         a = self.core.read_from_register(op.read_1, op.vec)
@@ -211,6 +233,10 @@ class CoreExecutionFunctionalVisitor(CoreVisitor):
         # Update operation count
         self.core.stats.increment_op_count("vfu")
 
+        # return the done event to the caller
+        # done_event is a timeout event since this operation takes fixed time
+        return self.core.env.timeout(op.accept(self.timing_visitor))
+
     def visit_mvm(self, op):
         for mvmu_id in op.xbar:
             self.core.get_mvmu(mvmu_id).execute_mvm()
@@ -218,23 +244,14 @@ class CoreExecutionFunctionalVisitor(CoreVisitor):
         # Update operation count
         self.core.stats.increment_op_count("mvm")
 
+        # return the done event to the caller
+        # done_event is a timeout event since this operation takes fixed time
+        return self.core.env.timeout(op.accept(self.timing_visitor))
+
     def visit_hlt(self, op):
-        pass
+        # Update operation count
+        self.core.stats.increment_op_count("hlt")
 
-
-class CoreExecutionVisitor(CommonVisitor):
-    """Visitor that performs functional execution and returns timing"""
-
-    def __init__(self, core):
-        self.functional_visitor = CoreExecutionFunctionalVisitor(core)
-        self.timing_visitor = CoreExecutionTimingVisitor(core.config)
-
-    def _visit_common(self, op):
-        done_event = op.accept(self.functional_visitor)
-        if done_event:
-            # If a done event is returned, the stage will uses it to wait for completion
-            return done_event
-        else:
-            # If no event is returned, the stage will use a timeout to wait for completion
-            time = op.accept(self.timing_visitor)
-            return time
+        # return the done event to the caller
+        # done_event is a timeout event since this operation takes fixed time
+        return self.core.env.timeout(op.accept(self.timing_visitor))
