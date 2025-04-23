@@ -2,11 +2,48 @@
 
 RAMwich is a simulator for heterogeneous RRAM and SRAM CiM architectures.
 
-## Test
+## How to run
 
 ```shell
 export PYTHONPATH="$PWD/src:$PYTHONPATH"
 python run.py --config <config_file> --ops <ops_file> --weight <weight_file>
+```
+
+## Test
+
+To test loading operations and weights:
+
+```shell
+export PYTHONPATH="$PWD/src:$PYTHONPATH"
+python tests/test_load.py --config examples/mlp_l4_mnist/config.yaml --ops examples/mlp_l4_mnist/ops.json --weights examples/mlp_l4_mnist/weights.npz
+```
+
+To test MVMU:
+
+```shell
+export PYTHONPATH="$PWD/src:$PYTHONPATH"
+python tests/test_mvm.py --config examples/mlp_l4_mnist/config.yaml --ops examples/mlp_l4_mnist/ops.json --weights examples/mlp_l4_mnist/weights.npz
+```
+
+To test DRAM controller:
+
+```shell
+export PYTHONPATH="$PWD/src:$PYTHONPATH"
+python -m pytest tests/test_dram_controller.py
+```
+
+To test all core features:
+
+```shell
+export PYTHONPATH="$PWD/src:$PYTHONPATH"
+python tests/test_core_features.py
+```
+
+To test all core and tile features:
+
+```shell
+export PYTHONPATH="$PWD/src:$PYTHONPATH"
+python tests/test_tile_features.py
 ```
 
 ## TODO
@@ -33,7 +70,7 @@ python run.py --config <config_file> --ops <ops_file> --weight <weight_file>
     - [x] implement visitor method for set, copy, mvm and vfu
     - [x] implement and test core and tile components for load and store(dram, dram controller etc.)
     - [x] implement visitor method for load and store
-  - [ ] implement all tile visitor methods (send and receive)
+  - [x] implement all tile visitor methods (send and receive)
   - [ ] test the run time, make sure it is faster than original simulator.
   - [ ] run timing simulation, check with puma that cycles match
   - [ ] run functional simulation, verify that accuracy match
