@@ -46,3 +46,5 @@ python run.py --config <config_file> --ops <ops_file> --weight <weight_file>
 ### misc
 
 - [x] save/load weight in npy
+- [ ] recalculate MVM latency
+- [ ] redesign receive logic
