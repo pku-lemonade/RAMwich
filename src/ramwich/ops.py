@@ -104,8 +104,8 @@ class Send(TileOp):
     width: int  # Number of values to send in each operation (based on noc bus width)
     vec: int  # Total number of send operations needed to complete this vector send
 
-    def accept(self, tile):
-        return tile.execute_send(self)
+    def accept(self, tile, env):
+        return tile.execute_send(env, self)
 
 
 class Recv(TileOp):
@@ -115,15 +115,15 @@ class Recv(TileOp):
     width: int  # Number of values to Receive in each operation (based on noc bus width)
     vec: int  # Total number of receive operations needed to complete this vector receive
 
-    def accept(self, tile):
-        return tile.execute_receive(self)
+    def accept(self, tile, env):
+        return tile.execute_receive(env, self)
 
 
 class Halt(TileOp):
     type: Literal["halt"] = "halt"
 
-    def accept(self, tile):
-        return tile.execute_halt(self)
+    def accept(self, tile, env):
+        return tile.execute_halt(env)
 
 
 # Removed TimingVisitor and ExecutionVisitor classes as they are now in core.py

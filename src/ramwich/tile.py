@@ -1,6 +1,9 @@
 import logging
 from typing import List
 
+import numpy as np
+import simpy
+
 from .blocks.dram_controller import DRAMController
 from .blocks.memory import DRAM
 from .blocks.router import Network, Router
@@ -30,10 +33,14 @@ class Tile:
         self.router = Router(network=network, node_id=self.node_id, tile_id=self.id, config=self.config)
 
         # Initialize cores
-        self.cores = [
-            Core(id=i, dram_controller=self.dram_controller, config=self.config)
-            for i in range(self.config.num_cores_per_tile)
-        ]
+        # for input and output tiles we don't need to create cores
+        if self.node_id == 0 and (self.id == 0 or self.id == 1):
+            self.cores = []
+        else:
+            self.cores = [
+                Core(id=i, dram_controller=self.dram_controller, config=self.config)
+                for i in range(self.config.num_cores_per_tile)
+            ]
 
         # Initialize stats
         self.stats = Stats()
@@ -59,13 +66,12 @@ class Tile:
 
         return aggregated_stats
 
-    def execute_send(self, op: Send):
+    def execute_send(self, env: simpy.Environment, op: Send):
         """Execute a Send operation"""
 
         # First read the data from the source
-        data_size = op.width * op.vec
         read_event = self.dram_controller.submit_read_request(
-            core_id=-1, start=op.mem_addr, batch_size=data_size, num_batches=1
+            core_id=-1, start=op.mem_addr, batch_size=op.width, num_batches=op.vec
         )
         yield read_event
         data = read_event.value
@@ -73,36 +79,63 @@ class Tile:
         # Reshape the data to match the send operation
         data = data.reshape((op.vec, op.width))
 
-    def execute_receive(self, op: Recv):
-        """Execute a Receive operation (placeholder)"""
-        logger.debug(f"Tile {self.id} executing Receive: {op}")
-        self.stats.increment_op_count("receive")
+        for i in range(op.vec):
+            # Add the package to router's send queue
+            yield env.process(self.router.add_send_packet(target=op.target_tile, data=data[i]))
+
+        return True
+
+    def execute_receive(self, env: simpy.Environment, op: Recv):
+        """Execute a Receive operation"""
+
+        # creata a data buffer to store the received data
+        received_data = np.zeros((op.vec, op.width), dtype=np.int32)
+        for i in range(op.vec):
+            # Wait for the data to be available in the router's receive buffer
+            data = yield env.process(self.router.read_packet(source=op.source_tile))
+
+            # Validate the data size matches the expected size
+            if len(data) != op.width:
+                logger.error(f"Tile {self.id}: Data size mismatch for receive operation at time {env.now}")
+                return False
+
+            # Copy the data to the received_data buffer
+            np.copyto(received_data[i], data)
+
+        # Write the received data to the DRAM
+        yield self.dram_controller.submit_write_request(core_id=-1, start=op.mem_addr, data=received_data)
+
+        return True
+
+    def execute_halt(self, env):
+        """Execute a Halt operation"""
+
+        # wait for all cores, router and dram controller to finish
+        if self.core_processes:
+            yield env.all_of(self.core_processes)
+
+        # wait for router to stop
+        yield env.process(self.router.stop_after_all_packets_sent())
+
+        # DRAM controller will be safe to stop since all cores are halted
+        # Also no more send and receive operations will be submitted
+        self.dram_controller.stop()
+
         return True
 
     def run(self, env):
         """Execute operations for this tile and its cores"""
         logger.info(f"Tile {self.id} starting execution at time {env.now}")
 
-        core_processes = [env.process(core.run(env)) for core in self.cores]
+        self.core_processes = [env.process(core.run(env)) for core in self.cores]
         self.dram_controller.run(env)
+        self.router.run(env)
 
         for op in self.operations:
-            exec_time = 1
-            if op.type == "send":
-                exec_time = self.config.noc_config.noc_intra_lat
-            elif op.type == "receive":
-                exec_time = self.config.noc_config.noc_intra_lat
-
-            yield env.timeout(exec_time)
-            success = op.accept(self)
+            success = yield env.process(op.accept(self, env))
             if not success:
                 logger.warning(f"Tile {self.id}: Operation {op} failed at time {env.now}")
             else:
                 logger.debug(f"Tile {self.id}: Operation {op} completed at time {env.now}")
-                self.stats.latency += exec_time
-
-        if core_processes:
-            yield env.all_of(core_processes)
-        self.dram_controller.stop()
 
         logger.info(f"Tile {self.id} finished execution at time {env.now}")
