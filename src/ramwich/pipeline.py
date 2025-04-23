@@ -31,32 +31,18 @@ class Stage:
         while True:
             op = yield self.input_buffer.get()
 
-            if op is None or op.type == "hlt":  # Check for termination signal
-                if self.output_buffer:
-                    # Propagate the termination signal
-                    yield self.output_buffer.put(None)
-                logger.debug(f"Stage {self.name} received termination signal")
+            yield op.accept(self.visitor)
 
+            if self.output_buffer:
+                yield self.output_buffer.put(op)
+
+            if op.type == "hlt":
+                logger.debug(f"Stage {self.name} received termination signal")
                 # Signal completion for this stage
                 if not self.completion_event.triggered:
                     self.completion_event.succeed()
 
                 break  # Exit the process loop
-
-            result = op.accept(self.visitor)
-            if isinstance(result, simpy.Event):
-                # If the result is a simpy event, it marks completion
-                yield result
-            elif isinstance(result, int):
-                # If the result is an integer, it indicates the latency for this stage
-                time = result
-                yield self.env.timeout(time)
-            else:
-                print(f"Stage {self.name} processing operation: {op}")
-                raise ValueError(f"Unexpected result type: {type(result)}")
-
-            if self.output_buffer:
-                yield self.output_buffer.put(op)
 
 
 class StageConfig:

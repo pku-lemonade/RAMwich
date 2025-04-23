@@ -140,8 +140,8 @@ class Core:
 
         # Create pipeline stages
         pipeline_config = [
-            StageConfig("fetch", CoreFetchVisitor(self.config)),
-            StageConfig("decode", CoreDecodeVisitor(self.config)),
+            StageConfig("fetch", CoreFetchVisitor(self)),
+            StageConfig("decode", CoreDecodeVisitor(self)),
             StageConfig("execute", CoreExecutionVisitor(self)),
         ]
 
