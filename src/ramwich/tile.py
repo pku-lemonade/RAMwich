@@ -33,11 +33,7 @@ class Tile:
         self.router = Router(network=parent.network, id=self.id, config=self.config)
 
         # Initialize cores
-        # for input and output tiles we don't need to create cores
-        if self.parent.id == 0 and (self.id == 0 or self.id == 1):
-            self.cores = []
-        else:
-            self.cores = [Core(id=i, parent=self, config=self.config) for i in range(self.config.num_cores_per_tile)]
+        self.cores = [Core(id=i, parent=self, config=self.config) for i in range(self.config.num_cores_per_tile)]
 
         # Initialize stats
         self.stats = Stats()
