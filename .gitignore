@@ -176,3 +176,7 @@ cython_debug/
 
 # Ignore local test files
 local_tests/
+
+# Ignore some big examples
+examples/
+!examples/mlp_l4_mnist/
