@@ -189,6 +189,10 @@ class RAMwich:
         # Load activations if provided
         if activation is not None:
             self.load_activation(activation)
+        else:
+            # Create a dummy activation if not provided
+            dummy_activation = np.zeros(self.config.tile_config.edram_size, dtype=np.int32)
+            self.load_activation(dummy_activation)
 
         # Create and schedule parallel processes for each node
         processes = []
