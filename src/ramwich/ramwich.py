@@ -143,16 +143,15 @@ class RAMwich:
                 return
 
             # Load activation from NPY file
-            if file_path.endswith(".npy"):
-                activation_data = np.load(file_path)
-
-                # Validate the activation data
-                if activation_data.ndim != 1:
-                    logger.error(f"Activation data must be a 1D array, got shape {activation_data.shape}")
+            if not file_path.endswith(".npy"):
+                logger.error(f"Unsupported file format: {file_path}. Only NPY is supported.")
                 return
 
-            else:
-                logger.error(f"Unsupported file format: {file_path}. Only NPY is supported.")
+            activation_data = np.load(file_path)
+
+            # Validate the activation data
+            if activation_data.ndim != 1:
+                logger.error(f"Activation data must be a 1D array, got shape {activation_data.shape}")
                 return
 
         elif isinstance(activation, np.ndarray):
@@ -168,6 +167,9 @@ class RAMwich:
         if length > self.config.tile_config.edram_size:
             logger.error(f"Activation data length {length} exceeds EDRAM size {self.config.tile_config.edram_size}")
             return
+
+        # Convert activation data to fixed-point representation (using int)
+        activation_data = (activation_data * (1 << self.config.data_config.frac_bits)).astype(np.int32)
 
         # Load activation data into the first tile of the first node
         node = self.get_node(0)
@@ -195,12 +197,13 @@ class RAMwich:
 
         # Run simulation until all node processes complete
         if processes:
-            self.env.run(until=simpy.events.AllOf(self.env, processes))
+            # self.env.run(until=simpy.events.AllOf(self.env, processes))
+            self.env.run()
         else:
             logger.warning("No node processes to run. Please check the operations file.")
 
         logger.info(f"Simulation completed at time {self.env.now}")
-        summarize_results(self.nodes)
+        # summarize_results(self.nodes)
 
     def get_stats(self) -> Stats:
         """Get statistics for this Simulator and its components"""
