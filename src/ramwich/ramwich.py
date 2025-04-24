@@ -2,11 +2,12 @@ import json
 import logging
 import os
 import re
-from typing import List
+from typing import List, Union
 
 import numpy as np
 import simpy
 import yaml
+from numpy.typing import NDArray
 
 from .blocks.router import Network
 from .config import Config
@@ -95,7 +96,7 @@ class RAMwich:
             logger.error(f"Weight file {file_path} not found")
             return
 
-        # Load weights from JSON file
+        # Load weights from NPZ file
         if file_path.endswith(".npz"):
             weight_data = np.load(file_path)
 
@@ -130,7 +131,51 @@ class RAMwich:
         else:
             logger.error(f"Unsupported file format: {file_path}. Only NPZ is supported.")
 
-    def run(self, ops_file: str, weights_file: str = None):
+    def load_activation(self, activation: Union[str, NDArray]):
+        """Load a activation to input tile"""
+
+        if isinstance(activation, str):
+            # If activation is a string, treat it as a file path
+            file_path = activation
+
+            if not os.path.exists(file_path):
+                logger.error(f"activation file {file_path} not found")
+                return
+
+            # Load activation from NPY file
+            if file_path.endswith(".npy"):
+                activation_data = np.load(file_path)
+
+                # Validate the activation data
+                if activation_data.ndim != 1:
+                    logger.error(f"Activation data must be a 1D array, got shape {activation_data.shape}")
+                return
+
+            else:
+                logger.error(f"Unsupported file format: {file_path}. Only NPY is supported.")
+                return
+
+        elif isinstance(activation, np.ndarray):
+            # If activation is a numpy array, use it directly
+            activation_data = activation
+
+        else:
+            logger.error(f"Unsupported activation type: {type(activation)}. Must be a file path or numpy array.")
+            return
+
+        # Validate the length of activation datas
+        length = len(activation_data)
+        if length > self.config.tile_config.edram_size:
+            logger.error(f"Activation data length {length} exceeds EDRAM size {self.config.tile_config.edram_size}")
+            return
+
+        # Load activation data into the first tile of the first node
+        node = self.get_node(0)
+        tile = node.get_tile(0)
+        tile.edram.cells[:length] = activation_data
+        tile.dram_controller.valid[:length] = True
+
+    def run(self, ops_file: str, weights_file: str = None, activation: Union[str, NDArray] = None):
         """Run the simulation with operations from the specified file"""
         # Load operations into node/tile/core hierarchy
         self.load_operations(ops_file)
@@ -138,6 +183,10 @@ class RAMwich:
         # Load weights if provided
         if weights_file:
             self.load_weights(weights_file)
+
+        # Load activations if provided
+        if activation:
+            self.load_activation(activation)
 
         # Create and schedule parallel processes for each node
         processes = []
