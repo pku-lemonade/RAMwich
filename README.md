@@ -15,14 +15,14 @@ To test loading operations and weights:
 
 ```shell
 export PYTHONPATH="$PWD/src:$PYTHONPATH"
-python tests/test_load.py --config examples/mlp_l4_mnist/config.yaml --ops examples/mlp_l4_mnist/ops.json --weights examples/mlp_l4_mnist/weights.npz
+python tests/test_load.py
 ```
 
 To test MVMU:
 
 ```shell
 export PYTHONPATH="$PWD/src:$PYTHONPATH"
-python tests/test_mvm.py --config examples/mlp_l4_mnist/config.yaml --ops examples/mlp_l4_mnist/ops.json --weights examples/mlp_l4_mnist/weights.npz
+python tests/test_mvm.py
 ```
 
 To test DRAM controller:
