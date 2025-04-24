@@ -244,14 +244,14 @@ class TileConfig(BaseModel):
     tcu_area: float = Field(default=0.00145, description="Tile control unit area")
 
     # EDRAM lookup tables
-    EDRAM_LAT_DICT: ClassVar[Dict[int, int]] = {8: 2, 64: 2, 128: 2, 2048: 2, 8192: 2, 16384: 2}
+    EDRAM_LAT_DICT: ClassVar[Dict[int, int]] = {8: 50, 64: 50, 128: 50, 2048: 50, 8192: 50, 16384: 50}
     EDRAM_POW_DYN_DICT: ClassVar[Dict[int, float]] = {
-        8: 17.2 / 2,
-        64: 17.2 / 2,
-        128: 25.35 / 2,
-        2048: 25.35 / 2,
-        8192: 25.35 / 2,
-        16384: 25.35 / 2,
+        8: 17.2 / 50,
+        64: 17.2 / 50,
+        128: 25.35 / 50,
+        2048: 25.35 / 50,
+        8192: 25.35 / 50,
+        16384: 25.35 / 50,
     }
     EDRAM_POW_LEAK_DICT: ClassVar[Dict[int, float]] = {
         8: 0.46,
@@ -270,7 +270,8 @@ class TileConfig(BaseModel):
         16384: 0.121,
     }
 
-    edram_size: int = Field(default=8192, description="EDRAM size")
+    edram_size_in_KB: int = Field(default=8192, description="EDRAM size in KB")
+    edram_size: int = Field(default=4194304, description="EDRAM size")
     edram_lat: float = Field(default=None, init=False, description="EDRAM latency")
     edram_pow_dyn: float = Field(default=None, init=False, description="EDRAM dynamic power")
     edram_pow_leak: float = Field(default=None, init=False, description="EDRAM leakage power")
@@ -364,11 +365,11 @@ class TileConfig(BaseModel):
     def __init__(self, **data):
         super().__init__(**data)
 
-        if self.edram_size in self.EDRAM_LAT_DICT:
-            self.edram_lat = self.EDRAM_LAT_DICT[self.edram_size]
-            self.edram_pow_dyn = self.EDRAM_POW_DYN_DICT[self.edram_size]
-            self.edram_pow_leak = self.EDRAM_POW_LEAK_DICT[self.edram_size]
-            self.edram_area = self.EDRAM_AREA_DICT[self.edram_size]
+        if self.edram_size_in_KB in self.EDRAM_LAT_DICT:
+            self.edram_lat = self.EDRAM_LAT_DICT[self.edram_size_in_KB]
+            self.edram_pow_dyn = self.EDRAM_POW_DYN_DICT[self.edram_size_in_KB]
+            self.edram_pow_leak = self.EDRAM_POW_LEAK_DICT[self.edram_size_in_KB]
+            self.edram_area = self.EDRAM_AREA_DICT[self.edram_size_in_KB]
 
         if self.instrnMem_size in self.INSTRN_MEM_LAT_DICT:
             self.instrnMem_lat = self.INSTRN_MEM_LAT_DICT[self.instrnMem_size]
@@ -586,3 +587,5 @@ class Config(BaseModel):
         assert (
             self.data_config.int_bits + self.data_config.frac_bits == self.data_width
         ), "storage config invalid: check if total bits in storage config = int_bits + frac_bits"
+
+        self.tile_config.edram_size = self.tile_config.edram_size_in_KB * 1024 * 8 // self.data_width
