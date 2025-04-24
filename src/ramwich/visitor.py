@@ -116,7 +116,11 @@ class CoreExecutionTimingVisitor(CoreVisitor):
 
     def visit_vfu(self, op):
         """Calculate VFU execution time"""
-        return self.config.core_config.vfu_lat
+        return (
+            self.config.core_config.alu_lat
+            * (op.vec + self.config.core_config.num_alu_per_vfu - 1)
+            // self.config.core_config.num_alu_per_vfu
+        )
 
     def visit_mvm(self, op):
         """Calculate MVM execution time"""
@@ -159,9 +163,16 @@ class CoreExecutionVisitor(CoreVisitor):
             try:
                 # Write to register when data is available
                 data = read_event.value  # Get data from event
-                self.core.write_to_register(op.dest, data)
-                # Signal completion
-                done_event.succeed()
+
+                def complete_write_after_latency():
+                    # Simulate a delay for the write to register
+                    latency = self.core.core_config.dataMem_lat * op.vec
+                    yield self.core.env.timeout(latency)
+
+                    self.core.write_to_register(op.dest, data)
+                    done_event.succeed()
+
+                self.core.env.process(complete_write_after_latency())
             except Exception as e:
                 logger.error(f"Load completion failed: {e}")
                 done_event.fail(e)
@@ -184,12 +195,22 @@ class CoreExecutionVisitor(CoreVisitor):
         data = self.core.read_from_register(op.read, op.width * op.vec)
         data = np.reshape(data, (op.vec, op.width))
 
-        # Send write request to DRAM controller
-        write_event = self.core.dram_controller.submit_write_request(
-            core_id=self.core.id,
-            start=dram_address,
-            data=data,
-        )
+        def send_write_request_after_latency():
+            # Simulate a delay for the read from register
+            latency = self.core.core_config.dataMem_lat * op.vec
+            yield self.core.env.timeout(latency)
+
+            # Send write request to DRAM controller
+            write_event = self.core.dram_controller.submit_write_request(
+                core_id=self.core.id,
+                start=dram_address,
+                data=data,
+            )
+
+            return write_event
+
+        # Schedule the write request after the read completes
+        write_event = self.core.env.process(send_write_request_after_latency())
 
         # Update operation count
         self.core.stats.increment_op_count("store")

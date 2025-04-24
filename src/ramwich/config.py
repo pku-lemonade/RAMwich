@@ -164,9 +164,9 @@ class ADCConfig(BaseModel):
     type: ADCType = Field(default=ADCType.NORMAL, description="ADC type")
 
     # Class constants for lookup tables - using integers as keys instead of strings
-    LAT_DICT: ClassVar[Dict[int, int]] = {1: 1, 2: 1, 4: 1, 8: 1, 16: 1}
-    POW_DYN_DICT: ClassVar[Dict[int, float]] = {1: 1.8, 2: 1.8, 4: 1.8, 8: 1.8, 16: 1.8}
-    POW_LEAK_DICT: ClassVar[Dict[int, float]] = {1: 0.2, 2: 0.2, 4: 0.2, 8: 0.2, 16: 0.2}
+    LAT_DICT: ClassVar[Dict[int, int]] = {1: 13, 2: 25, 4: 50, 8: 100, 16: 200}
+    POW_DYN_DICT: ClassVar[Dict[int, float]] = {1: 0.225, 2: 0.45, 4: 0.9, 8: 1.8, 16: 3.2}
+    POW_LEAK_DICT: ClassVar[Dict[int, float]] = {1: 0.025, 2: 0.05, 4: 0.1, 8: 0.2, 16: 0.4}
     AREA_DICT: ClassVar[Dict[int, float]] = {1: 0.0012, 2: 0.0012, 4: 0.0012, 8: 0.0012, 16: 0.0012}
 
     resolution: int = Field(default=8, description="ADC resolution")
@@ -459,7 +459,8 @@ class CoreConfig(BaseModel):
     instrnMem_area: float = Field(default=None, init=False, description="Core instruction memory area")
 
     # VFU parameters with default fields
-    vfu_lat: int = Field(default=1, description="ALU latency")
+    alu_lat: int = Field(default=1, description="ALU latency")
+    num_alu_per_vfu: int = Field(default=12, description="Number of ALUs per VFU")
     alu_pow_dyn: float = Field(default=2.4 * 32 / 45, description="ALU dynamic power")
     alu_pow_div_dyn: float = Field(default=1.52 * 32 / 45, description="ALU division dynamic power")
     alu_pow_mul_dyn: float = Field(default=0.795 * 32 / 45, description="ALU multiplication dynamic power")
