@@ -207,7 +207,7 @@ class CoreExecutionVisitor(CoreVisitor):
                 data=data,
             )
 
-            return write_event
+            yield write_event
 
         # Schedule the write request after the read completes
         write_event = self.core.env.process(send_write_request_after_latency())
