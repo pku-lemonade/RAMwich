@@ -187,7 +187,7 @@ class RAMwich:
             self.load_weights(weights_file)
 
         # Load activations if provided
-        if activation:
+        if activation is not None:
             self.load_activation(activation)
 
         # Create and schedule parallel processes for each node
