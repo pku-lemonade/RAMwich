@@ -18,11 +18,11 @@ def main():
     args = parser.parse_args()
 
     simulator = RAMwich(config_file=args.config)
-    simulator.run(ops_file=args.ops, weight_file=args.weights, activation=args.activation)
+    simulator.run(ops_file=args.ops, weights_file=args.weights, activation=args.activation)
 
     # Get statistics and pass to visualization
-    stats = simulator.get_stats()
-    summarize_results(stats)
+    # stats = simulator.get_stats()
+    # summarize_results(stats)
 
 
 if __name__ == "__main__":
