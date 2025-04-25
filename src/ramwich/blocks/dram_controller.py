@@ -55,7 +55,7 @@ class DRAMControllerStats(Stats):
     # Universal metrics
     unit_energy_consumption: float = Field(default=0.0, description="Energy consumption for each convertion in pJ")
     leakage_energy_per_cycle: float = Field(default=0.0, description="Leakage energy consumption for 1 cycle in pJ")
-    area = float = Field(default=0.0, description="Area in mm^2")
+    area: float = Field(default=0.0, description="Area in mm^2")
 
     # DRAM controller specific metrics
     read_requests: int = Field(default=0, description="Number of read requests")
