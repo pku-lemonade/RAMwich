@@ -22,6 +22,10 @@ class OutputRegisterArray:
 
         # Initialize stats
         self.stats = MemoryStats()
+        self.stats.memory_type = "Output Register Array"
+        self.stats.unit_energy_consumption = self.mvmu_config.xbar_config.outMem_pow_dyn
+        self.stats.leakage_energy_per_cycle = self.mvmu_config.xbar_config.outMem_pow_leak
+        self.stats.area = self.mvmu_config.xbar_config.outMem_area
 
     def write(self, value: NDArray[np.int32], indices: Optional[NDArray[np.int32]] = None):
         """Write values to specific indices in the register array"""
@@ -35,8 +39,10 @@ class OutputRegisterArray:
             np.copyto(self.registers, value)
 
             # Update stats
-            self.stats.write_operations += self.size
-            self.stats.total_operations += self.size
+            self.stats.write_operations += 1
+            self.stats.write_cells += self.size
+            self.stats.total_operations += 1
+            self.stats.total_operated_cells += self.size
 
         else:
             # Validate indices
@@ -47,16 +53,20 @@ class OutputRegisterArray:
 
             # Update stats
             length = len(indices)
-            self.stats.write_operations += length
-            self.stats.total_operations += length
+            self.stats.write_operations += 1
+            self.stats.write_cells += length
+            self.stats.total_operations += 1
+            self.stats.total_operated_cells += length
 
     def read(self, indices: Optional[NDArray[np.int32]] = None):
         """Read specific indices from the register array"""
         if indices is None:
             # If no indices are provided, read the entire register array
             # Update stats
-            self.stats.read_operations += self.size
-            self.stats.total_operations += self.size
+            self.stats.read_operations += 1
+            self.stats.read_cells += self.size
+            self.stats.total_operations += 1
+            self.stats.total_operated_cells += self.size
 
             return self.registers.copy()
 
@@ -66,8 +76,10 @@ class OutputRegisterArray:
 
         # Update stats
         length = len(indices)
-        self.stats.read_operations += length
-        self.stats.total_operations += length
+        self.stats.read_operations += 1
+        self.stats.read_cells += length
+        self.stats.total_operations += 1
+        self.stats.total_operated_cells += length
 
         return self.registers[indices].copy()
         # Technically, .copy() is not needed.
@@ -78,8 +90,10 @@ class OutputRegisterArray:
         self.registers.fill(0)
 
         # Update stats
-        self.stats.write_operations += self.size
-        self.stats.total_operations += self.size
+        self.stats.write_operations += 1
+        self.stats.write_cells += self.size
+        self.stats.total_operations += 1
+        self.stats.total_operated_cells += self.size
 
     def get_stats(self):
         return self.stats.get_stats()

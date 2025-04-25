@@ -52,6 +52,12 @@ class WriteRequest(Request):
 class DRAMControllerStats(Stats):
     """Statistics for DRAM controller operations"""
 
+    # Universal metrics
+    unit_energy_consumption: float = Field(default=0.0, description="Energy consumption for each convertion in pJ")
+    leakage_energy_per_cycle: float = Field(default=0.0, description="Leakage energy consumption for 1 cycle in pJ")
+    area = float = Field(default=0.0, description="Area in mm^2")
+
+    # DRAM controller specific metrics
     read_requests: int = Field(default=0, description="Number of read requests")
     write_requests: int = Field(default=0, description="Number of write requests")
     total_requests: int = Field(default=0, description="Total number of requests")
@@ -63,9 +69,13 @@ class DRAMControllerStats(Stats):
     def get_stats(self) -> Stats:
         """Convert DRAMControllerStats to general Stats object"""
         stats = Stats()
-        stats.latency = 0.0  # Will be updated through update_execution_time
-        stats.energy = 0.0  # Placeholder for energy consumption
-        stats.area = 0.0  # Placeholder for area usage
+
+        # Map ADC metrics to Stat object
+        stats.dynamic_energy = self.unit_energy_consumption * self.total_requests
+        stats.leakage_energy = self.leakage_energy_per_cycle
+        stats.area = self.area
+
+        stats.increment_component_count("DRAM Controller", self.total_requests)
         return stats
 
 
@@ -89,6 +99,9 @@ class DRAMController:
 
         # Initialize stats
         self.stats = DRAMControllerStats()
+        self.stats.unit_energy_consumption = self.tile_config.edram_ctrl_pow_dyn
+        self.stats.leakage_energy_per_cycle = self.tile_config.edram_ctrl_pow_leak
+        self.stats.area = self.tile_config.edram_ctrl_area
 
     def run(self, env: simpy.Environment):
         """Initialize the DRAM controller with the simulation environment"""
@@ -151,8 +164,8 @@ class DRAMController:
         self.requests.put(request)
 
         # Update stats
-        self.stats.read_requests += 1
-        self.stats.total_requests += 1
+        self.stats.read_requests += num_batches
+        self.stats.total_requests += num_batches
 
         # Return event that the core can yield on
         return done_event
@@ -173,8 +186,8 @@ class DRAMController:
         self.requests.put(request)
 
         # Update stats
-        self.stats.write_requests += 1
-        self.stats.total_requests += 1
+        self.stats.write_requests += request.num_batches
+        self.stats.total_requests += request.num_batches
 
         # Return event that the core can yield on
         return done_event

@@ -11,27 +11,25 @@ from ..stats import Stats
 class DACStats(BaseModel):
     """Statistics tracking for DAC (Digital-to-Analog Converter) components"""
 
-    # Basic metrics
-    conversions: int = Field(default=0, description="Number of D/A conversions performed")
+    # Universal metrics
+    unit_energy_consumption: float = Field(default=0.0, description="Energy consumption for each convertion in pJ")
+    leakage_energy_per_cycle: float = Field(default=0.0, description="Leakage energy consumption for 1 cycle in pJ")
+    area = float = Field(default=0.0, description="Area in mm^2")
 
-    # Performance metrics
+    # DAC specific metrics
+    conversions: int = Field(default=0, description="Number of D/A conversions performed")
     active_cycles: int = Field(default=0, description="Number of active cycles")
-    energy_consumption: float = Field(default=0.0, description="Energy consumption in pJ")
 
     def get_stats(self) -> Stats:
-        """Get DAC-specific statistics"""
+        """Convert DACStats to general Stats object"""
         stats = Stats()
 
         # Map DAC metrics to Stat object
-        stats.latency = float(self.active_cycles)
-        stats.energy = float(self.energy_consumption)
-        stats.area = 0.0  # Set appropriate area value if available
+        stats.dynamic_energy = self.unit_energy_consumption * self.conversions
+        stats.leakage_energy = self.leakage_energy_per_cycle
+        stats.area = self.area
 
-        # Map operation counts
-        stats.operations = self.conversions
-
-        # Set execution time metrics
-        stats.total_execution_time = float(self.active_cycles)
+        stats.increment_component_count("DAC", self.conversions)
 
         return stats
 
@@ -49,6 +47,9 @@ class DACArray:
 
         # Initialize stats
         self.stats = DACStats()
+        self.stats.unit_energy_consumption = self.dac_config.pow_dyn
+        self.stats.leakage_energy_per_cycle = self.dac_config.pow_leak
+        self.stats.area = self.dac_config.area * self.size
 
     def convert(self, digital_value: NDArray[np.int32]):
         """Simulate DAC conversion from digital to analog"""

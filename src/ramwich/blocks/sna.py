@@ -1,8 +1,35 @@
 import numpy as np
 from numpy.typing import NDArray
+from pydantic import BaseModel, Field
 
 from ..config import MVMUConfig
 from ..stats import Stats
+
+
+class SNAStats(BaseModel):
+    """Statistics tracking for SNA (Shift and Add) components"""
+
+    # Universal metrics
+    unit_energy_consumption: float = Field(default=0.0, description="Energy consumption for each operation in pJ")
+    leakage_energy_per_cycle: float = Field(default=0.0, description="Leakage energy consumption for 1 cycle in pJ")
+    area: float = Field(default=0.0, description="Area in mm^2")
+
+    # SNA specific metrics
+    operations: int = Field(default=0, description="Number of operations performed")
+    active_cycles: int = Field(default=0, description="Number of active cycles")
+
+    def get_stats(self) -> Stats:
+        """Convert SNAStats to general Stats object"""
+        stats = Stats()
+
+        # Map SNA metrics to Stat object
+        stats.dynamic_energy = self.unit_energy_consumption * self.operations
+        stats.leakage_energy = self.leakage_energy_per_cycle
+        stats.area = self.area
+
+        stats.increment_component_count("SNA", self.operations)
+
+        return stats
 
 
 class SNAArray:
@@ -16,7 +43,10 @@ class SNAArray:
         self.shift_bits = np.array(self.mvmu_config.stored_bit[:-1])[:, np.newaxis]
 
         # Initialize stats
-        self.stats = Stats()
+        self.stats = SNAStats()
+        self.unit_energy_consumption = self.mvmu_config.sna_pow_dyn
+        self.leakage_energy_per_cycle = self.mvmu_config.sna_pow_leak
+        self.area = self.mvmu_config.sna_area * self.size
 
     def calculate(self, input_data: NDArray[np.int32], current_value: NDArray[np.int32], bits: int):
         """Performs the Shift and Add (SNA) operation on the input data
@@ -55,5 +85,6 @@ class SNAArray:
         result = result << bits
 
         # Update stats
+        self.stats.operations += self.size
 
         return result + current_value

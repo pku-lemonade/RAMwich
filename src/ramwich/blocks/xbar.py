@@ -9,15 +9,25 @@ from ..stats import Stats
 
 
 class XbarStats(BaseModel):
-    operations: int = Field(default=0, description="Total number of operations")
+
+    # Universal metrics
+    unit_energy_consumption: float = Field(default=0.0, description="Energy consumption for each convertion in pJ")
+    leakage_energy_per_cycle: float = Field(default=0.0, description="Leakage energy consumption for 1 cycle in pJ")
+    area = float = Field(default=0.0, description="Area in mm^2")
+
+    # Xbar specific metrics
+    mvm_operations: int = Field(default=0, description="Total number of operations")
 
     def get_stats(self) -> Stats:
         stats = Stats()
-        stats.latency = 0.0
-        stats.energy = 0.0
-        stats.area = 0.0
-        stats.operations = self.operations
-        stats.mvm_operations = self.mvm_operations
+
+        # Map Xbar metrics to Stat object
+        stats.dynamic_energy = self.unit_energy_consumption * self.mvm_operations
+        stats.leakage_energy = self.leakage_energy_per_cycle
+        stats.area = self.area
+
+        stats.increment_component_count("Xbar", self.mvm_operations)
+
         return stats
 
 
@@ -39,6 +49,9 @@ class XbarArray:
 
         # Initialize stats
         self.stats = XbarStats()
+        self.stats.unit_energy_consumption = self.xbar_config.xbar_pow
+        self.stats.leakage_energy_per_cycle = self.xbar_config.xbar_pow_leak
+        self.stats.area = self.xbar_config.xbar_area * self.num_xbar * 2  # 2 for pos and neg xbar
 
     def load_weights(self, weights: NDArray[np.float64]):
         """Load weights into the crossbar"""
@@ -86,7 +99,7 @@ class XbarArray:
             neg_result = np.einsum("ikj,j->ik", self.neg_xbar, input_vector)
 
         # Update the statistics
-        self.stats.operations += self.num_xbar * 2  # Two operations per crossbar (one for pos and one for neg)
+        self.stats.mvm_operations += self.num_xbar * 2  # Two operations per crossbar (one for pos and one for neg)
 
         return pos_result, neg_result
 

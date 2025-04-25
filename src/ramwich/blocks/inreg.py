@@ -23,6 +23,11 @@ class InputRegisterArray:
 
         # Initialize stats
         self.stats = MemoryStats()
+        self.stats.memory_type = "Input Register Array"
+        self.stats.unit_energy_consumption_read = self.mvmu_config.xbar_config.inMem_pow_dyn_read
+        self.stats.unit_energy_consumption_write = self.mvmu_config.xbar_config.inMem_pow_dyn_write
+        self.stats.leakage_energy_per_cycle = self.mvmu_config.xbar_config.inMem_pow_leak
+        self.stats.area = self.mvmu_config.xbar_config.inMem_area
 
     def write(self, value: Union[NDArray[np.int32], int], start: int = 0):
         """Write values to register array"""
@@ -42,8 +47,10 @@ class InputRegisterArray:
         self.registers[start:end] = value
 
         # Update stats
-        self.stats.write_operations += length
-        self.stats.total_operations += length
+        self.stats.write_operations += 1
+        self.stats.write_cells += length
+        self.stats.total_operations += 1
+        self.stats.total_operated_cells += length
 
     def read(self, bits: int):
         """Read the LSBs from register array and then shift the registers to the right by bits"""
@@ -54,8 +61,10 @@ class InputRegisterArray:
         self.registers >>= bits
 
         # Update stats
-        self.stats.total_operations += self.size
-        self.stats.read_operations += self.size
+        self.stats.read_operations += 1
+        self.stats.read_cells += self.size
+        self.stats.total_operations += 1
+        self.stats.total_operated_cells += self.size
 
         return lsb
 
@@ -64,8 +73,10 @@ class InputRegisterArray:
         self.registers.fill(0)
 
         # Update stats
-        self.stats.write_operations += self.size
-        self.stats.total_operations += self.size
+        self.stats.write_operations += 1
+        self.stats.write_cells += self.size
+        self.stats.total_operations += 1
+        self.stats.total_operated_cells += self.size
 
     def read_all(self):
         """Read all the registers

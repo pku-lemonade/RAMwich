@@ -11,26 +11,27 @@ from ..stats import Stats
 class ADCStats(BaseModel):
     """Statistics tracking for ADC (Analog-to-Digital Converter) components"""
 
-    # Basic metrics
+    # Universal metrics
+    unit_energy_consumption: float = Field(default=0.0, description="Energy consumption for each convertion in pJ")
+    leakage_energy_per_cycle: float = Field(default=0.0, description="Leakage energy consumption for 1 cycle in pJ")
+    area = float = Field(default=0.0, description="Area in mm^2")
+
+    # ADC specific metrics
     conversions: int = Field(default=0, description="Number of A/D conversions performed")
     overflow_times: int = Field(default=0, description="Number of overflows that happens when converting")
     conversion_errors: float = Field(default=0.0, description="Accumulated conversion error")
-
-    # Performance metrics
     active_cycles: int = Field(default=0, description="Number of active cycles")
-    energy_consumption: float = Field(default=0.0, description="Energy consumption in pJ")
 
-    def get_stats(self, adc_id: Optional[int] = None) -> Stats:
-        """Get ADC-specific statistics"""
+    def get_stats(self) -> Stats:
+        """Convert ADCStats to general Stats object"""
         stats = Stats()
 
         # Map ADC metrics to Stat object
-        stats.latency = float(self.active_cycles)
-        stats.energy = float(self.energy_consumption)
-        stats.area = 0.0  # Set appropriate area value if available
+        stats.dynamic_energy = self.unit_energy_consumption * self.conversions
+        stats.leakage_energy = self.leakage_energy_per_cycle
+        stats.area = self.area
 
-        # Map operation counts
-        stats.operations = self.conversions
+        stats.increment_component_count("ADC", self.conversions)
 
         return stats
 
@@ -73,6 +74,9 @@ class ADCArray:
 
         # Initialize stats
         self.stats = ADCStats()
+        self.stats.unit_energy_consumption = self.adc_config.pow_dyn
+        self.stats.leakage_energy_per_cycle = self.adc_config.pow_leak
+        self.stats.area = self.adc_config.area * self.size
 
     def convert(self, analog_value_pos: NDArray[np.float64], analog_value_neg: NDArray[np.float64]):
         """Simulate ADC conversion from analog to digital"""
@@ -120,4 +124,4 @@ class ADCArray:
 
     def get_stats(self) -> Stats:
         """Return detailed statistics about this ADC"""
-        return self.stats.get_stats(self.adc_id)
+        return self.stats.get_stats()
