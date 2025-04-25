@@ -30,10 +30,6 @@ class Node:
         """Get a specific tile by ID"""
         return self.tiles[tile_id]
 
-    def get_stats(self) -> Stats:
-        """Get statistics for this Node and optionally its components"""
-        return self.stats.get_stats(components=self.tiles)
-
     def run(self, env):
         """Execute operations for all tiles in this node"""
         logger.info(f"Starting operations for node {self.id}")
@@ -47,3 +43,15 @@ class Node:
         yield env.all_of(processes)
 
         logger.info(f"Completed all operations for node {self.id}")
+
+    def get_stats(self) -> Stats:
+        """Get statistics for this Node and its components"""
+        # first add pseudo stats
+        self.stats.area = (
+            self.config.noc_config.noc_inter_area
+            + self.config.noc_config.noc_intra_area * self.config.num_tiles_per_node / self.config.noc_config.num_port
+        )
+        self.stats.leakage_energy = (
+            self.config.noc_config.noc_intra_pow_leak * self.config.num_tiles_per_node / self.config.noc_config.num_port
+        )
+        return self.stats.get_stats(components=self.tiles)

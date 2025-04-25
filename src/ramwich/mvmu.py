@@ -165,4 +165,17 @@ class MVMU:
         return self.output_register_array.read(indices) >> self.data_config.frac_bits
 
     def get_stats(self) -> Stats:
-        return self.stats.get_stats(self.xbars + self.adcs + self.dacs)
+        return self.stats.get_stats(
+            [
+                self.input_register_array,
+                self.dac_array,
+                self.rram_xbar_array,
+                self.snh_array_pos,
+                self.snh_array_neg,
+                self.mux_array_pos,
+                self.mux_array_neg,
+                self.adc_array,
+                self.output_register_array,
+                self.sna_array,
+            ]
+        )

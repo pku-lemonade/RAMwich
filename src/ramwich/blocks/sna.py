@@ -46,7 +46,7 @@ class SNAArray:
         self.stats = SNAStats()
         self.unit_energy_consumption = self.mvmu_config.sna_pow_dyn
         self.leakage_energy_per_cycle = self.mvmu_config.sna_pow_leak
-        self.area = self.mvmu_config.sna_area * self.size
+        self.area = self.mvmu_config.sna_area * self.mvmu_config.num_rram_xbar_per_mvmu
 
     def calculate(self, input_data: NDArray[np.int32], current_value: NDArray[np.int32], bits: int):
         """Performs the Shift and Add (SNA) operation on the input data
@@ -88,3 +88,7 @@ class SNAArray:
         self.stats.operations += self.size
 
         return result + current_value
+
+    def get_stats(self) -> Stats:
+        """Convert SNAStats to general Stats object"""
+        return self.stats.get_stats()

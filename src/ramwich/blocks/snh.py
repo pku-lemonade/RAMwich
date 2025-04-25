@@ -46,10 +46,14 @@ class SNHArray:
         # Initialize stats
         self.stats = SNHStats()
         self.stats.unit_energy_consumption = self.mvmu_config.snh_pow_dyn
-        self.stats.leakage_energy_per_cycle = self.mvmu_config.snh_pow_leak
+        self.stats.leakage_energy_per_cycle = self.mvmu_config.snh_pow_leak * self.size
         self.stats.area = self.mvmu_config.snh_area * self.size
 
     def sample(self):
         """Sample the input data"""
         # Update the stats
         self.stats.samples += self.size
+
+    def get_stats(self) -> Stats:
+        """Get the statistics for this SNH array"""
+        return self.stats.get_stats()

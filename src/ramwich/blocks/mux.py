@@ -47,7 +47,7 @@ class MuxArray:
         self.size = np.prod(self.output_shape)
 
         # Initialize stats
-        self.stats = Stats()
+        self.stats = MUXStats()
         self.stats.unit_energy_consumption = self.mvmu_config.mux_pow_dyn
         self.stats.leakage_energy_per_cycle = self.mvmu_config.mux_pow_leak
         self.stats.area = self.mvmu_config.mux_area * self.size
@@ -68,3 +68,7 @@ class MuxArray:
         self.stats.selections += self.size
 
         return reshaped_input[:, :, index]
+
+    def get_stats(self) -> Stats:
+        """Get the statistics for this MUX array"""
+        return self.stats.get_stats()

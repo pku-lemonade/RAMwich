@@ -38,26 +38,16 @@ class Tile:
         # Initialize stats
         self.stats = Stats()
 
+        # Initialize simulation timing attributes
+        self.start_time = 0
+        self.active_cycles = 0
+
     def __repr__(self):
         return f"Tile({self.id}, cores={len(self.cores)})"
 
     def get_core(self, core_id):
         """Get a specific core by ID"""
         return self.cores[core_id]
-
-    def get_stats(self) -> Stats:
-        """Get statistics for this Tile and optionally its components"""
-        aggregated_stats = self.stats.copy(deep=True)
-
-        for core in self.cores:
-            component_stats = core.get_stats()
-            aggregated_stats.latency += component_stats.latency
-            aggregated_stats.energy += component_stats.energy
-            aggregated_stats.area += component_stats.area
-            for op_type, count in component_stats.op_counts.items():
-                aggregated_stats.increment_op_count(op_type, count)
-
-        return aggregated_stats
 
     def execute_send(self, op: Send):
         """Execute a Send operation"""
@@ -120,6 +110,8 @@ class Tile:
         """Execute operations for this tile and its cores"""
         logger.info(f"Tile {self.id} starting execution at time {env.now}")
 
+        self.start_time = env.now
+
         self.env = env
 
         self.core_processes = [env.process(core.run(env)) for core in self.cores]
@@ -133,4 +125,22 @@ class Tile:
             else:
                 logger.debug(f"Tile {self.id}: Operation {op} completed at time {env.now}")
 
+        self.active_cycles = env.now - self.start_time
+
         logger.info(f"Tile {self.id} finished execution at time {env.now}")
+
+    def get_stats(self) -> Stats:
+        """Get statistics for this Tile and its components"""
+        # first add pseudo stats
+        self.stats.leakage_energy = self.tile_config.instrnMem_pow_leak
+        self.stats.dynamic_energy = (
+            self.tile_config.instrnMem_pow_dyn * len(self.operations) + self.tile_config.tcu_pow * self.active_cycles
+        )
+        self.stats.area = self.tile_config.instrnMem_area + self.tile_config.tcu_area
+
+        print(f"Tile {self.id} cycles: {self.active_cycles}")
+
+        # then add stats from all components
+        if self.id in [0, 1]:
+            return self.stats.get_stats([self.router, self.dram_controller, self.edram])
+        return self.stats.get_stats(self.cores + [self.router, self.dram_controller, self.edram])

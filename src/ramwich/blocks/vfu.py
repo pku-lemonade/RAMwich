@@ -107,7 +107,7 @@ class VFU:
         # Determine operation type for statistics
         if opcode in ["mul", "div"]:
             operation_type = opcode
-        elif opcode in ["relu", "sig", "tanh"]:
+        elif opcode in ["sig", "tanh"]:
             operation_type = "act"
         else:
             operation_type = "other"

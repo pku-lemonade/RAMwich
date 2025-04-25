@@ -75,7 +75,7 @@ class ADCArray:
         # Initialize stats
         self.stats = ADCStats()
         self.stats.unit_energy_consumption = self.adc_config.pow_dyn
-        self.stats.leakage_energy_per_cycle = self.adc_config.pow_leak
+        self.stats.leakage_energy_per_cycle = self.adc_config.pow_leak * self.size
         self.stats.area = self.adc_config.area * self.size
 
     def convert(self, analog_value_pos: NDArray[np.float64], analog_value_neg: NDArray[np.float64]):
@@ -114,7 +114,6 @@ class ADCArray:
         self.stats.overflow_times += overflow_count
         self.stats.conversion_errors += total_error
         self.stats.active_cycles += self.adc_config.lat
-        self.stats.energy_consumption += self.adc_config.pow_dyn * self.size
 
         return int_values
 

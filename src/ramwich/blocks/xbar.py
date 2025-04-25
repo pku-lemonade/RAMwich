@@ -50,7 +50,7 @@ class XbarArray:
         # Initialize stats
         self.stats = XbarStats()
         self.stats.unit_energy_consumption = self.xbar_config.xbar_pow
-        self.stats.leakage_energy_per_cycle = self.xbar_config.xbar_pow_leak
+        self.stats.leakage_energy_per_cycle = self.xbar_config.xbar_pow_leak * self.num_xbar * 2
         self.stats.area = self.xbar_config.xbar_area * self.num_xbar * 2  # 2 for pos and neg xbar
 
     def load_weights(self, weights: NDArray[np.float64]):

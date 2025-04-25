@@ -33,20 +33,28 @@ class MemoryStats(BaseModel):
         stats = Stats()
 
         # Map ADC metrics to Stat object
-        if self.memory_type == "SRAM":
+        if self.memory_type in ["SRAM", "Output Register Array"]:
             stats.dynamic_energy = (
                 self.unit_energy_consumption_read * self.read_cells
                 + self.unit_energy_consumption_write * self.write_cells
             )
-        elif self.memory_type in ["DRAM", "Input Register Array", "Output Register Array"]:
+            stats.increment_component_count(self.memory_type, self.total_operated_cells)
+        elif self.memory_type == "DRAM":
             stats.dynamic_energy = (
                 self.unit_energy_consumption_read * self.read_operations
                 + self.unit_energy_consumption_write * self.write_operations
             )
+            stats.increment_component_count(self.memory_type, self.total_operations)
+        elif self.memory_type == "Input Register Array":
+            stats.dynamic_energy = (
+                self.unit_energy_consumption_read * self.read_operations
+                + self.unit_energy_consumption_write * self.write_cells
+            )
+            stats.increment_component_count(self.memory_type + " read", self.read_operations)
+            stats.increment_component_count(self.memory_type + " write", self.write_cells)
         stats.leakage_energy = self.leakage_energy_per_cycle
         stats.area = self.area
 
-        stats.increment_component_count(self.memory_type, self.conversions)
         return stats
 
 
@@ -116,7 +124,7 @@ class SRAM(Memory):
         super().__init__(size)
 
         # Initialize stats
-        self.stats.Memory_type = "SRAM"
+        self.stats.memory_type = "SRAM"
         self.stats.unit_energy_consumption_read = self.core_config.dataMem_pow_dyn
         self.stats.unit_energy_consumption_write = self.core_config.dataMem_pow_dyn
         self.stats.leakage_energy_per_cycle = self.core_config.dataMem_pow_leak
@@ -132,7 +140,7 @@ class DRAM(Memory):
         super().__init__(size)
 
         # Initialize stats
-        self.stats.Memory_type = "DRAM"
+        self.stats.memory_type = "DRAM"
         self.stats.unit_energy_consumption_read = self.tile_config.edram_pow_dyn
         self.stats.unit_energy_consumption_write = self.tile_config.edram_pow_dyn
         self.stats.leakage_energy_per_cycle = self.tile_config.edram_pow_leak
