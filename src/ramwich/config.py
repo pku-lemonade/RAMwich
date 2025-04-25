@@ -315,13 +315,13 @@ class TileConfig(BaseModel):
         256: 0.00056,
         512: 0.00108,
         1024: 0.00192,
-        2048: 0.00392,
-        4096: 1,
-        8192: 1,
-        16384: 1,
-        32768: 1,
-        65536: 1,
-        131072: 1,
+        2048: 0.0041,
+        4096: 0.0041,
+        8192: 0.0041,
+        16384: 0.0041,
+        32768: 0.0041,
+        65536: 0.0041,
+        131072: 0.0041,
     }
 
     instrnMem_size: int = Field(default=131072, description="Tile instruction memory size")
@@ -372,7 +372,7 @@ class TileConfig(BaseModel):
             self.instrnMem_lat = self.INSTRN_MEM_LAT_DICT[self.instrnMem_size]
             self.instrnMem_pow_dyn = self.INSTRN_MEM_POW_DYN_DICT[self.instrnMem_size]
             self.instrnMem_pow_leak = self.INSTRN_MEM_POW_LEAK_DICT[self.instrnMem_size]
-            self.instrnMem_area = self.INSTRN_MEM_AREA_DICT[self.instrnMem_size]
+            self.instrnMem_area = self.INSTRN_MEM_AREA_DICT[self.instrnMem_size] * math.sqrt(8)  # Aligned with PUMA
 
 
 class CoreConfig(BaseModel):
@@ -391,7 +391,7 @@ class CoreConfig(BaseModel):
         512: 0.00108,
         1024: 0.00192,
         2048: 0.00392,
-        4096: 0.008,
+        4096: 0.00392,  # Aligned with PUMA
     }
 
     dataMem_size: int = Field(default=4096, description="Data memory size")
@@ -441,13 +441,13 @@ class CoreConfig(BaseModel):
         256: 0.00056,
         512: 0.00108,
         1024: 0.00192,
-        2048: 0.00392,
-        4096: 1,
-        8192: 1,
-        16384: 1,
-        32768: 1,
-        65536: 1,
-        131072: 1,
+        2048: 0.0041,
+        4096: 0.0041,
+        8192: 0.0041,
+        16384: 0.0041,
+        32768: 0.0041,
+        65536: 0.0041,
+        131072: 0.0041,
     }
 
     instrnMem_size: int = Field(default=131072, description="Core instruction memory size")
@@ -483,7 +483,7 @@ class CoreConfig(BaseModel):
             self.instrnMem_lat = self.INSTRN_MEM_LAT_DICT[self.instrnMem_size]
             self.instrnMem_pow_dyn = self.INSTRN_MEM_POW_DYN_DICT[self.instrnMem_size]
             self.instrnMem_pow_leak = self.INSTRN_MEM_POW_LEAK_DICT[self.instrnMem_size]
-            self.instrnMem_area = self.INSTRN_MEM_AREA_DICT[self.instrnMem_size]
+            self.instrnMem_area = self.INSTRN_MEM_AREA_DICT[self.instrnMem_size] * math.sqrt(8)  # Aligned with PUMA
 
 
 class MVMUConfig(BaseModel):
