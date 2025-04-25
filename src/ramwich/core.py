@@ -47,6 +47,10 @@ class Core:
         # Initialize stats
         self.stats = Stats()
 
+        # Initialize simulation timing attributes
+        self.start_time = 0
+        self.active_cycles = 0
+
     def __repr__(self) -> str:
         return f"Core({self.id}, mvmus={len(self.mvmus)})"
 
@@ -58,10 +62,6 @@ class Core:
             raise IndexError(f"MVMU ID {mvmu_id} out of range")
 
         return self.mvmus[mvmu_id]
-
-    def get_stats(self) -> Stats:
-        """Get statistics for this Core by aggregating from all components"""
-        return self.stats.get_stats(self.mvmus + [self.dram, self.sram])
 
     def _overlaps_output_registers(self, start: int, end: int) -> bool:
         """Check if address range overlaps with MVMU output registers"""
@@ -138,6 +138,8 @@ class Core:
 
         logger.info(f"Core {self.id} starting execution at time {env.now}")
 
+        self.start_time = env.now
+
         # Create pipeline stages
         pipeline_config = [
             StageConfig("fetch", CoreFetchVisitor(self)),
@@ -154,4 +156,18 @@ class Core:
 
         yield pipeline.complete()
 
+        self.actice_cycles = env.now - self.start_time
+
         logger.info(f"Core {self.id} finished execution at time {env.now}")
+
+    def get_stats(self) -> Stats:
+        """Get statistics for this Core by aggregating from all components"""
+        # first add pseudo stats
+        self.stats.leakage_energy = self.core_config.instrnMem_pow_leak
+        self.stats.dynamic_energy = (
+            self.core_config.instrnMem_pow_dyn * len(self.operations) + self.core_config.ccu_pow * self.active_cycles
+        )
+        self.stats.area = self.core_config.instrnMem_area + self.core_config.ccu_area
+
+        # then add stats from all components
+        return self.stats.get_stats([self.vfu, self.cache] + self.mvmus)

@@ -48,7 +48,7 @@ class DACArray:
         # Initialize stats
         self.stats = DACStats()
         self.stats.unit_energy_consumption = self.dac_config.pow_dyn
-        self.stats.leakage_energy_per_cycle = self.dac_config.pow_leak
+        self.stats.leakage_energy_per_cycle = self.dac_config.pow_leak * self.size
         self.stats.area = self.dac_config.area * self.size
 
     def convert(self, digital_value: NDArray[np.int32]):
@@ -69,7 +69,6 @@ class DACArray:
         # Update stats
         self.stats.conversions += self.size
         self.stats.active_cycles += self.dac_config.lat
-        self.stats.energy_consumption += self.dac_config.pow_dyn * self.size
 
         return analog_value
 
@@ -79,4 +78,4 @@ class DACArray:
 
     def get_stats(self) -> Stats:
         """Return detailed statistics about this DAC"""
-        return self.stats.get_stats(self.dac_id)
+        return self.stats.get_stats()

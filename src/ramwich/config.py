@@ -146,6 +146,9 @@ class XBARConfig(BaseModel):
             self.outMem_pow_leak = self.OUTMEM_POW_LEAK_DICT[self.xbar_size]
             self.outMem_area = self.OUTMEM_AREA_DICT[self.xbar_size]
 
+            # Match PUMA
+            self.xbar_pow = self.xbar_ip_lat * self.xbar_ip_pow
+
 
 class ADCType(str, Enum):
     NORMAL = "normal"
@@ -464,6 +467,7 @@ class CoreConfig(BaseModel):
     alu_pow_others_dyn: float = Field(default=0.373 * 32 / 45, description="ALU other operations dynamic power")
     alu_pow_leak: float = Field(default=0.27 * 32 / 45, description="ALU leakage power")
     alu_area: float = Field(default=0.00567 * 32 / 45, description="ALU area")
+    act_area: float = Field(default=0.0003, description="Activation unit area")
 
     def __init__(self, **data):
         super().__init__(**data)

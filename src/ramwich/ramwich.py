@@ -180,6 +180,9 @@ class RAMwich:
     def run(self, ops_file: str, weights_file: str = None, activation: Union[str, NDArray] = None):
         """Run the simulation with operations from the specified file"""
         # Load operations into node/tile/core hierarchy
+
+        start_time = self.env.now
+
         self.load_operations(ops_file)
 
         # Load weights if provided
@@ -201,10 +204,16 @@ class RAMwich:
 
         # Run simulation until all node processes complete
         if processes:
-            # self.env.run(until=simpy.events.AllOf(self.env, processes))
             self.env.run()
         else:
             logger.warning("No node processes to run. Please check the operations file.")
+
+        active_cycles = self.env.now - start_time
+
+        stats = self.get_stats()
+        stats.leakage_energy *= active_cycles
+
+        print(stats)
 
         logger.info(f"Simulation completed at time {self.env.now}")
         # summarize_results(self.nodes)

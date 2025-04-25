@@ -23,7 +23,8 @@ class OutputRegisterArray:
         # Initialize stats
         self.stats = MemoryStats()
         self.stats.memory_type = "Output Register Array"
-        self.stats.unit_energy_consumption = self.mvmu_config.xbar_config.outMem_pow_dyn
+        self.stats.unit_energy_consumption_read = self.mvmu_config.xbar_config.outMem_pow_dyn
+        self.stats.unit_energy_consumption_write = self.mvmu_config.xbar_config.outMem_pow_dyn
         self.stats.leakage_energy_per_cycle = self.mvmu_config.xbar_config.outMem_pow_leak
         self.stats.area = self.mvmu_config.xbar_config.outMem_area
 
