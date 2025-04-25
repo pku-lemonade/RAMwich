@@ -213,7 +213,7 @@ class RAMwich:
         stats = self.get_stats()
         stats.leakage_energy *= active_cycles
 
-        print(stats)
+        # stats.print()
 
         logger.info(f"Simulation completed at time {self.env.now}")
         # summarize_results(self.nodes)

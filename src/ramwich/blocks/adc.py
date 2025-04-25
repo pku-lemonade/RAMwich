@@ -27,11 +27,10 @@ class ADCStats(BaseModel):
         stats = Stats()
 
         # Map ADC metrics to Stat object
-        stats.dynamic_energy = self.unit_energy_consumption * self.conversions
-        stats.leakage_energy = self.leakage_energy_per_cycle
-        stats.area = self.area
-
-        stats.increment_component_count("ADC", self.conversions)
+        stats.increment_component_activation("ADC", self.conversions)
+        stats.increment_component_dynamic_energy("ADC", self.unit_energy_consumption * self.conversions)
+        stats.increment_component_leakage_energy("ADC", self.leakage_energy_per_cycle)
+        stats.increment_component_area("ADC", self.area)
 
         return stats
 

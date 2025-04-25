@@ -22,11 +22,10 @@ class MUXStats(BaseModel):
         stats = Stats()
 
         # Map ADC metrics to Stat object
-        stats.dynamic_energy = self.unit_energy_consumption * self.selections
-        stats.leakage_energy = self.leakage_energy_per_cycle
-        stats.area = self.area
-
-        stats.increment_component_count("MUX", self.selections)
+        stats.increment_component_activation("MUX", self.selections)
+        stats.increment_component_dynamic_energy("MUX", self.unit_energy_consumption * self.selections)
+        stats.increment_component_leakage_energy("MUX", self.leakage_energy_per_cycle)
+        stats.increment_component_area("MUX", self.area)
 
         return stats
 

@@ -162,12 +162,22 @@ class Core:
 
     def get_stats(self) -> Stats:
         """Get statistics for this Core by aggregating from all components"""
-        # first add pseudo stats
-        self.stats.leakage_energy = self.core_config.instrnMem_pow_leak
-        self.stats.dynamic_energy = (
-            self.core_config.instrnMem_pow_dyn * len(self.operations) + self.core_config.ccu_pow * self.active_cycles
+        # first add pseudo components stats
+        # Core Control Unit
+        self.stats.increment_component_activation("Core Control Unit", self.active_cycles)
+        self.stats.increment_component_dynamic_energy(
+            "Core Control Unit", self.active_cycles * self.core_config.ccu_pow
         )
-        self.stats.area = self.core_config.instrnMem_area + self.core_config.ccu_area
+        # self.stats.increment_component_leakage_energy("Core Control Unit", self.core_config.ccu_pow_leak)
+        self.stats.increment_component_area("Core Control Unit", self.core_config.ccu_area)
+
+        # Tile instruction memory
+        self.stats.increment_component_activation("Core instruction memory", len(self.operations))
+        self.stats.increment_component_dynamic_energy(
+            "Core instruction memory", len(self.operations) * self.core_config.instrnMem_pow_dyn
+        )
+        self.stats.increment_component_leakage_energy("Core instruction memory", self.core_config.instrnMem_pow_leak)
+        self.stats.increment_component_area("Core instruction memory", self.core_config.instrnMem_area)
 
         # then add stats from all components
         return self.stats.get_stats([self.vfu, self.cache] + self.mvmus)
