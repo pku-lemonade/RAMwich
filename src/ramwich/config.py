@@ -93,22 +93,17 @@ class XBARConfig(BaseModel):
 
     xbar_lat: float = Field(default=None, init=False, description="Crossbar latency")
     xbar_pow: float = Field(default=None, init=False, description="Crossbar power")
+    xbar_pow_leak: float = Field(default=0, description="Crossbar leakage power")
     xbar_area: float = Field(default=None, init=False, description="Crossbar area")
 
     # XBAR out memory lookup tables
     OUTMEM_LAT_DICT: ClassVar[Dict[int, int]] = {32: 1, 64: 1, 128: 1, 256: 1}
-    OUTMEM_POW_DYN_READ_DICT: ClassVar[Dict[int, int]] = {32: 0.3, 64: 0.7, 128: 1.7, 256: 4.7}
-    OUTMEM_POW_DYN_WRITE_DICT: ClassVar[Dict[int, int]] = {32: 0.1, 64: 0.1, 128: 0.16, 256: 0.2}
+    OUTMEM_POW_DYN_DICT: ClassVar[Dict[int, int]] = {32: 0.1, 64: 0.1, 128: 0.16, 256: 0.2}
     OUTMEM_POW_LEAK_DICT: ClassVar[Dict[int, int]] = {32: 0.009, 64: 0.02, 128: 0.04, 256: 0.075}
     OUTMEM_AREA_DICT: ClassVar[Dict[int, int]] = {32: 0.00015, 64: 0.00033, 128: 0.00078, 256: 0.0019}
 
     outMem_lat: float = Field(default=None, init=False, description="Crossbar output memory latency")
-    outMem_pow_dyn_read: float = Field(
-        default=None, init=False, description="Crossbar output memory dynamic read power"
-    )
-    outMem_pow_dyn_write: float = Field(
-        default=None, init=False, description="Crossbar output memory dynamic write power"
-    )
+    outMem_pow_dyn: float = Field(default=None, init=False, description="Crossbar output memory dynamic write power")
     outMem_pow_leak: float = Field(default=None, init=False, description="Crossbar output memory leakage power")
     outMem_area: float = Field(default=None, init=False, description="Crossbar output memory area")
 
@@ -147,8 +142,7 @@ class XBARConfig(BaseModel):
             self.inMem_pow_leak = self.INMEM_POW_LEAK_DICT[self.xbar_size]
             self.inMem_area = self.INMEM_AREA_DICT[self.xbar_size]
             self.outMem_lat = self.OUTMEM_LAT_DICT[self.xbar_size]
-            self.outMem_pow_dyn_read = self.OUTMEM_POW_DYN_READ_DICT[self.xbar_size]
-            self.outMem_pow_dyn_write = self.OUTMEM_POW_DYN_WRITE_DICT[self.xbar_size]
+            self.outMem_pow_dyn = self.OUTMEM_POW_DYN_DICT[self.xbar_size]
             self.outMem_pow_leak = self.OUTMEM_POW_LEAK_DICT[self.xbar_size]
             self.outMem_area = self.OUTMEM_AREA_DICT[self.xbar_size]
 
@@ -469,7 +463,7 @@ class CoreConfig(BaseModel):
     act_pow_dyn: float = Field(default=0.26 - 0.026, description="Activation unit dynamic power")
     alu_pow_others_dyn: float = Field(default=0.373 * 32 / 45, description="ALU other operations dynamic power")
     alu_pow_leak: float = Field(default=0.27 * 32 / 45, description="ALU leakage power")
-    alu_area: float = Field(default=0.00567 * 32 / 45, description="ALU area")
+    vfu_area: float = Field(default=0.00567 * 32 / 45, description="ALU area")
 
     def __init__(self, **data):
         super().__init__(**data)

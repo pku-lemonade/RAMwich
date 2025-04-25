@@ -10,7 +10,23 @@ from ..stats import Stats
 class RouterStats(BaseModel):
     """Statistics for DRAM operations"""
 
+    # Universal metrics
+    unit_energy_consumption_receive: float = Field(
+        default=0.0, description="Energy consumption for each packet received in pJ"
+    )
+    unit_energy_consumption_send_inter: float = Field(
+        default=0.0, description="Energy consumption for each packet sent inter_node in pJ"
+    )
+    unit_energy_consumption_send_intra: float = Field(
+        default=0.0, description="Energy consumption for each packet sent intra_node in pJ"
+    )
+    leakage_energy_per_cycle: float = Field(default=0.0, description="Leakage energy consumption for 1 cycle in pJ")
+    area = float = Field(default=0.0, description="Area in mm^2")
+
+    # Router specific metrics
     packets_created: int = Field(default=0, description="Number of packets created")
+    packets_sent_internode: int = Field(default=0, description="Number of packets sent to other nodes")
+    packets_sent_intranode: int = Field(default=0, description="Number of packets sent to the same node")
     packets_sent: int = Field(default=0, description="Number of packets sent")
     packets_received: int = Field(default=0, description="Number of packets received")
     packets_read: int = Field(default=0, description="Number of packets read by receive operation")
@@ -18,9 +34,19 @@ class RouterStats(BaseModel):
     def get_stats(self) -> Stats:
         """Convert MemoryStats to general Stats object"""
         stats = Stats()
-        stats.latency = 0.0  # Will be updated through update_execution_timeS
-        stats.energy = 0.0  # Placeholder for energy consumption
-        stats.area = 0.0  # Placeholder for area usage
+
+        stats.dynamic_energy = (
+            self.unit_energy_consumption_receive * self.packets_received
+            + self.unit_energy_consumption_send_inter * self.packets_sent_internode
+            + self.unit_energy_consumption_send_intra * self.packets_sent_intranode
+        )
+        stats.leakage_energy = self.leakage_energy_per_cycle
+        stats.area = self.area
+
+        stats.increment_component_count("Router send internode", self.packets_sent_internode)
+        stats.increment_component_count("Router send intranode", self.packets_sent_intranode)
+        stats.increment_component_count("Router receive", self.packets_received)
+
         return stats
 
 
@@ -49,6 +75,11 @@ class Router:
 
         # Initialize stats
         self.stats = RouterStats()
+        self.stats.unit_energy_consumption_receive = self.config.tile_config.receive_buffer_pow_dyn
+        self.stats.unit_energy_consumption_send_inter = self.config.noc_config.noc_inter_pow_dyn
+        self.stats.unit_energy_consumption_send_intra = self.config.noc_config.noc_intra_pow_dyn
+        self.stats.leakage_energy_per_cycle = self.config.tile_config.receive_buffer_pow_leak
+        self.stats.area = self.config.tile_config.receive_buffer_area
 
     def run(self, env: simpy.Environment):
         """Run the router simulation"""
@@ -118,10 +149,11 @@ class Router:
             or source // self.config.num_tiles_per_node != target // self.config.num_tiles_per_node
         ):
             # Inter-node communication
-            return self.config.noc_config.noc_intra_lat + self.config.noc_config.noc_inter_lat
+            # Also return a flag indicating that this is inter-node communication
+            return self.config.noc_config.noc_intra_lat + self.config.noc_config.noc_inter_lat, True
         else:
             # Intra-node communication
-            return self.config.noc_config.noc_intra_lat
+            return self.config.noc_config.noc_intra_lat, False
 
     def add_send_packet(self, target: int, data: NDArray[np.int32]):
         """Send a packet to the router"""
@@ -146,7 +178,8 @@ class Router:
                 target_router = self.network.get_router(packet[1])  # packet: tuple = (source, target, data)
 
                 # Simulate the time taken to send the packet
-                yield self.env.timeout(self._get_latency(packet[0], packet[1]))
+                latency, is_inter_node = self._get_latency(packet[0], packet[1])
+                yield self.env.timeout(latency)
 
                 # Send the packet to the target router
                 yield self.env.process(target_router.receive_packet(packet))
@@ -156,6 +189,10 @@ class Router:
 
                 # Update stats
                 self.stats.packets_sent += 1
+                if is_inter_node:
+                    self.stats.packets_sent_internode += 1
+                else:
+                    self.stats.packets_sent_intranode += 1
         except simpy.Interrupt:
             pass
 

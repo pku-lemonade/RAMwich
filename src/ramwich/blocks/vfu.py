@@ -12,6 +12,17 @@ from ..stats import Stats
 class VFUStats(BaseModel):
     """Statistics for VFU operations"""
 
+    # Universal metrics
+    unit_energy_consumption_mul: float = Field(default=0.0, description="Energy consumption for each convertion in pJ")
+    unit_energy_consumption_div: float = Field(default=0.0, description="Energy consumption for each convertion in pJ")
+    unit_energy_consumption_act: float = Field(default=0.0, description="Energy consumption for each convertion in pJ")
+    unit_energy_consumption_others: float = Field(
+        default=0.0, description="Energy consumption for each convertion in pJ"
+    )
+    leakage_energy_per_cycle: float = Field(default=0.0, description="Leakage energy consumption for 1 cycle in pJ")
+    area = float = Field(default=0.0, description="Area in mm^2")
+
+    # VFU specific metrics
     mul_operations: int = Field(default=0, description="Number of read operations")
     div_operations: int = Field(default=0, description="Number of write operations")
     act_operations: int = Field(default=0, description="Number of activation operations")
@@ -21,7 +32,22 @@ class VFUStats(BaseModel):
     def get_stats(self) -> Stats:
         """Convert SRAMStats to general Stats object"""
         stats = Stats()
-        stats.latency = 0.0  # Will be updated through execution
+
+        stats.dynamic_energy = (
+            self.unit_energy_consumption_mul * self.mul_operations
+            + self.unit_energy_consumption_div * self.div_operations
+            + self.unit_energy_consumption_act * self.act_operations
+            + self.unit_energy_consumption_others * self.other_operations
+        )
+        stats.leakage_energy = self.leakage_energy_per_cycle
+        stats.area = self.area
+
+        stats.increment_component_count("VFU", self.total_operations)
+        stats.increment_component_count("VFU MUL", self.mul_operations)
+        stats.increment_component_count("VFU DIV", self.div_operations)
+        stats.increment_component_count("VFU ACT", self.act_operations)
+        stats.increment_component_count("VFU OTHERS", self.other_operations)
+
         return stats
 
 
@@ -39,6 +65,12 @@ class VFU:
 
         # Initialize stats
         self.stats = VFUStats()
+        self.stats.unit_energy_consumption_mul = self.config.core_config.alu_pow_mul_dyn
+        self.stats.unit_energy_consumption_div = self.config.core_config.alu_pow_div_dyn
+        self.stats.unit_energy_consumption_act = self.config.core_config.act_pow_dyn
+        self.stats.unit_energy_consumption_others = self.config.core_config.alu_pow_others_dyn
+        self.stats.leakage_energy_per_cycle = self.config.core_config.alu_pow_leak
+        self.stats.area = self.config.core_config.vfu_area
 
     def _init_op_handlers(self):
         """Initialize operation handlers dictionary"""
@@ -64,9 +96,12 @@ class VFU:
         # Example operation: multiplication
         if isinstance(a, int):
             a = np.array([a], dtype=np.int32)
+
+        length = len(a)
+
         if b is not None and isinstance(b, int):
             b = np.array([b], dtype=np.int32)
-            if len(a) != len(b):
+            if len(b) != length:
                 raise ValueError("Operands must be of the same length")
 
         # Determine operation type for statistics
@@ -93,7 +128,7 @@ class VFU:
             result = self.op_handlers[opcode](a, b)
 
         # Update statistics
-        self._update_stats(operation_type)
+        self._update_stats(operation_type, length)
 
         # Do clipping
         result = np.clip(result, self.min_value, self.max_value)
@@ -150,16 +185,16 @@ class VFU:
     def _handle_relu(self, a: NDArray[np.int32], _) -> NDArray[np.int32]:
         return np.maximum(0, a)
 
-    def _update_stats(self, operation_type: str) -> None:
+    def _update_stats(self, operation_type: str, length: int) -> None:
         if operation_type == "mul":
-            self.stats.mul_operations += 1
+            self.stats.mul_operations += length
         elif operation_type == "div":
-            self.stats.div_operations += 1
+            self.stats.div_operations += length
         elif operation_type == "act":
-            self.stats.act_operations += 1
+            self.stats.act_operations += length
         else:
-            self.stats.other_operations += 1
-        self.stats.total_operations += 1
+            self.stats.other_operations += length
+        self.stats.total_operations += length
 
     def get_stats(self) -> Stats:
         return self.stats.get_stats()
