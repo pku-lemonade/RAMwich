@@ -131,16 +131,15 @@ class Tile:
 
     def get_stats(self) -> Stats:
         """Get statistics for this Tile and its components"""
+        # For I/O tiles, we only need to return the stats of the router
+        if self.id in [0, 1]:
+            return self.stats.get_stats([self.router])
+
         # first add pseudo stats
         self.stats.leakage_energy = self.tile_config.instrnMem_pow_leak
         self.stats.dynamic_energy = (
             self.tile_config.instrnMem_pow_dyn * len(self.operations) + self.tile_config.tcu_pow * self.active_cycles
         )
         self.stats.area = self.tile_config.instrnMem_area + self.tile_config.tcu_area
-
-        print(f"Tile {self.id} cycles: {self.active_cycles}")
-
         # then add stats from all components
-        if self.id in [0, 1]:
-            return self.stats.get_stats([self.router, self.dram_controller, self.edram])
         return self.stats.get_stats(self.cores + [self.router, self.dram_controller, self.edram])

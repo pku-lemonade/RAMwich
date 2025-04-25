@@ -100,8 +100,8 @@ class DRAMController:
         # Initialize stats
         self.stats = DRAMControllerStats()
         self.stats.unit_energy_consumption = self.tile_config.edram_ctrl_pow_dyn
-        self.stats.leakage_energy_per_cycle = self.tile_config.edram_ctrl_pow_leak
-        self.stats.area = self.tile_config.edram_ctrl_area
+        self.stats.leakage_energy_per_cycle = self.tile_config.edram_ctrl_pow_leak + self.tile_config.edram_bus_pow_leak
+        self.stats.area = self.tile_config.edram_ctrl_area + self.tile_config.edram_bus_area
 
     def run(self, env: simpy.Environment):
         """Initialize the DRAM controller with the simulation environment"""
