@@ -47,11 +47,15 @@ class Node:
     def get_stats(self) -> Stats:
         """Get statistics for this Node and its components"""
         # first add pseudo stats
-        self.stats.area = (
-            self.config.noc_config.noc_inter_area
-            + self.config.noc_config.noc_intra_area * self.config.num_tiles_per_node / self.config.noc_config.num_port
+        self.stats.increment_component_area("NOC inter", self.config.noc_config.noc_inter_area)
+        self.stats.increment_component_area(
+            "NOC intra",
+            self.config.noc_config.noc_intra_area * self.config.num_tiles_per_node / self.config.noc_config.num_port,
         )
-        self.stats.leakage_energy = (
-            self.config.noc_config.noc_intra_pow_leak * self.config.num_tiles_per_node / self.config.noc_config.num_port
+        self.stats.increment_component_leakage_energy(
+            "NOC",
+            self.config.noc_config.noc_intra_pow_leak
+            * self.config.num_tiles_per_node
+            / self.config.noc_config.num_port,
         )
         return self.stats.get_stats(components=self.tiles)

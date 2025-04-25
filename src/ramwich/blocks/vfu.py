@@ -33,20 +33,28 @@ class VFUStats(BaseModel):
         """Convert SRAMStats to general Stats object"""
         stats = Stats()
 
-        stats.dynamic_energy = (
+        # Map VFU metrics to Stat object
+        dynamic_energy = (
             self.unit_energy_consumption_mul * self.mul_operations
             + self.unit_energy_consumption_div * self.div_operations
             + self.unit_energy_consumption_act * self.act_operations
             + self.unit_energy_consumption_others * self.other_operations
         )
-        stats.leakage_energy = self.leakage_energy_per_cycle
-        stats.area = self.area
 
-        stats.increment_component_count("VFU", self.total_operations)
-        stats.increment_component_count("VFU MUL", self.mul_operations)
-        stats.increment_component_count("VFU DIV", self.div_operations)
-        stats.increment_component_count("VFU ACT", self.act_operations)
-        stats.increment_component_count("VFU OTHERS", self.other_operations)
+        stats.increment_component_activation("VFU", self.total_operations)
+        stats.increment_component_activation("VFU MUL", self.mul_operations)
+        stats.increment_component_activation("VFU DIV", self.div_operations)
+        stats.increment_component_activation("VFU ACT", self.act_operations)
+        stats.increment_component_activation("VFU OTHERS", self.other_operations)
+        stats.increment_component_dynamic_energy("VFU", dynamic_energy)
+        stats.increment_component_dynamic_energy("VFU MUL", self.unit_energy_consumption_mul * self.mul_operations)
+        stats.increment_component_dynamic_energy("VFU DIV", self.unit_energy_consumption_div * self.div_operations)
+        stats.increment_component_dynamic_energy("VFU ACT", self.unit_energy_consumption_act * self.act_operations)
+        stats.increment_component_dynamic_energy(
+            "VFU OTHERS", self.unit_energy_consumption_others * self.other_operations
+        )
+        stats.increment_component_leakage_energy("VFU", self.leakage_energy_per_cycle)
+        stats.increment_component_area("VFU", self.area)
 
         return stats
 

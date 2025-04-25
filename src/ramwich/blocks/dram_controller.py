@@ -71,11 +71,11 @@ class DRAMControllerStats(Stats):
         stats = Stats()
 
         # Map ADC metrics to Stat object
-        stats.dynamic_energy = self.unit_energy_consumption * self.total_requests
-        stats.leakage_energy = self.leakage_energy_per_cycle
-        stats.area = self.area
+        stats.increment_component_activation("DRAM Controller", self.total_requests)
+        stats.increment_component_dynamic_energy("DRAM Controller", self.unit_energy_consumption * self.total_requests)
+        stats.increment_component_leakage_energy("DRAM Controller", self.leakage_energy_per_cycle)
+        stats.increment_component_area("DRAM Controller", self.area)
 
-        stats.increment_component_count("DRAM Controller", self.total_requests)
         return stats
 
 

@@ -135,11 +135,22 @@ class Tile:
         if self.id in [0, 1]:
             return self.stats.get_stats([self.router])
 
-        # first add pseudo stats
-        self.stats.leakage_energy = self.tile_config.instrnMem_pow_leak
-        self.stats.dynamic_energy = (
-            self.tile_config.instrnMem_pow_dyn * len(self.operations) + self.tile_config.tcu_pow * self.active_cycles
+        # first add pseudo compoents stats
+        # Tile Control Unit
+        self.stats.increment_component_activation("Tile Control Unit", self.active_cycles)
+        self.stats.increment_component_dynamic_energy(
+            "Tile Control Unit", self.active_cycles * self.tile_config.tcu_pow
         )
-        self.stats.area = self.tile_config.instrnMem_area + self.tile_config.tcu_area
+        # self.stats.increment_component_leakage_energy("Tile Control Unit", self.tile_config.tcu_pow_leak)
+        self.stats.increment_component_area("Tile Control Unit", self.tile_config.tcu_area)
+
+        # Tile instruction memory
+        self.stats.increment_component_activation("Tile instruction memory", len(self.operations))
+        self.stats.increment_component_dynamic_energy(
+            "Tile instruction memory", len(self.operations) * self.tile_config.instrnMem_pow_dyn
+        )
+        self.stats.increment_component_leakage_energy("Tile instruction memory", self.tile_config.instrnMem_pow_leak)
+        self.stats.increment_component_area("Tile instruction memory", self.tile_config.instrnMem_area)
+
         # then add stats from all components
         return self.stats.get_stats(self.cores + [self.router, self.dram_controller, self.edram])

@@ -22,11 +22,10 @@ class SNHStats(BaseModel):
         stats = Stats()
 
         # Map SNH metrics to Stat object
-        stats.dynamic_energy = self.unit_energy_consumption * self.samples
-        stats.leakage_energy = self.leakage_energy_per_cycle
-        stats.area = self.area
-
-        stats.increment_component_count("SNH", self.samples)
+        stats.increment_component_activation("SNH", self.samples)
+        stats.increment_component_dynamic_energy("SNH", self.unit_energy_consumption * self.samples)
+        stats.increment_component_leakage_energy("SNH", self.leakage_energy_per_cycle)
+        stats.increment_component_area("SNH", self.area)
 
         return stats
 

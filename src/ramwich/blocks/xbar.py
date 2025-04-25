@@ -22,11 +22,10 @@ class XbarStats(BaseModel):
         stats = Stats()
 
         # Map Xbar metrics to Stat object
-        stats.dynamic_energy = self.unit_energy_consumption * self.mvm_operations
-        stats.leakage_energy = self.leakage_energy_per_cycle
-        stats.area = self.area
-
-        stats.increment_component_count("Xbar", self.mvm_operations)
+        stats.increment_component_activation("Xbar", self.mvm_operations)
+        stats.increment_component_dynamic_energy("Xbar", self.unit_energy_consumption * self.mvm_operations)
+        stats.increment_component_leakage_energy("Xbar", self.leakage_energy_per_cycle)
+        stats.increment_component_area("Xbar", self.area)
 
         return stats
 

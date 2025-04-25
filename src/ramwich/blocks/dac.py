@@ -25,11 +25,10 @@ class DACStats(BaseModel):
         stats = Stats()
 
         # Map DAC metrics to Stat object
-        stats.dynamic_energy = self.unit_energy_consumption * self.conversions
-        stats.leakage_energy = self.leakage_energy_per_cycle
-        stats.area = self.area
-
-        stats.increment_component_count("DAC", self.conversions)
+        stats.increment_component_activation("DAC", self.conversions)
+        stats.increment_component_dynamic_energy("DAC", self.unit_energy_consumption * self.conversions)
+        stats.increment_component_leakage_energy("DAC", self.leakage_energy_per_cycle)
+        stats.increment_component_area("DAC", self.area)
 
         return stats
 

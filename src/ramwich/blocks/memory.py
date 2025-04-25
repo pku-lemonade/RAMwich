@@ -34,26 +34,31 @@ class MemoryStats(BaseModel):
 
         # Map ADC metrics to Stat object
         if self.memory_type in ["SRAM", "Output Register Array"]:
-            stats.dynamic_energy = (
+            dynamic_energy = (
                 self.unit_energy_consumption_read * self.read_cells
                 + self.unit_energy_consumption_write * self.write_cells
             )
-            stats.increment_component_count(self.memory_type, self.total_operated_cells)
+            stats.increment_component_activation(self.memory_type, self.total_operated_cells)
+
         elif self.memory_type == "DRAM":
-            stats.dynamic_energy = (
+            dynamic_energy = (
                 self.unit_energy_consumption_read * self.read_operations
                 + self.unit_energy_consumption_write * self.write_operations
             )
-            stats.increment_component_count(self.memory_type, self.total_operations)
+            stats.increment_component_activation(self.memory_type, self.total_operations)
         elif self.memory_type == "Input Register Array":
-            stats.dynamic_energy = (
+            dynamic_energy = (
                 self.unit_energy_consumption_read * self.read_operations
                 + self.unit_energy_consumption_write * self.write_cells
             )
-            stats.increment_component_count(self.memory_type + " read", self.read_operations)
-            stats.increment_component_count(self.memory_type + " write", self.write_cells)
-        stats.leakage_energy = self.leakage_energy_per_cycle
-        stats.area = self.area
+            stats.increment_component_activation(self.memory_type + " read", self.read_operations)
+            stats.increment_component_activation(self.memory_type + " write", self.write_cells)
+        else:
+            raise ValueError(f"Unknown memory type: {self.memory_type}")
+
+        stats.increment_component_dynamic_energy(self.memory_type, dynamic_energy)
+        stats.increment_component_leakage_energy(self.memory_type, self.leakage_energy_per_cycle)
+        stats.increment_component_area(self.memory_type, self.area)
 
         return stats
 

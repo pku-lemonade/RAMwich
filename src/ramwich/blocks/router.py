@@ -35,17 +35,21 @@ class RouterStats(BaseModel):
         """Convert MemoryStats to general Stats object"""
         stats = Stats()
 
-        stats.dynamic_energy = (
-            self.unit_energy_consumption_receive * self.packets_received
-            + self.unit_energy_consumption_send_inter * self.packets_sent_internode
-            + self.unit_energy_consumption_send_intra * self.packets_sent_intranode
+        # Map Router metrics to Stat object
+        stats.increment_component_activation("Router send internode", self.packets_sent_internode)
+        stats.increment_component_activation("Router send intranode", self.packets_sent_intranode)
+        stats.increment_component_activation("Router receive", self.packets_received)
+        stats.increment_component_dynamic_energy(
+            "Router send internode", self.unit_energy_consumption_send_inter * self.packets_sent_internode
         )
-        stats.leakage_energy = self.leakage_energy_per_cycle
-        stats.area = self.area
-
-        stats.increment_component_count("Router send internode", self.packets_sent_internode)
-        stats.increment_component_count("Router send intranode", self.packets_sent_intranode)
-        stats.increment_component_count("Router receive", self.packets_received)
+        stats.increment_component_dynamic_energy(
+            "Router send intranode", self.unit_energy_consumption_send_intra * self.packets_sent_intranode
+        )
+        stats.increment_component_dynamic_energy(
+            "Router receive", self.unit_energy_consumption_receive * self.packets_received
+        )
+        stats.increment_component_leakage_energy("Router", self.leakage_energy_per_cycle)
+        stats.increment_component_area("Router", self.area)
 
         return stats
 
