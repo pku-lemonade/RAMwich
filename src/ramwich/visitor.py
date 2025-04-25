@@ -86,7 +86,7 @@ class CoreDecodeVisitor(CommonVisitor):
 
     def __init__(self, core):
         self.core = core
-        self.decode_time = core.config.core_config.instrnMem_lat
+        self.decode_time = core.config.core_config.dataMem_lat
 
     def _visit_common(self, op):
         return self.core.env.timeout(self.decode_time)
