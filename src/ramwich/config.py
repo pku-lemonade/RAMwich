@@ -463,7 +463,7 @@ class CoreConfig(BaseModel):
     act_pow_dyn: float = Field(default=0.26 - 0.026, description="Activation unit dynamic power")
     alu_pow_others_dyn: float = Field(default=0.373 * 32 / 45, description="ALU other operations dynamic power")
     alu_pow_leak: float = Field(default=0.27 * 32 / 45, description="ALU leakage power")
-    vfu_area: float = Field(default=0.00567 * 32 / 45, description="ALU area")
+    alu_area: float = Field(default=0.00567 * 32 / 45, description="ALU area")
 
     def __init__(self, **data):
         super().__init__(**data)

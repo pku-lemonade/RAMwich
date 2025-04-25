@@ -70,7 +70,7 @@ class VFU:
         self.stats.unit_energy_consumption_act = self.config.core_config.act_pow_dyn
         self.stats.unit_energy_consumption_others = self.config.core_config.alu_pow_others_dyn
         self.stats.leakage_energy_per_cycle = self.config.core_config.alu_pow_leak
-        self.stats.area = self.config.core_config.vfu_area
+        self.stats.area = self.config.core_config.alu_area + self.config.core_config.act_area
 
     def _init_op_handlers(self):
         """Initialize operation handlers dictionary"""
