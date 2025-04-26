@@ -96,7 +96,6 @@ class Tile:
         # wait for all cores, router and dram controller to finish
         if self.core_processes:
             yield self.env.all_of(self.core_processes)
-
         # wait for router to stop
         yield self.env.process(self.router.stop_after_all_packets_sent())
 

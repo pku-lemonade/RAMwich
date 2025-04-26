@@ -109,7 +109,7 @@ class XBARConfig(BaseModel):
 
     # Set default values for derived fields instead of None
     xbar_ip_lat: float = Field(default=100.0, description="XBAR input processing latency")
-    xbar_ip_pow: float = Field(default=1.37 * 2.0, description="XBAR input processing power")
+    xbar_ip_pow: float = Field(default=1.37 * 2.0 - 1.04, description="XBAR input processing power")
     xbar_op_lat: float = Field(default=20.0 * 12.8, description="XBAR output processing latency")
     xbar_op_pow: float = Field(default=4.44 * 3.27 / 12.8, description="XBAR output processing power")
     xbar_rd_lat: float = Field(default=328.0 * 1000 * (1 / 32.0), description="XBAR read latency")
