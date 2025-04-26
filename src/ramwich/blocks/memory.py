@@ -75,7 +75,7 @@ class Memory:
         # Initialize stats
         self.stats = MemoryStats()
 
-    def read(self, start: int, length: int):
+    def read(self, start: int, length: int, batch: int = 1):
         """Read a block of registers from SRAM"""
 
         end = start + length
@@ -87,14 +87,14 @@ class Memory:
             raise ValueError("Length must be a positive integer")
 
         # Update stats
-        self.stats.read_operations += 1
+        self.stats.read_operations += batch
         self.stats.read_cells += length
-        self.stats.total_operations += 1
+        self.stats.total_operations += batch
         self.stats.total_operated_cells += length
 
         return self.cells[start:end].copy()
 
-    def write(self, start: int, values: Union[NDArray[np.int32], int]):
+    def write(self, start: int, values: Union[NDArray[np.int32], int], batch: int = 1):
         """Write values to a block of registers in SRAM"""
         # Convert to numpy array if it's a single value
         if isinstance(values, int):
@@ -111,9 +111,9 @@ class Memory:
         self.cells[start:end] = values
 
         # Update stats
-        self.stats.write_operations += 1
+        self.stats.write_operations += batch
         self.stats.write_cells += length
-        self.stats.total_operations += 1
+        self.stats.total_operations += batch
         self.stats.total_operated_cells += length
 
     def get_stats(self) -> Stats:

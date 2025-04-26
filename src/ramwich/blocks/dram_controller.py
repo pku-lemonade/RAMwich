@@ -229,7 +229,7 @@ class DRAMController:
             yield self.env.timeout(latency)
 
             # Perform the actual read
-            data = self.dram.read(request.start, request.length)
+            data = self.dram.read(request.start, request.length, batch=request.num_batches)
 
             # Update stats
             self.stats.total_wait_time += self.env.now - request.submit_time
@@ -254,7 +254,7 @@ class DRAMController:
 
             # Perform the actual write
             data = request.data.flatten()
-            self.dram.write(request.start, data)
+            self.dram.write(request.start, data, batch=request.num_batches)
 
             # Update the validity array
             self.valid[request.start : request.start + request.length] = True
