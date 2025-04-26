@@ -20,6 +20,8 @@ class Node:
         self.network = Network()
         self.tiles = [Tile(id=i, parent=self, config=config) for i in range(config.num_tiles_per_node)]
 
+        self.network_busy_cycles = 0
+
         # Initialize stats
         self.stats = Stats()
 
@@ -35,12 +37,15 @@ class Node:
         logger.info(f"Starting operations for node {self.id}")
 
         self.env = env
+        self.network.start_tracking(env)
 
         processes = []
         for tile in self.tiles:
             processes.append(env.process(tile.run(env)))
 
         yield env.all_of(processes)
+        self.network.stop_tracking()
+        self.network_busy_cycles = self.network.get_queue_busy_cycles()
 
         logger.info(f"Completed all operations for node {self.id}")
 
@@ -58,4 +63,13 @@ class Node:
             * self.config.num_tiles_per_node
             / self.config.noc_config.num_port,
         )
-        return self.stats.get_stats(components=self.tiles)
+        stats = self.stats.get_stats(components=self.tiles)
+        internode_packets = stats.components_activation_count["Router send internode"]
+        stats.increment_component_dynamic_energy(
+            "Router send internode",
+            self.config.noc_config.noc_inter_pow_dyn * internode_packets / 12,  # Align with PUMA
+        )
+        stats.increment_component_dynamic_energy(
+            "Router send intranode", self.config.noc_config.noc_intra_pow_dyn * self.network_busy_cycles
+        )
+        return stats
