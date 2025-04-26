@@ -17,7 +17,7 @@ class Node:
     def __init__(self, id: int, config: Config = None):
         self.id = id
         self.config = config or Config()
-        self.network = Network()
+        self.network = Network(self.config)
         self.tiles = [Tile(id=i, parent=self, config=config) for i in range(config.num_tiles_per_node)]
 
         self.network_busy_cycles = 0
@@ -45,31 +45,28 @@ class Node:
 
         yield env.all_of(processes)
         self.network.stop_tracking()
-        self.network_busy_cycles = self.network.get_queue_busy_cycles()
 
         logger.info(f"Completed all operations for node {self.id}")
 
     def get_stats(self) -> Stats:
         """Get statistics for this Node and its components"""
-        # first add pseudo stats
-        self.stats.increment_component_area("NOC inter", self.config.noc_config.noc_inter_area)
-        self.stats.increment_component_area(
-            "NOC intra",
-            self.config.noc_config.noc_intra_area * self.config.num_tiles_per_node / self.config.noc_config.num_port,
-        )
-        self.stats.increment_component_leakage_energy(
-            "NOC",
-            self.config.noc_config.noc_intra_pow_leak
-            * self.config.num_tiles_per_node
-            / self.config.noc_config.num_port,
-        )
-        stats = self.stats.get_stats(components=self.tiles)
-        internode_packets = stats.components_activation_count["Router send internode"]
-        stats.increment_component_dynamic_energy(
+        # first add NOC stats
+        self.stats.get_stats(components=[self.network])
+
+        # Calculate the leakage energy for the NOC
+        self.stats.calculate_leakage_energy(self.network.get_queue_busy_cycles())
+
+        # Add the stats from each tile
+        self.stats.get_stats(components=self.tiles)
+
+        # Calculate the dynamic energy for the NOC
+        internode_packets = self.stats.components_activation_count["Router send internode"]
+        self.stats.increment_component_dynamic_energy(
             "Router send internode",
             self.config.noc_config.noc_inter_pow_dyn * internode_packets / 12,  # Align with PUMA
         )
-        stats.increment_component_dynamic_energy(
-            "Router send intranode", self.config.noc_config.noc_intra_pow_dyn * self.network_busy_cycles
+        self.stats.increment_component_dynamic_energy(
+            "Router send intranode", self.config.noc_config.noc_intra_pow_dyn * self.network.get_queue_busy_cycles()
         )
-        return stats
+
+        return self.stats

@@ -171,7 +171,7 @@ class Core:
         # self.stats.increment_component_leakage_energy("Core Control Unit", self.core_config.ccu_pow_leak)
         self.stats.increment_component_area("Core Control Unit", self.core_config.ccu_area)
 
-        # Tile instruction memory
+        # Core instruction memory
         self.stats.increment_component_activation("Core instruction memory", len(self.operations))
         self.stats.increment_component_dynamic_energy(
             "Core instruction memory", len(self.operations) * self.core_config.instrnMem_pow_dyn
@@ -180,4 +180,9 @@ class Core:
         self.stats.increment_component_area("Core instruction memory", self.core_config.instrnMem_area)
 
         # then add stats from all components
-        return self.stats.get_stats([self.vfu, self.cache] + self.mvmus)
+        self.stats.get_stats([self.vfu, self.cache] + self.mvmus)
+
+        # Calculate total leakage energy based on active cycles
+        self.stats.calculate_leakage_energy(self.active_cycles)
+
+        return self.stats

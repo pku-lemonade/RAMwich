@@ -12,14 +12,16 @@ class Stats(BaseModel):
     leakage_energy: float = Field(default=0.0, description="Leakage energy consumption")
     area: float = Field(default=0.0, description="Total area")
     op_counts: Dict[str, int] = Field(default_factory=dict, description="Operation counts by type")
-    components_activation_count: int = Field(default_factory=dict, description="Components activated times by type")
-    components_dynamic_energy_count: int = Field(
+    components_activation_count: Dict[str, int] = Field(
+        default_factory=dict, description="Components activated times by type"
+    )
+    components_dynamic_energy_count: Dict[str, float] = Field(
         default_factory=dict, description="Components dynamic energy consumption by type"
     )
-    components_leakage_energy_count: int = Field(
+    components_leakage_energy_count: Dict[str, float] = Field(
         default_factory=dict, description="Components leakage energy consumption by type"
     )
-    components_area_count: int = Field(default_factory=dict, description="Components area by type")
+    components_area_count: Dict[str, float] = Field(default_factory=dict, description="Components area by type")
 
     def increment_op_count(self, op_type: str, count: int = 1) -> None:
         """Increment the count for a specific operation type"""
@@ -49,6 +51,12 @@ class Stats(BaseModel):
         """Increment the area for a specific component type"""
         self.components_area_count[component_type] = self.components_area_count.get(component_type, 0) + area
         self.area += area
+
+    def calculate_leakage_energy(self, cycles: int) -> None:
+        """Calculate the leakage energy based on the number of cycles"""
+        self.leakage_energy *= cycles
+        for component_type, leakage_energy in self.components_leakage_energy_count.items():
+            self.components_leakage_energy_count[component_type] *= cycles
 
     def print(self):
         """Print the statistics"""

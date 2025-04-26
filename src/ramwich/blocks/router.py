@@ -5,6 +5,7 @@ from pydantic import BaseModel, Field
 
 from ..config import Config
 from ..stats import Stats
+from .noc import Network
 
 
 class RouterStats(BaseModel):
@@ -54,62 +55,6 @@ class RouterStats(BaseModel):
         stats.increment_component_area("Router", self.area)
 
         return stats
-
-
-class Network:
-    def __init__(self):
-        self.routers = {}
-        self.queue_busy_cycles = 0
-        self.is_tracking = False
-        self.env = None
-        self.monitor_process = None
-
-    def register_router(self, router):
-        self.routers[router.id] = router
-
-    def get_router(self, router_id):
-        return self.routers[router_id]
-
-    def start_tracking(self, env):
-        """Start tracking busy queue cycles"""
-        if self.is_tracking:
-            return
-
-        self.env = env
-        self.is_tracking = True
-        self.monitor_process = env.process(self._monitor_queues())
-
-    def stop_tracking(self):
-        """Stop tracking busy queue cycles"""
-        if not self.is_tracking:
-            return
-
-        self.is_tracking = False
-        if self.monitor_process:
-            self.monitor_process.interrupt()
-
-    def _monitor_queues(self):
-        """Process to monitor router queues each cycle"""
-        try:
-            while True:
-                # Check if any router has items in its send queue
-                any_queue_not_empty = any(
-                    router.is_running and router.send_queue and len(router.send_queue.items) > 0
-                    for router in self.routers.values()
-                )
-
-                if any_queue_not_empty:
-                    self.queue_busy_cycles += 1
-
-                # Wait one cycle
-                yield self.env.timeout(1)
-
-        except simpy.Interrupt:
-            pass
-
-    def get_queue_busy_cycles(self):
-        """Return the count of cycles where any router had a non-empty send queue"""
-        return self.queue_busy_cycles
 
 
 class Router:
