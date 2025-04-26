@@ -151,5 +151,11 @@ class Tile:
         self.stats.increment_component_leakage_energy("Tile instruction memory", self.tile_config.instrnMem_pow_leak)
         self.stats.increment_component_area("Tile instruction memory", self.tile_config.instrnMem_area)
 
-        # then add stats from all components
-        return self.stats.get_stats(self.cores + [self.router, self.dram_controller, self.edram])
+        # then add stats from all components except the cores
+        self.stats.get_stats([self.router, self.dram_controller, self.edram])
+
+        # Calculate the leakage energy all components except the cores based on active cycles
+        self.stats.calculate_leakage_energy(self.active_cycles)
+
+        # Add the stats of all cores
+        return self.stats.get_stats(self.cores)

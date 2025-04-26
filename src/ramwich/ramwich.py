@@ -211,7 +211,6 @@ class RAMwich:
         active_cycles = self.env.now - start_time
 
         stats = self.get_stats()
-        stats.leakage_energy *= active_cycles
 
         stats.print()
 
