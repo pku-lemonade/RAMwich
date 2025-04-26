@@ -156,7 +156,7 @@ class Core:
 
         yield pipeline.complete()
 
-        self.actice_cycles = env.now - self.start_time
+        self.active_cycles = env.now - self.start_time
 
         logger.info(f"Core {self.id} finished execution at time {env.now}")
 

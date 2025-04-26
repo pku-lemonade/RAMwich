@@ -204,7 +204,7 @@ class RAMwich:
 
         # Run simulation until all node processes complete
         if processes:
-            self.env.run()
+            self.env.run(until=simpy.AllOf(self.env, processes))
         else:
             logger.warning("No node processes to run. Please check the operations file.")
 
@@ -213,7 +213,7 @@ class RAMwich:
         stats = self.get_stats()
         stats.leakage_energy *= active_cycles
 
-        # stats.print()
+        stats.print()
 
         logger.info(f"Simulation completed at time {self.env.now}")
         # summarize_results(self.nodes)

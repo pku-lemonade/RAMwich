@@ -37,7 +37,6 @@ class Stage:
                 yield self.output_buffer.put(op)
 
             if op.type == "hlt":
-                logger.debug(f"Stage {self.name} received termination signal")
                 # Signal completion for this stage
                 if not self.completion_event.triggered:
                     self.completion_event.succeed()
@@ -85,7 +84,7 @@ class Pipeline:
         for stage in self.stages:
             self.env.process(stage.run())
 
-        self._monitor_for_completion()
+        self.env.process(self._monitor_for_completion())
 
     def put(self, op):
         """Feed an operation into the pipeline."""
