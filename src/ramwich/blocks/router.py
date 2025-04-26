@@ -39,14 +39,16 @@ class RouterStats(BaseModel):
         stats.increment_component_activation("Router send internode", self.packets_sent_internode)
         stats.increment_component_activation("Router send intranode", self.packets_sent_intranode)
         stats.increment_component_activation("Router receive", self.packets_received)
+        """
         stats.increment_component_dynamic_energy(
             "Router send internode", self.unit_energy_consumption_send_inter * self.packets_sent_internode
         )
         stats.increment_component_dynamic_energy(
             "Router send intranode", self.unit_energy_consumption_send_intra * self.packets_sent_intranode
         )
+        """
         stats.increment_component_dynamic_energy(
-            "Router receive", self.unit_energy_consumption_receive * self.packets_received
+            "Router receive", self.unit_energy_consumption_receive * (self.packets_received + self.packets_read)
         )
         stats.increment_component_leakage_energy("Router", self.leakage_energy_per_cycle)
         stats.increment_component_area("Router", self.area)
@@ -57,12 +59,57 @@ class RouterStats(BaseModel):
 class Network:
     def __init__(self):
         self.routers = {}
+        self.queue_busy_cycles = 0
+        self.is_tracking = False
+        self.env = None
+        self.monitor_process = None
 
     def register_router(self, router):
         self.routers[router.id] = router
 
     def get_router(self, router_id):
         return self.routers[router_id]
+
+    def start_tracking(self, env):
+        """Start tracking busy queue cycles"""
+        if self.is_tracking:
+            return
+
+        self.env = env
+        self.is_tracking = True
+        self.monitor_process = env.process(self._monitor_queues())
+
+    def stop_tracking(self):
+        """Stop tracking busy queue cycles"""
+        if not self.is_tracking:
+            return
+
+        self.is_tracking = False
+        if self.monitor_process:
+            self.monitor_process.interrupt()
+
+    def _monitor_queues(self):
+        """Process to monitor router queues each cycle"""
+        try:
+            while True:
+                # Check if any router has items in its send queue
+                any_queue_not_empty = any(
+                    router.is_running and router.send_queue and len(router.send_queue.items) > 0
+                    for router in self.routers.values()
+                )
+
+                if any_queue_not_empty:
+                    self.queue_busy_cycles += 1
+
+                # Wait one cycle
+                yield self.env.timeout(1)
+
+        except simpy.Interrupt:
+            pass
+
+    def get_queue_busy_cycles(self):
+        """Return the count of cycles where any router had a non-empty send queue"""
+        return self.queue_busy_cycles
 
 
 class Router:
@@ -150,14 +197,14 @@ class Router:
         if (
             source == 0
             or target == 1
-            or source // self.config.num_tiles_per_node != target // self.config.num_tiles_per_node
+            or source // self.config.num_tiles_per_node == target // self.config.num_tiles_per_node
         ):
-            # Inter-node communication
-            # Also return a flag indicating that this is inter-node communication
-            return self.config.noc_config.noc_intra_lat + self.config.noc_config.noc_inter_lat, True
-        else:
             # Intra-node communication
+            # Also return a flag indicating that this is not inter-node communication
             return self.config.noc_config.noc_intra_lat, False
+        else:
+            # Inter-node communication
+            return self.config.noc_config.noc_intra_lat + self.config.noc_config.noc_inter_lat, True
 
     def add_send_packet(self, target: int, data: NDArray[np.int32]):
         """Send a packet to the router"""
