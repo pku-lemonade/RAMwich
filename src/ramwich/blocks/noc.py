@@ -1,28 +1,34 @@
 import simpy
 from pydantic import BaseModel, Field
 
-from ..config import Config
-from ..stats import Stats
+from ..config import Config, NOCConfig
+from ..stats import Stats, StatsDict
 
 
 class NetworkStats(BaseModel):
     """Statistics for DRAM operations"""
 
-    # Universal metrics
+    # config
+    config: NOCConfig = Field(default=NOCConfig(), description="Configuration object")
+    ratio: float = Field(default=0.0, description="Ratio of tiles to ports")
     leakage_energy_per_cycle: float = Field(default=0.0, description="Leakage energy consumption for 1 cycle in pJ")
     area_inter: float = Field(default=0.0, description="Area for NOC internode in mm^2")
     area_intra: float = Field(default=0.0, description="Area for NOC intranode in mm^2")
 
     def get_stats(self) -> Stats:
-        """Convert MemoryStats to general Stats object"""
-        stats = Stats()
+        """Convert NetworkStats to general Stats object"""
+        stats_dict = StatsDict()
 
-        # Map Network metrics to Stat object
-        stats.increment_component_leakage_energy("NOC", self.leakage_energy_per_cycle)
-        stats.increment_component_area("NOC internode", self.area_inter)
-        stats.increment_component_area("NOC intranode", self.area_intra)
+        stats_dict["NOC inter"] = Stats(
+            leakage_energy=self.config.noc_inter_pow_leak,
+            area=self.config.noc_inter_area,
+        )
+        stats_dict["NOC intra"] = Stats(
+            leakage_energy=self.config.noc_intra_pow_leak * self.ratio,
+            area=self.config.noc_intra_area * self.ratio,
+        )
 
-        return stats
+        return stats_dict
 
 
 class Network:
@@ -36,7 +42,8 @@ class Network:
         self.monitor_process = None
 
         # Initialize stats
-        self.stats = NetworkStats()
+        ratio = self.config.num_tiles_per_node / self.noc_config.num_port
+        self.stats = NetworkStats(config=self.noc_config, ratio=ratio)
         self.stats.leakage_energy_per_cycle = (
             self.noc_config.noc_intra_pow_leak * self.config.num_tiles_per_node / self.noc_config.num_port
         )

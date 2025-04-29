@@ -22,12 +22,7 @@ class InputRegisterArray:
         self.registers = np.zeros(self.size, dtype=np.int32)
 
         # Initialize stats
-        self.stats = MemoryStats()
-        self.stats.memory_type = "Input Register Array"
-        self.stats.unit_energy_consumption_read = self.mvmu_config.xbar_config.inMem_pow_dyn_read
-        self.stats.unit_energy_consumption_write = self.mvmu_config.xbar_config.inMem_pow_dyn_write
-        self.stats.leakage_energy_per_cycle = self.mvmu_config.xbar_config.inMem_pow_leak
-        self.stats.area = self.mvmu_config.xbar_config.inMem_area
+        self.stats = MemoryStats(config=self.mvmu_config, memory_type="Input Register Array")
 
     def write(self, value: Union[NDArray[np.int32], int], start: int = 0):
         """Write values to register array"""

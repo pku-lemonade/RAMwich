@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 from pydantic.config import ConfigDict
 
 from ..config import TileConfig
-from ..stats import Stats
+from ..stats import Stats, StatsDict
 from .memory import DRAM
 
 
@@ -53,9 +53,7 @@ class DRAMControllerStats(Stats):
     """Statistics for DRAM controller operations"""
 
     # Universal metrics
-    unit_energy_consumption: float = Field(default=0.0, description="Energy consumption for each convertion in pJ")
-    leakage_energy_per_cycle: float = Field(default=0.0, description="Leakage energy consumption for 1 cycle in pJ")
-    area: float = Field(default=0.0, description="Area in mm^2")
+    config: TileConfig = Field(default=TileConfig(), description="Tile configuration")
 
     # DRAM controller specific metrics
     read_requests: int = Field(default=0, description="Number of read requests")
@@ -68,15 +66,14 @@ class DRAMControllerStats(Stats):
 
     def get_stats(self) -> Stats:
         """Convert DRAMControllerStats to general Stats object"""
-        stats = Stats()
+        stats = Stats(
+            activation_count=self.total_requests,
+            dynamic_energy=self.config.edram_ctrl_pow_dyn * self.total_requests,
+            leakage_energy=self.config.edram_ctrl_pow_leak + self.config.edram_bus_pow_leak,
+            area=self.config.edram_ctrl_area + self.config.edram_bus_area,
+        )
 
-        # Map ADC metrics to Stat object
-        stats.increment_component_activation("DRAM Controller", self.total_requests)
-        stats.increment_component_dynamic_energy("DRAM Controller", self.unit_energy_consumption * self.total_requests)
-        stats.increment_component_leakage_energy("DRAM Controller", self.leakage_energy_per_cycle)
-        stats.increment_component_area("DRAM Controller", self.area)
-
-        return stats
+        return StatsDict({"DRAM Controller": stats})
 
 
 class DRAMController:
@@ -98,10 +95,7 @@ class DRAMController:
         self.pending_reads = []
 
         # Initialize stats
-        self.stats = DRAMControllerStats()
-        self.stats.unit_energy_consumption = self.tile_config.edram_ctrl_pow_dyn
-        self.stats.leakage_energy_per_cycle = self.tile_config.edram_ctrl_pow_leak + self.tile_config.edram_bus_pow_leak
-        self.stats.area = self.tile_config.edram_ctrl_area + self.tile_config.edram_bus_area
+        self.stats = DRAMControllerStats(config=self.tile_config)
 
     def run(self, env: simpy.Environment):
         """Initialize the DRAM controller with the simulation environment"""

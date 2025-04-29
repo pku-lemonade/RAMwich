@@ -4,20 +4,15 @@ import numpy as np
 from numpy.typing import NDArray
 from pydantic import BaseModel, Field
 
-from ..config import CoreConfig, TileConfig
-from ..stats import Stats
+from ..config import CoreConfig, MVMUConfig, TileConfig
+from ..stats import Stats, StatsDict
 
 
 class MemoryStats(BaseModel):
     """Statistics for Memory operations"""
 
     # Universal metrics
-    unit_energy_consumption_read: float = Field(default=0.0, description="Energy consumption for each convertion in pJ")
-    unit_energy_consumption_write: float = Field(
-        default=0.0, description="Energy consumption for each convertion in pJ"
-    )
-    leakage_energy_per_cycle: float = Field(default=0.0, description="Leakage energy consumption for 1 cycle in pJ")
-    area: float = Field(default=0.0, description="Area in mm^2")
+    config: Union[MVMUConfig, CoreConfig, TileConfig] = Field(default=None, description="Configuration object")
 
     # Memory specific metrics
     memory_type: str = Field(default="", description="Type of memory (SRAM/DRAM)")
@@ -28,39 +23,49 @@ class MemoryStats(BaseModel):
     total_operations: int = Field(default=0, description="Total number of operations")
     total_operated_cells: int = Field(default=0, description="Total number of operated cells")
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Convert MemoryStats to general Stats object"""
-        stats = Stats()
 
-        # Map ADC metrics to Stat object
-        if self.memory_type in ["SRAM", "Output Register Array"]:
-            dynamic_energy = (
-                self.unit_energy_consumption_read * self.read_cells
-                + self.unit_energy_consumption_write * self.write_cells
+        # Map Memory metrics to StatsDict object
+        if self.memory_type == "SRAM":
+            stats = Stats(
+                activation_count=self.total_operated_cells,
+                dynamic_energy=self.config.dataMem_pow_dyn * self.total_operated_cells,
+                leakage_energy=self.config.dataMem_pow_leak,
+                area=self.config.dataMem_area,
             )
-            stats.increment_component_activation(self.memory_type, self.total_operated_cells)
+            return StatsDict({"SRAM": stats})
 
         elif self.memory_type == "DRAM":
-            dynamic_energy = (
-                self.unit_energy_consumption_read * self.read_operations
-                + self.unit_energy_consumption_write * self.write_operations
+            stats = Stats(
+                activation_count=self.total_operations,
+                dynamic_energy=self.config.edram_pow_dyn * self.total_operations,
+                leakage_energy=self.config.edram_pow_leak,
+                area=self.config.edram_area,
             )
-            stats.increment_component_activation(self.memory_type, self.total_operations)
+            return StatsDict({"DRAM": stats})
+
         elif self.memory_type == "Input Register Array":
-            dynamic_energy = (
-                self.unit_energy_consumption_read * self.read_operations
-                + self.unit_energy_consumption_write * self.write_cells
+            stats = Stats(
+                activation_count=self.total_operations,
+                dynamic_energy=self.config.xbar_config.inMem_pow_dyn_read * self.read_operations
+                + self.config.xbar_config.inMem_pow_dyn_write * self.write_cells,
+                leakage_energy=self.config.xbar_config.inMem_pow_leak,
+                area=self.config.xbar_config.inMem_area,
             )
-            stats.increment_component_activation(self.memory_type + " read", self.read_operations)
-            stats.increment_component_activation(self.memory_type + " write", self.write_cells)
+            return StatsDict({"Input Register Array": stats})
+
+        elif self.memory_type == "Output Register Array":
+            stats = Stats(
+                activation_count=self.total_operations,
+                dynamic_energy=self.config.xbar_config.outMem_pow_dyn * self.total_operated_cells,
+                leakage_energy=self.config.xbar_config.outMem_pow_leak,
+                area=self.config.xbar_config.outMem_area,
+            )
+            return StatsDict({"Output Register Array": stats})
+
         else:
             raise ValueError(f"Unknown memory type: {self.memory_type}")
-
-        stats.increment_component_dynamic_energy(self.memory_type, dynamic_energy)
-        stats.increment_component_leakage_energy(self.memory_type, self.leakage_energy_per_cycle)
-        stats.increment_component_area(self.memory_type, self.area)
-
-        return stats
 
 
 class Memory:
@@ -129,11 +134,8 @@ class SRAM(Memory):
         super().__init__(size)
 
         # Initialize stats
+        self.stats.config = self.core_config
         self.stats.memory_type = "SRAM"
-        self.stats.unit_energy_consumption_read = self.core_config.dataMem_pow_dyn
-        self.stats.unit_energy_consumption_write = self.core_config.dataMem_pow_dyn
-        self.stats.leakage_energy_per_cycle = self.core_config.dataMem_pow_leak
-        self.stats.area = self.core_config.dataMem_area
 
 
 class DRAM(Memory):
@@ -145,8 +147,5 @@ class DRAM(Memory):
         super().__init__(size)
 
         # Initialize stats
+        self.stats.config = self.tile_config
         self.stats.memory_type = "DRAM"
-        self.stats.unit_energy_consumption_read = self.tile_config.edram_pow_dyn
-        self.stats.unit_energy_consumption_write = self.tile_config.edram_pow_dyn
-        self.stats.leakage_energy_per_cycle = self.tile_config.edram_pow_leak
-        self.stats.area = self.tile_config.edram_area

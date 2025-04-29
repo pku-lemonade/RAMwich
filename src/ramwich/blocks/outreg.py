@@ -21,12 +21,7 @@ class OutputRegisterArray:
         self.registers = np.zeros(self.size, dtype=np.int32)
 
         # Initialize stats
-        self.stats = MemoryStats()
-        self.stats.memory_type = "Output Register Array"
-        self.stats.unit_energy_consumption_read = self.mvmu_config.xbar_config.outMem_pow_dyn
-        self.stats.unit_energy_consumption_write = self.mvmu_config.xbar_config.outMem_pow_dyn
-        self.stats.leakage_energy_per_cycle = self.mvmu_config.xbar_config.outMem_pow_leak
-        self.stats.area = self.mvmu_config.xbar_config.outMem_area
+        self.stats = MemoryStats(config=self.mvmu_config, memory_type="Output Register Array")
 
     def write(self, value: NDArray[np.int32], indices: Optional[NDArray[np.int32]] = None):
         """Write values to specific indices in the register array"""

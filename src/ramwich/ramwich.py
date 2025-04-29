@@ -15,7 +15,7 @@ from .core import Core
 from .mvmu import MVMU
 from .node import Node
 from .ops import CoreOp, Operation, TileOp, Weight
-from .stats import Stats
+from .stats import Stats, StatsDict
 from .tile import Tile
 from .utils.visualize import summarize_results
 
@@ -36,7 +36,6 @@ class RAMwich:
                 raise ValueError(f"Unsupported config format: {config_file}. Use JSON or YAML.")
 
         self.env = simpy.Environment()
-        self.stats = Stats()  # Add stats attribute
 
         # Build the hierarchical architecture
         self.nodes: List[Node] = self._build_architecture()
@@ -210,13 +209,16 @@ class RAMwich:
 
         active_cycles = self.env.now - start_time
 
-        stats = self.get_stats()
+        stats_dict = self.get_stats()
 
-        stats.print()
+        stats_dict.print()
 
         logger.info(f"Simulation completed at time {self.env.now}")
         # summarize_results(self.nodes)
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Get statistics for this Simulator and its components"""
-        return self.stats.get_stats(components=self.nodes)
+        stats_dict = StatsDict()
+        for node in self.nodes:
+            stats_dict.merge(node.get_stats())
+        return stats_dict

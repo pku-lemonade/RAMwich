@@ -10,7 +10,7 @@ from .config import Config
 from .mvmu import MVMU
 from .ops import CoreOp
 from .pipeline import Pipeline, StageConfig
-from .stats import Stats
+from .stats import Stats, StatsDict
 from .visitor import CoreDecodeVisitor, CoreExecutionVisitor, CoreFetchVisitor
 
 logger = logging.getLogger(__name__)
@@ -43,9 +43,6 @@ class Core:
 
         # Initialize MVMUs
         self.mvmus = [MVMU(id=i, config=self.config) for i in range(self.config.num_mvmus_per_core)]
-
-        # Initialize stats
-        self.stats = Stats()
 
         # Initialize simulation timing attributes
         self.start_time = 0
@@ -160,29 +157,33 @@ class Core:
 
         logger.info(f"Core {self.id} finished execution at time {env.now}")
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Get statistics for this Core by aggregating from all components"""
+        stats_dict = StatsDict()
         # first add pseudo components stats
         # Core Control Unit
-        self.stats.increment_component_activation("Core Control Unit", self.active_cycles)
-        self.stats.increment_component_dynamic_energy(
-            "Core Control Unit", self.active_cycles * self.core_config.ccu_pow
+        stats_dict["Core Control Unit"] = Stats(
+            activation=self.active_cycles,
+            dynamic_energy=self.active_cycles * self.core_config.ccu_pow_dyn,
+            leakage_energy=self.core_config.ccu_pow_leak,
+            area=self.core_config.ccu_area,
         )
-        # self.stats.increment_component_leakage_energy("Core Control Unit", self.core_config.ccu_pow_leak)
-        self.stats.increment_component_area("Core Control Unit", self.core_config.ccu_area)
 
         # Core instruction memory
-        self.stats.increment_component_activation("Core instruction memory", len(self.operations))
-        self.stats.increment_component_dynamic_energy(
-            "Core instruction memory", len(self.operations) * self.core_config.instrnMem_pow_dyn
+        stats_dict["Core instruction memory"] = Stats(
+            activation=len(self.operations),
+            dynamic_energy=len(self.operations) * self.core_config.instrnMem_pow_dyn,
+            leakage_energy=self.core_config.instrnMem_pow_leak,
+            area=self.core_config.instrnMem_area,
         )
-        self.stats.increment_component_leakage_energy("Core instruction memory", self.core_config.instrnMem_pow_leak)
-        self.stats.increment_component_area("Core instruction memory", self.core_config.instrnMem_area)
 
-        # then add stats from all components
-        self.stats.get_stats([self.vfu, self.cache] + self.mvmus)
+        # then add stats from all other components
+        stats_dict.merge(self.cache.get_stats())
+        stats_dict.merge(self.vfu.get_stats())
+        for mvmu in self.mvmus:
+            stats_dict.merge(mvmu.get_stats())
 
         # Calculate total leakage energy based on active cycles
-        self.stats.calculate_leakage_energy(self.active_cycles)
+        stats_dict.update_leakage_energy(self.active_cycles)
 
-        return self.stats
+        return stats_dict

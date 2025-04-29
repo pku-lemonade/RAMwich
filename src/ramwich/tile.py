@@ -10,7 +10,7 @@ from .blocks.router import Network, Router
 from .config import Config
 from .core import Core
 from .ops import Halt, Recv, Send, TileOpType
-from .stats import Stats
+from .stats import Stats, StatsDict
 
 logger = logging.getLogger(__name__)
 
@@ -34,9 +34,6 @@ class Tile:
 
         # Initialize cores
         self.cores = [Core(id=i, parent=self, config=self.config) for i in range(self.config.num_cores_per_tile)]
-
-        # Initialize stats
-        self.stats = Stats()
 
         # Initialize simulation timing attributes
         self.start_time = 0
@@ -132,30 +129,37 @@ class Tile:
         """Get statistics for this Tile and its components"""
         # For I/O tiles, we only need to return the stats of the router
         if self.id in [0, 1]:
-            return self.stats.get_stats([self.router])
+            return self.router.get_stats()
+
+        stats_dict = StatsDict()
 
         # first add pseudo compoents stats
         # Tile Control Unit
-        self.stats.increment_component_activation("Tile Control Unit", self.active_cycles)
-        self.stats.increment_component_dynamic_energy(
-            "Tile Control Unit", self.active_cycles * self.tile_config.tcu_pow
+        stats_dict["Tile Control Unit"] = Stats(
+            activation_count=self.active_cycles,
+            dynamic_energy=self.active_cycles * self.tile_config.tcu_pow_dyn,
+            leakage_energy=self.tile_config.tcu_pow_leak,
+            area=self.tile_config.tcu_area,
         )
-        # self.stats.increment_component_leakage_energy("Tile Control Unit", self.tile_config.tcu_pow_leak)
-        self.stats.increment_component_area("Tile Control Unit", self.tile_config.tcu_area)
 
         # Tile instruction memory
-        self.stats.increment_component_activation("Tile instruction memory", len(self.operations))
-        self.stats.increment_component_dynamic_energy(
-            "Tile instruction memory", len(self.operations) * self.tile_config.instrnMem_pow_dyn
+        stats_dict["Tile instruction memory"] = Stats(
+            activation_count=len(self.operations),
+            dynamic_energy=len(self.operations) * self.tile_config.instrnMem_pow_dyn,
+            leakage_energy=self.tile_config.instrnMem_pow_leak,
+            area=self.tile_config.instrnMem_area,
         )
-        self.stats.increment_component_leakage_energy("Tile instruction memory", self.tile_config.instrnMem_pow_leak)
-        self.stats.increment_component_area("Tile instruction memory", self.tile_config.instrnMem_area)
 
         # then add stats from all components except the cores
-        self.stats.get_stats([self.router, self.dram_controller, self.edram])
+        stats_dict.merge(self.edram.get_stats())
+        stats_dict.merge(self.dram_controller.get_stats())
+        stats_dict.merge(self.router.get_stats())
 
         # Calculate the leakage energy all components except the cores based on active cycles
-        self.stats.calculate_leakage_energy(self.active_cycles)
+        stats_dict.update_leakage_energy(self.active_cycles)
 
         # Add the stats of all cores
-        return self.stats.get_stats(self.cores)
+        for core in self.cores:
+            stats_dict.merge(core.get_stats())
+
+        return stats_dict

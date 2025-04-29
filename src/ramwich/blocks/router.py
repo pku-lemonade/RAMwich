@@ -4,7 +4,7 @@ from numpy.typing import NDArray
 from pydantic import BaseModel, Field
 
 from ..config import Config
-from ..stats import Stats
+from ..stats import Stats, StatsDict
 from .noc import Network
 
 
@@ -12,17 +12,7 @@ class RouterStats(BaseModel):
     """Statistics for DRAM operations"""
 
     # Universal metrics
-    unit_energy_consumption_receive: float = Field(
-        default=0.0, description="Energy consumption for each packet received in pJ"
-    )
-    unit_energy_consumption_send_inter: float = Field(
-        default=0.0, description="Energy consumption for each packet sent inter_node in pJ"
-    )
-    unit_energy_consumption_send_intra: float = Field(
-        default=0.0, description="Energy consumption for each packet sent intra_node in pJ"
-    )
-    leakage_energy_per_cycle: float = Field(default=0.0, description="Leakage energy consumption for 1 cycle in pJ")
-    area: float = Field(default=0.0, description="Area in mm^2")
+    config: Config = Field(default=Config(), description="Configuration object")
 
     # Router specific metrics
     packets_created: int = Field(default=0, description="Number of packets created")
@@ -34,27 +24,33 @@ class RouterStats(BaseModel):
 
     def get_stats(self) -> Stats:
         """Convert MemoryStats to general Stats object"""
-        stats = Stats()
+        stats_dict = StatsDict()
 
         # Map Router metrics to Stat object
-        stats.increment_component_activation("Router send internode", self.packets_sent_internode)
-        stats.increment_component_activation("Router send intranode", self.packets_sent_intranode)
-        stats.increment_component_activation("Router receive", self.packets_received)
-        """
-        stats.increment_component_dynamic_energy(
-            "Router send internode", self.unit_energy_consumption_send_inter * self.packets_sent_internode
+        stats_dict["Router"] = Stats(
+            activation_count=self.packets_sent,
+            dynamic_energy=self.config.noc_config.noc_inter_pow_dyn * self.packets_sent_internode / 12
+            + self.config.noc_config.noc_intra_pow_dyn * self.packets_sent_intranode
+            + self.config.tile_config.receive_buffer_pow_dyn * (self.packets_received + self.packets_read),
+            leakage_energy=self.config.tile_config.receive_buffer_pow_leak,
+            area=self.config.tile_config.receive_buffer_area,
         )
-        stats.increment_component_dynamic_energy(
-            "Router send intranode", self.unit_energy_consumption_send_intra * self.packets_sent_intranode
+        stats_dict["Router send internode"] = Stats(
+            activation_count=self.packets_sent_internode,
+            dynamic_energy=self.config.noc_config.noc_inter_pow_dyn
+            * self.packets_sent_internode
+            / 12,  # Align with PUMA
         )
-        """
-        stats.increment_component_dynamic_energy(
-            "Router receive", self.unit_energy_consumption_receive * (self.packets_received + self.packets_read)
+        stats_dict["Router send intranode"] = Stats(
+            activation_count=self.packets_sent_intranode,
+            dynamic_energy=self.config.noc_config.noc_intra_pow_dyn,  # This is the energy per cycle, needs to be multiplied by the number of cycles
         )
-        stats.increment_component_leakage_energy("Router", self.leakage_energy_per_cycle)
-        stats.increment_component_area("Router", self.area)
+        stats_dict["Router receive"] = Stats(
+            activation_count=self.packets_received,
+            dynamic_energy=self.config.tile_config.receive_buffer_pow_dyn * (self.packets_received + self.packets_read),
+        )
 
-        return stats
+        return stats_dict
 
 
 class Router:
@@ -70,12 +66,7 @@ class Router:
         self.network.register_router(self)
 
         # Initialize stats
-        self.stats = RouterStats()
-        self.stats.unit_energy_consumption_receive = self.config.tile_config.receive_buffer_pow_dyn
-        self.stats.unit_energy_consumption_send_inter = self.config.noc_config.noc_inter_pow_dyn
-        self.stats.unit_energy_consumption_send_intra = self.config.noc_config.noc_intra_pow_dyn
-        self.stats.leakage_energy_per_cycle = self.config.tile_config.receive_buffer_pow_leak
-        self.stats.area = self.config.tile_config.receive_buffer_area
+        self.stats = RouterStats(config=self.config)
 
     def run(self, env: simpy.Environment):
         """Run the router simulation"""
