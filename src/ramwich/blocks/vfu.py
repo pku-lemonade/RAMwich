@@ -38,19 +38,15 @@ class VFUStats(BaseModel):
         )
         stats_dict["VFU MUL"] = Stats(
             activation_count=self.mul_operations,
-            dynamic_energy=self.config.alu_pow_mul_dyn * self.mul_operations,
         )
         stats_dict["VFU DIV"] = Stats(
             activation_count=self.div_operations,
-            dynamic_energy=self.config.alu_pow_div_dyn * self.div_operations,
         )
         stats_dict["VFU ACT"] = Stats(
             activation_count=self.act_operations,
-            dynamic_energy=self.config.act_pow_dyn * self.act_operations,
         )
         stats_dict["VFU OTHERS"] = Stats(
             activation_count=self.other_operations,
-            dynamic_energy=self.config.alu_pow_others_dyn * self.other_operations,
         )
 
         return stats_dict
