@@ -66,7 +66,7 @@ python tests/test_mlp_on_mnist.py
 
 - [x] convert puma config .yaml files that can be read by RAMwich/dac_config adc_config
 - [x] convert puma compiler output .weight to .json files that conform to load_weights
-- [ ] modify stats class according to puma simulator
+- [x] modify stats class according to puma simulator
 
 ### ETA: 1 week (1 day for each unit)
 
