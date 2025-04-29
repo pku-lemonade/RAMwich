@@ -30,8 +30,8 @@ class RouterStats(BaseModel):
         stats_dict["Router"] = Stats(
             activation_count=self.packets_sent,
             dynamic_energy=self.config.noc_config.noc_inter_pow_dyn * self.packets_sent_internode / 12
-            + self.config.noc_config.noc_intra_pow_dyn * self.packets_sent_intranode
-            + self.config.tile_config.receive_buffer_pow_dyn * (self.packets_received + self.packets_read),
+            + self.config.tile_config.receive_buffer_pow_dyn
+            * (self.packets_received + self.packets_read),  # intra-node send dynamic will be calculated in the node
             leakage_energy=self.config.tile_config.receive_buffer_pow_leak,
             area=self.config.tile_config.receive_buffer_area,
         )
@@ -43,7 +43,6 @@ class RouterStats(BaseModel):
         )
         stats_dict["Router send intranode"] = Stats(
             activation_count=self.packets_sent_intranode,
-            dynamic_energy=self.config.noc_config.noc_intra_pow_dyn,  # This is the energy per cycle, needs to be multiplied by the number of cycles
         )
         stats_dict["Router receive"] = Stats(
             activation_count=self.packets_received,
