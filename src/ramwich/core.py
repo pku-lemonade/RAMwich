@@ -133,7 +133,7 @@ class Core:
         # Save the environment
         self.env = env
 
-        logger.info(f"Core {self.id} starting execution at time {env.now}")
+        logger.info(f"Tile {self.parent.id} Core {self.id} starting execution at time {env.now}")
 
         self.start_time = env.now
 
@@ -155,7 +155,7 @@ class Core:
 
         self.active_cycles = env.now - self.start_time
 
-        logger.info(f"Core {self.id} finished execution at time {env.now}")
+        logger.info(f"Tile {self.parent.id} Core {self.id} finished execution at time {env.now}")
 
     def get_stats(self) -> StatsDict:
         """Get statistics for this Core by aggregating from all components"""
