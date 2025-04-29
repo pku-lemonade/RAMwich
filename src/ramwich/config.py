@@ -237,7 +237,8 @@ class TileConfig(BaseModel):
     """Tile configuration"""
 
     # Tile Control unit
-    tcu_pow: float = Field(default=0.25 * 0.2, description="Tile control unit power")
+    tcu_pow_dyn: float = Field(default=0.25 * 0.2, description="Tile control unit dynamic power")
+    tcu_pow_leak: float = Field(default=0, description="Tile control unit leakage power")
     tcu_area: float = Field(default=0.00145, description="Tile control unit area")
 
     # EDRAM lookup tables
@@ -379,7 +380,8 @@ class CoreConfig(BaseModel):
     """Core configuration"""
 
     # Core Control unit (control unit and pipeline registers)
-    ccu_pow: float = Field(default=1.25 * 0.2, description="Core control unit power")
+    ccu_pow_dyn: float = Field(default=1.25 * 0.2, description="Core control unit dynamic power")
+    ccu_pow_leak: float = Field(default=0, description="Core control unit leakage power")
     ccu_area: float = Field(default=0.00145 * 2.25, description="Core control unit area")
 
     # Memory lookup tables
@@ -538,12 +540,12 @@ class Config(BaseModel):
     model_config = ConfigDict(frozen=True)
     """Configuration for the RAMwich Simulator"""
     num_nodes: int = Field(default=1, description="Number of nodes in the system")
-    num_tiles_per_node: int = Field(description="Number of tiles per node")
+    num_tiles_per_node: int = Field(default=4, description="Number of tiles per node")
     num_cores_per_tile: int = Field(default=8, description="Number of cores per tile")
     num_mvmus_per_core: int = Field(default=6, description="Number of MVMUs per core")
 
     addr_width: int = Field(default=32, description="Address width")
-    data_width: int = Field(description="Data width")
+    data_width: int = Field(default=8, description="Data width")
     instrn_width: int = Field(default=48, description="Instruction width")
 
     # Add configuration for components with default factories

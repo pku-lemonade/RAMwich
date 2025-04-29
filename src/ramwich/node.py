@@ -3,7 +3,7 @@ from typing import List
 
 from .blocks.router import Network
 from .config import Config
-from .stats import Stats
+from .stats import Stats, StatsDict
 from .tile import Tile
 
 logger = logging.getLogger(__name__)
@@ -21,9 +21,6 @@ class Node:
         self.tiles = [Tile(id=i, parent=self, config=config) for i in range(config.num_tiles_per_node)]
 
         self.network_busy_cycles = 0
-
-        # Initialize stats
-        self.stats = Stats()
 
     def __repr__(self):
         return f"Node({self.id}, tiles={len(self.tiles)})"
@@ -50,23 +47,19 @@ class Node:
 
     def get_stats(self) -> Stats:
         """Get statistics for this Node and its components"""
+        stats_dict = StatsDict()
+
         # first add NOC stats
-        self.stats.get_stats(components=[self.network])
+        stats_dict.merge(self.network.get_stats())
 
         # Calculate the leakage energy for the NOC
-        self.stats.calculate_leakage_energy(self.network.get_queue_busy_cycles())
+        stats_dict.update_leakage_energy(self.network.get_queue_busy_cycles())
 
         # Add the stats from each tile
-        self.stats.get_stats(components=self.tiles)
+        for tile in self.tiles:
+            stats_dict.merge(tile.get_stats())
 
-        # Calculate the dynamic energy for the NOC
-        internode_packets = self.stats.components_activation_count["Router send internode"]
-        self.stats.increment_component_dynamic_energy(
-            "Router send internode",
-            self.config.noc_config.noc_inter_pow_dyn * internode_packets / 12,  # Align with PUMA
-        )
-        self.stats.increment_component_dynamic_energy(
-            "Router send intranode", self.config.noc_config.noc_intra_pow_dyn * self.network.get_queue_busy_cycles()
-        )
+        # Calculate the dynamic energy for Router intranode send since it is base on the busy cycles
+        stats_dict["Router send intranode"].dynamic_energy *= self.network.get_queue_busy_cycles()
 
-        return self.stats
+        return stats_dict

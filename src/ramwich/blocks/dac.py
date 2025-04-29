@@ -4,17 +4,16 @@ import numpy as np
 from numpy.typing import NDArray
 from pydantic import BaseModel, Field
 
-from ..config import MVMUConfig
-from ..stats import Stats
+from ..config import DACConfig, MVMUConfig
+from ..stats import Stats, StatsDict
 
 
 class DACStats(BaseModel):
     """Statistics tracking for DAC (Digital-to-Analog Converter) components"""
 
-    # Universal metrics
-    unit_energy_consumption: float = Field(default=0.0, description="Energy consumption for each convertion in pJ")
-    leakage_energy_per_cycle: float = Field(default=0.0, description="Leakage energy consumption for 1 cycle in pJ")
-    area: float = Field(default=0.0, description="Area in mm^2")
+    # Config
+    config: DACConfig = Field(default=DACConfig(), description="DAC configuration")
+    size: int = Field(default=0, description="Size of the DAC array")
 
     # DAC specific metrics
     conversions: int = Field(default=0, description="Number of D/A conversions performed")
@@ -22,15 +21,14 @@ class DACStats(BaseModel):
 
     def get_stats(self) -> Stats:
         """Convert DACStats to general Stats object"""
-        stats = Stats()
+        stats = Stats(
+            activation_count=self.conversions,
+            dynamic_energy=self.config.pow_dyn * self.conversions,
+            leakage_energy=self.config.pow_leak * self.size,
+            area=self.config.area * self.size,
+        )
 
-        # Map DAC metrics to Stat object
-        stats.increment_component_activation("DAC", self.conversions)
-        stats.increment_component_dynamic_energy("DAC", self.unit_energy_consumption * self.conversions)
-        stats.increment_component_leakage_energy("DAC", self.leakage_energy_per_cycle)
-        stats.increment_component_area("DAC", self.area)
-
-        return stats
+        return StatsDict({"DAC": stats})
 
 
 class DACArray:
@@ -45,10 +43,7 @@ class DACArray:
         self.max_value = (1 << self.mvmu_config.dac_config.resolution) - 1
 
         # Initialize stats
-        self.stats = DACStats()
-        self.stats.unit_energy_consumption = self.dac_config.pow_dyn
-        self.stats.leakage_energy_per_cycle = self.dac_config.pow_leak * self.size
-        self.stats.area = self.dac_config.area * self.size
+        self.stats = DACStats(config=self.dac_config, size=self.size)
 
     def convert(self, digital_value: NDArray[np.int32]):
         """Simulate DAC conversion from digital to analog"""

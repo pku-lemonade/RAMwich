@@ -46,6 +46,14 @@ export PYTHONPATH="$PWD/src:$PYTHONPATH"
 python tests/test_tile_features.py
 ```
 
+To test a single MLP run on MNIST:
+
+```shell
+export PYTHONPATH="$PWD/src:$PYTHONPATH"
+python tests/test_mlp_on_mnist.py
+```
+
+
 ## TODO
 
 ### ETA: 2 days
@@ -72,16 +80,24 @@ python tests/test_tile_features.py
     - [x] implement visitor method for load and store
   - [x] implement all tile visitor methods (send and receive)
   - [ ] test the run time, make sure it is faster than original simulator.
-  - [ ] run timing simulation, check with puma that cycles match
-  - [ ] run functional simulation, verify that accuracy match
-- [ ] test the RAMwich simulator with mlp, verify that cylces, energy, and area are aligned with puma
+  - [x] run timing simulation, check with puma that cycles match
+  - [x] run functional simulation, verify that accuracy match
+- [x] test the RAMwich simulator with mlp, verify that cycles, energy, and area are aligned with puma
 
 ### ETA: 2 days
 
-- [ ] test the RAMwich simulator with mlp, verify that accuracy is aligned
+- [x] test the RAMwich simulator with mlp, verify that accuracy is aligned
+- [ ] Add multi-batch function
+
+### ETA
+
+- [ ] Add SRAM CIM support for inference (2 to 3 days)
+- [ ] Verify all parameters of blocks
+- [ ] Run test on LeNet-5, ResNet-20, parallel-CNN, DS-CNN
 
 ### misc
 
 - [x] save/load weight in npy
 - [ ] recalculate MVM latency
 - [ ] redesign receive logic
+- [ ] Do rusults visualize

@@ -180,9 +180,6 @@ class CoreExecutionVisitor(CoreVisitor):
         # Schedule callback when read completes
         read_event.callbacks.append(on_dram_read_complete)
 
-        # Update operation count
-        self.core.stats.increment_op_count("load")
-
         # Return the done event to the caller
         return done_event
 
@@ -212,9 +209,6 @@ class CoreExecutionVisitor(CoreVisitor):
         # Schedule the write request after the read completes
         write_event = self.core.env.process(send_write_request_after_latency())
 
-        # Update operation count
-        self.core.stats.increment_op_count("store")
-
         # Return the done event to the caller
         return write_event
 
@@ -224,9 +218,6 @@ class CoreExecutionVisitor(CoreVisitor):
         # write the vector to the destination address
         self.core.write_to_register(op.dest, vector)
 
-        # Update operation count
-        self.core.stats.increment_op_count("set")
-
         # return the done event to the caller
         # done_event is a timeout event since this operation takes fixed time
         return self.core.env.timeout(op.accept(self.timing_visitor))
@@ -234,9 +225,6 @@ class CoreExecutionVisitor(CoreVisitor):
     def visit_copy(self, op):
         vector = self.core.read_from_register(op.read, op.vec)
         self.core.write_to_register(op.dest, vector)
-
-        # Update operation count
-        self.core.stats.increment_op_count("copy")
 
         # return the done event to the caller
         # done_event is a timeout event since this operation takes fixed time
@@ -251,9 +239,6 @@ class CoreExecutionVisitor(CoreVisitor):
             result = self.core.vfu.calculate(op.opcode, a)
         self.core.write_to_register(op.dest, result)
 
-        # Update operation count
-        self.core.stats.increment_op_count("vfu")
-
         # return the done event to the caller
         # done_event is a timeout event since this operation takes fixed time
         return self.core.env.timeout(op.accept(self.timing_visitor))
@@ -262,17 +247,11 @@ class CoreExecutionVisitor(CoreVisitor):
         for mvmu_id in op.xbar:
             self.core.get_mvmu(mvmu_id).execute_mvm()
 
-        # Update operation count
-        self.core.stats.increment_op_count("mvm")
-
         # return the done event to the caller
         # done_event is a timeout event since this operation takes fixed time
         return self.core.env.timeout(op.accept(self.timing_visitor))
 
     def visit_hlt(self, op):
-        # Update operation count
-        self.core.stats.increment_op_count("hlt")
-
         # return the done event to the caller
         # done_event is a timeout event since this operation takes fixed time
         return self.core.env.timeout(op.accept(self.timing_visitor))

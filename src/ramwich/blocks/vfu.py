@@ -4,23 +4,16 @@ import numpy as np
 from numpy.typing import NDArray
 from pydantic import BaseModel, Field
 
-from ..config import Config
+from ..config import Config, CoreConfig
 from ..ops import VFUOpType
-from ..stats import Stats
+from ..stats import Stats, StatsDict
 
 
 class VFUStats(BaseModel):
     """Statistics for VFU operations"""
 
     # Universal metrics
-    unit_energy_consumption_mul: float = Field(default=0.0, description="Energy consumption for each convertion in pJ")
-    unit_energy_consumption_div: float = Field(default=0.0, description="Energy consumption for each convertion in pJ")
-    unit_energy_consumption_act: float = Field(default=0.0, description="Energy consumption for each convertion in pJ")
-    unit_energy_consumption_others: float = Field(
-        default=0.0, description="Energy consumption for each convertion in pJ"
-    )
-    leakage_energy_per_cycle: float = Field(default=0.0, description="Leakage energy consumption for 1 cycle in pJ")
-    area: float = Field(default=0.0, description="Area in mm^2")
+    config: CoreConfig = Field(default=CoreConfig(), description="Configuration object")
 
     # VFU specific metrics
     mul_operations: int = Field(default=0, description="Number of read operations")
@@ -31,32 +24,36 @@ class VFUStats(BaseModel):
 
     def get_stats(self) -> Stats:
         """Convert SRAMStats to general Stats object"""
-        stats = Stats()
+        stats_dict = StatsDict()
 
         # Map VFU metrics to Stat object
-        dynamic_energy = (
-            self.unit_energy_consumption_mul * self.mul_operations
-            + self.unit_energy_consumption_div * self.div_operations
-            + self.unit_energy_consumption_act * self.act_operations
-            + self.unit_energy_consumption_others * self.other_operations
+        stats_dict["VFU"] = Stats(
+            activation_count=self.total_operations,
+            dynamic_energy=self.config.alu_pow_mul_dyn * self.mul_operations
+            + self.config.alu_pow_div_dyn * self.div_operations
+            + self.config.act_pow_dyn * self.act_operations
+            + self.config.alu_pow_others_dyn * self.other_operations,
+            leakage_energy=self.config.alu_pow_leak,
+            area=self.config.alu_area + self.config.act_area,
+        )
+        stats_dict["VFU MUL"] = Stats(
+            activation_count=self.mul_operations,
+            dynamic_energy=self.config.alu_pow_mul_dyn * self.mul_operations,
+        )
+        stats_dict["VFU DIV"] = Stats(
+            activation_count=self.div_operations,
+            dynamic_energy=self.config.alu_pow_div_dyn * self.div_operations,
+        )
+        stats_dict["VFU ACT"] = Stats(
+            activation_count=self.act_operations,
+            dynamic_energy=self.config.act_pow_dyn * self.act_operations,
+        )
+        stats_dict["VFU OTHERS"] = Stats(
+            activation_count=self.other_operations,
+            dynamic_energy=self.config.alu_pow_others_dyn * self.other_operations,
         )
 
-        stats.increment_component_activation("VFU", self.total_operations)
-        stats.increment_component_activation("VFU MUL", self.mul_operations)
-        stats.increment_component_activation("VFU DIV", self.div_operations)
-        stats.increment_component_activation("VFU ACT", self.act_operations)
-        stats.increment_component_activation("VFU OTHERS", self.other_operations)
-        stats.increment_component_dynamic_energy("VFU", dynamic_energy)
-        stats.increment_component_dynamic_energy("VFU MUL", self.unit_energy_consumption_mul * self.mul_operations)
-        stats.increment_component_dynamic_energy("VFU DIV", self.unit_energy_consumption_div * self.div_operations)
-        stats.increment_component_dynamic_energy("VFU ACT", self.unit_energy_consumption_act * self.act_operations)
-        stats.increment_component_dynamic_energy(
-            "VFU OTHERS", self.unit_energy_consumption_others * self.other_operations
-        )
-        stats.increment_component_leakage_energy("VFU", self.leakage_energy_per_cycle)
-        stats.increment_component_area("VFU", self.area)
-
-        return stats
+        return stats_dict
 
 
 class VFU:
@@ -72,13 +69,7 @@ class VFU:
         self._init_op_handlers()
 
         # Initialize stats
-        self.stats = VFUStats()
-        self.stats.unit_energy_consumption_mul = self.config.core_config.alu_pow_mul_dyn
-        self.stats.unit_energy_consumption_div = self.config.core_config.alu_pow_div_dyn
-        self.stats.unit_energy_consumption_act = self.config.core_config.act_pow_dyn
-        self.stats.unit_energy_consumption_others = self.config.core_config.alu_pow_others_dyn
-        self.stats.leakage_energy_per_cycle = self.config.core_config.alu_pow_leak
-        self.stats.area = self.config.core_config.alu_area + self.config.core_config.act_area
+        self.stats = VFUStats(config=self.config.core_config)
 
     def _init_op_handlers(self):
         """Initialize operation handlers dictionary"""

@@ -3,31 +3,29 @@ from numpy.typing import NDArray
 from pydantic import BaseModel, Field
 
 from ..config import MVMUConfig
-from ..stats import Stats
+from ..stats import Stats, StatsDict
 
 
 class SNHStats(BaseModel):
     """Statistics tracking for Sample-and-Hold (SNH) components"""
 
     # Universal metrics
-    unit_energy_consumption: float = Field(default=0.0, description="Energy consumption for each sample in pJ")
-    leakage_energy_per_cycle: float = Field(default=0.0, description="Leakage energy consumption for 1 cycle in pJ")
-    area: float = Field(default=0.0, description="Area in mm^2")
+    config: MVMUConfig = Field(default=MVMUConfig(), description="SNH configuration")
+    size: int = Field(default=0, description="Size of the SNH array")
 
     # SNH specific metrics
     samples: int = Field(default=0, description="Number of samples taken")
 
     def get_stats(self) -> Stats:
         """Convert SNHStats to general Stats object"""
-        stats = Stats()
+        stats = Stats(
+            activation_count=self.samples,
+            dynamic_energy=self.config.sna_pow_dyn * self.samples,
+            leakage_energy=self.config.sna_pow_leak * self.size,
+            area=self.config.sna_area * self.size,
+        )
 
-        # Map SNH metrics to Stat object
-        stats.increment_component_activation("SNH", self.samples)
-        stats.increment_component_dynamic_energy("SNH", self.unit_energy_consumption * self.samples)
-        stats.increment_component_leakage_energy("SNH", self.leakage_energy_per_cycle)
-        stats.increment_component_area("SNH", self.area)
-
-        return stats
+        return StatsDict({"Sample and Hold": stats})
 
 
 class SNHArray:
@@ -43,10 +41,7 @@ class SNHArray:
         self.size = np.prod(self.shape)
 
         # Initialize stats
-        self.stats = SNHStats()
-        self.stats.unit_energy_consumption = self.mvmu_config.snh_pow_dyn
-        self.stats.leakage_energy_per_cycle = self.mvmu_config.snh_pow_leak * self.size
-        self.stats.area = self.mvmu_config.snh_area * self.size
+        self.stats = SNHStats(config=self.mvmu_config, size=self.size)
 
     def sample(self):
         """Sample the input data"""

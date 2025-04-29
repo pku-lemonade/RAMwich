@@ -4,17 +4,16 @@ import numpy as np
 from numpy.typing import NDArray
 from pydantic import BaseModel, Field
 
-from ..config import ADCType, MVMUConfig
-from ..stats import Stats
+from ..config import ADCConfig, ADCType, MVMUConfig
+from ..stats import Stats, StatsDict
 
 
 class ADCStats(BaseModel):
     """Statistics tracking for ADC (Analog-to-Digital Converter) components"""
 
-    # Universal metrics
-    unit_energy_consumption: float = Field(default=0.0, description="Energy consumption for each convertion in pJ")
-    leakage_energy_per_cycle: float = Field(default=0.0, description="Leakage energy consumption for 1 cycle in pJ")
-    area: float = Field(default=0.0, description="Area in mm^2")
+    # Config
+    config: ADCConfig = Field(default=ADCConfig(), description="ADC configuration")
+    size: int = Field(default=0, description="Size of the ADC array")
 
     # ADC specific metrics
     conversions: int = Field(default=0, description="Number of A/D conversions performed")
@@ -22,17 +21,16 @@ class ADCStats(BaseModel):
     conversion_errors: float = Field(default=0.0, description="Accumulated conversion error")
     active_cycles: int = Field(default=0, description="Number of active cycles")
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Convert ADCStats to general Stats object"""
-        stats = Stats()
+        stats = Stats(
+            activation_count=self.conversions,
+            dynamic_energy=self.config.pow_dyn * self.conversions,
+            leakage_energy=self.config.pow_leak * self.size,
+            area=self.config.area * self.size,
+        )
 
-        # Map ADC metrics to Stat object
-        stats.increment_component_activation("ADC", self.conversions)
-        stats.increment_component_dynamic_energy("ADC", self.unit_energy_consumption * self.conversions)
-        stats.increment_component_leakage_energy("ADC", self.leakage_energy_per_cycle)
-        stats.increment_component_area("ADC", self.area)
-
-        return stats
+        return StatsDict({"ADC": stats})
 
 
 class ADCArray:
@@ -72,10 +70,7 @@ class ADCArray:
         self.current_step = voltage_step * conductance_steps
 
         # Initialize stats
-        self.stats = ADCStats()
-        self.stats.unit_energy_consumption = self.adc_config.pow_dyn
-        self.stats.leakage_energy_per_cycle = self.adc_config.pow_leak * self.size
-        self.stats.area = self.adc_config.area * self.size
+        self.stats = ADCStats(config=self.adc_config, size=self.size)
 
     def convert(self, analog_value_pos: NDArray[np.float64], analog_value_neg: NDArray[np.float64]):
         """Simulate ADC conversion from analog to digital"""
