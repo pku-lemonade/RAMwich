@@ -62,6 +62,5 @@ class Node:
         # Calculate the dynamic energy for Router intranode send since it is base on the busy cycles
         intra_node_dynamic_energy = self.config.noc_config.noc_intra_pow_dyn * self.network.get_queue_busy_cycles()
         stats_dict["Router"].dynamic_energy += intra_node_dynamic_energy
-        stats_dict["Router send intranode"].dynamic_energy = intra_node_dynamic_energy
 
         return stats_dict
