@@ -20,9 +20,9 @@ class SNHStats(BaseModel):
         """Convert SNHStats to general Stats object"""
         stats = Stats(
             activation_count=self.samples,
-            dynamic_energy=self.config.sna_pow_dyn * self.samples,
-            leakage_energy=self.config.sna_pow_leak * self.size,
-            area=self.config.sna_area * self.size,
+            dynamic_energy=self.config.snh_pow_dyn * self.samples,
+            leakage_energy=self.config.snh_pow_leak * self.size,
+            area=self.config.snh_area * self.size,
         )
 
         return StatsDict({"Sample and Hold": stats})
