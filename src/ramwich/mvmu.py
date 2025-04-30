@@ -74,7 +74,7 @@ class MVMU:
         abs_weights = np.abs(weights)
 
         # Convert all weights to fixed-point representation
-        int_weights = np.vectorize(lambda w: float_to_fixed(w, self.data_config.frac_bits))(abs_weights)
+        int_weights = np.vectorize(float_to_fixed)(abs_weights, self.data_config.frac_bits)
 
         # Initialize the output array
         xbar_weights = np.zeros((self.mvmu_config.num_rram_xbar_per_mvmu, xbar_size, xbar_size))
@@ -82,19 +82,17 @@ class MVMU:
         # Process each crossbar
         for k in range(self.mvmu_config.num_rram_xbar_per_mvmu):
             # Extract bits for this crossbar (still need to loop over k)
-            xbar_int_weights = np.vectorize(
-                lambda w: extract_bits(w, self.mvmu_config.stored_bit[k], self.mvmu_config.stored_bit[k + 1])
-            )(int_weights)
+            xbar_int_weights = np.vectorize(extract_bits)(
+                int_weights, self.mvmu_config.stored_bit[k], self.mvmu_config.stored_bit[k + 1]
+            )
 
             # Convert to conductance values (vectorized)
-            conductance_values = np.vectorize(
-                lambda w: int_to_conductance(
-                    w,
-                    self.mvmu_config.bits_per_cell[k],
-                    self.mvmu_config.xbar_config.rram_conductance_min,
-                    self.mvmu_config.xbar_config.rram_conductance_max,
-                )
-            )(xbar_int_weights)
+            conductance_values = np.vectorize(int_to_conductance)(
+                xbar_int_weights,
+                self.mvmu_config.bits_per_cell[k],
+                self.mvmu_config.xbar_config.rram_conductance_min,
+                self.mvmu_config.xbar_config.rram_conductance_max,
+            )
 
             # Apply signs and store in result array
             xbar_weights[k] = signs * conductance_values
