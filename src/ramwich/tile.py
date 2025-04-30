@@ -2,11 +2,10 @@ import logging
 from typing import List
 
 import numpy as np
-import simpy
 
 from .blocks.dram_controller import DRAMController
 from .blocks.memory import DRAM
-from .blocks.router import Network, Router
+from .blocks.router import Router
 from .config import Config
 from .core import Core
 from .ops import Halt, Recv, Send, TileOpType

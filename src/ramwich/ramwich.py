@@ -9,15 +9,10 @@ import simpy
 import yaml
 from numpy.typing import NDArray
 
-from .blocks.router import Network
 from .config import Config
-from .core import Core
-from .mvmu import MVMU
 from .node import Node
-from .ops import CoreOp, Operation, TileOp, Weight
-from .stats import Stats, StatsDict
-from .tile import Tile
-from .utils.visualize import summarize_results
+from .ops import CoreOp, Operation, TileOp
+from .stats import StatsDict
 
 # Configure logging
 logger = logging.getLogger(__name__)

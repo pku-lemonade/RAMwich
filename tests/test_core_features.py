@@ -1,10 +1,8 @@
-import argparse
 import logging
 
 import numpy as np
 import simpy
 
-from ramwich.blocks.router import Network
 from ramwich.config import Config
 from ramwich.node import Node
 from ramwich.ops import MVM, VFU, Copy, Hlt, Load, Set, Store

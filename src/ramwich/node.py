@@ -1,5 +1,4 @@
 import logging
-from typing import List
 
 from .blocks.router import Network
 from .config import Config

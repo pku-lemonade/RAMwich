@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 import simpy
 
-from ramwich.blocks.dram_controller import DRAMController, ReadRequest, WriteRequest
+from ramwich.blocks.dram_controller import DRAMController
 from ramwich.blocks.memory import DRAM
 from ramwich.config import TileConfig
 

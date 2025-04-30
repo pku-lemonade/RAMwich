@@ -1,5 +1,3 @@
-from typing import Any, Dict, Optional
-
 import numpy as np
 from numpy.typing import NDArray
 from pydantic import BaseModel, Field

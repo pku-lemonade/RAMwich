@@ -4,7 +4,7 @@ import numpy as np
 from numpy.typing import NDArray
 from pydantic import BaseModel, Field
 
-from ..config import DataConfig, MVMUConfig, XBARConfig
+from ..config import MVMUConfig, XBARConfig
 from ..stats import Stats, StatsDict
 
 

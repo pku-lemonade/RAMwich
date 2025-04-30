@@ -4,7 +4,6 @@ import numpy as np
 from numpy.typing import NDArray
 
 from ..config import MVMUConfig
-from ..stats import Stats
 from .memory import MemoryStats
 
 
