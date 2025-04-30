@@ -15,8 +15,8 @@ def main():
     weights_file = "examples/mlp_l4_mnist/weights.npz"
     activation_file = "examples/mlp_l4_mnist/activation.npy"
 
-    simulator = RAMwich(config_file=config_file)
-    simulator.run(ops_file=ops_file, weights_file=weights_file, activation=activation_file)
+    simulator = RAMwich(config_file=config_file, ops_file=ops_file, weights_file=weights_file)
+    simulator.run(activation=activation_file)
 
     output = simulator.get_node(0).get_tile(1).edram.cells[:10]
     output_float = output.astype(np.float64) / (1 << 8)
