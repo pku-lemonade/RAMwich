@@ -15,7 +15,7 @@ class NetworkStats(BaseModel):
     area_inter: float = Field(default=0.0, description="Area for NOC internode in mm^2")
     area_intra: float = Field(default=0.0, description="Area for NOC intranode in mm^2")
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Convert NetworkStats to general Stats object"""
         stats_dict = StatsDict()
 
@@ -99,6 +99,6 @@ class Network:
         """Return the count of cycles where any router had a non-empty send queue"""
         return self.queue_busy_cycles
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Get statistics for this Network"""
         return self.stats.get_stats()

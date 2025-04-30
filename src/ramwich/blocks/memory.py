@@ -121,7 +121,7 @@ class Memory:
         self.stats.total_operations += batch
         self.stats.total_operated_cells += length
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         return self.stats.get_stats()
 
 

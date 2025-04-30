@@ -124,7 +124,7 @@ class Tile:
 
         logger.info(f"Tile {self.id} finished execution at time {env.now}")
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Get statistics for this Tile and its components"""
         # For I/O tiles, we only need to return the stats of the router
         if self.id in [0, 1]:

@@ -64,7 +64,7 @@ class DRAMControllerStats(Stats):
     active_cycles: int = Field(default=0, description="Number of active cycles")
     operating_time: int = Field(default=0, description="Total operating time")
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Convert DRAMControllerStats to general Stats object"""
         stats = Stats(
             activation_count=self.total_requests,

@@ -63,6 +63,6 @@ class MuxArray:
 
         return reshaped_input[:, :, index]
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Get the statistics for this MUX array"""
         return self.stats.get_stats()

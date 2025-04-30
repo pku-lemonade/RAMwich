@@ -22,7 +22,7 @@ class VFUStats(BaseModel):
     other_operations: int = Field(default=0, description="Number of other operations")
     total_operations: int = Field(default=0, description="Total number of operations")
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Convert SRAMStats to general Stats object"""
         stats_dict = StatsDict()
 
@@ -191,5 +191,5 @@ class VFU:
             self.stats.other_operations += length
         self.stats.total_operations += length
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         return self.stats.get_stats()

@@ -15,7 +15,7 @@ class SNHStats(BaseModel):
     # SNH specific metrics
     samples: int = Field(default=0, description="Number of samples taken")
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Convert SNHStats to general Stats object"""
         stats = Stats(
             activation_count=self.samples,
@@ -47,6 +47,6 @@ class SNHArray:
         # Update the stats
         self.stats.samples += self.size
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Get the statistics for this SNH array"""
         return self.stats.get_stats()

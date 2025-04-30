@@ -9,7 +9,6 @@ from ..stats import Stats, StatsDict
 
 
 class XbarStats(BaseModel):
-
     # Universal metrics
     config: XBARConfig = Field(default=XBARConfig(), description="Xbar configuration")
     num_xbar: int = Field(default=0, description="Number of crossbars")
@@ -17,7 +16,7 @@ class XbarStats(BaseModel):
     # Xbar specific metrics
     mvm_operations: int = Field(default=0, description="Total number of operations")
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         # Map Xbar metrics to Stat object
         stats = Stats(
             activation_count=self.mvm_operations,
@@ -102,7 +101,7 @@ class XbarArray:
         """Update the execution time statistics"""
         self.stats.latency += execution_time
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Get statistics for this Xbar"""
         return self.stats.get_stats()
 

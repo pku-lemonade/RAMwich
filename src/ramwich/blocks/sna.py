@@ -16,7 +16,7 @@ class SNAStats(BaseModel):
     operations: int = Field(default=0, description="Number of operations performed")
     active_cycles: int = Field(default=0, description="Number of active cycles")
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Convert SNAStats to general Stats object"""
         stats = Stats(
             activation_count=self.operations,
@@ -82,6 +82,6 @@ class SNAArray:
 
         return result + current_value
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Convert SNAStats to general Stats object"""
         return self.stats.get_stats()

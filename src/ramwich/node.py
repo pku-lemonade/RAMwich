@@ -44,7 +44,7 @@ class Node:
 
         logger.info(f"Completed all operations for node {self.id}")
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Get statistics for this Node and its components"""
         stats_dict = StatsDict()
 

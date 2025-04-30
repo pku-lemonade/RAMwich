@@ -22,7 +22,7 @@ class RouterStats(BaseModel):
     packets_received: int = Field(default=0, description="Number of packets received")
     packets_read: int = Field(default=0, description="Number of packets read by receive operation")
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Convert MemoryStats to general Stats object"""
         stats_dict = StatsDict()
 
@@ -197,5 +197,5 @@ class Router:
 
         return data
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         return self.stats.get_stats()

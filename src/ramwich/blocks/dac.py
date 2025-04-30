@@ -17,7 +17,7 @@ class DACStats(BaseModel):
     conversions: int = Field(default=0, description="Number of D/A conversions performed")
     active_cycles: int = Field(default=0, description="Number of active cycles")
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Convert DACStats to general Stats object"""
         stats = Stats(
             activation_count=self.conversions,
@@ -68,6 +68,6 @@ class DACArray:
         """Return the total energy consumption in pJ"""
         return self.stats.energy_consumption
 
-    def get_stats(self) -> Stats:
+    def get_stats(self) -> StatsDict:
         """Return detailed statistics about this DAC"""
         return self.stats.get_stats()
