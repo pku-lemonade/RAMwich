@@ -70,7 +70,7 @@ python tests/test_mlp_on_mnist.py
 
 ### ETA: 1 week (1 day for each unit)
 
-- [ ] move the puma simulator functional simultion logic to RAMwich (add details in mvmu/adc/alu, need to decompose this task into smaller tasks later) Here is a more detailed plan:
+- [x] move the puma simulator functional simultion logic to RAMwich (add details in mvmu/adc/alu, need to decompose this task into smaller tasks later) Here is a more detailed plan:
   - [x] implement all core visitor methods
     - [x] implement and test MVMU components(xbar, adc, dac, sna etc.)
     - [x] implement mvm method in MVMU for visitor
@@ -79,7 +79,7 @@ python tests/test_mlp_on_mnist.py
     - [x] implement and test core and tile components for load and store(dram, dram controller etc.)
     - [x] implement visitor method for load and store
   - [x] implement all tile visitor methods (send and receive)
-  - [ ] test the run time, make sure it is faster than original simulator.
+  - [x] test the run time, make sure it is faster than original simulator.
   - [x] run timing simulation, check with puma that cycles match
   - [x] run functional simulation, verify that accuracy match
 - [x] test the RAMwich simulator with mlp, verify that cycles, energy, and area are aligned with puma
@@ -87,7 +87,7 @@ python tests/test_mlp_on_mnist.py
 ### ETA: 2 days
 
 - [x] test the RAMwich simulator with mlp, verify that accuracy is aligned
-- [ ] Add multi-batch function
+- [x] Add multi-batch function
 
 ### ETA
 
