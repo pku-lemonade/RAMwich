@@ -21,10 +21,10 @@ class MVMU:
     Matrix-Vector Multiply unit with multiple crossbar arrays with detailed hardware simulation.
     """
 
-    def __init__(self, id: int = 0, config: Config = None):
+    def __init__(self, id: int = 0, config: Config):
         # Basic MVMU properties
         self.id = id
-        self.config = config or Config()
+        self.config = config
         self.data_config = self.config.data_config
         self.mvmu_config = self.config.mvmu_config
 
