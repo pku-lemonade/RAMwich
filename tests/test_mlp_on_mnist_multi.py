@@ -1,20 +1,19 @@
 import concurrent.futures
 import logging
 import time
-from typing import Dict, List, Tuple
 
 import numpy as np
 
 from ramwich import RAMwich
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
+logging.basicConfig(level=logging.WARNING, format="%(asctime)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
 def process_batch(
-    worker_id: int, sample_indices: List[int], activation: np.ndarray, labels: np.ndarray, config_dict: Dict
-) -> List[bool]:
+    worker_id: int, sample_indices: list[int], activation: np.ndarray, labels: np.ndarray, config_dict: dict
+) -> list[bool]:
     """Process a batch of samples with a single simulator instance
 
     Args:
@@ -52,8 +51,8 @@ def process_batch(
         if (i + 1) % 10 == 0 or i == 0 or i == len(sample_indices) - 1:
             correct_count = sum(results)
             logger.info(
-                f"Worker {worker_id}: Completed {i+1}/{len(sample_indices)}, "
-                f"Batch Accuracy: {correct_count/(i+1):.2%}"
+                f"Worker {worker_id}: Completed {i + 1}/{len(sample_indices)}, "
+                f"Batch Accuracy: {correct_count / (i + 1):.2%}"
             )
 
     return results
@@ -70,7 +69,7 @@ def main():
     label = np.load(label_file)
 
     batches = 1000
-    num_workers = 128  # Adjust based on CPU cores
+    num_workers = 64  # Adjust based on CPU cores
 
     start_time = time.perf_counter()
 
@@ -81,7 +80,7 @@ def main():
     }
 
     # Divide work among workers
-    sample_indices = list(range(1, batches + 1))
+    sample_indices = list(range(0, batches))
     samples_per_worker = len(sample_indices) // num_workers
     remainder = len(sample_indices) % num_workers
 
@@ -106,7 +105,7 @@ def main():
             try:
                 results = future.result()
                 all_results.extend(results)
-                logger.info(f"Worker {worker_id} completed with accuracy: {sum(results)/len(results):.2%}")
+                logger.info(f"Worker {worker_id} completed with accuracy: {sum(results) / len(results):.2%}")
             except Exception as exc:
                 logger.error(f"Worker {worker_id} failed: {exc}")
 
@@ -114,9 +113,10 @@ def main():
 
     correct_count = sum(all_results)
     accuracy = correct_count / len(all_results)
-    logger.info(f"Final Accuracy: {accuracy:.2%}")
-    logger.info(f"Total samples: {len(all_results)}, Correct: {correct_count}")
-    logger.info(f"Total simulation time: {end_time - start_time:.2f} seconds")
+    print(f"workers: {num_workers}, batches: {batches}, samples per worker: {samples_per_worker}")
+    print(f"Final Accuracy: {accuracy:.2%}")
+    print(f"Total samples: {len(all_results)}, Correct: {correct_count}")
+    print(f"Total simulation time: {end_time - start_time:.2f} seconds")
 
 
 if __name__ == "__main__":

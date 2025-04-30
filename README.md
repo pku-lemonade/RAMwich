@@ -50,8 +50,16 @@ To test a single MLP run on MNIST:
 
 ```shell
 export PYTHONPATH="$PWD/src:$PYTHONPATH"
-python tests/test_mlp_on_mnist.py
+python tests/test_mlp_on_mnist_single.py
 ```
+
+To test multiple batch of MNIST on MLP, adjust num_workers in test_mlp_on_mnist_multi.py, then run:
+
+```shell
+export PYTHONPATH="$PWD/src:$PYTHONPATH"
+python tests/test_mlp_on_mnist_multi.py
+```
+
 
 
 ## TODO
