@@ -14,9 +14,7 @@ def main():
     ops_file = "examples/mlp_l4_mnist/ops.json"
     weights_file = "examples/mlp_l4_mnist/weights.npz"
 
-    simulator = RAMwich(config_file=config_file)
-    simulator.load_operations(file_path=ops_file)
-    simulator.load_weights(file_path=weights_file)
+    simulator = RAMwich(config_file=config_file, ops_file=ops_file, weights_file=weights_file)
 
     core = simulator.get_node(0).get_tile(2).get_core(0)
 
