@@ -32,8 +32,8 @@ class DACStats(BaseModel):
 class DACArray:
     """Hardware implementation of the DAC component"""
 
-    def __init__(self, mvmu_config: MVMUConfig = None):
-        self.mvmu_config = mvmu_config or MVMUConfig()
+    def __init__(self, mvmu_config: MVMUConfig):
+        self.mvmu_config = mvmu_config
         self.dac_config = self.mvmu_config.dac_config
         self.size = self.mvmu_config.xbar_config.xbar_size
 

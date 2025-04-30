@@ -13,9 +13,9 @@ class Node:
     Node in the RAMwich architecture, containing multiple tiles.
     """
 
-    def __init__(self, id: int, config: Config = None):
+    def __init__(self, id: int, config: Config):
         self.id = id
-        self.config = config or Config()
+        self.config = config
         self.network = Network(self.config)
         self.tiles = [Tile(id=i, parent=self, config=config) for i in range(config.num_tiles_per_node)]
 

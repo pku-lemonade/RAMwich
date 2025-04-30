@@ -31,8 +31,8 @@ class SNAStats(BaseModel):
 class SNAArray:
     """Hardware implementation of Shift and Add (SNA) array"""
 
-    def __init__(self, mvmu_config: MVMUConfig = None):
-        self.mvmu_config = mvmu_config or MVMUConfig()
+    def __init__(self, mvmu_config: MVMUConfig):
+        self.mvmu_config = mvmu_config
         self.input_shape = (self.mvmu_config.num_xbar_per_mvmu, self.mvmu_config.num_adc_per_xbar)
         self.size = np.prod(self.input_shape) + self.mvmu_config.num_adc_per_xbar
 

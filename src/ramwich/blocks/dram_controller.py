@@ -77,10 +77,10 @@ class DRAMControllerStats(Stats):
 
 
 class DRAMController:
-    def __init__(self, dram: DRAM, tile_config: TileConfig = None):
+    def __init__(self, dram: DRAM, tile_config: TileConfig):
         # Configuration
         self.dram = dram
-        self.tile_config = tile_config or TileConfig()
+        self.tile_config = tile_config
         self.is_running = False
 
         # Validity array for the DRAM

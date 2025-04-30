@@ -19,10 +19,10 @@ class Tile:
     Tile in the RAMwich architecture, containing multiple cores.
     """
 
-    def __init__(self, id: int, parent, config: Config = None):
+    def __init__(self, id: int, parent, config: Config):
         self.id = id
         self.parent = parent
-        self.config = config or Config()
+        self.config = config
         self.tile_config = self.config.tile_config
         self.operations: List[TileOpType] = []
 

@@ -34,8 +34,8 @@ class SNHArray:
     Its energy consumption and area will be calculated
     """
 
-    def __init__(self, mvmu_config: MVMUConfig = None):
-        self.mvmu_config = mvmu_config or MVMUConfig()
+    def __init__(self, mvmu_config: MVMUConfig):
+        self.mvmu_config = mvmu_config
         self.shape = (self.mvmu_config.num_rram_xbar_per_mvmu, self.mvmu_config.xbar_config.xbar_size)
         self.size = np.prod(self.shape)
 

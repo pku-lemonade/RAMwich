@@ -53,9 +53,9 @@ class RouterStats(BaseModel):
 class Router:
     """Base memory component"""
 
-    def __init__(self, network: Network, id: int, config: Config = None):
+    def __init__(self, network: Network, id: int, config: Config):
         self.id = id
-        self.config = config or Config()
+        self.config = config
         self.network = network  # this is a reference to the network
         self.is_running = False
 

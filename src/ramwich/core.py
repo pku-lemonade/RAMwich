@@ -21,10 +21,10 @@ class Core:
     Core in the RAMwich architecture, containing multiple MVMUs.
     """
 
-    def __init__(self, id: int, parent, config: Config = None):
+    def __init__(self, id: int, parent, config: Config):
         self.id = id
         self.parent = parent
-        self.config = config or Config()
+        self.config = config
         self.core_config = self.config.core_config
         self.operations: List[CoreOp] = []
 

@@ -33,8 +33,8 @@ class XbarArray:
     Crossbar array component that performs matrix-vector multiplication operations.
     """
 
-    def __init__(self, mvmu_config: MVMUConfig = None):
-        self.mvmu_config = mvmu_config or MVMUConfig()
+    def __init__(self, mvmu_config: MVMUConfig):
+        self.mvmu_config = mvmu_config
         self.xbar_config = self.mvmu_config.xbar_config
         self.num_xbar = self.mvmu_config.num_rram_xbar_per_mvmu
         self.xbar_size = self.xbar_config.xbar_size

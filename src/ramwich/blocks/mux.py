@@ -31,8 +31,8 @@ class MUXStats(BaseModel):
 class MuxArray:
     """Hardware implementation of a multiplexer array for selecting specific elements"""
 
-    def __init__(self, mvmu_config: MVMUConfig = None):
-        self.mvmu_config = mvmu_config or MVMUConfig()
+    def __init__(self, mvmu_config: MVMUConfig):
+        self.mvmu_config = mvmu_config
         self.num_xbar = self.mvmu_config.num_rram_xbar_per_mvmu
         self.num_input_per_mux = self.mvmu_config.num_columns_per_adc
         self.num_mux_per_xbar = self.mvmu_config.num_adc_per_xbar

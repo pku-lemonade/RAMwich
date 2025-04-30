@@ -128,8 +128,8 @@ class Memory:
 class SRAM(Memory):
     """SRAM registers file component for the Core"""
 
-    def __init__(self, core_config: CoreConfig = None):
-        self.core_config = core_config or CoreConfig()
+    def __init__(self, core_config: CoreConfig):
+        self.core_config = core_config
         size = self.core_config.dataMem_size
         super().__init__(size)
 
@@ -141,8 +141,8 @@ class SRAM(Memory):
 class DRAM(Memory):
     """DRAM array component for the Tile"""
 
-    def __init__(self, tile_config: TileConfig = None):
-        self.tile_config = tile_config or TileConfig()
+    def __init__(self, tile_config: TileConfig):
+        self.tile_config = tile_config
         size = self.tile_config.edram_size
         super().__init__(size)
 

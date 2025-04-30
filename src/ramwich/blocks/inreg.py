@@ -13,8 +13,8 @@ class InputRegisterArray:
     MVMU input register array reads differently from normal registers.
     For each read, it reads a several bits and then shifts the register"""
 
-    def __init__(self, mvmu_config: MVMUConfig = None):
-        self.mvmu_config = mvmu_config or MVMUConfig()
+    def __init__(self, mvmu_config: MVMUConfig):
+        self.mvmu_config = mvmu_config
         self.size = self.mvmu_config.xbar_config.xbar_size
 
         # Initialize the registers

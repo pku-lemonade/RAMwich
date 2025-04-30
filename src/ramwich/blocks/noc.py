@@ -32,8 +32,8 @@ class NetworkStats(BaseModel):
 
 
 class Network:
-    def __init__(self, config: Config = None):
-        self.config = config or Config()
+    def __init__(self, config: Config):
+        self.config = config
         self.noc_config = self.config.noc_config
         self.routers = {}
         self.queue_busy_cycles = 0

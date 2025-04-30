@@ -12,8 +12,8 @@ class OutputRegisterArray:
 
     MVMU output register array is just arrayed normal registers."""
 
-    def __init__(self, mvmu_config: MVMUConfig = None):
-        self.mvmu_config = mvmu_config or MVMUConfig()
+    def __init__(self, mvmu_config: MVMUConfig):
+        self.mvmu_config = mvmu_config
         self.size = self.mvmu_config.xbar_config.xbar_size
 
         # Initialize the registers

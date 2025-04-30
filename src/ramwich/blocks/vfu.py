@@ -55,8 +55,8 @@ class VFUStats(BaseModel):
 class VFU:
     """SRAM register file component for the Core"""
 
-    def __init__(self, config: Config = None):
-        self.config = config or Config()
+    def __init__(self, config: Config):
+        self.config = config
         self.frac_bits = self.config.data_config.frac_bits
         self.min_value = -1 * (1 << self.config.data_config.data_bits)
         self.max_value = (1 << self.config.data_config.data_bits) - 1

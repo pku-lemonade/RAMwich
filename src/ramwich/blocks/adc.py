@@ -34,8 +34,8 @@ class ADCStats(BaseModel):
 class ADCArray:
     """Hardware implementation of the ADC component"""
 
-    def __init__(self, mvmu_config: MVMUConfig = None):
-        self.mvmu_config = mvmu_config or MVMUConfig()
+    def __init__(self, mvmu_config: MVMUConfig):
+        self.mvmu_config = mvmu_config
         self.adc_config = self.mvmu_config.adc_config
 
         # calculate max value based on resolution
