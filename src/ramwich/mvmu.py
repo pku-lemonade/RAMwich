@@ -21,7 +21,7 @@ class MVMU:
     Matrix-Vector Multiply unit with multiple crossbar arrays with detailed hardware simulation.
     """
 
-    def __init__(self, id: int = 0, config: Config):
+    def __init__(self, id: int, config: Config):
         # Basic MVMU properties
         self.id = id
         self.config = config
@@ -116,7 +116,6 @@ class MVMU:
         # Step 2: Based on data_width and DAC resolution, do Bit slicing
         num_iterations = int(np.ceil(self.config.data_width / self.mvmu_config.dac_config.resolution))
         for i in range(num_iterations):
-
             # Step 2: Read from the input register array
             sliced_digital_activation = self.input_register_array.read(self.mvmu_config.dac_config.resolution)
 
