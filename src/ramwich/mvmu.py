@@ -57,7 +57,7 @@ class MVMU:
         self.stats = Stats()
 
     def __repr__(self):
-        return f"MVMU({self.id}, xbars={len(self.xbars)})"
+        return f"MVMU({self.id})"
 
     def load_weights(self, weights: NDArray[np.float64]):
         """Load weights into the crossbar arrays"""
