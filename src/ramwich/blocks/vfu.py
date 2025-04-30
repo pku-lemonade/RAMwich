@@ -114,7 +114,7 @@ class VFU:
                 # If b is provided for unary operation, ignore it but log a warning
                 import warnings
 
-                warnings.warn(f"Second operand provided for unary operation {opcode}, it will be ignored")
+                warnings.warn(f"Second operand provided for unary operation {opcode}, it will be ignored", stacklevel=2)
             result = self.op_handlers[opcode](a, None)
         else:
             # Binary operations
