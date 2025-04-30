@@ -1,5 +1,3 @@
-from typing import List
-
 import numpy as np
 from numpy.typing import NDArray
 from pydantic import BaseModel, Field
@@ -105,7 +103,7 @@ class XbarArray:
         """Get statistics for this Xbar"""
         return self.stats.get_stats()
 
-    def set_values(self, values: List[int]):
+    def set_values(self, values: list[int]):
         """Set values in the crossbar"""
         for i, val in enumerate(values):
             if i < self.size:

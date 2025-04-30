@@ -1,5 +1,4 @@
 import logging
-from typing import List
 
 import numpy as np
 
@@ -24,7 +23,7 @@ class Tile:
         self.parent = parent
         self.config = config
         self.tile_config = self.config.tile_config
-        self.operations: List[TileOpType] = []
+        self.operations: list[TileOpType] = []
 
         # Initialize components
         self.edram = DRAM(self.tile_config)

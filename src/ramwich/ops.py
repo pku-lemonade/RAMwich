@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from pydantic import BaseModel, ConfigDict
 
@@ -68,7 +68,7 @@ class Copy(CoreOp):
 
 class MVM(CoreOp):
     type: Literal["mvm"] = "mvm"
-    xbar: List[int]  # The MVMUs to be activated
+    xbar: list[int]  # The MVMUs to be activated
 
     def accept(self, visitor):
         return visitor.visit_mvm(self)
@@ -147,4 +147,4 @@ class Weight(BaseModel):
     tile: int
     core: int
     mvmu: int
-    value: List[float]
+    value: list[float]

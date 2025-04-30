@@ -3,7 +3,6 @@ import logging
 import numpy as np
 import simpy
 
-from ramwich.blocks.router import Network
 from ramwich.config import Config
 from ramwich.node import Node
 from ramwich.ops import MVM, VFU, Copy, Halt, Hlt, Load, Recv, Send, Set, Store
@@ -26,7 +25,6 @@ def test_tile_features():
     env = simpy.Environment()
 
     # Create node
-    network = Network()
     node = Node(id=0, config=config)
 
     # Get tiles

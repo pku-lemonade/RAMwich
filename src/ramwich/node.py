@@ -2,7 +2,7 @@ import logging
 
 from .blocks.router import Network
 from .config import Config
-from .stats import Stats, StatsDict
+from .stats import StatsDict
 from .tile import Tile
 
 logger = logging.getLogger(__name__)

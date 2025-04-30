@@ -1,6 +1,6 @@
 import math
 from enum import Enum
-from typing import ClassVar, Dict
+from typing import ClassVar
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -33,22 +33,22 @@ class DACConfig(BaseModel):
     """Digital-to-Analog Converter configuration"""
 
     # Class constants for lookup tables
-    LAT_DICT: ClassVar[Dict[int, int]] = {1: 1, 2: 1, 4: 1, 8: 1, 16: 1}
-    POW_DYN_DICT: ClassVar[Dict[int, float]] = {
+    LAT_DICT: ClassVar[dict[int, int]] = {1: 1, 2: 1, 4: 1, 8: 1, 16: 1}
+    POW_DYN_DICT: ClassVar[dict[int, float]] = {
         1: 0.00350625,
         2: 0.00350625,
         4: 0.00350625,
         8: 0.00350625,
         16: 0.00350625,
     }
-    POW_LEAK_DICT: ClassVar[Dict[int, float]] = {
+    POW_LEAK_DICT: ClassVar[dict[int, float]] = {
         1: 0.000390625,
         2: 0.000390625,
         4: 0.000390625,
         8: 0.000390625,
         16: 0.000390625,
     }
-    AREA_DICT: ClassVar[Dict[int, float]] = {1: 1.67e-7, 2: 1.67e-7, 4: 1.67e-7, 8: 1.67e-7, 16: 1.67e-7}
+    AREA_DICT: ClassVar[dict[int, float]] = {1: 1.67e-7, 2: 1.67e-7, 4: 1.67e-7, 8: 1.67e-7, 16: 1.67e-7}
 
     resolution: int = Field(default=1, description="DAC resolution")
     VDD: float = Field(default=1, description="Supply voltage")
@@ -72,11 +72,11 @@ class XBARConfig(BaseModel):
     """Crossbar and its IO register configuration"""
 
     # XBAR in memory lookup tables
-    INMEM_LAT_DICT: ClassVar[Dict[int, int]] = {32: 1, 64: 1, 128: 1, 256: 1}
-    INMEM_POW_DYN_READ_DICT: ClassVar[Dict[int, int]] = {32: 0.3, 64: 0.7, 128: 1.7, 256: 4.7}
-    INMEM_POW_DYN_WRITE_DICT: ClassVar[Dict[int, int]] = {32: 0.1, 64: 0.1, 128: 0.16, 256: 0.2}
-    INMEM_POW_LEAK_DICT: ClassVar[Dict[int, int]] = {32: 0.009, 64: 0.02, 128: 0.04, 256: 0.075}
-    INMEM_AREA_DICT: ClassVar[Dict[int, int]] = {32: 0.00015, 64: 0.00033, 128: 0.00078, 256: 0.0019}
+    INMEM_LAT_DICT: ClassVar[dict[int, int]] = {32: 1, 64: 1, 128: 1, 256: 1}
+    INMEM_POW_DYN_READ_DICT: ClassVar[dict[int, int]] = {32: 0.3, 64: 0.7, 128: 1.7, 256: 4.7}
+    INMEM_POW_DYN_WRITE_DICT: ClassVar[dict[int, int]] = {32: 0.1, 64: 0.1, 128: 0.16, 256: 0.2}
+    INMEM_POW_LEAK_DICT: ClassVar[dict[int, int]] = {32: 0.009, 64: 0.02, 128: 0.04, 256: 0.075}
+    INMEM_AREA_DICT: ClassVar[dict[int, int]] = {32: 0.00015, 64: 0.00033, 128: 0.00078, 256: 0.0019}
 
     inMem_lat: float = Field(default=None, init=False, description="Crossbar input memory latency")
     inMem_pow_dyn_read: float = Field(default=None, init=False, description="Crossbar input memory dynamic read power")
@@ -87,9 +87,9 @@ class XBARConfig(BaseModel):
     inMem_area: float = Field(default=None, init=False, description="Crossbar input memory area")
 
     # XBAR lookup tables
-    XBAR_LAT_DICT: ClassVar[Dict[int, int]] = {32: 32, 64: 64, 128: 128, 256: 256}
-    XBAR_POW_DICT: ClassVar[Dict[int, int]] = {32: 0.01875, 64: 0.075, 128: 0.3, 256: 1.2}
-    XBAR_AREA_DICT: ClassVar[Dict[int, int]] = {32: 1.5625e-6, 64: 6.25e-6, 128: 2.5e-5, 256: 1.0e-4}
+    XBAR_LAT_DICT: ClassVar[dict[int, int]] = {32: 32, 64: 64, 128: 128, 256: 256}
+    XBAR_POW_DICT: ClassVar[dict[int, int]] = {32: 0.01875, 64: 0.075, 128: 0.3, 256: 1.2}
+    XBAR_AREA_DICT: ClassVar[dict[int, int]] = {32: 1.5625e-6, 64: 6.25e-6, 128: 2.5e-5, 256: 1.0e-4}
 
     xbar_lat: float = Field(default=None, init=False, description="Crossbar latency")
     xbar_pow: float = Field(default=None, init=False, description="Crossbar power")
@@ -97,10 +97,10 @@ class XBARConfig(BaseModel):
     xbar_area: float = Field(default=None, init=False, description="Crossbar area")
 
     # XBAR out memory lookup tables
-    OUTMEM_LAT_DICT: ClassVar[Dict[int, int]] = {32: 1, 64: 1, 128: 1, 256: 1}
-    OUTMEM_POW_DYN_DICT: ClassVar[Dict[int, int]] = {32: 0.1, 64: 0.1, 128: 0.16, 256: 0.2}
-    OUTMEM_POW_LEAK_DICT: ClassVar[Dict[int, int]] = {32: 0.009, 64: 0.02, 128: 0.04, 256: 0.075}
-    OUTMEM_AREA_DICT: ClassVar[Dict[int, int]] = {32: 0.00015, 64: 0.00033, 128: 0.00078, 256: 0.0019}
+    OUTMEM_LAT_DICT: ClassVar[dict[int, int]] = {32: 1, 64: 1, 128: 1, 256: 1}
+    OUTMEM_POW_DYN_DICT: ClassVar[dict[int, int]] = {32: 0.1, 64: 0.1, 128: 0.16, 256: 0.2}
+    OUTMEM_POW_LEAK_DICT: ClassVar[dict[int, int]] = {32: 0.009, 64: 0.02, 128: 0.04, 256: 0.075}
+    OUTMEM_AREA_DICT: ClassVar[dict[int, int]] = {32: 0.00015, 64: 0.00033, 128: 0.00078, 256: 0.0019}
 
     outMem_lat: float = Field(default=None, init=False, description="Crossbar output memory latency")
     outMem_pow_dyn: float = Field(default=None, init=False, description="Crossbar output memory dynamic write power")
@@ -161,10 +161,10 @@ class ADCConfig(BaseModel):
     type: ADCType = Field(default=ADCType.NORMAL, description="ADC type")
 
     # Class constants for lookup tables - using integers as keys instead of strings
-    LAT_DICT: ClassVar[Dict[int, int]] = {1: 13, 2: 25, 4: 50, 8: 100, 16: 200}
-    POW_DYN_DICT: ClassVar[Dict[int, float]] = {1: 0.225, 2: 0.45, 4: 0.9, 8: 1.8, 16: 3.2}
-    POW_LEAK_DICT: ClassVar[Dict[int, float]] = {1: 0.025, 2: 0.05, 4: 0.1, 8: 0.2, 16: 0.4}
-    AREA_DICT: ClassVar[Dict[int, float]] = {1: 0.0012, 2: 0.0012, 4: 0.0012, 8: 0.0012, 16: 0.0012}
+    LAT_DICT: ClassVar[dict[int, int]] = {1: 13, 2: 25, 4: 50, 8: 100, 16: 200}
+    POW_DYN_DICT: ClassVar[dict[int, float]] = {1: 0.225, 2: 0.45, 4: 0.9, 8: 1.8, 16: 3.2}
+    POW_LEAK_DICT: ClassVar[dict[int, float]] = {1: 0.025, 2: 0.05, 4: 0.1, 8: 0.2, 16: 0.4}
+    AREA_DICT: ClassVar[dict[int, float]] = {1: 0.0012, 2: 0.0012, 4: 0.0012, 8: 0.0012, 16: 0.0012}
 
     resolution: int = Field(default=8, description="ADC resolution")
 
@@ -189,10 +189,10 @@ class NOCConfig(BaseModel):
     # Class constants for lookup tables
     INJ_RATE_MAX: ClassVar[int] = 0.025
     # Convert string keys to numeric keys for consistency
-    LAT_DICT: ClassVar[Dict[int, int]] = {0.001: 29, 0.005: 31, 0.01: 34, 0.02: 54, 0.025: 115}
-    AREA_DICT: ClassVar[Dict[int, float]] = {4: 0.047, 8: 0.116}
-    POW_DYN_DICT: ClassVar[Dict[int, float]] = {4: 16.13, 8: 51.48}
-    POW_LEAK_DICT: ClassVar[Dict[int, float]] = {4: 0.41, 8: 1.04}
+    LAT_DICT: ClassVar[dict[int, int]] = {0.001: 29, 0.005: 31, 0.01: 34, 0.02: 54, 0.025: 115}
+    AREA_DICT: ClassVar[dict[int, float]] = {4: 0.047, 8: 0.116}
+    POW_DYN_DICT: ClassVar[dict[int, float]] = {4: 16.13, 8: 51.48}
+    POW_LEAK_DICT: ClassVar[dict[int, float]] = {4: 0.41, 8: 1.04}
 
     inj_rate: float = Field(default=0.005, description="Injection rate")
     num_port: int = Field(default=4, description="Number of ports")
@@ -242,8 +242,8 @@ class TileConfig(BaseModel):
     tcu_area: float = Field(default=0.00145, description="Tile control unit area")
 
     # EDRAM lookup tables
-    EDRAM_LAT_DICT: ClassVar[Dict[int, int]] = {8: 50, 64: 50, 128: 50, 2048: 50, 8192: 50, 16384: 50}
-    EDRAM_POW_DYN_DICT: ClassVar[Dict[int, float]] = {
+    EDRAM_LAT_DICT: ClassVar[dict[int, int]] = {8: 50, 64: 50, 128: 50, 2048: 50, 8192: 50, 16384: 50}
+    EDRAM_POW_DYN_DICT: ClassVar[dict[int, float]] = {
         8: 17.2 / 50,
         64: 17.2 / 50,
         128: 25.35 / 50,
@@ -251,7 +251,7 @@ class TileConfig(BaseModel):
         8192: 25.35 / 50,
         16384: 25.35 / 50,
     }
-    EDRAM_POW_LEAK_DICT: ClassVar[Dict[int, float]] = {
+    EDRAM_POW_LEAK_DICT: ClassVar[dict[int, float]] = {
         8: 0.46,
         64: 0.46,
         128: 0.77,
@@ -259,7 +259,7 @@ class TileConfig(BaseModel):
         8192: 0.77,
         16384: 0.77,
     }
-    EDRAM_AREA_DICT: ClassVar[Dict[int, float]] = {
+    EDRAM_AREA_DICT: ClassVar[dict[int, float]] = {
         8: 0.086,
         64: 0.086,
         128: 0.121,
@@ -276,7 +276,7 @@ class TileConfig(BaseModel):
     edram_area: float = Field(default=None, init=False, description="EDRAM area")
 
     # Tile instruction memory lookup tables
-    INSTRN_MEM_LAT_DICT: ClassVar[Dict[int, int]] = {
+    INSTRN_MEM_LAT_DICT: ClassVar[dict[int, int]] = {
         256: 1,
         512: 1,
         1024: 1,
@@ -288,7 +288,7 @@ class TileConfig(BaseModel):
         65536: 1,
         131072: 1,
     }
-    INSTRN_MEM_POW_DYN_DICT: ClassVar[Dict[int, float]] = {
+    INSTRN_MEM_POW_DYN_DICT: ClassVar[dict[int, float]] = {
         256: 0.16,
         512: 0.24,
         1024: 0.33,
@@ -300,7 +300,7 @@ class TileConfig(BaseModel):
         65536: 1,
         131072: 1,
     }
-    INSTRN_MEM_POW_LEAK_DICT: ClassVar[Dict[int, float]] = {
+    INSTRN_MEM_POW_LEAK_DICT: ClassVar[dict[int, float]] = {
         256: 0.044,
         512: 0.078,
         1024: 0.147,
@@ -312,7 +312,7 @@ class TileConfig(BaseModel):
         65536: 1,
         131072: 1,
     }
-    INSTRN_MEM_AREA_DICT: ClassVar[Dict[int, float]] = {
+    INSTRN_MEM_AREA_DICT: ClassVar[dict[int, float]] = {
         256: 0.00056,
         512: 0.00108,
         1024: 0.00192,
@@ -385,10 +385,10 @@ class CoreConfig(BaseModel):
     ccu_area: float = Field(default=0.00145 * 2.25, description="Core control unit area")
 
     # Memory lookup tables
-    DATA_MEM_LAT_DICT: ClassVar[Dict[int, int]] = {256: 1, 512: 1, 1024: 1, 2048: 1, 4096: 1}
-    DATA_MEM_POW_DYN_DICT: ClassVar[Dict[int, float]] = {256: 0.16, 512: 0.24, 1024: 0.33, 2048: 0.57, 4096: 1}
-    DATA_MEM_POW_LEAK_DICT: ClassVar[Dict[int, float]] = {256: 0.044, 512: 0.078, 1024: 0.147, 2048: 0.33, 4096: 1}
-    DATA_MEM_AREA_DICT: ClassVar[Dict[int, float]] = {
+    DATA_MEM_LAT_DICT: ClassVar[dict[int, int]] = {256: 1, 512: 1, 1024: 1, 2048: 1, 4096: 1}
+    DATA_MEM_POW_DYN_DICT: ClassVar[dict[int, float]] = {256: 0.16, 512: 0.24, 1024: 0.33, 2048: 0.57, 4096: 1}
+    DATA_MEM_POW_LEAK_DICT: ClassVar[dict[int, float]] = {256: 0.044, 512: 0.078, 1024: 0.147, 2048: 0.33, 4096: 1}
+    DATA_MEM_AREA_DICT: ClassVar[dict[int, float]] = {
         256: 0.00056,
         512: 0.00108,
         1024: 0.00192,
@@ -403,7 +403,7 @@ class CoreConfig(BaseModel):
     dataMem_area: float = Field(default=None, init=False, description="Data memory area")
 
     # Instruction memory lookup tables
-    INSTRN_MEM_LAT_DICT: ClassVar[Dict[int, int]] = {
+    INSTRN_MEM_LAT_DICT: ClassVar[dict[int, int]] = {
         256: 1,
         512: 1,
         1024: 1,
@@ -415,7 +415,7 @@ class CoreConfig(BaseModel):
         65536: 1,
         131072: 1,
     }
-    INSTRN_MEM_POW_DYN_DICT: ClassVar[Dict[int, float]] = {
+    INSTRN_MEM_POW_DYN_DICT: ClassVar[dict[int, float]] = {
         256: 0.16,
         512: 0.24,
         1024: 0.33,
@@ -427,7 +427,7 @@ class CoreConfig(BaseModel):
         65536: 1,
         131072: 1,
     }
-    INSTRN_MEM_POW_LEAK_DICT: ClassVar[Dict[int, float]] = {
+    INSTRN_MEM_POW_LEAK_DICT: ClassVar[dict[int, float]] = {
         256: 0.044,
         512: 0.078,
         1024: 0.147,
@@ -439,7 +439,7 @@ class CoreConfig(BaseModel):
         65536: 1,
         131072: 1,
     }
-    INSTRN_MEM_AREA_DICT: ClassVar[Dict[int, float]] = {
+    INSTRN_MEM_AREA_DICT: ClassVar[dict[int, float]] = {
         256: 0.00056,
         512: 0.00108,
         1024: 0.00192,

@@ -1,5 +1,4 @@
 import logging
-from typing import List
 
 import numpy as np
 from numpy.typing import NDArray
@@ -26,7 +25,7 @@ class Core:
         self.parent = parent
         self.config = config
         self.core_config = self.config.core_config
-        self.operations: List[CoreOp] = []
+        self.operations: list[CoreOp] = []
 
         # Initialize some useful parameters
         # Address 0 to num_mvmus_per_core * xbar_size - 1 are the MVMU input registers

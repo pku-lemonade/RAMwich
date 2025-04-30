@@ -1,5 +1,5 @@
 import logging
-from typing import List, Optional
+from typing import Optional
 
 import simpy
 
@@ -55,10 +55,10 @@ class StageConfig:
 class Pipeline:
     """Encapsulates the setup and execution of a multi-stage pipeline."""
 
-    def __init__(self, env: simpy.Environment, config: List[StageConfig]):
+    def __init__(self, env: simpy.Environment, config: list[StageConfig]):
         self.env = env
         self.config = config
-        self.stages: List[Stage] = []
+        self.stages: list[Stage] = []
         self.first_stage_buffer = simpy.Store(self.env, capacity=1)
         self.done_event = self.env.event()
         self._build()

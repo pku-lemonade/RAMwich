@@ -7,7 +7,7 @@ name = "RAMwich"
 version = "0.1.0"
 
 description = "A simulator for heterogeneous RRAM and SRAM CiM architectures."
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 
 [tool.setuptools.packages.find]
 where = ["src"]

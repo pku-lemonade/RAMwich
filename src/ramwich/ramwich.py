@@ -2,7 +2,7 @@ import json
 import logging
 import os
 import re
-from typing import List, Union
+from typing import Union
 
 import numpy as np
 import simpy
@@ -33,9 +33,9 @@ class RAMwich:
         self.env = simpy.Environment()
 
         # Build the hierarchical architecture
-        self.nodes: List[Node] = self._build_architecture()
+        self.nodes: list[Node] = self._build_architecture()
 
-    def _build_architecture(self) -> List[Node]:
+    def _build_architecture(self) -> list[Node]:
         """Build the hierarchical architecture based on configuration"""
         nodes = []
 
