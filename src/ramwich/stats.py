@@ -38,7 +38,7 @@ class StatsDict(dict):
             value.leakage_energy *= cycles
         return self
 
-    def summary(self) -> List[str]:
+    def summary(self) -> Stats:
         """Generate a summary of the statistics"""
         result = Stats()
         for key, value in self.items():
