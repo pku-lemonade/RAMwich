@@ -109,7 +109,7 @@ class MVMU:
         """
 
         # Step 1: Reset the output register array
-        self.output_register_array.reset()
+        self.output_register_array.clean_cells()
 
         # Step 2: Based on data_width and DAC resolution, do Bit slicing
         num_iterations = int(np.ceil(self.config.data_width / self.mvmu_config.dac_config.resolution))
@@ -160,6 +160,19 @@ class MVMU:
         """
         indices = np.arange(start, start + length)
         return self.output_register_array.read(indices) >> self.data_config.frac_bits
+
+    def reset(self):
+        """Reset the MVMU to its initial state"""
+        self.rram_xbar_array.reset()
+        self.dac_array.reset()
+        self.adc_array.reset()
+        self.input_register_array.reset()
+        self.output_register_array.reset()
+        self.snh_array_pos.reset()
+        self.snh_array_neg.reset()
+        self.mux_array_pos.reset()
+        self.mux_array_neg.reset()
+        self.sna_array.reset()
 
     def get_stats(self) -> StatsDict:
         """Get statistics for this MVMU and its components"""

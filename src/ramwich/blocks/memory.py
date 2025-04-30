@@ -23,6 +23,15 @@ class MemoryStats(BaseModel):
     total_operations: int = Field(default=0, description="Total number of operations")
     total_operated_cells: int = Field(default=0, description="Total number of operated cells")
 
+    def reset(self):
+        """Reset all statistics to zero"""
+        self.read_operations = 0
+        self.read_cells = 0
+        self.write_operations = 0
+        self.write_cells = 0
+        self.total_operations = 0
+        self.total_operated_cells = 0
+
     def get_stats(self) -> StatsDict:
         """Convert MemoryStats to general Stats object"""
 
@@ -98,6 +107,11 @@ class Memory:
         self.stats.total_operated_cells += length
 
         return self.cells[start:end].copy()
+
+    def reset(self):
+        """Reset the memory cells and statistics"""
+        self.cells.fill(0)
+        self.stats.reset()
 
     def write(self, start: int, values: Union[NDArray[np.int32], int], batch: int = 1):
         """Write values to a block of registers in SRAM"""

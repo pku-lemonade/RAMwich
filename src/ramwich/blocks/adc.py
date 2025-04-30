@@ -19,6 +19,13 @@ class ADCStats(BaseModel):
     conversion_errors: float = Field(default=0.0, description="Accumulated conversion error")
     active_cycles: int = Field(default=0, description="Number of active cycles")
 
+    def reset(self):
+        """Reset all statistics to zero"""
+        self.conversions = 0
+        self.overflow_times = 0
+        self.conversion_errors = 0.0
+        self.active_cycles = 0
+
     def get_stats(self) -> StatsDict:
         """Convert ADCStats to general Stats object"""
         stats = Stats(
@@ -109,9 +116,9 @@ class ADCArray:
 
         return int_values
 
-    def get_energy_consumption(self):
-        """Return the total energy consumption in pJ"""
-        return self.stats.energy_consumption
+    def reset(self):
+        """Reset all statistics to zero"""
+        self.stats.reset()
 
     def get_stats(self) -> StatsDict:
         """Return detailed statistics about this ADC"""

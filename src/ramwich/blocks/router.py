@@ -22,6 +22,15 @@ class RouterStats(BaseModel):
     packets_received: int = Field(default=0, description="Number of packets received")
     packets_read: int = Field(default=0, description="Number of packets read by receive operation")
 
+    def reset(self):
+        """Reset all statistics to zero"""
+        self.packets_created = 0
+        self.packets_sent_internode = 0
+        self.packets_sent_intranode = 0
+        self.packets_sent = 0
+        self.packets_received = 0
+        self.packets_read = 0
+
     def get_stats(self) -> StatsDict:
         """Convert MemoryStats to general Stats object"""
         stats_dict = StatsDict()
@@ -196,6 +205,11 @@ class Router:
         self.stats.packets_read += 1
 
         return data
+
+    def reset(self):
+        """Reset the router and its statistics"""
+        self.stop()
+        self.stats.reset()
 
     def get_stats(self) -> StatsDict:
         return self.stats.get_stats()

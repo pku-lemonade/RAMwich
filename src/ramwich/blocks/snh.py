@@ -15,6 +15,10 @@ class SNHStats(BaseModel):
     # SNH specific metrics
     samples: int = Field(default=0, description="Number of samples taken")
 
+    def reset(self):
+        """Reset all statistics to zero"""
+        self.samples = 0
+
     def get_stats(self) -> StatsDict:
         """Convert SNHStats to general Stats object"""
         stats = Stats(
@@ -46,6 +50,10 @@ class SNHArray:
         """Sample the input data"""
         # Update the stats
         self.stats.samples += self.size
+
+    def reset(self):
+        """Reset the statistics"""
+        self.stats.reset()
 
     def get_stats(self) -> StatsDict:
         """Get the statistics for this SNH array"""

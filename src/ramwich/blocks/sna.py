@@ -16,6 +16,11 @@ class SNAStats(BaseModel):
     operations: int = Field(default=0, description="Number of operations performed")
     active_cycles: int = Field(default=0, description="Number of active cycles")
 
+    def reset(self):
+        """Reset all statistics to zero"""
+        self.operations = 0
+        self.active_cycles = 0
+
     def get_stats(self) -> StatsDict:
         """Convert SNAStats to general Stats object"""
         stats = Stats(
@@ -81,6 +86,10 @@ class SNAArray:
         self.stats.operations += self.size
 
         return result + current_value
+
+    def reset(self):
+        """Reset all statistics to zero"""
+        self.stats.reset()
 
     def get_stats(self) -> StatsDict:
         """Convert SNAStats to general Stats object"""

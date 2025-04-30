@@ -80,7 +80,7 @@ class OutputRegisterArray:
         # Technically, .copy() is not needed.
         # But we keep it for clearence and maintain consistency with the write method
 
-    def reset(self):
+    def clean_cells(self):
         """Reset the register array to zero"""
         self.registers.fill(0)
 
@@ -89,6 +89,11 @@ class OutputRegisterArray:
         self.stats.write_cells += self.size
         self.stats.total_operations += 1
         self.stats.total_operated_cells += self.size
+
+    def reset(self):
+        """Reset the register array and statistics"""
+        self.registers.fill(0)
+        self.stats.reset()
 
     def get_stats(self):
         return self.stats.get_stats()

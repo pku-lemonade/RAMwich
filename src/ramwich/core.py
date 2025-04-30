@@ -156,13 +156,20 @@ class Core:
 
         logger.info(f"Tile {self.parent.id} Core {self.id} finished execution at time {env.now}")
 
+    def reset(self):
+        """Reset the core and its components"""
+        self.cache.reset()
+        self.vfu.reset()
+        for mvmu in self.mvmus:
+            mvmu.reset()
+
     def get_stats(self) -> StatsDict:
         """Get statistics for this Core by aggregating from all components"""
         stats_dict = StatsDict()
         # first add pseudo components stats
         # Core Control Unit
         stats_dict["Core Control Unit"] = Stats(
-            activation=self.active_cycles,
+            activation_count=self.active_cycles,
             dynamic_energy=self.active_cycles * self.core_config.ccu_pow_dyn,
             leakage_energy=self.core_config.ccu_pow_leak,
             area=self.core_config.ccu_area,
@@ -170,7 +177,7 @@ class Core:
 
         # Core instruction memory
         stats_dict["Core instruction memory"] = Stats(
-            activation=len(self.operations),
+            activation_count=len(self.operations),
             dynamic_energy=len(self.operations) * self.core_config.instrnMem_pow_dyn,
             leakage_energy=self.core_config.instrnMem_pow_leak,
             area=self.core_config.instrnMem_area,

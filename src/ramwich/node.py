@@ -44,6 +44,11 @@ class Node:
 
         logger.info(f"Completed all operations for node {self.id}")
 
+    def reset(self):
+        """Reset the node and its components"""
+        for tile in self.tiles:
+            tile.reset()
+
     def get_stats(self) -> StatsDict:
         """Get statistics for this Node and its components"""
         stats_dict = StatsDict()
