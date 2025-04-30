@@ -584,8 +584,8 @@ class Config(BaseModel):
         )
 
         assert bits == self.data_width, "storage config invalid: check if total bits in storage config = data width"
-        assert (
-            self.data_config.int_bits + self.data_config.frac_bits == self.data_width
-        ), "storage config invalid: check if total bits in storage config = int_bits + frac_bits"
+        assert self.data_config.int_bits + self.data_config.frac_bits == self.data_width, (
+            "storage config invalid: check if total bits in storage config = int_bits + frac_bits"
+        )
 
         self.tile_config.edram_size = self.tile_config.edram_size_in_KB * 1024 * 8 // self.data_width
