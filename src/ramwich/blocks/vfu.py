@@ -22,6 +22,14 @@ class VFUStats(BaseModel):
     other_operations: int = Field(default=0, description="Number of other operations")
     total_operations: int = Field(default=0, description="Total number of operations")
 
+    def reset(self):
+        """Reset all statistics to zero"""
+        self.mul_operations = 0
+        self.div_operations = 0
+        self.act_operations = 0
+        self.other_operations = 0
+        self.total_operations = 0
+
     def get_stats(self) -> StatsDict:
         """Convert SRAMStats to general Stats object"""
         stats_dict = StatsDict()
@@ -190,6 +198,10 @@ class VFU:
         else:
             self.stats.other_operations += length
         self.stats.total_operations += length
+
+    def reset(self):
+        """Reset all statistics"""
+        self.stats.reset()
 
     def get_stats(self) -> StatsDict:
         return self.stats.get_stats()

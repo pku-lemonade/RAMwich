@@ -49,7 +49,7 @@ class WriteRequest(Request):
         return self.data.shape[0]
 
 
-class DRAMControllerStats(Stats):
+class DRAMControllerStats(BaseModel):
     """Statistics for DRAM controller operations"""
 
     # Universal metrics
@@ -63,6 +63,16 @@ class DRAMControllerStats(Stats):
     max_wait_time: int = Field(default=0.0, description="Maximum wait time for requests")
     active_cycles: int = Field(default=0, description="Number of active cycles")
     operating_time: int = Field(default=0, description="Total operating time")
+
+    def reset(self):
+        """Reset the statistics"""
+        self.read_requests = 0
+        self.write_requests = 0
+        self.total_requests = 0
+        self.total_wait_time = 0
+        self.max_wait_time = 0
+        self.active_cycles = 0
+        self.operating_time = 0
 
     def get_stats(self) -> StatsDict:
         """Convert DRAMControllerStats to general Stats object"""
@@ -274,6 +284,12 @@ class DRAMController:
                 if np.all(self.valid[request.start : request.start + request.length]):
                     self.requests.put(request)
                     self.pending_reads.remove(request)
+
+    def reset(self):
+        """Reset the DRAM controller and its statistics"""
+        self.dram.reset()
+        self.valid.fill(False)
+        self.stats.reset()
 
     def get_stats(self):
         return self.stats.get_stats()

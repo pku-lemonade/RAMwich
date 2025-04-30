@@ -123,6 +123,15 @@ class Tile:
 
         logger.info(f"Tile {self.id} finished execution at time {env.now}")
 
+    def reset(self):
+        """Reset the tile and its components"""
+        self.edram.reset()
+        self.dram_controller.reset()
+        self.router.reset()
+
+        for core in self.cores:
+            core.reset()
+
     def get_stats(self) -> StatsDict:
         """Get statistics for this Tile and its components"""
         # For I/O tiles, we only need to return the stats of the router

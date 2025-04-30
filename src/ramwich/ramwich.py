@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 class RAMwich:
-    def __init__(self, config_file: str):
+    def __init__(self, config_file: str, ops_file: str, weights_file: str = None):
         # Load configuration from file
         if not os.path.exists(config_file):
             raise FileNotFoundError(f"Configuration file {config_file} not found")
@@ -34,6 +34,13 @@ class RAMwich:
 
         # Build the hierarchical architecture
         self.nodes: list[Node] = self._build_architecture()
+
+        # Load operations from file
+        self.load_operations(ops_file)
+
+        # Load weights if provided
+        if weights_file:
+            self.load_weights(weights_file)
 
     def _build_architecture(self) -> list[Node]:
         """Build the hierarchical architecture based on configuration"""
@@ -171,17 +178,11 @@ class RAMwich:
         tile.edram.cells[:length] = activation_data
         tile.dram_controller.valid[:length] = True
 
-    def run(self, ops_file: str, weights_file: str = None, activation: Union[str, NDArray] = None):
+    def run(self, activation: Union[str, NDArray] = None):
         """Run the simulation with operations from the specified file"""
         # Load operations into node/tile/core hierarchy
 
         start_time = self.env.now
-
-        self.load_operations(ops_file)
-
-        # Load weights if provided
-        if weights_file:
-            self.load_weights(weights_file)
 
         # Load activations if provided
         if activation is not None:
@@ -206,10 +207,16 @@ class RAMwich:
 
         stats_dict = self.get_stats()
 
-        stats_dict.print()
+        # stats_dict.print()
 
         logger.info(f"Simulation completed at time {self.env.now}")
         # summarize_results(self.nodes)
+
+    def reset(self):
+        """Reset the simulator state"""
+        self.env = simpy.Environment()
+        for node in self.nodes:
+            node.reset()
 
     def get_stats(self) -> StatsDict:
         """Get statistics for this Simulator and its components"""

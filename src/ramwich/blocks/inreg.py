@@ -62,7 +62,7 @@ class InputRegisterArray:
 
         return lsb
 
-    def reset(self):
+    def clean_cells(self):
         """Reset the register array to zero"""
         self.registers.fill(0)
 
@@ -76,6 +76,11 @@ class InputRegisterArray:
         """Read all the registers
         This a hack function used for debugging purposes"""
         return self.registers
+
+    def reset(self):
+        """Reset the register array and statistics"""
+        self.registers.fill(0)
+        self.stats.reset()
 
     def get_stats(self):
         return self.stats.get_stats()

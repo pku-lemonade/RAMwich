@@ -16,6 +16,10 @@ class MUXStats(BaseModel):
     # MUX specific metrics
     selections: int = Field(default=0, description="Number of selections performed")
 
+    def reset(self):
+        """Reset all statistics to zero"""
+        self.selections = 0
+
     def get_stats(self) -> StatsDict:
         """Convert MUXStats to general Stats object"""
         stats = Stats(
@@ -62,6 +66,10 @@ class MuxArray:
         self.stats.selections += self.size
 
         return reshaped_input[:, :, index]
+
+    def reset(self):
+        """Reset all statistics to zero"""
+        self.stats.reset()
 
     def get_stats(self) -> StatsDict:
         """Get the statistics for this MUX array"""

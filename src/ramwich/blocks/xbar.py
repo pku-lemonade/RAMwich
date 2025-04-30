@@ -14,6 +14,10 @@ class XbarStats(BaseModel):
     # Xbar specific metrics
     mvm_operations: int = Field(default=0, description="Total number of operations")
 
+    def reset(self):
+        """Reset all statistics to zero"""
+        self.mvm_operations = 0
+
     def get_stats(self) -> StatsDict:
         # Map Xbar metrics to Stat object
         stats = Stats(
@@ -95,9 +99,9 @@ class XbarArray:
 
         return pos_result, neg_result
 
-    def update_execution_time(self, execution_time):
-        """Update the execution time statistics"""
-        self.stats.latency += execution_time
+    def reset(self):
+        """Reset all statistics to zero"""
+        self.stats.reset()
 
     def get_stats(self) -> StatsDict:
         """Get statistics for this Xbar"""
