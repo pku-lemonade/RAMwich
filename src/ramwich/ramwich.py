@@ -24,7 +24,7 @@ class RAMwich:
         if not os.path.exists(config_file):
             raise FileNotFoundError(f"Configuration file {config_file} not found")
 
-        with open(config_file, "r") as f:
+        with open(config_file) as f:
             if config_file.endswith((".yaml", ".yml")):
                 self.config = Config.model_validate(yaml.safe_load(f))
             else:
@@ -54,7 +54,7 @@ class RAMwich:
             logger.error(f"Operation file {file_path} not found")
             return
 
-        with open(file_path, "r") as f:
+        with open(file_path) as f:
             if file_path.endswith(".json"):
                 data = json.load(f)
             else:
