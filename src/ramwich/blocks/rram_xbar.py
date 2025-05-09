@@ -6,7 +6,7 @@ from ..config import MVMUConfig, XBARConfig
 from ..stats import Stats, StatsDict
 
 
-class XbarStats(BaseModel):
+class RRAMXbarStats(BaseModel):
     # Universal metrics
     config: XBARConfig = Field(default=XBARConfig(), description="Xbar configuration")
     num_xbar: int = Field(default=0, description="Number of crossbars")
@@ -27,10 +27,10 @@ class XbarStats(BaseModel):
             area=self.config.xbar_area * self.num_xbar,
         )
 
-        return StatsDict({"Xbar": stats})
+        return StatsDict({"RRAM Xbar": stats})
 
 
-class XbarArray:
+class RRAMXbarArray:
     """
     Crossbar array component that performs matrix-vector multiplication operations.
     """
@@ -47,7 +47,7 @@ class XbarArray:
         self.neg_xbar = np.zeros((self.num_xbar, self.xbar_size, self.xbar_size))
 
         # Initialize stats
-        self.stats = XbarStats(config=self.xbar_config, num_xbar=self.num_xbar * 2)  # 2 for pos and neg xbar
+        self.stats = RRAMXbarStats(config=self.xbar_config, num_xbar=self.num_xbar * 2)  # 2 for pos and neg xbar
 
     def load_weights(self, weights: NDArray[np.float64]):
         """Load weights into the crossbar"""

@@ -96,6 +96,16 @@ class XBARConfig(BaseModel):
     xbar_pow_leak: float = Field(default=0, description="Crossbar leakage power")
     xbar_area: float = Field(default=None, init=False, description="Crossbar area")
 
+    sram_xbar_lat: float = Field(default=None, init=False, description="Crossbar latency")
+    sram_xbar_pow: float = Field(default=None, init=False, description="Crossbar power")
+    sram_xbar_pow_leak: float = Field(default=0, description="Crossbar leakage power")
+    sram_xbar_area: float = Field(default=None, init=False, description="Crossbar area")
+
+    calculator_lat: float = Field(default=1, description="Single SRAM CIM calculator processing latency")
+    calculator_pow_leak: float = Field(default=0, description="Single SRAM CIM calculator leakage power")
+    calculator_pow_dyn: float = Field(default=0, description="Single SRAM CIM calculator dynamic power")
+    calculator_area: float = Field(default=0, description="Single SRAM CIM calculator area")
+
     # XBAR out memory lookup tables
     OUTMEM_LAT_DICT: ClassVar[dict[int, int]] = {32: 1, 64: 1, 128: 1, 256: 1}
     OUTMEM_POW_DYN_DICT: ClassVar[dict[int, int]] = {32: 0.1, 64: 0.1, 128: 0.16, 256: 0.2}
@@ -511,6 +521,11 @@ class MVMUConfig(BaseModel):
     num_columns_per_adc: int = Field(default=16, description="Number of columns per ADC")
     num_adc_per_xbar: int = Field(default=None, init=False, description="Number of ADCs per crossbar")
 
+    num_columns_per_calculator: int = Field(default=128, description="Number of columns per SRAM CIM calculator")
+    num_calculator_per_xbar: int = Field(
+        default=None, init=False, description="Number of SRAM CIM calculators per crossbar"
+    )
+
     num_rram_xbar_per_mvmu: int = Field(default=None, init=False, description="Number of RRAM xbars")
     num_sram_xbar_per_mvmu: int = Field(default=None, init=False, description="Number of SRAM xbars")
     num_xbar_per_mvmu: int = Field(default=None, init=False, description="Number of crossbars per MVMU")
@@ -518,6 +533,8 @@ class MVMUConfig(BaseModel):
     stored_bit: list = Field(default=None, init=False, description="Stored bit positions")
     bits_per_cell: list = Field(default=None, init=False, description="Bits per cell")
     is_xbar_rram: list = Field(default=None, init=False, description="Is crossbar RRAM")
+    rram_to_output_map: list = Field(default=None, init=False, description="RRAM xbars to output map")
+    sram_to_output_map: list = Field(default=None, init=False, description="SRAM xbars to output map")
 
     dac_config: DACConfig = Field(default_factory=DACConfig)
     xbar_config: XBARConfig = Field(default_factory=XBARConfig)
@@ -561,6 +578,8 @@ class Config(BaseModel):
         self.mvmu_config.stored_bit = []
         self.mvmu_config.bits_per_cell = []
         self.mvmu_config.is_xbar_rram = []
+        self.mvmu_config.rram_to_output_map = []
+        self.mvmu_config.sram_to_output_map = []
 
         bits = 0  # total bits number in the operand
         self.mvmu_config.num_rram_xbar_per_mvmu = 0  # number of RRAM xbars
@@ -582,6 +601,12 @@ class Config(BaseModel):
         self.mvmu_config.num_xbar_per_mvmu = (
             self.mvmu_config.num_sram_xbar_per_mvmu + self.mvmu_config.num_rram_xbar_per_mvmu
         )
+
+        for i in range(self.mvmu_config.num_xbar_per_mvmu):
+            if self.mvmu_config.is_xbar_rram[i]:
+                self.mvmu_config.rram_to_output_map.append(i)
+            else:
+                self.mvmu_config.sram_to_output_map.append(i)
 
         assert bits == self.data_width, "storage config invalid: check if total bits in storage config = data width"
         assert self.data_config.int_bits + self.data_config.frac_bits == self.data_width, (
