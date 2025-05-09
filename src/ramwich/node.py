@@ -1,6 +1,6 @@
 import logging
 
-from .blocks.router import Network
+from .blocks.noc import Network
 from .config import Config
 from .stats import StatsDict
 from .tile import Tile

@@ -8,9 +8,10 @@ from .blocks.dac import DACArray
 from .blocks.inreg import InputRegisterArray
 from .blocks.mux import MuxArray
 from .blocks.outreg import OutputRegisterArray
+from .blocks.rram_xbar import RRAMXbarArray
 from .blocks.sna import SNAArray
 from .blocks.snh import SNHArray
-from .blocks.xbar import XbarArray
+from .blocks.sram_cim_unit import SRAMCIMUnitArray
 from .config import Config
 from .stats import Stats, StatsDict
 from .utils.data_convert import extract_bits, float_to_fixed, int_to_conductance
@@ -29,7 +30,8 @@ class MVMU:
         self.mvmu_config = self.config.mvmu_config
 
         # Initialize Xbar arrays
-        self.rram_xbar_array = XbarArray(self.mvmu_config)
+        self.rram_xbar_array = RRAMXbarArray(self.mvmu_config)
+        self.sram_cim_unit_array = SRAMCIMUnitArray(self.mvmu_config)
 
         # Initialize ADCs.
         # Each xbar has multiple ADCs based on the xbar_size divided by columns per ADC.
@@ -49,8 +51,9 @@ class MVMU:
         # Initialize other components
         self.snh_array_pos = SNHArray(self.mvmu_config)
         self.snh_array_neg = SNHArray(self.mvmu_config)
-        self.mux_array_pos = MuxArray(self.mvmu_config)
-        self.mux_array_neg = MuxArray(self.mvmu_config)
+        self.mux_array_pos = MuxArray(self.mvmu_config, type="RRAM")
+        self.mux_array_neg = MuxArray(self.mvmu_config, type="RRAM")
+        self.mux_array_sram = MuxArray(self.mvmu_config, type="SRAM")
         self.sna_array = SNAArray(self.mvmu_config)
 
         # Initialize stats
@@ -77,28 +80,40 @@ class MVMU:
         int_weights = np.vectorize(float_to_fixed)(abs_weights, self.data_config.frac_bits)
 
         # Initialize the output array
-        xbar_weights = np.zeros((self.mvmu_config.num_rram_xbar_per_mvmu, xbar_size, xbar_size))
+        rram_xbar_weights = np.zeros((self.mvmu_config.num_rram_xbar_per_mvmu, xbar_size, xbar_size)).astype(np.float64)
+        sram_xbar_weights = np.zeros((self.mvmu_config.num_sram_xbar_per_mvmu, xbar_size, xbar_size)).astype(np.int8)
+
+        rram_idx = 0
+        sram_idx = 0
 
         # Process each crossbar
-        for k in range(self.mvmu_config.num_rram_xbar_per_mvmu):
+        for k in range(self.mvmu_config.num_xbar_per_mvmu):
             # Extract bits for this crossbar (still need to loop over k)
             xbar_int_weights = np.vectorize(extract_bits)(
                 int_weights, self.mvmu_config.stored_bit[k], self.mvmu_config.stored_bit[k + 1]
             )
 
-            # Convert to conductance values (vectorized)
-            conductance_values = np.vectorize(int_to_conductance)(
-                xbar_int_weights,
-                self.mvmu_config.bits_per_cell[k],
-                self.mvmu_config.xbar_config.rram_conductance_min,
-                self.mvmu_config.xbar_config.rram_conductance_max,
-            )
+            if self.mvmu_config.is_xbar_rram[k]:
+                # Convert to conductance values (vectorized)
+                conductance_values = np.vectorize(int_to_conductance)(
+                    xbar_int_weights,
+                    self.mvmu_config.bits_per_cell[k],
+                    self.mvmu_config.xbar_config.rram_conductance_min,
+                    self.mvmu_config.xbar_config.rram_conductance_max,
+                )
 
-            # Apply signs and store in result array
-            xbar_weights[k] = signs * conductance_values
+                # Apply signs and store in result array
+                rram_xbar_weights[rram_idx] = signs * conductance_values
+                rram_idx += 1
+
+            else:
+                # Directly store the integer weights for SRAM crossbars
+                sram_xbar_weights[sram_idx] = signs * xbar_int_weights
+                sram_idx += 1
 
         # Load the processed weights into the xbar array
-        self.rram_xbar_array.load_weights(xbar_weights)
+        self.rram_xbar_array.load_weights(rram_xbar_weights)
+        self.sram_cim_unit_array.load_weights(sram_xbar_weights)
 
     def execute_mvm(self):
         """Execute a detailed matrix-vector multiplication instruction
@@ -127,20 +142,29 @@ class MVMU:
             self.snh_array_pos.sample()
             self.snh_array_neg.sample()
 
+            # Parallel with step 3, 4, 5, 6, and 7: SRAM crossbar multiplication
+            sram_xbar_output = self.sram_cim_unit_array.execute_mvm(sliced_digital_activation)
+
             # Step 6: MUX selection
             for j in range(self.mvmu_config.num_columns_per_adc):
                 mux_output_pos = self.mux_array_pos.select(xbar_output_pos, j)
                 mux_output_neg = self.mux_array_neg.select(xbar_output_neg, j)
+                mux_output_sram = self.mux_array_sram.select(sram_xbar_output, j)
 
                 # Step 7: ADC conversion
                 adc_output = self.adc_array.convert(mux_output_pos, mux_output_neg)
+
+                # Merge the ADC output with the SRAM output (just hardware wiring, won't cost time and energy, therefore not a step)
+                calculation_output = np.zeros((self.mvmu_config.num_xbar_per_mvmu, self.mvmu_config.num_adc_per_xbar))
+                calculation_output[self.mvmu_config.rram_to_output_map] = adc_output
+                calculation_output[self.mvmu_config.sram_to_output_map] = mux_output_sram
 
                 # Step 8: Read current value from output register array
                 mask = np.arange(j, self.mvmu_config.xbar_config.xbar_size, self.mvmu_config.num_columns_per_adc)
                 current_output = self.output_register_array.read(mask)
 
                 # Step 9: SNA operation
-                sna_output = self.sna_array.calculate(adc_output, current_output, i)
+                sna_output = self.sna_array.calculate(calculation_output, current_output, i)
 
                 # Step 10: Write back to the output register array
                 self.output_register_array.write(sna_output, mask)
