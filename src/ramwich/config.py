@@ -135,7 +135,7 @@ class XBARConfig(BaseModel):
     rram_conductance_max: float = Field(default=1, description="Max value of RRAM conductance")
 
     xbar_size: int = Field(default=128, description="Crossbar size")
-    noise_sigma: float = Field(default=0, description="RRAM read and calculate noise sigma")
+    noise_sigma: float = Field(default=0.01, description="RRAM read and calculate noise sigma")
     has_noise: bool = Field(default=False, description="Whether to add noise to the crossbar")
 
     def __init__(self, **data):
