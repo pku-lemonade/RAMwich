@@ -1,8 +1,9 @@
 import math
+import re
 from enum import Enum
 from typing import ClassVar
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class BitConfig(str, Enum):
@@ -19,14 +20,41 @@ class DataConfig(BaseModel):
     storage_config: list[BitConfig] = Field(
         default=[BitConfig.MLC, BitConfig.MLC, BitConfig.MLC, BitConfig.MLC], description="Storage configuration"
     )
-    int_bits: int = Field(default=8, description="Integer bits")
-    frac_bits: int = Field(default=0, description="Fractional bits")
-    data_bits: int = Field(default=None, init=False, description="Data bits")
+    weight_format: str = Field(default="Q1.7", description="Weight format")
+    weight_int_bits: int = Field(default=None, init=False, description="Weight integer bits")
+    weight_frac_bits: int = Field(default=None, init=False, description="Weight fractional bits")
+    weight_width: int = Field(default=None, init=False, description="Weight data bits")
 
-    def __init__(self, **data):
-        super().__init__(**data)
+    activation_format: str = Field(default="Q4.4", description="Activation format")
+    activation_int_bits: int = Field(default=None, init=False, description="Activation integer bits")
+    activation_frac_bits: int = Field(default=None, init=False, description="Activation fractional bits")
+    activation_width: int = Field(default=None, init=False, description="Activation data bits")
 
-        self.data_bits = self.int_bits + self.frac_bits
+    addr_width: int = Field(default=32, description="Address width")
+    instrn_width: int = Field(default=48, description="Instruction width")
+
+    @model_validator(mode="after")
+    def calculate_derived_values(self):
+        # Calculate weight and activation bits based on the provided formats
+        pattern = r"Q(\d+)\.(\d+)"
+
+        match = re.match(pattern, self.weight_format)
+        if match:
+            self.weight_int_bits = int(match.group(1))
+            self.weight_frac_bits = int(match.group(2))
+            self.weight_width = self.weight_int_bits + self.weight_frac_bits
+        else:
+            raise ValueError(f"Invalid weight format: {self.weight_format}")
+
+        match = re.match(pattern, self.activation_format)
+        if match:
+            self.activation_int_bits = int(match.group(1))
+            self.activation_frac_bits = int(match.group(2))
+            self.activation_width = self.activation_int_bits + self.activation_frac_bits
+        else:
+            raise ValueError(f"Invalid activation format: {self.activation_format}")
+
+        return self
 
 
 class DACConfig(BaseModel):
@@ -561,10 +589,6 @@ class Config(BaseModel):
     num_cores_per_tile: int = Field(default=8, description="Number of cores per tile")
     num_mvmus_per_core: int = Field(default=6, description="Number of MVMUs per core")
 
-    addr_width: int = Field(default=32, description="Address width")
-    data_width: int = Field(default=8, description="Data width")
-    instrn_width: int = Field(default=48, description="Instruction width")
-
     # Add configuration for components with default factories
     data_config: DataConfig = Field(default_factory=DataConfig)
     noc_config: NOCConfig = Field(default_factory=NOCConfig)
@@ -572,9 +596,8 @@ class Config(BaseModel):
     core_config: CoreConfig = Field(default_factory=CoreConfig)
     mvmu_config: MVMUConfig = Field(default_factory=MVMUConfig)
 
-    def __init__(self, **data):
-        super().__init__(**data)
-
+    @model_validator(mode="after")
+    def validate_and_calculate(self):
         self.mvmu_config.stored_bit = []
         self.mvmu_config.bits_per_cell = []
         self.mvmu_config.is_xbar_rram = []
@@ -597,20 +620,21 @@ class Config(BaseModel):
                 self.mvmu_config.is_xbar_rram.append(True)
                 bits += int(i)
         self.mvmu_config.stored_bit.append(bits)
+        assert bits == self.data_config.weight_width, (
+            "storage config invalid: check if total bits in storage config = weight width"
+        )
 
         self.mvmu_config.num_xbar_per_mvmu = (
             self.mvmu_config.num_sram_xbar_per_mvmu + self.mvmu_config.num_rram_xbar_per_mvmu
         )
 
+        # Assign output maps based on xbar type
         for i in range(self.mvmu_config.num_xbar_per_mvmu):
             if self.mvmu_config.is_xbar_rram[i]:
                 self.mvmu_config.rram_to_output_map.append(i)
             else:
                 self.mvmu_config.sram_to_output_map.append(i)
 
-        assert bits == self.data_width, "storage config invalid: check if total bits in storage config = data width"
-        assert self.data_config.int_bits + self.data_config.frac_bits == self.data_width, (
-            "storage config invalid: check if total bits in storage config = int_bits + frac_bits"
-        )
+        self.tile_config.edram_size = self.tile_config.edram_size_in_KB * 1024 * 8 // self.data_config.activation_width
 
-        self.tile_config.edram_size = self.tile_config.edram_size_in_KB * 1024 * 8 // self.data_width
+        return self

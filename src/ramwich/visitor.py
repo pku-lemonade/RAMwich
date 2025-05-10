@@ -126,7 +126,7 @@ class CoreExecutionTimingVisitor(CoreVisitor):
         """Calculate MVM execution time"""
         # This is now synchronized with PUMA. Needs to be recalculated
         return self.config.mvmu_config.adc_config.lat * (
-            (self.config.data_width + self.config.mvmu_config.dac_config.resolution - 1)
+            (self.config.data_config.activation_width + self.config.mvmu_config.dac_config.resolution - 1)
             // self.config.mvmu_config.dac_config.resolution
             + 2
         )

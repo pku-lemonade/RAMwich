@@ -77,7 +77,7 @@ class MVMU:
         abs_weights = np.abs(weights)
 
         # Convert all weights to fixed-point representation
-        int_weights = np.vectorize(float_to_fixed)(abs_weights, self.data_config.frac_bits)
+        int_weights = np.vectorize(float_to_fixed)(abs_weights, self.data_config.weight_frac_bits)
 
         # Initialize the output array
         rram_xbar_weights = np.zeros((self.mvmu_config.num_rram_xbar_per_mvmu, xbar_size, xbar_size)).astype(np.float64)
@@ -126,8 +126,8 @@ class MVMU:
         # Step 1: Reset the output register array
         self.output_register_array.clean_cells()
 
-        # Step 2: Based on data_width and DAC resolution, do Bit slicing
-        num_iterations = int(np.ceil(self.config.data_width / self.mvmu_config.dac_config.resolution))
+        # Step 2: Based on activation_width and DAC resolution, do Bit slicing
+        num_iterations = int(np.ceil(self.data_config.activation_width / self.mvmu_config.dac_config.resolution))
         for i in range(num_iterations):
             # Step 2: Read from the input register array
             sliced_digital_activation = self.input_register_array.read(self.mvmu_config.dac_config.resolution)
@@ -183,7 +183,7 @@ class MVMU:
         On hardware, the core just reads the middle bits of the output register array. No additional energy cost.
         """
         indices = np.arange(start, start + length)
-        return self.output_register_array.read(indices) >> self.data_config.frac_bits
+        return self.output_register_array.read(indices) >> self.data_config.weight_frac_bits
 
     def reset(self):
         """Reset the MVMU to its initial state"""
