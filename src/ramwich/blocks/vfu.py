@@ -65,9 +65,9 @@ class VFU:
 
     def __init__(self, config: Config):
         self.config = config
-        self.frac_bits = self.config.data_config.frac_bits
-        self.min_value = -1 * (1 << self.config.data_config.data_bits)
-        self.max_value = (1 << self.config.data_config.data_bits) - 1
+        self.frac_bits = self.config.data_config.activation_frac_bits
+        self.min_value = -1 * (1 << self.config.data_config.activation_width)
+        self.max_value = (1 << self.config.data_config.activation_width) - 1
 
         # Initialize operation handlers
         self._init_op_handlers()

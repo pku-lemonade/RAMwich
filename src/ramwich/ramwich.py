@@ -170,7 +170,7 @@ class RAMwich:
             return
 
         # Convert activation data to fixed-point representation (using int)
-        activation_data = (activation_data * (1 << self.config.data_config.frac_bits)).astype(np.int32)
+        activation_data = (activation_data * (1 << self.config.data_config.activation_frac_bits)).astype(np.int32)
 
         # Load activation data into the first tile of the first node
         node = self.get_node(0)
@@ -180,9 +180,6 @@ class RAMwich:
 
     def run(self, activation: Union[str, NDArray] = None):
         """Run the simulation with operations from the specified file"""
-        # Load operations into node/tile/core hierarchy
-
-        start_time = self.env.now
 
         # Load activations if provided
         if activation is not None:
@@ -203,11 +200,7 @@ class RAMwich:
         else:
             logger.warning("No node processes to run. Please check the operations file.")
 
-        active_cycles = self.env.now - start_time
-
-        stats_dict = self.get_stats()
-
-        # stats_dict.print()
+        self.get_stats()
 
         logger.info(f"Simulation completed at time {self.env.now}")
         # summarize_results(self.nodes)
