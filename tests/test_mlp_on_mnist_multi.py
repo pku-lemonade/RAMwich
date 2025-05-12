@@ -68,7 +68,7 @@ def main():
     activation = np.load(activation_file)
     label = np.load(label_file)
 
-    batches = 1000
+    batches = 10000
     num_workers = 64  # Adjust based on CPU cores
 
     start_time = time.perf_counter()
