@@ -8,17 +8,21 @@ num_mvmus_per_core: 6
 
 # Data Configuration
 data_config:
-  storage_config: ["s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"]
-  # Storage config examples:
-  # storage_config: ["2", "2", "2", "2", "2", "2", "2", "2"] # 8 MLCs
-  # storage_config: ["s", "s", "s", "s", "1", "1", "1", "1", "2", "2", "4"] # 4 SRAM CIM Units + 4 SLCs + 2 MLCs + 1 QLC
-  # storage_config: ["s", "s", "s", "s", "s", "s", "s", "s", "2", "2", "2", "2"] # 8 SLCs + 4 MLCs
-  # storage_config: ["s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "1", "3"] # 12 SRAM CIM Units + 1 SLC + 1 TLC
-  # storage_config: ["s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"] # 16 SRAM CIM Units
-  # storage_config: ["1", "1", "1", "1", "3", "3", "3", "3"] # 4 SLCs + 4 TLCs
-  # storage_config: ["4", "4", "2", "2", "s", "s", "s", "s"] # 2 QLCs + 2 MLCs + 4 SRAM CIM Units
-  # storage_config: ["2", "2", "s", "s", "s", "s", "s", "s", "s", "s", "2", "2"] # 2 MLCs + 8 SRAM CIM Units + 2 MLCs
-  weight_format: "Q1.15" # 1 bit sign + 15 bits fraction
+  storage_config: ["2", "2", "2", "2"]
+  # Storage config is a list of strings representing the type of memory
+  # the ones in front are for LSBs, the ones in the back are for MSBs
+  # ["1", "1", "1", "1", "1", "1", "1", "1"] # 8 SLCs
+  # ["2", "2", "2", "2"] # 4 MLCs
+  # ["2", "3", "3"] # 1 MLC + 2 TLCs
+  # ["4", "4"] # 2 QLCs
+  # ["s", "s", "s", "s", "s", "s", "s", "s"] # 8 SRAM CIM Units
+  # ["s", "s", "2", "2", "2"] # 2 SRAM CIM Units + 3 MLCs
+  # ["s", "s", "2", "4"] # 2 SRAM CIM Unit + 1 MLC + 1 QLC
+  # ["4", "2", "s", "s"] # 1 QLC + 1 MLC + 2 SRAM CIM Units
+  # ["2", "s", "s", "2", "2"] # 2 MLCs + 2 SRAM CIM Units + 1 MLC
+  # ["2", "2", "2", "s", "s"] # 3 MLCs + 2 SRAM CIM Units
+
+  weight_format: "Q0.8" # 8 bits fraction
   activation_format: "Q8.8" # 8 bits signed integer + 8 bits fraction
 
 # Network-on-Chip Configuration
@@ -55,7 +59,7 @@ mvmu_config:
   xbar_config:
     xbar_size: 128  # Crossbar size
     has_noise: true  # Whether the crossbar has noise
-    noise_sigma: 0.005  # Noise standard deviation
+    noise_sigma: 0.1  # Noise standard deviation
     # Other parameters (mvmu_xbar_ip_lat, mvmu_alu_lat, etc.) are derived
 
   # ADC Configuration

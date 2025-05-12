@@ -124,15 +124,25 @@ class XBARConfig(BaseModel):
     xbar_pow_leak: float = Field(default=0, description="Crossbar leakage power")
     xbar_area: float = Field(default=None, init=False, description="Crossbar area")
 
+    SRAM_XBAR_LAT_DICT: ClassVar[dict[int, int]] = {32: 1, 64: 1, 128: 1, 256: 1}
+    SRAM_XBAR_POW_DICT: ClassVar[dict[int, int]] = {32: 0.32, 64: 0.64, 128: 1.28, 256: 2.56}
+    SRAM_XBAR_POW_LEAK_DiCT: ClassVar[dict[int, int]] = {32: 0.09, 64: 0.2, 128: 0.4, 256: 1.5}
+    SRAM_XBAR_AREA_DICT: ClassVar[dict[int, int]] = {32: 0.00052, 64: 0.0021, 128: 0.0083, 256: 0.0332}
+
     sram_xbar_lat: float = Field(default=None, init=False, description="Crossbar latency")
     sram_xbar_pow: float = Field(default=None, init=False, description="Crossbar power")
-    sram_xbar_pow_leak: float = Field(default=0, description="Crossbar leakage power")
+    sram_xbar_pow_leak: float = Field(default=None, init=False, description="Crossbar leakage power")
     sram_xbar_area: float = Field(default=None, init=False, description="Crossbar area")
 
-    calculator_lat: float = Field(default=1, description="Single SRAM CIM calculator processing latency")
-    calculator_pow_leak: float = Field(default=0, description="Single SRAM CIM calculator leakage power")
-    calculator_pow_dyn: float = Field(default=0, description="Single SRAM CIM calculator dynamic power")
-    calculator_area: float = Field(default=0, description="Single SRAM CIM calculator area")
+    CALCULATOR_LAT_DICT: ClassVar[dict[int, int]] = {32: 6, 64: 7, 128: 8, 256: 9}
+    CALCULATOR_POW_LEAK_DICT: ClassVar[dict[int, int]] = {32: 0.02, 64: 0.04, 128: 0.08, 256: 0.16}
+    CALCULATOR_POW_DYN_DICT: ClassVar[dict[int, int]] = {32: 1.6, 64: 3.2, 128: 6.4, 256: 12.8}
+    CALCULATOR_AREA_DICT: ClassVar[dict[int, int]] = {32: 0.00015, 64: 0.00033, 128: 0.00078, 256: 0.0019}
+
+    calculator_lat: float = Field(default=None, init=False, description="Single SRAM CIM calculator processing latency")
+    calculator_pow_leak: float = Field(default=None, init=False, description="Single SRAM CIM calculator leakage power")
+    calculator_pow_dyn: float = Field(default=None, init=False, description="Single SRAM CIM calculator dynamic power")
+    calculator_area: float = Field(default=None, init=False, description="Single SRAM CIM calculator area")
 
     # XBAR out memory lookup tables
     OUTMEM_LAT_DICT: ClassVar[dict[int, int]] = {32: 1, 64: 1, 128: 1, 256: 1}
@@ -186,6 +196,20 @@ class XBARConfig(BaseModel):
 
             # Match PUMA
             self.xbar_pow = self.xbar_ip_lat * self.xbar_ip_pow
+
+        # Override SRAM xbar parameters based on xbar_size if it differs from default
+        if self.xbar_size in self.SRAM_XBAR_LAT_DICT:
+            self.sram_xbar_lat = self.SRAM_XBAR_LAT_DICT[self.xbar_size]
+            self.sram_xbar_pow = self.SRAM_XBAR_POW_DICT[self.xbar_size]
+            self.sram_xbar_area = self.SRAM_XBAR_AREA_DICT[self.xbar_size]
+            self.sram_xbar_pow_leak = self.SRAM_XBAR_POW_LEAK_DiCT[self.xbar_size]
+
+        # Override calculator parameters based on xbar_size if it differs from default
+        if self.xbar_size in self.CALCULATOR_LAT_DICT:
+            self.calculator_lat = self.CALCULATOR_LAT_DICT[self.xbar_size]
+            self.calculator_pow_leak = self.CALCULATOR_POW_LEAK_DICT[self.xbar_size]
+            self.calculator_pow_dyn = self.CALCULATOR_POW_DYN_DICT[self.xbar_size]
+            self.calculator_area = self.CALCULATOR_AREA_DICT[self.xbar_size]
 
 
 class ADCType(str, Enum):
