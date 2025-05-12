@@ -16,8 +16,8 @@ def main():
     parser.add_argument("--activation", required=False, help="activation file (NPY)")
     args = parser.parse_args()
 
-    simulator = RAMwich(config_file=args.config)
-    simulator.run(ops_file=args.ops, weights_file=args.weights, activation=args.activation)
+    simulator = RAMwich(config_file=args.config, ops_file=args.ops, weights_file=args.weights)
+    simulator.run(activation=args.activation)
 
     # Get statistics and pass to visualization
     # stats = simulator.get_stats()
