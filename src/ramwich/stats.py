@@ -32,22 +32,22 @@ class StatsDict(dict):
 
     def update_leakage_energy(self, cycles: int) -> StatsDict:
         """Update the leakage energy for all components"""
-        for key, value in self.items():
+        for _key, value in self.items():
             value.leakage_energy *= cycles
         return self
 
     def summary(self) -> Stats:
         """Generate a summary of the statistics"""
         result = Stats()
-        for key, value in self.items():
+        for _key, value in self.items():
             result.merge(value)
         return result
 
     def print(self):
         """Print the statistics in a readable format"""
         print("Statistics Summary:")
-        print(f"Total Dynamic Energy: {self.summary().dynamic_energy} J")
-        print(f"Total Leakage Energy: {self.summary().leakage_energy} J")
+        print(f"Total Dynamic Energy: {self.summary().dynamic_energy * (10**-12)} J")
+        print(f"Total Leakage Energy: {self.summary().leakage_energy * (10**-12)} J")
         print(f"Total Area: {self.summary().area} mm^2")
         for key, value in self.items():
             print(f"{key}: {value}")

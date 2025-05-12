@@ -200,7 +200,7 @@ class RAMwich:
         else:
             logger.warning("No node processes to run. Please check the operations file.")
 
-        self.get_stats()
+        self.get_stats().print()
 
         logger.info(f"Simulation completed at time {self.env.now}")
         # summarize_results(self.nodes)

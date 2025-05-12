@@ -125,19 +125,19 @@ class XBARConfig(BaseModel):
     xbar_area: float = Field(default=None, init=False, description="Crossbar area")
 
     SRAM_XBAR_LAT_DICT: ClassVar[dict[int, int]] = {32: 1, 64: 1, 128: 1, 256: 1}
-    SRAM_XBAR_POW_DICT: ClassVar[dict[int, int]] = {32: 0.32, 64: 0.64, 128: 1.28, 256: 2.56}
-    SRAM_XBAR_POW_LEAK_DiCT: ClassVar[dict[int, int]] = {32: 0.09, 64: 0.2, 128: 0.4, 256: 1.5}
-    SRAM_XBAR_AREA_DICT: ClassVar[dict[int, int]] = {32: 0.00052, 64: 0.0021, 128: 0.0083, 256: 0.0332}
+    SRAM_XBAR_POW_DYN_DICT: ClassVar[dict[int, int]] = {32: 0.32, 64: 0.64, 128: 1.28, 256: 2.56}
+    SRAM_XBAR_POW_LEAK_DICT: ClassVar[dict[int, int]] = {32: 0.02, 64: 0.08, 128: 0.32, 256: 1.28}
+    SRAM_XBAR_AREA_DICT: ClassVar[dict[int, int]] = {32: 0.00012, 64: 0.00049, 128: 0.00196, 256: 0.00784}
 
     sram_xbar_lat: float = Field(default=None, init=False, description="Crossbar latency")
-    sram_xbar_pow: float = Field(default=None, init=False, description="Crossbar power")
+    sram_xbar_pow_dyn: float = Field(default=None, init=False, description="Crossbar power")
     sram_xbar_pow_leak: float = Field(default=None, init=False, description="Crossbar leakage power")
     sram_xbar_area: float = Field(default=None, init=False, description="Crossbar area")
 
     CALCULATOR_LAT_DICT: ClassVar[dict[int, int]] = {32: 6, 64: 7, 128: 8, 256: 9}
     CALCULATOR_POW_LEAK_DICT: ClassVar[dict[int, int]] = {32: 0.02, 64: 0.04, 128: 0.08, 256: 0.16}
-    CALCULATOR_POW_DYN_DICT: ClassVar[dict[int, int]] = {32: 1.6, 64: 3.2, 128: 6.4, 256: 12.8}
-    CALCULATOR_AREA_DICT: ClassVar[dict[int, int]] = {32: 0.00015, 64: 0.00033, 128: 0.00078, 256: 0.0019}
+    CALCULATOR_POW_DYN_DICT: ClassVar[dict[int, int]] = {32: 3.24, 64: 6.98, 128: 14.56, 256: 29.82}
+    CALCULATOR_AREA_DICT: ClassVar[dict[int, int]] = {32: 0.000058, 64: 0.000127, 128: 0.000265, 256: 0.000545}
 
     calculator_lat: float = Field(default=None, init=False, description="Single SRAM CIM calculator processing latency")
     calculator_pow_leak: float = Field(default=None, init=False, description="Single SRAM CIM calculator leakage power")
@@ -200,9 +200,9 @@ class XBARConfig(BaseModel):
         # Override SRAM xbar parameters based on xbar_size if it differs from default
         if self.xbar_size in self.SRAM_XBAR_LAT_DICT:
             self.sram_xbar_lat = self.SRAM_XBAR_LAT_DICT[self.xbar_size]
-            self.sram_xbar_pow = self.SRAM_XBAR_POW_DICT[self.xbar_size]
+            self.sram_xbar_pow_dyn = self.SRAM_XBAR_POW_DYN_DICT[self.xbar_size]
             self.sram_xbar_area = self.SRAM_XBAR_AREA_DICT[self.xbar_size]
-            self.sram_xbar_pow_leak = self.SRAM_XBAR_POW_LEAK_DiCT[self.xbar_size]
+            self.sram_xbar_pow_leak = self.SRAM_XBAR_POW_LEAK_DICT[self.xbar_size]
 
         # Override calculator parameters based on xbar_size if it differs from default
         if self.xbar_size in self.CALCULATOR_LAT_DICT:
@@ -587,6 +587,8 @@ class MVMUConfig(BaseModel):
     is_xbar_rram: list = Field(default=None, init=False, description="Is crossbar RRAM")
     rram_to_output_map: list = Field(default=None, init=False, description="RRAM xbars to output map")
     sram_to_output_map: list = Field(default=None, init=False, description="SRAM xbars to output map")
+    have_rram_xbar: bool = Field(default=False, description="Whether have RRAM crossbar or not")
+    have_sram_xbar: bool = Field(default=False, description="Whether have SRAM crossbar or not")
 
     dac_config: DACConfig = Field(default_factory=DACConfig)
     xbar_config: XBARConfig = Field(default_factory=XBARConfig)
@@ -638,11 +640,13 @@ class Config(BaseModel):
                 self.mvmu_config.bits_per_cell.append(1)
                 self.mvmu_config.is_xbar_rram.append(False)
                 bits += 1
+                self.mvmu_config.have_sram_xbar = True
             else:
                 self.mvmu_config.num_rram_xbar_per_mvmu += 1
                 self.mvmu_config.bits_per_cell.append(int(i))
                 self.mvmu_config.is_xbar_rram.append(True)
                 bits += int(i)
+                self.mvmu_config.have_rram_xbar = True
         self.mvmu_config.stored_bit.append(bits)
         assert bits == self.data_config.weight_width, (
             "storage config invalid: check if total bits in storage config = weight width"
