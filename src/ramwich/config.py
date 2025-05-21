@@ -5,7 +5,7 @@ from typing import ClassVar
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-
+#Done
 class BitConfig(str, Enum):
     SLC = "1"
     MLC = "2"
@@ -13,7 +13,7 @@ class BitConfig(str, Enum):
     QLC = "4"
     SRAM = "s"
 
-
+#Done
 class DataConfig(BaseModel):
     """Data type configuration"""
 
@@ -56,7 +56,7 @@ class DataConfig(BaseModel):
 
         return self
 
-
+#Done
 class DACConfig(BaseModel):
     """Digital-to-Analog Converter configuration"""
 
@@ -95,7 +95,7 @@ class DACConfig(BaseModel):
             self.pow_leak = self.POW_LEAK_DICT[self.resolution]
             self.area = self.AREA_DICT[self.resolution]
 
-
+#Done
 class XBARConfig(BaseModel):
     """Crossbar and its IO register configuration"""
 
@@ -211,12 +211,12 @@ class XBARConfig(BaseModel):
             self.calculator_pow_dyn = self.CALCULATOR_POW_DYN_DICT[self.xbar_size]
             self.calculator_area = self.CALCULATOR_AREA_DICT[self.xbar_size]
 
-
+#Done
 class ADCType(str, Enum):
     NORMAL = "normal"
     DIFFERENTIAL = "differential"
 
-
+#Done
 class ADCConfig(BaseModel):
     """Analog-to-Digital Converter configuration"""
 
@@ -244,7 +244,7 @@ class ADCConfig(BaseModel):
             self.pow_leak = self.POW_LEAK_DICT[self.resolution]
             self.area = self.AREA_DICT[self.resolution]
 
-
+#Done
 class NOCConfig(BaseModel):
     """Network-on-Chip configuration"""
 
@@ -294,7 +294,7 @@ class NOCConfig(BaseModel):
         # Update inter-node latency based on intra-node latency
         self.noc_inter_lat = self.noc_ht_lat + self.noc_intra_lat
 
-
+#Done
 class TileConfig(BaseModel):
     """Tile configuration"""
 
@@ -437,7 +437,7 @@ class TileConfig(BaseModel):
             self.instrnMem_pow_leak = self.INSTRN_MEM_POW_LEAK_DICT[self.instrnMem_size]
             self.instrnMem_area = self.INSTRN_MEM_AREA_DICT[self.instrnMem_size] * math.sqrt(8)  # Aligned with PUMA
 
-
+#Done
 class CoreConfig(BaseModel):
     """Core configuration"""
 
@@ -549,7 +549,7 @@ class CoreConfig(BaseModel):
             self.instrnMem_pow_leak = self.INSTRN_MEM_POW_LEAK_DICT[self.instrnMem_size]
             self.instrnMem_area = self.INSTRN_MEM_AREA_DICT[self.instrnMem_size] * math.sqrt(8)  # Aligned with PUMA
 
-
+#Done
 class MVMUConfig(BaseModel):
     """Matrix-Vector Multiply Unit configuration"""
 
@@ -606,7 +606,7 @@ class MVMUConfig(BaseModel):
                 f"num_columns_per_adc ({self.num_columns_per_adc})"
             )
 
-
+#Done
 class Config(BaseModel):
     model_config = ConfigDict(frozen=True)
     """Configuration for the RAMwich Simulator"""
