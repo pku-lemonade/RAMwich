@@ -5,11 +5,12 @@ from pydantic import BaseModel, Field, model_validator
 
 
 class BitConfig(str, Enum):
-    SLC = "1"  # 单层单元
-    MLC = "2"  # 多层单元
-    TLC = "3"  # 三层单元
-    QLC = "4"  # 四层单元
-    SRAM = "s"  # SRAM类型
+    """Bit configuration for storage types"""
+    SLC = "1"
+    MLC = "2"
+    TLC = "3"
+    QLC = "4"
+    SRAM = "s"
 
 
 class DataConfig(BaseModel):
