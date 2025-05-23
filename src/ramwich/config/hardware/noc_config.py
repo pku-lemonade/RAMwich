@@ -1,5 +1,5 @@
 from typing import ClassVar
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 class NOCConfig(BaseModel):
     """Network-on-Chip configuration"""
@@ -28,8 +28,8 @@ class NOCConfig(BaseModel):
     noc_intra_pow_leak: float = Field(default=None, init=False, description="NoC intra-node leakage power")
     noc_intra_area: float = Field(default=None, init=False, description="NoC intra-node area")
 
-    def __init__(self, **data):
-        super().__init__(**data)
+    @model_validator(mode="after")
+    def calculate_derived_values(self):
         # Validate injection rate
         if self.inj_rate > self.INJ_RATE_MAX:
             raise ValueError("NoC injection rate too high! Reconsider NOC design or DNN mapping.")
@@ -49,3 +49,5 @@ class NOCConfig(BaseModel):
 
         # Update inter-node latency based on intra-node latency
         self.noc_inter_lat = self.noc_ht_lat + self.noc_intra_lat
+        
+        return self

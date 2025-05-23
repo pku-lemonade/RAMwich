@@ -1,5 +1,5 @@
 from typing import ClassVar
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 from ..hardware.adc_config import ADCConfig
 from ..hardware.dac_config import DACConfig
 from ..hardware.xbar_config import XBARConfig
@@ -47,10 +47,9 @@ class MVMUConfig(BaseModel):
     dac_config: DACConfig = Field(default_factory=DACConfig)
     xbar_config: XBARConfig = Field(default_factory=XBARConfig)
     adc_config: ADCConfig = Field(default_factory=ADCConfig)
-
-    def __init__(self, **data):
-        super().__init__(**data)
-
+        
+    @model_validator(mode="after")
+    def calculate_derived_values(self):
         self.num_adc_per_xbar = self.xbar_config.xbar_size // self.num_columns_per_adc
 
         # Then verify it's a clean division
@@ -59,3 +58,5 @@ class MVMUConfig(BaseModel):
                 f"xbar_size ({self.xbar_config.xbar_size}) must be exactly divisible by "
                 f"num_columns_per_adc ({self.num_columns_per_adc})"
             )
+        
+        return self

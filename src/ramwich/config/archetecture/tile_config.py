@@ -1,6 +1,6 @@
 import math
 from typing import ClassVar
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 class TileConfig(BaseModel):
     """Tile configuration"""
@@ -129,9 +129,8 @@ class TileConfig(BaseModel):
     receive_buffer_pow_leak: float = Field(default=0.09 * math.sqrt(4), description="Receive buffer leakage power")
     receive_buffer_area: float = Field(default=0.0022 * math.sqrt(4), description="Receive buffer area")
 
-    def __init__(self, **data):
-        super().__init__(**data)
-
+    @model_validator(mode = "after")
+    def calculate_derived_values(self):
         if self.edram_size_in_KB in self.EDRAM_LAT_DICT:
             self.edram_lat = self.EDRAM_LAT_DICT[self.edram_size_in_KB]
             self.edram_pow_dyn = self.EDRAM_POW_DYN_DICT[self.edram_size_in_KB]
@@ -143,3 +142,5 @@ class TileConfig(BaseModel):
             self.instrnMem_pow_dyn = self.INSTRN_MEM_POW_DYN_DICT[self.instrnMem_size]
             self.instrnMem_pow_leak = self.INSTRN_MEM_POW_LEAK_DICT[self.instrnMem_size]
             self.instrnMem_area = self.INSTRN_MEM_AREA_DICT[self.instrnMem_size] * math.sqrt(8)  # Aligned with PUMA
+
+        return self

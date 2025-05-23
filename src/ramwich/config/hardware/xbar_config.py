@@ -1,5 +1,5 @@
 from typing import ClassVar
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 class XBARConfig(BaseModel):
     """Crossbar and its IO register configuration"""
@@ -81,9 +81,8 @@ class XBARConfig(BaseModel):
     noise_sigma: float = Field(default=0.01, description="RRAM read and calculate noise sigma")
     has_noise: bool = Field(default=False, description="Whether to add noise to the crossbar")
 
-    def __init__(self, **data):
-        super().__init__(**data)
-
+    @model_validator(mode="after")
+    def calculate_derived_values(self):
         # Override xbar parameters based on xbar_size if it differs from default
         if self.xbar_size in self.XBAR_LAT_DICT:
             self.xbar_lat = self.XBAR_LAT_DICT[self.xbar_size]
@@ -115,3 +114,5 @@ class XBARConfig(BaseModel):
             self.calculator_pow_leak = self.CALCULATOR_POW_LEAK_DICT[self.xbar_size]
             self.calculator_pow_dyn = self.CALCULATOR_POW_DYN_DICT[self.xbar_size]
             self.calculator_area = self.CALCULATOR_AREA_DICT[self.xbar_size]
+
+        return self

@@ -1,6 +1,6 @@
 import math
 from typing import ClassVar
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 class CoreConfig(BaseModel):
     """Core configuration"""
@@ -97,9 +97,8 @@ class CoreConfig(BaseModel):
     alu_area: float = Field(default=0.00567 * 32 / 45, description="ALU area")
     act_area: float = Field(default=0.0003, description="Activation unit area")
 
-    def __init__(self, **data):
-        super().__init__(**data)
-
+    @model_validator(mode="after")
+    def calculate_derived_values(self):
         # Override dataMem parameters based on dataMem_size if it differs from default
         if self.dataMem_size in self.DATA_MEM_LAT_DICT:
             self.dataMem_lat = self.DATA_MEM_LAT_DICT[self.dataMem_size]
@@ -112,3 +111,5 @@ class CoreConfig(BaseModel):
             self.instrnMem_pow_dyn = self.INSTRN_MEM_POW_DYN_DICT[self.instrnMem_size]
             self.instrnMem_pow_leak = self.INSTRN_MEM_POW_LEAK_DICT[self.instrnMem_size]
             self.instrnMem_area = self.INSTRN_MEM_AREA_DICT[self.instrnMem_size] * math.sqrt(8)  # Aligned with PUMA
+
+        return self

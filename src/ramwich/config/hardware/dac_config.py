@@ -1,5 +1,5 @@
 from typing import ClassVar
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 class DACConfig(BaseModel):
     """Digital-to-Analog Converter configuration"""
@@ -30,11 +30,13 @@ class DACConfig(BaseModel):
     pow_leak: float = Field(default=None, init=False, description="DAC leakage power")
     area: float = Field(default=None, init=False, description="DAC area")
 
-    def __init__(self, **data):
-        super().__init__(**data)
+    @model_validator(mode="after")
+    def calculate_derived_values(self):
         # Update derived values if resolution is different from default
         if self.resolution in self.LAT_DICT:
             self.lat = self.LAT_DICT[self.resolution]
             self.pow_dyn = self.POW_DYN_DICT[self.resolution]
             self.pow_leak = self.POW_LEAK_DICT[self.resolution]
             self.area = self.AREA_DICT[self.resolution]
+            
+        return self

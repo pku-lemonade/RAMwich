@@ -1,6 +1,6 @@
 from enum import Enum
 from typing import ClassVar
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 class ADCType(str, Enum):
     NORMAL = "normal"
@@ -25,11 +25,13 @@ class ADCConfig(BaseModel):
     pow_leak: float = Field(default=None, init=False, description="ADC leakage power")
     area: float = Field(default=None, init=False, description="ADC area")
 
-    def __init__(self, **data):
-        super().__init__(**data)
-        # Update derived values based on resolution if it's different from default
+    @model_validator(mode="after")
+    def calculate_derived_values(self):
+         # Update derived values based on resolution if it's different from default
         if self.resolution in self.LAT_DICT:
             self.lat = self.LAT_DICT[self.resolution]
             self.pow_dyn = self.POW_DYN_DICT[self.resolution]
             self.pow_leak = self.POW_LEAK_DICT[self.resolution]
             self.area = self.AREA_DICT[self.resolution]
+            
+        return self

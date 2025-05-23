@@ -1,4 +1,4 @@
-from ..config import ADCArray
+from .adc import ADCArray
 from .dac import DACArray
 from .dram_controller import DRAMController
 from .inreg import InputRegisterArray
