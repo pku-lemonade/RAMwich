@@ -33,10 +33,12 @@ class Core:
         # From num_mvmus_per_core * xbar_size * 2 and above are core cache
         self.mvmu_outreg_start = self.config.mvmu_config.xbar_config.xbar_size * self.config.num_mvmus_per_core
         self.cache_start = self.mvmu_outreg_start * 2
-        self.total_registers = self.cache_start + self.config.core_config.dataMem_size
+        self.storage_start = self.cache_start + self.core_config.dataMem_size
+        self.total_registers = self.storage_start + self.config.core_config.storage_size
 
         # Initialize components
-        self.cache = SRAM(self.core_config)
+        self.cache = SRAM(self.core_config, type="Cache")
+        self.storage = SRAM(self.core_config, type="storage")
         self.vfu = VFU(self.config)
         self.dram_controller = self.parent.dram_controller
 
@@ -88,6 +90,9 @@ class Core:
         if start < 0 or end > self.total_registers:
             raise IndexError(f"Write operation out of range ({start}, {length})")
 
+        if end > self.cache_start + self.core_config.dataMem_size:
+            raise IndexError(f"Cannot write to storage registers while inference ({start}, {length})")
+
         if self._overlaps_output_registers(start, end):
             raise IndexError(f"Write operation to MVMU output register ({start}, {length}) is not allowed")
 
@@ -114,8 +119,12 @@ class Core:
             raise IndexError(f"Read operation from MVMU input register ({start}, {length}) is not allowed")
 
         # Depending on address, read from the appropriate register
-        if start >= self.cache_start:
-            # Read from cache
+        if start >= self.storage_start:
+            # Read from storage registers
+            internal_start = start - self.storage_start
+            return self.storage.read(internal_start, length)
+        elif start >= self.cache_start:
+            # Read from cache registers
             internal_start = start - self.cache_start
             return self.cache.read(internal_start, length)
         else:

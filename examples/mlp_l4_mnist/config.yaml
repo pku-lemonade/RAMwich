@@ -11,6 +11,7 @@ data_config:
   storage_config: ["2", "2", "2", "2"]
   # Storage config is a list of strings representing the type of memory
   # the ones in front are for LSBs, the ones in the back are for MSBs
+  # examples:
   # ["1", "1", "1", "1", "1", "1", "1", "1"] # 8 SLCs
   # ["2", "2", "2", "2"] # 4 MLCs
   # ["2", "3", "3"] # 1 MLC + 2 TLCs
@@ -21,6 +22,8 @@ data_config:
   # ["4", "2", "s", "s"] # 1 QLC + 1 MLC + 2 SRAM CIM Units
   # ["2", "s", "s", "2", "2"] # 2 MLCs + 2 SRAM CIM Units + 1 MLC
   # ["2", "2", "2", "s", "s"] # 3 MLCs + 2 SRAM CIM Units
+  # ["2", "2", "s", "s", "s", "s"] # 2 MLCs + 4 SRAM CIM Units
+  # ["2", "s", "s", "s", "s", "s", "s"] # 1 MLC + 6 SRAM CIM Units
 
   weight_format: "Q0.8" # 8 bits fraction
   activation_format: "Q8.8" # 8 bits signed integer + 8 bits fraction
@@ -59,7 +62,7 @@ mvmu_config:
   xbar_config:
     xbar_size: 128  # Crossbar size
     has_noise: true  # Whether the crossbar has noise
-    noise_sigma: 0.1  # Noise standard deviation
+    noise_sigma: 0.2  # Noise standard deviation
     # Other parameters (mvmu_xbar_ip_lat, mvmu_alu_lat, etc.) are derived
 
   # ADC Configuration

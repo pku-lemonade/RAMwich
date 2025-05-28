@@ -36,14 +36,23 @@ class MemoryStats(BaseModel):
         """Convert MemoryStats to general Stats object"""
 
         # Map Memory metrics to StatsDict object
-        if self.memory_type == "SRAM":
+        if self.memory_type == "SRAM Cache":
             stats = Stats(
                 activation_count=self.total_operated_cells,
                 dynamic_energy=self.config.dataMem_pow_dyn * self.total_operated_cells,
                 leakage_energy=self.config.dataMem_pow_leak,
                 area=self.config.dataMem_area,
             )
-            return StatsDict({"SRAM": stats})
+            return StatsDict({"SRAM Cache": stats})
+
+        elif self.memory_type == "SRAM storage":
+            stats = Stats(
+                activation_count=self.total_operated_cells,
+                dynamic_energy=self.config.storage_pow_dyn * self.total_operated_cells,
+                leakage_energy=self.config.storage_pow_leak,
+                area=self.config.storage_area,
+            )
+            return StatsDict({"SRAM storage": stats})
 
         elif self.memory_type == "DRAM":
             stats = Stats(
@@ -142,14 +151,20 @@ class Memory:
 class SRAM(Memory):
     """SRAM registers file component for the Core"""
 
-    def __init__(self, core_config: CoreConfig):
+    def __init__(self, core_config: CoreConfig, type: str = "Cache"):
         self.core_config = core_config
-        size = self.core_config.dataMem_size
+        if type == "Cache":
+            size = self.core_config.dataMem_size
+        elif type == "storage":
+            size = self.core_config.storage_size
+        else:
+            raise ValueError(f"Unknown SRAM type: {type}")
+
         super().__init__(size)
 
         # Initialize stats
         self.stats.config = self.core_config
-        self.stats.memory_type = "SRAM"
+        self.stats.memory_type = "SRAM " + type
 
 
 class DRAM(Memory):
