@@ -26,6 +26,8 @@ class Config(BaseModel):
 
     @model_validator(mode="after")
     def validate_and_calculate(self):
+        self.mvmu_config.have_sram_xbar = False  # Reset flag to avoid stale state
+        self.mvmu_config.have_rram_xbar = False  # Reset flag to avoid stale state
         self.mvmu_config.stored_bit = []
         self.mvmu_config.bits_per_cell = []
         self.mvmu_config.is_xbar_rram = []
