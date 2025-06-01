@@ -129,7 +129,7 @@ class TileConfig(BaseModel):
     receive_buffer_pow_leak: float = Field(default=0.09 * math.sqrt(4), description="Receive buffer leakage power")
     receive_buffer_area: float = Field(default=0.0022 * math.sqrt(4), description="Receive buffer area")
 
-    @model_validator(mode = "after")
+    @model_validator(mode="after")
     def calculate_derived_values(self):
         if self.edram_size_in_KB in self.EDRAM_LAT_DICT:
             self.edram_lat = self.EDRAM_LAT_DICT[self.edram_size_in_KB]
