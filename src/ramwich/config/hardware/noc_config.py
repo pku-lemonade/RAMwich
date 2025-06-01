@@ -6,7 +6,7 @@ class NOCConfig(BaseModel):
 
     # Class constants for lookup tables
     INJ_RATE_MAX: ClassVar[int] = 0.025
-    # Convert string keys to numeric keys for consistency
+    # Map injection rates to corresponding latencies
     LAT_DICT: ClassVar[dict[float, int]] = {0.001: 29, 0.005: 31, 0.01: 34, 0.02: 54, 0.025: 115}
     AREA_DICT: ClassVar[dict[int, float]] = {4: 0.047, 8: 0.116}
     POW_DYN_DICT: ClassVar[dict[int, float]] = {4: 16.13, 8: 51.48}
