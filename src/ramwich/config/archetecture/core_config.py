@@ -1,6 +1,8 @@
 import math
 from typing import ClassVar
+
 from pydantic import BaseModel, Field, model_validator
+
 
 class CoreConfig(BaseModel):
     """Core configuration"""
@@ -27,6 +29,12 @@ class CoreConfig(BaseModel):
     dataMem_pow_dyn: float = Field(default=None, init=False, description="Data memory dynamic power")
     dataMem_pow_leak: float = Field(default=None, init=False, description="Data memory leakage power")
     dataMem_area: float = Field(default=None, init=False, description="Data memory area")
+
+    storage_size: int = Field(default=1024, description="Storage size")
+    storage_lat: float = Field(default=None, init=False, description="Storage latency")
+    storage_pow_dyn: float = Field(default=None, init=False, description="Storage dynamic power")
+    storage_pow_leak: float = Field(default=None, init=False, description="Storage leakage power")
+    storage_area: float = Field(default=None, init=False, description="Storage area")
 
     # Instruction memory lookup tables
     INSTRN_MEM_LAT_DICT: ClassVar[dict[int, int]] = {
@@ -105,6 +113,12 @@ class CoreConfig(BaseModel):
             self.dataMem_pow_dyn = self.DATA_MEM_POW_DYN_DICT[self.dataMem_size]
             self.dataMem_pow_leak = self.DATA_MEM_POW_LEAK_DICT[self.dataMem_size]
             self.dataMem_area = self.DATA_MEM_AREA_DICT[self.dataMem_size]
+
+        if self.storage_size in self.DATA_MEM_LAT_DICT:
+            self.storage_lat = self.DATA_MEM_LAT_DICT[self.storage_size]
+            self.storage_pow_dyn = self.DATA_MEM_POW_DYN_DICT[self.storage_size]
+            self.storage_pow_leak = self.DATA_MEM_POW_LEAK_DICT[self.storage_size]
+            self.storage_area = self.DATA_MEM_AREA_DICT[self.storage_size]
 
         if self.instrnMem_size in self.INSTRN_MEM_LAT_DICT:
             self.instrnMem_lat = self.INSTRN_MEM_LAT_DICT[self.instrnMem_size]
