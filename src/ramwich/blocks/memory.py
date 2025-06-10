@@ -151,20 +151,20 @@ class Memory:
 class SRAM(Memory):
     """SRAM registers file component for the Core"""
 
-    def __init__(self, core_config: CoreConfig, type: str = "Cache"):
+    def __init__(self, core_config: CoreConfig, sram_type: str = "Cache"):
         self.core_config = core_config
-        if type == "Cache":
+        if sram_type == "Cache":
             size = self.core_config.dataMem_size
-        elif type == "storage":
+        elif sram_type == "storage":
             size = self.core_config.storage_size
         else:
-            raise ValueError(f"Unknown SRAM type: {type}")
+            raise ValueError(f"Unknown SRAM type: {sram_type}")
 
         super().__init__(size)
 
         # Initialize stats
         self.stats.config = self.core_config
-        self.stats.memory_type = "SRAM " + type
+        self.stats.memory_type = "SRAM " + sram_type
 
 
 class DRAM(Memory):
