@@ -7,6 +7,8 @@ from pydantic import BaseModel, Field, model_validator
 class CoreConfig(BaseModel):
     """Core configuration"""
 
+    core_type: list[list[int]] = Field(default=None, init=False, description="Core type configuration")
+
     # Core Control unit (control unit and pipeline registers)
     ccu_pow_dyn: float = Field(default=1.25 * 0.2, description="Core control unit dynamic power")
     ccu_pow_leak: float = Field(default=0, description="Core control unit leakage power")
@@ -25,7 +27,7 @@ class CoreConfig(BaseModel):
     }
 
     dataMem_size: int = Field(default=4096, description="Data memory size")
-    dataMem_lat: float = Field(default=None, init=False, description="Data memory latency")
+    dataMem_lat: float = Field(default=None, description="Data memory latency")
     dataMem_pow_dyn: float = Field(default=None, init=False, description="Data memory dynamic power")
     dataMem_pow_leak: float = Field(default=None, init=False, description="Data memory leakage power")
     dataMem_area: float = Field(default=None, init=False, description="Data memory area")

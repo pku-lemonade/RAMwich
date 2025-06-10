@@ -34,7 +34,7 @@ class Core:
         self.mvmu_outreg_start = self.config.mvmu_config.xbar_config.xbar_size * self.config.num_mvmus_per_core
         self.cache_start = self.mvmu_outreg_start * 2
         self.storage_start = self.cache_start + self.core_config.dataMem_size
-        self.total_registers = self.storage_start + self.config.core_config.storage_size
+        self.total_registers = self.storage_start + self.core_config.storage_size
 
         # Initialize components
         self.cache = SRAM(self.core_config, type="Cache")
@@ -90,8 +90,8 @@ class Core:
         if start < 0 or end > self.total_registers:
             raise IndexError(f"Write operation out of range ({start}, {length})")
 
-        if end > self.cache_start + self.core_config.dataMem_size:
-            raise IndexError(f"Cannot write to storage registers while inference ({start}, {length})")
+        if end > self.storage_start:
+            raise IndexError(f"Cannot write to storage registers during inference ({start}, {length})")
 
         if self._overlaps_output_registers(start, end):
             raise IndexError(f"Write operation to MVMU output register ({start}, {length}) is not allowed")

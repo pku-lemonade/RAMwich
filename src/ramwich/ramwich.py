@@ -19,16 +19,34 @@ logger = logging.getLogger(__name__)
 
 
 class RAMwich:
-    def __init__(self, config_file: str, ops_file: str, weights_file: str = None):
-        # Load configuration from file
+    def __init__(self, config_file: str, ops_file: str, yaml_config_file: str = None, weights_file: str = None):
+        # Load base configuration from JSON file
         if not os.path.exists(config_file):
             raise FileNotFoundError(f"Configuration file {config_file} not found")
 
         with open(config_file) as f:
-            if config_file.endswith((".yaml", ".yml")):
-                self.config = Config.model_validate(yaml.safe_load(f))
+            if config_file.endswith(".json"):
+                json_config = json.load(f)
             else:
-                raise ValueError(f"Unsupported config format: {config_file}. Use JSON or YAML.")
+                raise ValueError(f"Unsupported config format: {config_file}. Use JSON.")
+
+        # Load additional configuration from JSON file if provided
+        yaml_config = {}
+        if yaml_config_file:
+            if not os.path.exists(yaml_config_file):
+                raise FileNotFoundError(f"YAML configuration file {yaml_config_file} not found")
+
+            with open(yaml_config_file) as f:
+                if yaml_config_file.endswith(".yaml"):
+                    yaml_config = yaml.safe_load(f)
+                else:
+                    raise ValueError(f"Unsupported config format: {yaml_config_file}. Use YAML.")
+
+        # Merge configurations (JSON values override YAML values)
+        merged_config = self._merge_configs(json_config, yaml_config)
+
+        # Validate the merged configuration
+        self.config = Config.model_validate(merged_config)
 
         self.env = simpy.Environment()
 
@@ -41,6 +59,28 @@ class RAMwich:
         # Load weights if provided
         if weights_file:
             self.load_weights(weights_file)
+
+    def _merge_configs(self, json_config: dict, yaml_config: dict) -> dict:
+        """
+        Merge YAML and JSON configurations.
+        JSON config values override YAML config values for the same keys.
+        For nested dictionaries, performs a deep merge.
+        """
+        if not yaml_config:
+            return json_config
+
+        merged = json_config.copy()
+
+        # Deep merge function for nested dictionaries
+        def deep_merge(original, override):
+            for key, value in override.items():
+                if key in original and isinstance(original[key], dict) and isinstance(value, dict):
+                    deep_merge(original[key], value)
+                else:
+                    original[key] = value
+
+        deep_merge(merged, json_config)
+        return merged
 
     def _build_architecture(self) -> list[Node]:
         """Build the hierarchical architecture based on configuration"""
