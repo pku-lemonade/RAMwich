@@ -15,6 +15,9 @@ class Config(BaseModel):
     num_cores_per_tile: int = Field(default=8, description="Number of cores per tile")
     num_mvmus_per_core: int = Field(default=6, description="Number of MVMUs per core")
 
+    addr_width: int = Field(default=32, description="Address width")
+    instrn_width: int = Field(default=48, description="Instruction width")
+
     # Add configuration for components with default factories
     data_config: DataConfig = Field(default_factory=DataConfig)
     noc_config: NOCConfig = Field(default_factory=NOCConfig)

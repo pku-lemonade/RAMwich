@@ -30,17 +30,16 @@ class RAMwich:
             else:
                 raise ValueError(f"Unsupported config format: {config_file}. Use JSON.")
 
-        # Load additional configuration from JSON file if provided
+        # Load additional configuration from YAML file
         yaml_config = {}
-        if yaml_config_file:
-            if not os.path.exists(yaml_config_file):
-                raise FileNotFoundError(f"YAML configuration file {yaml_config_file} not found")
+        if not os.path.exists(yaml_config_file):
+            raise FileNotFoundError(f"YAML configuration file {yaml_config_file} not found")
 
-            with open(yaml_config_file) as f:
-                if yaml_config_file.endswith(".yaml"):
-                    yaml_config = yaml.safe_load(f)
-                else:
-                    raise ValueError(f"Unsupported config format: {yaml_config_file}. Use YAML.")
+        with open(yaml_config_file) as f:
+            if yaml_config_file.endswith(".yaml"):
+                yaml_config = yaml.safe_load(f)
+            else:
+                raise ValueError(f"Unsupported config format: {yaml_config_file}. Use YAML.")
 
         # Merge configurations (JSON values override YAML values)
         merged_config = self._merge_configs(json_config, yaml_config)
