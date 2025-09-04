@@ -2,6 +2,7 @@ from enum import Enum
 
 from pydantic import BaseModel, Field, model_validator
 
+from ..data_config import DataConfig
 from ..hardware.adc_config import ADCConfig
 from ..hardware.dac_config import DACConfig
 from ..hardware.xbar_config import XBARConfig
@@ -22,11 +23,7 @@ class MVMUConfig(BaseModel):
 
     mvmu_type: int = Field(default=0, description="Type of MVMU (0: I/O, 1 to 9: different types)")
 
-    storage_config: list[BitConfig] = Field(default=None, init=False, description="Storage configuration")
-
-    weight_int_bits: int = Field(default=None, init=False, description="Weight integer bits")
-    weight_frac_bits: int = Field(default=None, init=False, description="Weight fractional bits")
-    weight_width: int = Field(default=None, init=False, description="Weight data bits")
+    data_config: DataConfig = Field(default_factory=DataConfig)
 
     snh_lat: float = Field(default=1, description="Single sample and holder processing latency")
     snh_pow_leak: float = Field(default=9.7 * 10 ** (-7), description="Single sample and holder leakage power")
@@ -80,68 +77,8 @@ class MVMUConfig(BaseModel):
                 f"num_columns_per_adc ({self.num_columns_per_adc})"
             )
 
-        if self.mvmu_type in [0, 1]:
-            self.storage_config = [BitConfig.MLC, BitConfig.MLC, BitConfig.MLC, BitConfig.MLC]
-        elif self.mvmu_type == 2:
-            self.storage_config = [BitConfig.MLC, BitConfig.MLC, BitConfig.MLC, BitConfig.SLC, BitConfig.SLC]
-        elif self.mvmu_type == 3:
-            self.storage_config = [
-                BitConfig.MLC,
-                BitConfig.MLC,
-                BitConfig.SLC,
-                BitConfig.SLC,
-                BitConfig.SLC,
-                BitConfig.SLC,
-            ]
-        elif self.mvmu_type == 4:
-            self.storage_config = [
-                BitConfig.MLC,
-                BitConfig.SLC,
-                BitConfig.SLC,
-                BitConfig.SLC,
-                BitConfig.SLC,
-                BitConfig.SLC,
-                BitConfig.SLC,
-            ]
-        elif self.mvmu_type == 5:
-            self.storage_config = [
-                BitConfig.SLC,
-                BitConfig.SLC,
-                BitConfig.SLC,
-                BitConfig.SLC,
-                BitConfig.SLC,
-                BitConfig.SLC,
-                BitConfig.SLC,
-                BitConfig.SLC,
-            ]
-        elif self.mvmu_type == 6:
-            self.storage_config = [
-                BitConfig.SRAM,
-                BitConfig.SRAM,
-                BitConfig.SRAM,
-                BitConfig.SRAM,
-                BitConfig.SLC,
-                BitConfig.SLC,
-                BitConfig.SLC,
-                BitConfig.SLC,
-            ]
-        elif self.mvmu_type == 7:
-            self.storage_config = [
-                BitConfig.SRAM,
-                BitConfig.SRAM,
-                BitConfig.SRAM,
-                BitConfig.SRAM,
-                BitConfig.SRAM,
-                BitConfig.SRAM,
-                BitConfig.SRAM,
-                BitConfig.SRAM,
-            ]
-        else:
-            raise ValueError(f"Invalid MVMU type: {self.mvmu_type}")
-
-        self.weight_int_bits = 1
-        self.weight_frac_bits = 7
-        self.weight_width = self.weight_int_bits + self.weight_frac_bits
+        self.weight_partition = [1, 7]
+        self.weight_width = sum(self.weight_partition)
 
         self.have_sram_xbar = False  # Reset flag to avoid stale state
         self.have_rram_xbar = False  # Reset flag to avoid stale state
