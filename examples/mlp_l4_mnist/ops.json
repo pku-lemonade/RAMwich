@@ -3082,7 +3082,7 @@
         "type": "hlt"
     },
     {
-        "mem_addr": 4184,
+        "mem_addr": 3856,
         "source_tile": 0,
         "tile": 3,
         "type": "receive",
@@ -3090,7 +3090,7 @@
         "width": 16
     },
     {
-        "mem_addr": 4056,
+        "mem_addr": 3728,
         "source_tile": 0,
         "tile": 3,
         "type": "receive",
@@ -3098,7 +3098,7 @@
         "width": 16
     },
     {
-        "mem_addr": 3928,
+        "mem_addr": 3600,
         "source_tile": 0,
         "tile": 3,
         "type": "receive",
@@ -3106,7 +3106,7 @@
         "width": 16
     },
     {
-        "mem_addr": 3800,
+        "mem_addr": 3472,
         "source_tile": 0,
         "tile": 3,
         "type": "receive",
@@ -3114,7 +3114,7 @@
         "width": 16
     },
     {
-        "mem_addr": 3672,
+        "mem_addr": 3344,
         "source_tile": 0,
         "tile": 3,
         "type": "receive",
@@ -3122,7 +3122,7 @@
         "width": 16
     },
     {
-        "mem_addr": 3544,
+        "mem_addr": 3216,
         "source_tile": 0,
         "tile": 3,
         "type": "receive",
@@ -3130,7 +3130,7 @@
         "width": 16
     },
     {
-        "mem_addr": 3416,
+        "mem_addr": 3088,
         "source_tile": 0,
         "tile": 3,
         "type": "receive",
@@ -3186,7 +3186,7 @@
         "width": 16
     },
     {
-        "mem_addr": 2520,
+        "mem_addr": 2192,
         "source_tile": 2,
         "tile": 3,
         "type": "receive",
@@ -3202,7 +3202,7 @@
         "width": 16
     },
     {
-        "mem_addr": 3288,
+        "mem_addr": 2960,
         "source_tile": 2,
         "tile": 3,
         "type": "receive",
@@ -3210,7 +3210,7 @@
         "width": 16
     },
     {
-        "mem_addr": 3160,
+        "mem_addr": 2832,
         "source_tile": 2,
         "tile": 3,
         "type": "receive",
@@ -3218,7 +3218,7 @@
         "width": 16
     },
     {
-        "mem_addr": 3032,
+        "mem_addr": 2704,
         "source_tile": 2,
         "tile": 3,
         "type": "receive",
@@ -3226,23 +3226,7 @@
         "width": 16
     },
     {
-        "mem_addr": 2904,
-        "source_tile": 2,
-        "tile": 3,
-        "type": "receive",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 2776,
-        "source_tile": 2,
-        "tile": 3,
-        "type": "receive",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 2648,
+        "mem_addr": 2576,
         "source_tile": 2,
         "tile": 3,
         "type": "receive",
@@ -3251,14 +3235,46 @@
     },
     {
         "mem_addr": 2448,
-        "target_tile": 4,
+        "source_tile": 2,
         "tile": 3,
-        "type": "send",
-        "vec": 6,
-        "width": 12
+        "type": "receive",
+        "vec": 8,
+        "width": 16
     },
     {
         "mem_addr": 2320,
+        "source_tile": 2,
+        "tile": 3,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 2064,
+        "target_tile": 4,
+        "tile": 3,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 1936,
+        "target_tile": 4,
+        "tile": 3,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 1808,
+        "target_tile": 4,
+        "tile": 3,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 1680,
         "target_tile": 4,
         "tile": 3,
         "type": "send",
@@ -3272,7 +3288,7 @@
     {
         "core": 0,
         "dest": 1537,
-        "imm": 3928,
+        "imm": 3600,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -3314,7 +3330,7 @@
     {
         "core": 0,
         "dest": 1793,
-        "imm": 3800,
+        "imm": 3472,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -3356,7 +3372,7 @@
     {
         "core": 0,
         "dest": 2049,
-        "imm": 3672,
+        "imm": 3344,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -3398,7 +3414,7 @@
     {
         "core": 0,
         "dest": 2305,
-        "imm": 3544,
+        "imm": 3216,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -3440,7 +3456,7 @@
     {
         "core": 0,
         "dest": 2561,
-        "imm": 3416,
+        "imm": 3088,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -3574,7 +3590,7 @@
     {
         "core": 0,
         "dest": 1921,
-        "imm": 2520,
+        "imm": 2192,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -3724,7 +3740,7 @@
     {
         "core": 1,
         "dest": 1537,
-        "imm": 4184,
+        "imm": 3856,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -3766,7 +3782,7 @@
     {
         "core": 1,
         "dest": 1681,
-        "imm": 4056,
+        "imm": 3728,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -3908,15 +3924,20 @@
     },
     {
         "core": 1,
+        "tile": 3,
+        "type": "hlt"
+    },
+    {
+        "core": 2,
         "dest": 1537,
-        "imm": 3032,
+        "imm": 2960,
         "is_address": true,
         "tile": 3,
         "type": "set",
         "vec": 1
     },
     {
-        "core": 1,
+        "core": 2,
         "dest": 1537,
         "read": 1537,
         "tile": 3,
@@ -3925,7 +3946,7 @@
         "width": 16
     },
     {
-        "core": 1,
+        "core": 2,
         "dest": 640,
         "read": 1537,
         "tile": 3,
@@ -3933,7 +3954,7 @@
         "vec": 128
     },
     {
-        "core": 1,
+        "core": 2,
         "tile": 3,
         "type": "mvm",
         "xbar": [
@@ -3941,7 +3962,7 @@
         ]
     },
     {
-        "core": 1,
+        "core": 2,
         "dest": 1537,
         "read": 1408,
         "tile": 3,
@@ -3949,16 +3970,16 @@
         "vec": 128
     },
     {
-        "core": 1,
+        "core": 2,
         "dest": 1665,
-        "imm": 2904,
+        "imm": 2832,
         "is_address": true,
         "tile": 3,
         "type": "set",
         "vec": 1
     },
     {
-        "core": 1,
+        "core": 2,
         "dest": 1665,
         "read": 1665,
         "tile": 3,
@@ -3967,7 +3988,7 @@
         "width": 16
     },
     {
-        "core": 1,
+        "core": 2,
         "dest": 512,
         "read": 1665,
         "tile": 3,
@@ -3975,7 +3996,7 @@
         "vec": 128
     },
     {
-        "core": 1,
+        "core": 2,
         "tile": 3,
         "type": "mvm",
         "xbar": [
@@ -3983,7 +4004,7 @@
         ]
     },
     {
-        "core": 1,
+        "core": 2,
         "dest": 1665,
         "read": 1280,
         "tile": 3,
@@ -3991,16 +4012,16 @@
         "vec": 128
     },
     {
-        "core": 1,
+        "core": 2,
         "dest": 1793,
-        "imm": 2776,
+        "imm": 2704,
         "is_address": true,
         "tile": 3,
         "type": "set",
         "vec": 1
     },
     {
-        "core": 1,
+        "core": 2,
         "dest": 1793,
         "read": 1793,
         "tile": 3,
@@ -4009,242 +4030,9 @@
         "width": 16
     },
     {
-        "core": 1,
+        "core": 2,
         "dest": 384,
         "read": 1793,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 1,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            3
-        ]
-    },
-    {
-        "core": 1,
-        "dest": 1793,
-        "read": 1152,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 1,
-        "dest": 1921,
-        "imm": 2648,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 1,
-        "dest": 1921,
-        "read": 1921,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 1,
-        "dest": 256,
-        "read": 1921,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 1,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            2
-        ]
-    },
-    {
-        "core": 1,
-        "dest": 1793,
-        "opcode": "add",
-        "read_1": 1793,
-        "read_2": 1024,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 1,
-        "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1793,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 1,
-        "dest": 1537,
-        "opcode": "add",
-        "read_1": 1537,
-        "read_2": 1665,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 1,
-        "dest": 1665,
-        "imm": 1168,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 1,
-        "dest": 1665,
-        "read": 1537,
-        "tile": 3,
-        "type": "store",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 1,
-        "tile": 3,
-        "type": "hlt"
-    },
-    {
-        "core": 2,
-        "dest": 1537,
-        "imm": 2776,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 2,
-        "dest": 1537,
-        "read": 1537,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 2,
-        "dest": 640,
-        "read": 1537,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            5
-        ]
-    },
-    {
-        "core": 2,
-        "dest": 1537,
-        "read": 1408,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "imm": 2648,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "read": 1665,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 2,
-        "dest": 512,
-        "read": 1665,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            4
-        ]
-    },
-    {
-        "core": 2,
-        "dest": 1537,
-        "opcode": "add",
-        "read_1": 1537,
-        "read_2": 1280,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "imm": 1296,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "read": 1537,
-        "tile": 3,
-        "type": "store",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 2,
-        "dest": 1537,
-        "imm": 1040,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 2,
-        "dest": 1537,
-        "read": 1537,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 2,
-        "dest": 384,
-        "read": 1537,
         "tile": 3,
         "type": "copy",
         "vec": 128
@@ -4259,7 +4047,7 @@
     },
     {
         "core": 2,
-        "dest": 1537,
+        "dest": 1793,
         "read": 1152,
         "tile": 3,
         "type": "copy",
@@ -4267,8 +4055,8 @@
     },
     {
         "core": 2,
-        "dest": 1665,
-        "imm": 912,
+        "dest": 1921,
+        "imm": 2576,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -4276,8 +4064,8 @@
     },
     {
         "core": 2,
-        "dest": 1665,
-        "read": 1665,
+        "dest": 1921,
+        "read": 1921,
         "tile": 3,
         "type": "load",
         "vec": 8,
@@ -4286,7 +4074,7 @@
     {
         "core": 2,
         "dest": 256,
-        "read": 1665,
+        "read": 1921,
         "tile": 3,
         "type": "copy",
         "vec": 128
@@ -4301,7 +4089,7 @@
     },
     {
         "core": 2,
-        "dest": 1665,
+        "dest": 1921,
         "read": 1024,
         "tile": 3,
         "type": "copy",
@@ -4309,8 +4097,8 @@
     },
     {
         "core": 2,
-        "dest": 1793,
-        "imm": 3288,
+        "dest": 2049,
+        "imm": 2448,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -4318,8 +4106,8 @@
     },
     {
         "core": 2,
-        "dest": 1793,
-        "read": 1793,
+        "dest": 2049,
+        "read": 2049,
         "tile": 3,
         "type": "load",
         "vec": 8,
@@ -4328,7 +4116,7 @@
     {
         "core": 2,
         "dest": 128,
-        "read": 1793,
+        "read": 2049,
         "tile": 3,
         "type": "copy",
         "vec": 128
@@ -4343,7 +4131,7 @@
     },
     {
         "core": 2,
-        "dest": 1793,
+        "dest": 2049,
         "read": 896,
         "tile": 3,
         "type": "copy",
@@ -4351,8 +4139,8 @@
     },
     {
         "core": 2,
-        "dest": 1921,
-        "imm": 3160,
+        "dest": 2177,
+        "imm": 2320,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -4360,8 +4148,8 @@
     },
     {
         "core": 2,
-        "dest": 1921,
-        "read": 1921,
+        "dest": 2177,
+        "read": 2177,
         "tile": 3,
         "type": "load",
         "vec": 8,
@@ -4370,7 +4158,7 @@
     {
         "core": 2,
         "dest": 0,
-        "read": 1921,
+        "read": 2177,
         "tile": 3,
         "type": "copy",
         "vec": 128
@@ -4385,710 +4173,6 @@
     },
     {
         "core": 2,
-        "dest": 1921,
-        "read": 768,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 2049,
-        "imm": 1168,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 2,
-        "dest": 2049,
-        "read": 2049,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 2,
-        "dest": 1921,
-        "opcode": "add",
-        "read_1": 1921,
-        "read_2": 2049,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1793,
-        "opcode": "add",
-        "read_1": 1793,
-        "read_2": 1921,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1793,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1537,
-        "opcode": "add",
-        "read_1": 1537,
-        "read_2": 1665,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1537,
-        "opcode": "relu",
-        "read_1": 1537,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "imm": 1680,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "read": 1537,
-        "tile": 3,
-        "type": "store",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 2,
-        "tile": 3,
-        "type": "hlt"
-    },
-    {
-        "core": 3,
-        "dest": 1537,
-        "imm": 1040,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 3,
-        "dest": 1537,
-        "read": 1537,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 3,
-        "dest": 640,
-        "read": 1537,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            5
-        ]
-    },
-    {
-        "core": 3,
-        "dest": 1537,
-        "read": 1408,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "imm": 912,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "read": 1665,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 3,
-        "dest": 512,
-        "read": 1665,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            4
-        ]
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "read": 1280,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1793,
-        "imm": 3288,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 3,
-        "dest": 1793,
-        "read": 1793,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 3,
-        "dest": 384,
-        "read": 1793,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            3
-        ]
-    },
-    {
-        "core": 3,
-        "dest": 1793,
-        "read": 1152,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1921,
-        "imm": 3160,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 3,
-        "dest": 1921,
-        "read": 1921,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 3,
-        "dest": 256,
-        "read": 1921,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            2
-        ]
-    },
-    {
-        "core": 3,
-        "dest": 1921,
-        "read": 1024,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 2049,
-        "imm": 3032,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 3,
-        "dest": 2049,
-        "read": 2049,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 3,
-        "dest": 128,
-        "read": 2049,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            1
-        ]
-    },
-    {
-        "core": 3,
-        "dest": 2049,
-        "read": 896,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 2177,
-        "imm": 2904,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 3,
-        "dest": 2177,
-        "read": 2177,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 3,
-        "dest": 0,
-        "read": 2177,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            0
-        ]
-    },
-    {
-        "core": 3,
-        "dest": 2177,
-        "read": 768,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 2305,
-        "imm": 1296,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 3,
-        "dest": 2305,
-        "read": 2305,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 3,
-        "dest": 2177,
-        "opcode": "add",
-        "read_1": 2177,
-        "read_2": 2305,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 2049,
-        "opcode": "add",
-        "read_1": 2049,
-        "read_2": 2177,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1921,
-        "opcode": "add",
-        "read_1": 1921,
-        "read_2": 2049,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1793,
-        "opcode": "add",
-        "read_1": 1793,
-        "read_2": 1921,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1793,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1537,
-        "opcode": "add",
-        "read_1": 1537,
-        "read_2": 1665,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1537,
-        "opcode": "relu",
-        "read_1": 1537,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "imm": 1808,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "read": 1537,
-        "tile": 3,
-        "type": "store",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 3,
-        "tile": 3,
-        "type": "hlt"
-    },
-    {
-        "core": 4,
-        "dest": 1537,
-        "imm": 3288,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 4,
-        "dest": 1537,
-        "read": 1537,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 4,
-        "dest": 640,
-        "read": 1537,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            5
-        ]
-    },
-    {
-        "core": 4,
-        "dest": 1537,
-        "read": 1408,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 1665,
-        "imm": 3160,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 4,
-        "dest": 1665,
-        "read": 1665,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 4,
-        "dest": 512,
-        "read": 1665,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            4
-        ]
-    },
-    {
-        "core": 4,
-        "dest": 1665,
-        "read": 1280,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 1793,
-        "imm": 3032,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 4,
-        "dest": 1793,
-        "read": 1793,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 4,
-        "dest": 384,
-        "read": 1793,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            3
-        ]
-    },
-    {
-        "core": 4,
-        "dest": 1793,
-        "read": 1152,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 1921,
-        "imm": 2904,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 4,
-        "dest": 1921,
-        "read": 1921,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 4,
-        "dest": 256,
-        "read": 1921,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            2
-        ]
-    },
-    {
-        "core": 4,
-        "dest": 1921,
-        "read": 1024,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 2049,
-        "imm": 2776,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 4,
-        "dest": 2049,
-        "read": 2049,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 4,
-        "dest": 128,
-        "read": 2049,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            1
-        ]
-    },
-    {
-        "core": 4,
-        "dest": 2049,
-        "read": 896,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 2177,
-        "imm": 2648,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 4,
-        "dest": 2177,
-        "read": 2177,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 4,
-        "dest": 0,
-        "read": 2177,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            0
-        ]
-    },
-    {
-        "core": 4,
         "dest": 2049,
         "opcode": "add",
         "read_1": 2049,
@@ -5098,6 +4182,721 @@
         "vec": 128
     },
     {
+        "core": 2,
+        "dest": 1921,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 2049,
+        "tile": 3,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1793,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1921,
+        "tile": 3,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 3,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 3,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "imm": 1168,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "tile": 3,
+        "type": "hlt"
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "imm": 2704,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 3,
+        "dest": 640,
+        "read": 1537,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            5
+        ]
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "read": 1408,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "imm": 2576,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 3,
+        "dest": 512,
+        "read": 1665,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            4
+        ]
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "read": 1280,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1793,
+        "imm": 2448,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 3,
+        "dest": 384,
+        "read": 1793,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            3
+        ]
+    },
+    {
+        "core": 3,
+        "dest": 1793,
+        "read": 1152,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1921,
+        "imm": 2320,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1921,
+        "read": 1921,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 3,
+        "dest": 256,
+        "read": 1921,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            2
+        ]
+    },
+    {
+        "core": 3,
+        "dest": 1793,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1024,
+        "tile": 3,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 3,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 3,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "imm": 1296,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "imm": 1040,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 3,
+        "dest": 128,
+        "read": 1537,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            1
+        ]
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "read": 896,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "imm": 912,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 3,
+        "dest": 0,
+        "read": 1665,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            0
+        ]
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "read": 768,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1793,
+        "imm": 1168,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 3,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 3,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "imm": 1680,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 3,
+        "tile": 3,
+        "type": "hlt"
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "imm": 2448,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "dest": 640,
+        "read": 1537,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            5
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "read": 1408,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "imm": 2320,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "dest": 512,
+        "read": 1665,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            4
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1280,
+        "tile": 3,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "imm": 1424,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "imm": 1040,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "dest": 384,
+        "read": 1537,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            3
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "read": 1152,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "imm": 912,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "dest": 256,
+        "read": 1665,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            2
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "read": 1024,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1793,
+        "imm": 2960,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "dest": 128,
+        "read": 1793,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            1
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 1793,
+        "read": 896,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1921,
+        "imm": 2832,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1921,
+        "read": 1921,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "dest": 0,
+        "read": 1921,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            0
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 1921,
+        "read": 768,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 2049,
+        "imm": 1296,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 2049,
+        "read": 2049,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
         "core": 4,
         "dest": 1921,
         "opcode": "add",
@@ -5139,8 +4938,17 @@
     },
     {
         "core": 4,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 4,
         "dest": 1665,
-        "imm": 1424,
+        "imm": 1808,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5163,7 +4971,7 @@
     {
         "core": 5,
         "dest": 1537,
-        "imm": 3032,
+        "imm": 1040,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5205,7 +5013,7 @@
     {
         "core": 5,
         "dest": 1665,
-        "imm": 2904,
+        "imm": 912,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5247,7 +5055,7 @@
     {
         "core": 5,
         "dest": 1793,
-        "imm": 2776,
+        "imm": 2960,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5289,7 +5097,7 @@
     {
         "core": 5,
         "dest": 1921,
-        "imm": 2648,
+        "imm": 2832,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5322,38 +5130,16 @@
     },
     {
         "core": 5,
-        "dest": 1793,
-        "opcode": "add",
-        "read_1": 1793,
-        "read_2": 1024,
+        "dest": 1921,
+        "read": 1024,
         "tile": 3,
-        "type": "vfu",
+        "type": "copy",
         "vec": 128
     },
     {
         "core": 5,
-        "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1793,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 5,
-        "dest": 1537,
-        "opcode": "add",
-        "read_1": 1537,
-        "read_2": 1665,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 5,
-        "dest": 1665,
-        "imm": 1552,
+        "dest": 2049,
+        "imm": 2704,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5361,26 +5147,8 @@
     },
     {
         "core": 5,
-        "dest": 1665,
-        "read": 1537,
-        "tile": 3,
-        "type": "store",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 5,
-        "dest": 1537,
-        "imm": 1040,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 5,
-        "dest": 1537,
-        "read": 1537,
+        "dest": 2049,
+        "read": 2049,
         "tile": 3,
         "type": "load",
         "vec": 8,
@@ -5389,7 +5157,7 @@
     {
         "core": 5,
         "dest": 128,
-        "read": 1537,
+        "read": 2049,
         "tile": 3,
         "type": "copy",
         "vec": 128
@@ -5404,7 +5172,7 @@
     },
     {
         "core": 5,
-        "dest": 1537,
+        "dest": 2049,
         "read": 896,
         "tile": 3,
         "type": "copy",
@@ -5412,8 +5180,8 @@
     },
     {
         "core": 5,
-        "dest": 1665,
-        "imm": 912,
+        "dest": 2177,
+        "imm": 2576,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5421,8 +5189,8 @@
     },
     {
         "core": 5,
-        "dest": 1665,
-        "read": 1665,
+        "dest": 2177,
+        "read": 2177,
         "tile": 3,
         "type": "load",
         "vec": 8,
@@ -5431,7 +5199,7 @@
     {
         "core": 5,
         "dest": 0,
-        "read": 1665,
+        "read": 2177,
         "tile": 3,
         "type": "copy",
         "vec": 128
@@ -5446,7 +5214,7 @@
     },
     {
         "core": 5,
-        "dest": 1665,
+        "dest": 2177,
         "read": 768,
         "tile": 3,
         "type": "copy",
@@ -5454,7 +5222,7 @@
     },
     {
         "core": 5,
-        "dest": 1793,
+        "dest": 2305,
         "imm": 1424,
         "is_address": true,
         "tile": 3,
@@ -5463,12 +5231,52 @@
     },
     {
         "core": 5,
-        "dest": 1793,
-        "read": 1793,
+        "dest": 2305,
+        "read": 2305,
         "tile": 3,
         "type": "load",
         "vec": 8,
         "width": 16
+    },
+    {
+        "core": 5,
+        "dest": 2177,
+        "opcode": "add",
+        "read_1": 2177,
+        "read_2": 2305,
+        "tile": 3,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 2049,
+        "opcode": "add",
+        "read_1": 2049,
+        "read_2": 2177,
+        "tile": 3,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1921,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 2049,
+        "tile": 3,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1793,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1921,
+        "tile": 3,
+        "type": "vfu",
+        "vec": 128
     },
     {
         "core": 5,
@@ -5525,7 +5333,7 @@
     {
         "core": 6,
         "dest": 1537,
-        "imm": 1040,
+        "imm": 2960,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5542,8 +5350,92 @@
     },
     {
         "core": 6,
-        "dest": 384,
+        "dest": 640,
         "read": 1537,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            5
+        ]
+    },
+    {
+        "core": 6,
+        "dest": 1537,
+        "read": 1408,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1665,
+        "imm": 2832,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 6,
+        "dest": 512,
+        "read": 1665,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            4
+        ]
+    },
+    {
+        "core": 6,
+        "dest": 1665,
+        "read": 1280,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1793,
+        "imm": 2704,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 6,
+        "dest": 384,
+        "read": 1793,
         "tile": 3,
         "type": "copy",
         "vec": 128
@@ -5558,7 +5450,7 @@
     },
     {
         "core": 6,
-        "dest": 1537,
+        "dest": 1793,
         "read": 1152,
         "tile": 3,
         "type": "copy",
@@ -5566,8 +5458,8 @@
     },
     {
         "core": 6,
-        "dest": 1665,
-        "imm": 912,
+        "dest": 1921,
+        "imm": 2576,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5575,8 +5467,8 @@
     },
     {
         "core": 6,
-        "dest": 1665,
-        "read": 1665,
+        "dest": 1921,
+        "read": 1921,
         "tile": 3,
         "type": "load",
         "vec": 8,
@@ -5585,7 +5477,7 @@
     {
         "core": 6,
         "dest": 256,
-        "read": 1665,
+        "read": 1921,
         "tile": 3,
         "type": "copy",
         "vec": 128
@@ -5600,7 +5492,7 @@
     },
     {
         "core": 6,
-        "dest": 1665,
+        "dest": 1921,
         "read": 1024,
         "tile": 3,
         "type": "copy",
@@ -5608,92 +5500,8 @@
     },
     {
         "core": 6,
-        "dest": 1793,
-        "imm": 3288,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 6,
-        "dest": 1793,
-        "read": 1793,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 6,
-        "dest": 128,
-        "read": 1793,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 6,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            1
-        ]
-    },
-    {
-        "core": 6,
-        "dest": 1793,
-        "read": 896,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 6,
-        "dest": 1921,
-        "imm": 3160,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 6,
-        "dest": 1921,
-        "read": 1921,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 6,
-        "dest": 0,
-        "read": 1921,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 6,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            0
-        ]
-    },
-    {
-        "core": 6,
-        "dest": 1921,
-        "read": 768,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 6,
         "dest": 2049,
-        "imm": 1552,
+        "imm": 2448,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5710,6 +5518,74 @@
     },
     {
         "core": 6,
+        "dest": 128,
+        "read": 2049,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            1
+        ]
+    },
+    {
+        "core": 6,
+        "dest": 2049,
+        "read": 896,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 2177,
+        "imm": 2320,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 2177,
+        "read": 2177,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 6,
+        "dest": 0,
+        "read": 2177,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            0
+        ]
+    },
+    {
+        "core": 6,
+        "dest": 2049,
+        "opcode": "add",
+        "read_1": 2049,
+        "read_2": 768,
+        "tile": 3,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 6,
         "dest": 1921,
         "opcode": "add",
         "read_1": 1921,
@@ -5750,121 +5626,8 @@
     },
     {
         "core": 6,
-        "dest": 1537,
-        "opcode": "relu",
-        "read_1": 1537,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 6,
         "dest": 1665,
-        "imm": 2064,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 6,
-        "dest": 1665,
-        "read": 1537,
-        "tile": 3,
-        "type": "store",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 6,
-        "dest": 1537,
-        "imm": 1808,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 6,
-        "dest": 1537,
-        "read": 1537,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 6,
-        "dest": 640,
-        "read": 1537,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 6,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            5
-        ]
-    },
-    {
-        "core": 6,
-        "dest": 1537,
-        "read": 1408,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 6,
-        "dest": 1665,
-        "imm": 1680,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 6,
-        "dest": 1665,
-        "read": 1665,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 6,
-        "dest": 512,
-        "read": 1665,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 6,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            4
-        ]
-    },
-    {
-        "core": 6,
-        "dest": 1537,
-        "opcode": "add",
-        "read_1": 1537,
-        "read_2": 1280,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 6,
-        "dest": 1665,
-        "imm": 2192,
+        "imm": 1552,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5887,7 +5650,7 @@
     {
         "core": 7,
         "dest": 1537,
-        "imm": 2064,
+        "imm": 1040,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5901,205 +5664,6 @@
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 7,
-        "dest": 640,
-        "read": 1537,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            5
-        ]
-    },
-    {
-        "core": 7,
-        "dest": 1665,
-        "read": 1408,
-        "tile": 3,
-        "type": "copy",
-        "vec": 72
-    },
-    {
-        "core": 7,
-        "dest": 1737,
-        "imm": 1936,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 7,
-        "dest": 1737,
-        "read": 1737,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 7,
-        "dest": 512,
-        "read": 1737,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            4
-        ]
-    },
-    {
-        "core": 7,
-        "dest": 1865,
-        "read": 1280,
-        "tile": 3,
-        "type": "copy",
-        "vec": 72
-    },
-    {
-        "core": 7,
-        "dest": 1937,
-        "imm": 1808,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 7,
-        "dest": 1937,
-        "read": 1937,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 7,
-        "dest": 384,
-        "read": 1937,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            3
-        ]
-    },
-    {
-        "core": 7,
-        "dest": 1937,
-        "read": 1152,
-        "tile": 3,
-        "type": "copy",
-        "vec": 72
-    },
-    {
-        "core": 7,
-        "dest": 2009,
-        "imm": 1680,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 7,
-        "dest": 2009,
-        "read": 2009,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 7,
-        "dest": 256,
-        "read": 2009,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            2
-        ]
-    },
-    {
-        "core": 7,
-        "dest": 1937,
-        "opcode": "add",
-        "read_1": 1937,
-        "read_2": 1024,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 72
-    },
-    {
-        "core": 7,
-        "dest": 1865,
-        "opcode": "add",
-        "read_1": 1865,
-        "read_2": 1937,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 72
-    },
-    {
-        "core": 7,
-        "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1865,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 72
-    },
-    {
-        "core": 7,
-        "dest": 1665,
-        "opcode": "relu",
-        "read_1": 1665,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 72
-    },
-    {
-        "core": 7,
-        "dest": 1865,
-        "imm": 2448,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 7,
-        "dest": 1865,
-        "read": 1665,
-        "tile": 3,
-        "type": "store",
-        "vec": 6,
-        "width": 12
     },
     {
         "core": 7,
@@ -6127,8 +5691,26 @@
     },
     {
         "core": 7,
+        "dest": 1665,
+        "imm": 912,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1665,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 7,
         "dest": 0,
-        "read": 1737,
+        "read": 1665,
         "tile": 3,
         "type": "copy",
         "vec": 128
@@ -6152,7 +5734,7 @@
     {
         "core": 7,
         "dest": 1793,
-        "imm": 2192,
+        "imm": 1552,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -6199,7 +5781,7 @@
     {
         "core": 7,
         "dest": 1665,
-        "imm": 2320,
+        "imm": 2064,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -6220,15 +5802,7 @@
         "type": "hlt"
     },
     {
-        "mem_addr": 128,
-        "source_tile": 3,
-        "tile": 4,
-        "type": "receive",
-        "vec": 6,
-        "width": 12
-    },
-    {
-        "mem_addr": 0,
+        "mem_addr": 656,
         "source_tile": 3,
         "tile": 4,
         "type": "receive",
@@ -6236,7 +5810,31 @@
         "width": 16
     },
     {
-        "mem_addr": 200,
+        "mem_addr": 528,
+        "source_tile": 3,
+        "tile": 4,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 400,
+        "source_tile": 3,
+        "tile": 4,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 272,
+        "source_tile": 3,
+        "tile": 4,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 784,
         "target_tile": 1,
         "tile": 4,
         "type": "send",
@@ -6250,7 +5848,7 @@
     {
         "core": 0,
         "dest": 1537,
-        "imm": 128,
+        "imm": 400,
         "is_address": true,
         "tile": 4,
         "type": "set",
@@ -6262,8 +5860,178 @@
         "read": 1537,
         "tile": 4,
         "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 0,
+        "dest": 640,
+        "read": 1537,
+        "tile": 4,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "tile": 4,
+        "type": "mvm",
+        "xbar": [
+            5
+        ]
+    },
+    {
+        "core": 0,
+        "dest": 1665,
+        "read": 1408,
+        "tile": 4,
+        "type": "copy",
+        "vec": 72
+    },
+    {
+        "core": 0,
+        "dest": 1737,
+        "imm": 272,
+        "is_address": true,
+        "tile": 4,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1737,
+        "read": 1737,
+        "tile": 4,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 0,
+        "dest": 512,
+        "read": 1737,
+        "tile": 4,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "tile": 4,
+        "type": "mvm",
+        "xbar": [
+            4
+        ]
+    },
+    {
+        "core": 0,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1280,
+        "tile": 4,
+        "type": "vfu",
+        "vec": 72
+    },
+    {
+        "core": 0,
+        "dest": 1865,
+        "imm": 0,
+        "is_address": true,
+        "tile": 4,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1865,
+        "read": 1665,
+        "tile": 4,
+        "type": "store",
         "vec": 6,
         "width": 12
+    },
+    {
+        "core": 0,
+        "dest": 1665,
+        "imm": 656,
+        "is_address": true,
+        "tile": 4,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1865,
+        "read": 1665,
+        "tile": 4,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 0,
+        "dest": 384,
+        "read": 1865,
+        "tile": 4,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "tile": 4,
+        "type": "mvm",
+        "xbar": [
+            3
+        ]
+    },
+    {
+        "core": 0,
+        "dest": 1865,
+        "read": 1152,
+        "tile": 4,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1665,
+        "imm": 528,
+        "is_address": true,
+        "tile": 4,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1993,
+        "read": 1665,
+        "tile": 4,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 0,
+        "dest": 256,
+        "read": 1993,
+        "tile": 4,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "tile": 4,
+        "type": "mvm",
+        "xbar": [
+            2
+        ]
+    },
+    {
+        "core": 0,
+        "dest": 1993,
+        "read": 1024,
+        "tile": 4,
+        "type": "copy",
+        "vec": 128
     },
     {
         "core": 0,
@@ -6271,7 +6039,7 @@
         "read": 1537,
         "tile": 4,
         "type": "copy",
-        "vec": 72
+        "vec": 128
     },
     {
         "core": 0,
@@ -6287,30 +6055,12 @@
         "read": 896,
         "tile": 4,
         "type": "copy",
-        "vec": 10
-    },
-    {
-        "core": 0,
-        "dest": 1547,
-        "imm": 0,
-        "is_address": true,
-        "tile": 4,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 0,
-        "dest": 1547,
-        "read": 1547,
-        "tile": 4,
-        "type": "load",
-        "vec": 8,
-        "width": 16
+        "vec": 128
     },
     {
         "core": 0,
         "dest": 0,
-        "read": 1547,
+        "read": 1737,
         "tile": 4,
         "type": "copy",
         "vec": 128
@@ -6331,12 +6081,41 @@
         "read_2": 768,
         "tile": 4,
         "type": "vfu",
-        "vec": 10
+        "vec": 128
     },
     {
         "core": 0,
-        "dest": 1547,
-        "imm": 200,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1993,
+        "read_2": 1537,
+        "tile": 4,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1865,
+        "read_2": 1537,
+        "tile": 4,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 4,
+        "type": "vfu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1665,
+        "imm": 72,
         "is_address": true,
         "tile": 4,
         "type": "set",
@@ -6344,12 +6123,12 @@
     },
     {
         "core": 0,
-        "dest": 1547,
+        "dest": 1665,
         "read": 1537,
         "tile": 4,
         "type": "store",
-        "vec": 1,
-        "width": 10
+        "vec": 8,
+        "width": 16
     },
     {
         "core": 0,
@@ -6358,8 +6137,261 @@
     },
     {
         "core": 1,
+        "dest": 1537,
+        "imm": 656,
+        "is_address": true,
+        "tile": 4,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 4,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 1,
+        "dest": 128,
+        "read": 1537,
+        "tile": 4,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "tile": 4,
+        "type": "mvm",
+        "xbar": [
+            1
+        ]
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "read": 896,
+        "tile": 4,
+        "type": "copy",
+        "vec": 72
+    },
+    {
+        "core": 1,
+        "dest": 1609,
+        "imm": 528,
+        "is_address": true,
+        "tile": 4,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1609,
+        "read": 1609,
+        "tile": 4,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 1,
+        "dest": 0,
+        "read": 1609,
+        "tile": 4,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "tile": 4,
+        "type": "mvm",
+        "xbar": [
+            0
+        ]
+    },
+    {
+        "core": 1,
+        "dest": 1609,
+        "read": 768,
+        "tile": 4,
+        "type": "copy",
+        "vec": 72
+    },
+    {
+        "core": 1,
+        "dest": 1681,
+        "imm": 0,
+        "is_address": true,
+        "tile": 4,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1681,
+        "read": 1681,
+        "tile": 4,
+        "type": "load",
+        "vec": 6,
+        "width": 12
+    },
+    {
+        "core": 1,
+        "dest": 1609,
+        "opcode": "add",
+        "read_1": 1609,
+        "read_2": 1681,
+        "tile": 4,
+        "type": "vfu",
+        "vec": 72
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1609,
+        "tile": 4,
+        "type": "vfu",
+        "vec": 72
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 4,
+        "type": "vfu",
+        "vec": 72
+    },
+    {
+        "core": 1,
+        "dest": 1609,
+        "imm": 200,
+        "is_address": true,
+        "tile": 4,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1609,
+        "read": 1537,
+        "tile": 4,
+        "type": "store",
+        "vec": 6,
+        "width": 12
+    },
+    {
+        "core": 1,
         "tile": 4,
         "type": "hlt"
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "imm": 200,
+        "is_address": true,
+        "tile": 4,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 4,
+        "type": "load",
+        "vec": 6,
+        "width": 12
+    },
+    {
+        "core": 2,
+        "dest": 128,
+        "read": 1537,
+        "tile": 4,
+        "type": "copy",
+        "vec": 72
+    },
+    {
+        "core": 2,
+        "tile": 4,
+        "type": "mvm",
+        "xbar": [
+            1
+        ]
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "read": 896,
+        "tile": 4,
+        "type": "copy",
+        "vec": 10
+    },
+    {
+        "core": 2,
+        "dest": 1547,
+        "imm": 72,
+        "is_address": true,
+        "tile": 4,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1547,
+        "read": 1547,
+        "tile": 4,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "dest": 0,
+        "read": 1547,
+        "tile": 4,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "tile": 4,
+        "type": "mvm",
+        "xbar": [
+            0
+        ]
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 768,
+        "tile": 4,
+        "type": "vfu",
+        "vec": 10
+    },
+    {
+        "core": 2,
+        "dest": 1547,
+        "imm": 784,
+        "is_address": true,
+        "tile": 4,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1547,
+        "read": 1537,
+        "tile": 4,
+        "type": "store",
+        "vec": 1,
+        "width": 10
     },
     {
         "core": 2,

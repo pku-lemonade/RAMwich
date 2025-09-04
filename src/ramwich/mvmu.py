@@ -22,12 +22,15 @@ class MVMU:
     Matrix-Vector Multiply unit with multiple crossbar arrays with detailed hardware simulation.
     """
 
-    def __init__(self, id: int, config: Config):
+    def __init__(self, id: int, mvmu_type: int, config: Config):
         # Basic MVMU properties
         self.id = id
+        self.mvmu_type = mvmu_type
         self.config = config
         self.data_config = self.config.data_config
-        self.mvmu_config = self.config.mvmu_config
+        self.mvmu_config = self.config.mvmu_configs.get(
+            mvmu_type, config.mvmu_config
+        )  # Use default config if not specified
 
         # Initialize basic components
         self.input_register_array = InputRegisterArray(self.mvmu_config)
@@ -85,7 +88,7 @@ class MVMU:
         abs_weights = np.abs(weights)
 
         # Convert all weights to fixed-point representation
-        int_weights = np.vectorize(float_to_fixed)(abs_weights, self.data_config.weight_frac_bits)
+        int_weights = np.vectorize(float_to_fixed)(abs_weights, self.mvmu_config.weight_frac_bits)
 
         # Initialize the output array
         rram_xbar_weights = np.zeros((self.mvmu_config.num_rram_xbar_per_mvmu, xbar_size, xbar_size)).astype(np.float64)
@@ -214,7 +217,7 @@ class MVMU:
         On hardware, the core just reads the middle bits of the output register array. No additional energy cost.
         """
         indices = np.arange(start, start + length)
-        return self.output_register_array.read(indices) >> self.data_config.weight_frac_bits
+        return self.output_register_array.read(indices) >> self.mvmu_config.weight_frac_bits
 
     def reset(self):
         """Reset the MVMU to its initial state"""

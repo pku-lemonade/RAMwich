@@ -25,6 +25,7 @@ class Core:
         self.parent = parent
         self.config = config
         self.core_config = self.config.core_config
+        self.core_type = self.core_config.core_type[self.parent.id][self.id]
         self.operations: list[CoreOp] = []
 
         # Initialize some useful parameters
@@ -43,7 +44,9 @@ class Core:
         self.dram_controller = self.parent.dram_controller
 
         # Initialize MVMUs
-        self.mvmus = [MVMU(id=i, config=self.config) for i in range(self.config.num_mvmus_per_core)]
+        self.mvmus = [
+            MVMU(id=i, type=self.core_type, config=self.config) for i in range(self.config.num_mvmus_per_core)
+        ]
 
         # Initialize simulation timing attributes
         self.start_time = 0
