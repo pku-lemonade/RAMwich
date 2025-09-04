@@ -1,16 +1,15 @@
-from .main_config import Config
-from .data_config import BitConfig, DataConfig
-
-from .hardware import (
-    ADCType,
-    ADCConfig,
-    DACConfig,
-    XBARConfig,
-    NOCConfig,
-)
-
 from .archetecture import (
+    BitConfig,
     CoreConfig,
     MVMUConfig,
     TileConfig,
 )
+from .data_config import DataConfig
+from .hardware import (
+    ADCConfig,
+    ADCType,
+    DACConfig,
+    NOCConfig,
+    XBARConfig,
+)
+from .main_config import Config
