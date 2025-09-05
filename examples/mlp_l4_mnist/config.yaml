@@ -7,7 +7,7 @@ num_cores_per_tile: 8
 num_mvmus_per_core: 6
 
 # Data Configuration
-data_type_list:
+data_config_list:
   1:
     storage_config: ["2", "2", "2", "2"]
     data_format: "INT"  # INT8

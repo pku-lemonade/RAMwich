@@ -19,7 +19,7 @@ class Config(BaseModel):
     instrn_width: int = Field(default=48, description="Instruction width")
 
     # Add configuration for components with default factories
-    data_config: DataConfig = Field(default_factory=DataConfig)
+    data_config_list: dict[int, DataConfig] = Field(default_factory=dict)
     noc_config: NOCConfig = Field(default_factory=NOCConfig)
     tile_config: TileConfig = Field(default_factory=TileConfig)
     core_config: CoreConfig = Field(default_factory=CoreConfig)
