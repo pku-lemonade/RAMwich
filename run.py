@@ -10,13 +10,16 @@ logger = logging.getLogger(__name__)
 
 def main():
     parser = argparse.ArgumentParser(description="RAMwich Simulator")
+    parser.add_argument("--JSONConfig", required=True, help="Configuration file (JSON)")
+    parser.add_argument("--YAMLConfig", required=True, help="Configuration file (YAML)")
     parser.add_argument("--ops", required=True, help="OP file (JSON)")
-    parser.add_argument("--config", required=True, help="Configuration file (YAML)")
     parser.add_argument("--weights", required=False, help="Weight file (NPZ)")
     parser.add_argument("--activation", required=False, help="activation file (NPY)")
     args = parser.parse_args()
 
-    simulator = RAMwich(config_file=args.config, ops_file=args.ops, weights_file=args.weights)
+    simulator = RAMwich(
+        json_config_file=args.JSONConfig, yaml_config_file=args.YAMLConfig, ops_file=args.ops, weights_file=args.weights
+    )
     simulator.run(activation=args.activation)
 
     # Get statistics and pass to visualization

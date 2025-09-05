@@ -19,16 +19,16 @@ logger = logging.getLogger(__name__)
 
 
 class RAMwich:
-    def __init__(self, config_file: str, ops_file: str, yaml_config_file: str = None, weights_file: str = None):
+    def __init__(self, json_config_file: str, yaml_config_file: str, ops_file: str, weights_file: str = None):
         # Load base configuration from JSON file
-        if not os.path.exists(config_file):
-            raise FileNotFoundError(f"Configuration file {config_file} not found")
+        if not os.path.exists(json_config_file):
+            raise FileNotFoundError(f"Configuration file {json_config_file} not found")
 
-        with open(config_file) as f:
-            if config_file.endswith(".json"):
+        with open(json_config_file) as f:
+            if json_config_file.endswith(".json"):
                 json_config = json.load(f)
             else:
-                raise ValueError(f"Unsupported config format: {config_file}. Use JSON.")
+                raise ValueError(f"Unsupported config format: {json_config_file}. Use JSON.")
 
         # Load additional configuration from YAML file
         yaml_config = {}
