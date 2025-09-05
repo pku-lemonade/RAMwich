@@ -1,7 +1,17 @@
 import re
+from enum import Enum
 
-from archetecture.mvmu_config import BitConfig
 from pydantic import BaseModel, Field, model_validator
+
+
+class BitConfig(str, Enum):
+    """Bit configuration for storage types"""
+
+    SLC = "1"
+    MLC = "2"
+    TLC = "3"
+    QLC = "4"
+    SRAM = "s"
 
 
 class DataConfig(BaseModel):
@@ -12,27 +22,29 @@ class DataConfig(BaseModel):
     activation_frac_bits: int = Field(default=None, init=False, description="Activation fractional bits")
     activation_width: int = Field(default=None, init=False, description="Activation data bits")
 
-    storage_config: list[BitConfig] = Field(default=None, init=False, description="Storage configuration")
-    data_format: list[str] = Field(
-        default=None, init=False, description="Data format: INT or EXP or MANT for each part"
-    )
+    storage_config: list[BitConfig] = Field(default=[BitConfig.QLC], description="Storage configuration")
+    data_format: list[str] = Field(default=["INT"], description="Data format: INT or EXP or MANT for each part")
     weight_partition: list[int] = Field(
-        default=None,
-        init=False,
+        default=[0],
         description="Weight partitioning, e.g.[0,4] for 4 lower bits as one part, 4 higher bits as another part",
     )
-    part_length: list[int] = Field(default=None, init=False, description="Length of each part in weight partition")
+    part_length: list[int] = Field(
+        default_factory=list, init=False, description="Length of each part in weight partition"
+    )
     weight_width: int = Field(default=None, init=False, description="Weight data bits")
     part_number: int = Field(default=None, init=False, description="Number of parts in weight partition")
 
-    stored_bit: list = Field(default=None, init=False, description="Stored bit positions")
-    bits_per_cell: list = Field(default=None, init=False, description="Bits per cell")
-    is_xbar_rram: list = Field(default=None, init=False, description="Is crossbar RRAM")
-    is_bit_rram: list = Field(default=None, init=False, description="Is each bit RRAM")
-    rram_to_output_map: list = Field(default=None, init=False, description="RRAM xbars to output map")
-    sram_to_output_map: list = Field(default=None, init=False, description="SRAM xbars to output map")
+    stored_bit: list = Field(default_factory=list, init=False, description="Stored bit positions")
+    bits_per_cell: list = Field(default_factory=list, init=False, description="Bits per cell")
+    is_xbar_rram: list = Field(default_factory=list, init=False, description="Is crossbar RRAM")
+    is_bit_rram: list = Field(default_factory=list, init=False, description="Is each bit RRAM")
+    rram_to_output_map: list = Field(default_factory=list, init=False, description="RRAM xbars to output map")
+    sram_to_output_map: list = Field(default_factory=list, init=False, description="SRAM xbars to output map")
     have_rram_xbar: bool = Field(default=False, description="Whether have RRAM crossbar or not")
     have_sram_xbar: bool = Field(default=False, description="Whether have SRAM crossbar or not")
+    num_rram_xbar_per_mvmu: int = Field(default=None, init=False, description="Number of RRAM xbars per MVMU")
+    num_sram_xbar_per_mvmu: int = Field(default=None, init=False, description="Number of SRAM xbars per MVMU")
+    num_xbar_per_mvmu: int = Field(default=None, init=False, description="Total number of xbars per MVMU")
 
     @model_validator(mode="after")
     def calculate_derived_values(self):

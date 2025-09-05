@@ -9,8 +9,17 @@ num_mvmus_per_core: 6
 # Data Configuration
 data_config_list:
   1:
+    storage_config: ["2", "2", "4"]
+    data_format: ["INT"]  # INT8
+  2:
     storage_config: ["2", "2", "2", "2"]
-    data_format: "INT"  # INT8
+    data_format: ["INT"]  # INT8
+  3:
+    storage_config: ["2", "2", "2", "s", "s"]
+    data_format: ["INT"]  # INT8
+  4:
+    storage_config: ["2", "2", "s", "s", "s", "s"]
+    data_format: ["INT"]  # INT8
 
 # Network-on-Chip Configuration
 noc_config:

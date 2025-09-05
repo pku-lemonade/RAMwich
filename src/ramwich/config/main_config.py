@@ -40,6 +40,6 @@ class Config(BaseModel):
 
     @model_validator(mode="after")
     def validate_and_calculate(self):
-        self.tile_config.edram_size = self.tile_config.edram_size_in_KB * 1024 * 8 // self.data_config.activation_width
+        self.tile_config.edram_size = self.tile_config.edram_size_in_KB * 1024 * 8 // 16  # 16 for 16-bit activation
 
         return self
