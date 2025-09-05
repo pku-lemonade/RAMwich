@@ -1,10 +1,9 @@
 from .archetecture import (
-    BitConfig,
     CoreConfig,
     MVMUConfig,
     TileConfig,
 )
-from .data_config import DataConfig
+from .data_config import BitConfig, DataConfig
 from .hardware import (
     ADCConfig,
     ADCType,

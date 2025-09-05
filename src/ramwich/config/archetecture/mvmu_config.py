@@ -1,21 +1,9 @@
-from enum import Enum
-
 from pydantic import BaseModel, Field, model_validator
 
 from ..data_config import DataConfig
 from ..hardware.adc_config import ADCConfig
 from ..hardware.dac_config import DACConfig
 from ..hardware.xbar_config import XBARConfig
-
-
-class BitConfig(str, Enum):
-    """Bit configuration for storage types"""
-
-    SLC = "1"
-    MLC = "2"
-    TLC = "3"
-    QLC = "4"
-    SRAM = "s"
 
 
 class MVMUConfig(BaseModel):
