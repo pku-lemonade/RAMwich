@@ -3,9 +3,9 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from .data_config import BitConfig, DataConfig
 from .hardware.noc_config import NOCConfig
-from .archetecture.tile_config import TileConfig
-from .archetecture.core_config import CoreConfig
-from .archetecture.mvmu_config import MVMUConfig
+from .architecture.tile_config import TileConfig
+from .architecture.core_config import CoreConfig
+from .architecture.mvmu_config import MVMUConfig
 
 
 class Config(BaseModel):

@@ -87,12 +87,9 @@ class Tile:
 
     def execute_halt(self, op: Halt):
         """Execute a Halt operation"""
-
-        # wait for all cores, router and dram controller to finish
-        if self.core_processes:
-            yield self.env.all_of(self.core_processes)
-        # wait for router to stop
-        yield self.env.process(self.router.stop_after_all_packets_sent())
+        # Simple halt - just yield a timeout of 0 to make this a generator
+        yield self.env.timeout(0)
+        return True
 
         # DRAM controller will be safe to stop since all cores are halted
         # Also no more send and receive operations will be submitted

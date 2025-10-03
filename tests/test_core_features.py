@@ -13,6 +13,9 @@ logger = logging.getLogger(__name__)
 
 
 def test_core_features():
+    # Set random seed for reproducible results
+    np.random.seed(42)
+    
     # Create configuration
     config = Config(
         num_tiles_per_node=3,

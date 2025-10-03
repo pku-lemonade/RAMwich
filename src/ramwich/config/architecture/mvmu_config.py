@@ -59,4 +59,14 @@ class MVMUConfig(BaseModel):
                 f"num_columns_per_adc ({self.num_columns_per_adc})"
             )
         
+        # Calculate SRAM CIM calculator parameters
+        self.num_calculator_per_xbar = self.xbar_config.xbar_size // self.num_columns_per_calculator
+        
+        # Verify clean division for calculators
+        if self.xbar_config.xbar_size % self.num_columns_per_calculator != 0:
+            raise ValueError(
+                f"xbar_size ({self.xbar_config.xbar_size}) must be exactly divisible by "
+                f"num_columns_per_calculator ({self.num_columns_per_calculator})"
+            )
+        
         return self

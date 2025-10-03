@@ -39,10 +39,10 @@ class TileConfig(BaseModel):
 
     edram_size_in_KB: int = Field(default=8192, description="EDRAM size in KB")
     edram_size: int = Field(default=4194304, description="EDRAM size")
-    edram_lat: float = Field(default=None, init=False, description="EDRAM latency")
-    edram_pow_dyn: float = Field(default=None, init=False, description="EDRAM dynamic power")
-    edram_pow_leak: float = Field(default=None, init=False, description="EDRAM leakage power")
-    edram_area: float = Field(default=None, init=False, description="EDRAM area")
+    edram_lat: float = Field(default=None, description="EDRAM latency")
+    edram_pow_dyn: float = Field(default=None, description="EDRAM dynamic power")
+    edram_pow_leak: float = Field(default=None, description="EDRAM leakage power")
+    edram_area: float = Field(default=None, description="EDRAM area")
 
     # Tile instruction memory lookup tables
     INSTRN_MEM_LAT_DICT: ClassVar[dict[int, int]] = {
@@ -131,10 +131,18 @@ class TileConfig(BaseModel):
 
     @model_validator(mode="after")
     def calculate_derived_values(self):
-        if self.edram_size_in_KB in self.EDRAM_LAT_DICT:
+        # Only set edram_lat from lookup table if it's not already set
+        if self.edram_lat is None and self.edram_size_in_KB in self.EDRAM_LAT_DICT:
             self.edram_lat = self.EDRAM_LAT_DICT[self.edram_size_in_KB]
+        
+        # Only set other EDRAM values from lookup table if they're not already set
+        if self.edram_pow_dyn is None and self.edram_size_in_KB in self.EDRAM_POW_DYN_DICT:
             self.edram_pow_dyn = self.EDRAM_POW_DYN_DICT[self.edram_size_in_KB]
+        
+        if self.edram_pow_leak is None and self.edram_size_in_KB in self.EDRAM_POW_LEAK_DICT:
             self.edram_pow_leak = self.EDRAM_POW_LEAK_DICT[self.edram_size_in_KB]
+        
+        if self.edram_area is None and self.edram_size_in_KB in self.EDRAM_AREA_DICT:
             self.edram_area = self.EDRAM_AREA_DICT[self.edram_size_in_KB]
 
         if self.instrnMem_size in self.INSTRN_MEM_LAT_DICT:

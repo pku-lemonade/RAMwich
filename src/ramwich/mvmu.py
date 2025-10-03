@@ -214,19 +214,25 @@ class MVMU:
         On hardware, the core just reads the middle bits of the output register array. No additional energy cost.
         """
         indices = np.arange(start, start + length)
-        return self.output_register_array.read(indices) >> self.data_config.weight_frac_bits
+        # The output should be shifted by the activation fractional bits, not weight fractional bits
+        # since the result format should match the activation format after matrix multiplication
+        return self.output_register_array.read(indices) >> self.data_config.activation_frac_bits
 
     def reset(self):
         """Reset the MVMU to its initial state"""
-        self.rram_xbar_array.reset()
-        self.dac_array.reset()
-        self.adc_array.reset()
+        if self.mvmu_config.have_rram_xbar:
+            self.rram_xbar_array.reset()
+            self.dac_array.reset()
+            self.adc_array.reset()
+            self.snh_array_pos.reset()
+            self.snh_array_neg.reset()
+            self.mux_array_pos.reset()
+            self.mux_array_neg.reset()
+        if self.mvmu_config.have_sram_xbar:
+            self.sram_cim_unit_array.reset()
+            self.mux_array_sram.reset()
         self.input_register_array.reset()
         self.output_register_array.reset()
-        self.snh_array_pos.reset()
-        self.snh_array_neg.reset()
-        self.mux_array_pos.reset()
-        self.mux_array_neg.reset()
         self.sna_array.reset()
 
     def get_stats(self) -> StatsDict:

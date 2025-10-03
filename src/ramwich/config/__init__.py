@@ -9,7 +9,7 @@ from .hardware import (
     NOCConfig,
 )
 
-from .archetecture import (
+from .architecture import (
     CoreConfig,
     MVMUConfig,
     TileConfig,

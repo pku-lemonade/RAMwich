@@ -15,9 +15,11 @@ class TestDRAMController:
         env = simpy.Environment()
 
         # Create tile config with test values
-        tile_config = TileConfig()
-        tile_config.edram_lat = 1  # Short latency for testing
-        tile_config.edram_size = 1024  # Small DRAM for testing
+        tile_config = TileConfig(
+            edram_lat=1,  # Short latency for testing
+            edram_size=1024,  # Small DRAM for testing
+            edram_size_in_KB=8,  # Set a valid size
+        )
 
         # Create DRAM with test size
         dram = DRAM(tile_config)

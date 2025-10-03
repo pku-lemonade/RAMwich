@@ -177,6 +177,58 @@ cython_debug/
 # Ignore local test files
 local_tests/
 
-# Ignore some big examples
-examples/
+# macOS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows specific files
+*.tmp
+*.temp
+Desktop.ini
+
+# Linux specific files
+*~
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.sublime-project
+.sublime-workspace
+
+# RAMwich specific output files
+output/
+results/
+*.log
+*.out
+simulation_results/
+visualization_output/
+quick_demo_output/
+
+# Temporary and backup files
+*.bak
+*.backup
+*.orig
+*.rej
+*.tmp
+
+# Data files (optional - uncomment if you want to ignore data files)
+# *.npy
+# *.npz
+# *.csv
+# *.xlsx
+# *.json
+
+# Ignore some big examples but keep essential ones
+!examples/
 !examples/mlp_l4_mnist/
+
+# Keep documentation
+!docs/

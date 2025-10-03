@@ -120,6 +120,9 @@ class DRAMController:
 
         # Start the request handler process
         self.handler_process = self.env.process(self.request_handler())
+        
+        # Return the handler process so it can be yielded on if needed
+        return self.handler_process
 
     def stop(self):
         """Stop the DRAM controller"""
@@ -199,7 +202,7 @@ class DRAMController:
     def request_handler(self):
         """Process that continuously handles memory requests"""
         try:
-            while True:
+            while self.is_running:
                 # Get the next request
                 request = yield self.requests.get()
 
@@ -208,14 +211,14 @@ class DRAMController:
                     # first check if the data is valid
                     if np.all(self.valid[request.start : request.start + request.length]):
                         # If the data is valid, process the read request
-                        self.env.process(self._read_thread(request))
+                        yield self.env.process(self._read_thread(request))
                     else:
                         # If the data is not valid, add it to the pending reads
                         self.pending_reads.append(request)
 
                 elif isinstance(request, WriteRequest):
                     # Handle write request
-                    self.env.process(self._write_thread(request))
+                    yield self.env.process(self._write_thread(request))
         except simpy.Interrupt:
             pass
 
@@ -279,7 +282,7 @@ class DRAMController:
         # Check if there are any pending reads
         if self.pending_reads:
             # If there are pending reads, add them to the ready requests
-            for request in self.pending_reads:
+            for request in self.pending_reads[:]:  # Create a copy to avoid modification during iteration
                 # If the data is valid, add it to the ready requests
                 if np.all(self.valid[request.start : request.start + request.length]):
                     self.requests.put(request)

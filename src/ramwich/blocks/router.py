@@ -108,23 +108,9 @@ class Router:
         if not self.is_running:
             return
 
-        # Create a specific event that will trigger when send queue empties
-        empty_event = self.env.event()
-
-        def check_queue():
-            if self.send_queue.items:
-                # Still items in queue, check again after some time
-                yield self.env.timeout(1)
-                self.env.process(check_queue())
-            else:
-                # Queue is empty, trigger the event
-                empty_event.succeed()
-
-        # Start the checking process
-        self.env.process(check_queue())
-
         # Wait for the send queue to be empty
-        yield empty_event
+        while self.send_queue.items:
+            yield self.env.timeout(1)
 
         # Wait for the sending event to finish
         if self.sending_event:

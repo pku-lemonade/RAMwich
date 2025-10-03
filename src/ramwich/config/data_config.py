@@ -19,7 +19,7 @@ class DataConfig(BaseModel):
     storage_config: list[BitConfig] = Field(
         default=[BitConfig.MLC, BitConfig.MLC, BitConfig.MLC, BitConfig.MLC], description="Storage configuration"
     )
-    weight_format: str = Field(default="Q1.7", description="Weight format")
+    weight_format: str = Field(default="Q4.4", description="Weight format")
     weight_int_bits: int = Field(default=None, init=False, description="Weight integer bits")
     weight_frac_bits: int = Field(default=None, init=False, description="Weight fractional bits")
     weight_width: int = Field(default=None, init=False, description="Weight data bits")
