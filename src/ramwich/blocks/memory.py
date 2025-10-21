@@ -151,9 +151,9 @@ class Memory:
 class SRAM(Memory):
     """SRAM registers file component for the Core"""
 
-    def __init__(self, core_config: CoreConfig, sram_type: str = "Cache"):
+    def __init__(self, core_config: CoreConfig, sram_type: str = "cache"):
         self.core_config = core_config
-        if sram_type == "Cache":
+        if sram_type == "cache":
             size = self.core_config.dataMem_size
         elif sram_type == "storage":
             size = self.core_config.storage_size
