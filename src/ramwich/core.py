@@ -38,8 +38,8 @@ class Core:
         self.total_registers = self.storage_start + self.core_config.storage_size
 
         # Initialize components
-        self.cache = SRAM(self.core_config, type="Cache")
-        self.storage = SRAM(self.core_config, type="storage")
+        self.cache = SRAM(self.core_config, sram_type="cache")
+        self.storage = SRAM(self.core_config, sram_type="storage")
         self.vfu = VFU(self.config)
         self.dram_controller = self.parent.dram_controller
 
