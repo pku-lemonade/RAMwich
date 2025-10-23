@@ -159,7 +159,7 @@ class MVMU:
             # If using SRAM CIM, do the following steps
             if self.mvmu_config.have_sram_xbar:
                 # Parallel with step 3, 4, 5, 6, and 7: SRAM crossbar multiplication
-                sram_xbar_output = self.sram_cim_unit_array.execute_mvm(sliced_digital_activation)
+                sram_xbar_output = self.sram_cim_unit_array.execute(sliced_digital_activation, i)
 
             # Step 6: MUX selection
             for j in range(self.mvmu_config.num_columns_per_adc):
