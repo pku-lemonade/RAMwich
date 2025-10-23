@@ -65,6 +65,9 @@ class MVMUConfig(BaseModel):
     sram_exp_indices: list[int] = Field(
         default_factory=list, init=False, description="SRAM xbars needing exp shift-add (EXP,MANT)"
     )
+    sram_mant_indices: list[int] = Field(
+        default_factory=list, init=False, description="SRAM xbars needing MANT processing (MANT only)"
+    )
 
     @model_validator(mode="after")
     def calculate_derived_values(self):
@@ -158,6 +161,8 @@ class MVMUConfig(BaseModel):
                         self.sram_mvm_indices.append(sram_local)
                     if xbar_type in ("EXP", "MANT"):
                         self.sram_exp_indices.append(sram_local)
+                    if xbar_type == "MANT":
+                        self.sram_mant_indices.append(sram_local)
                     sram_local += 1
 
         return self

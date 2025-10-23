@@ -57,6 +57,11 @@ class SRAMCIMUnitArray:
         self.mvm_indices = np.array(self.mvmu_config.sram_mvm_indices, dtype=int)
         # EXP-style computation is required for both EXP and MANT at the last iteration
         self.exp_indices = np.array(self.mvmu_config.sram_exp_indices, dtype=int)
+        # MANT xbars need scaling factor applied to their MVM part
+        self.mant_indices = np.array(self.mvmu_config.sram_mant_indices, dtype=int)
+        self.mant_factor = self.mvmu_config.data_config.MANT_factor
+        # Create a boolean mask for fast MANT lookup: True if mvm_indices[i] is a MANT xbar
+        self.mvm_is_mant = np.isin(self.mvm_indices, self.mant_indices)
 
         # Initialize exp input buffer for exponential calculations if needed
         if len(self.exp_indices) > 0:
@@ -114,8 +119,11 @@ class SRAMCIMUnitArray:
             mvm_output = pos_result - neg_result
 
             # Process INT and MANT xbars - store in mvm_result
+            # For MANT xbars, apply the MANT_factor to the linear (MVM) part
+            # Use vectorized operations for efficiency
+            scaled_output = np.where(self.mvm_is_mant[:, np.newaxis], self.mant_factor * mvm_output, mvm_output)
             for i, xbar_idx in enumerate(self.mvm_indices):
-                mvm_result[xbar_idx] += mvm_output[i]
+                mvm_result[xbar_idx] += scaled_output[i]
 
         # Process EXP xbars separately (only shift-and-add, no MVM)
         if len(self.exp_indices) > 0:
