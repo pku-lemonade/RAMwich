@@ -1,3 +1,4 @@
+import numpy as np
 from pydantic import BaseModel, Field, model_validator
 
 from ..data_config import BitConfig, DataConfig
@@ -54,6 +55,8 @@ class MVMUConfig(BaseModel):
     num_sram_xbar_per_mvmu: int = Field(default=None, init=False, description="Number of SRAM xbars per MVMU")
     num_xbar_per_mvmu: int = Field(default=None, init=False, description="Total number of xbars per MVMU")
 
+    num_iterations: int = Field(default=None, init=False, description="Number of iterations for one forward pass")
+
     @model_validator(mode="after")
     def calculate_derived_values(self):
         self.num_adc_per_xbar = self.xbar_config.xbar_size // self.num_columns_per_adc
@@ -64,6 +67,8 @@ class MVMUConfig(BaseModel):
                 f"xbar_size ({self.xbar_config.xbar_size}) must be exactly divisible by "
                 f"num_columns_per_adc ({self.num_columns_per_adc})"
             )
+
+        self.num_iterations = int(np.ceil(self.data_config.activation_width / self.dac_config.resolution))
 
         self.have_sram_xbar = False  # Reset flag to avoid stale state
         self.have_rram_xbar = False  # Reset flag to avoid stale state

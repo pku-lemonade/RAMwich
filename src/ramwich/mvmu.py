@@ -140,8 +140,7 @@ class MVMU:
         self.output_register_array.clean_cells()
 
         # Step 2: Based on activation_width and DAC resolution, do Bit slicing
-        num_iterations = int(np.ceil(self.data_config.activation_width / self.mvmu_config.dac_config.resolution))
-        for i in range(num_iterations):
+        for i in range(self.mvmu_config.num_iterations):
             # Step 2: Read from the input register array
             sliced_digital_activation = self.input_register_array.read(self.mvmu_config.dac_config.resolution)
 

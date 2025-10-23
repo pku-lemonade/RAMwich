@@ -16,6 +16,8 @@ class BitConfig(str, Enum):
 class DataConfig(BaseModel):
     """Data type configuration"""
 
+    activation_width: int = Field(default=8, description="Activation data bits")
+
     storage_config: list[BitConfig] = Field(default=[BitConfig.QLC], description="Storage configuration")
     data_format: list[str] = Field(default=["INT"], description="Data format: INT or EXP or MANT for each part")
     weight_partition: list[int] = Field(
