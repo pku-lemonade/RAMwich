@@ -74,13 +74,13 @@ class MVM(CoreOp):
         return visitor.visit_mvm(self)
 
 
-VFUOpType = Literal["and", "or", "not", "add", "sub", "mul", "div", "min", "max", "sig", "tanh", "relu"]
+FVFUOpType = Literal["add", "sub", "mul", "div", "min", "max", "sig", "tanh", "relu", "INTtoFP", "FPtoINT"]
 IVFUOpType = Literal["and", "or", "xor", "not", "add", "sub", "mul", "div", "min", "max"]
 
 
-class VFU(CoreOp):
-    type: Literal["vfu"] = "vfu"
-    opcode: VFUOpType  # VFU operation type
+class FVFU(CoreOp):
+    type: Literal["fvfu"] = "fvfu"
+    opcode: FVFUOpType  # VFU operation type
     dest: int  # Target register where the result vector will be stored
     read_1: int  # Register that stores operator 1
     read_2: Optional[int] = None  # Register that stores operator 2, Not needed in sig, tanh and relu
@@ -88,7 +88,7 @@ class VFU(CoreOp):
     vec: int  # Length of vector
 
     def accept(self, visitor):
-        return visitor.visit_vfu(self)
+        return visitor.visit_fvfu(self)
 
 
 class IVFU(CoreOp):
@@ -143,7 +143,7 @@ class Halt(TileOp):
 # Removed TimingVisitor and ExecutionVisitor classes as they are now in core.py
 
 # Create discriminated union types
-CoreOpType = Union[Load, Store, Set, Copy, MVM, VFU, IVFU, Hlt]
+CoreOpType = Union[Load, Store, Set, Copy, MVM, FVFU, IVFU, Hlt]
 TileOpType = Union[Send, Recv, Halt]
 OpType = Union[CoreOpType, TileOpType]
 

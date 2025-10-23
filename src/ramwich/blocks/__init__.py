@@ -11,4 +11,4 @@ from .rram_xbar import RRAMXbarArray
 from .sna import SNAArray
 from .snh import SNHArray
 from .sram_cim_unit import SRAMCIMUnitArray
-from .vfu import IVFU, VFU
+from .vfu import FVFU, IVFU
