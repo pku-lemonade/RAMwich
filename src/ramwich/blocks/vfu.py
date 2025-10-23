@@ -5,7 +5,7 @@ from numpy.typing import NDArray
 from pydantic import BaseModel, Field
 
 from ..config import Config, CoreConfig
-from ..ops import VFUOpType
+from ..ops import IVFUOpType, VFUOpType
 from ..stats import Stats, StatsDict
 
 
@@ -281,7 +281,7 @@ class IVFU:
         }
 
     def calculate(
-        self, opcode: VFUOpType, a: Union[NDArray[np.int32], int], b: Optional[Union[NDArray[np.int32], int]] = None
+        self, opcode: IVFUOpType, a: Union[NDArray[np.int32], int], b: Optional[Union[NDArray[np.int32], int]] = None
     ) -> NDArray[np.int32]:
         """Perform a calculation using ALU"""
         # Example operation: multiplication

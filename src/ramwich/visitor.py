@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 import numpy as np
 
-from .ops import MVM, VFU, Copy, Hlt, Load, Set, Store
+from .ops import IVFU, MVM, VFU, Copy, Hlt, Load, Set, Store
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +36,10 @@ class CoreVisitor(ABC):
         pass
 
     @abstractmethod
+    def visit_ivfu(self, op: IVFU):
+        pass
+
+    @abstractmethod
     def visit_hlt(self, op: Hlt):
         pass
 
@@ -64,6 +68,9 @@ class CommonVisitor(CoreVisitor):
         return self._visit_common(op)
 
     def visit_vfu(self, op: VFU):
+        return self._visit_common(op)
+
+    def visit_ivfu(self, op: IVFU):
         return self._visit_common(op)
 
     def visit_hlt(self, op: Hlt):
@@ -116,10 +123,15 @@ class CoreExecutionTimingVisitor(CoreVisitor):
 
     def visit_vfu(self, op):
         """Calculate VFU execution time"""
+        # To be implemented: placeholder value
+        return 1
+
+    def visit_ivfu(self, op):
+        """Calculate Integer VFU execution time"""
         return (
             self.config.core_config.alu_lat
-            * (op.vec + self.config.core_config.num_alu_per_vfu - 1)
-            // self.config.core_config.num_alu_per_vfu
+            * (op.vec + self.config.core_config.num_alu_per_ivfu - 1)
+            // self.config.core_config.num_alu_per_ivfu
         )
 
     def visit_mvm(self, op):
@@ -237,6 +249,19 @@ class CoreExecutionVisitor(CoreVisitor):
             result = self.core.vfu.calculate(op.opcode, a, b)
         else:
             result = self.core.vfu.calculate(op.opcode, a)
+        self.core.write_to_register(op.dest, result)
+
+        # return the done event to the caller
+        # done_event is a timeout event since this operation takes fixed time
+        return self.core.env.timeout(op.accept(self.timing_visitor))
+
+    def visit_ivfu(self, op):
+        a = self.core.read_from_register(op.read_1, op.vec)
+        if op.read_2 is not None:
+            b = self.core.read_from_register(op.read_2, op.vec)
+            result = self.core.ivfu.calculate(op.opcode, a, b)
+        else:
+            result = self.core.ivfu.calculate(op.opcode, a)
         self.core.write_to_register(op.dest, result)
 
         # return the done event to the caller

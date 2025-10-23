@@ -96,7 +96,7 @@ class CoreConfig(BaseModel):
 
     # VFU parameters with default fields
     alu_lat: int = Field(default=1, description="ALU latency")
-    num_alu_per_vfu: int = Field(default=12, description="Number of ALUs per VFU")
+    num_alu_per_ivfu: int = Field(default=12, description="Number of ALUs per VFU")
     alu_pow_dyn: float = Field(default=2.4 * 32 / 45, description="ALU dynamic power")
     alu_pow_div_dyn: float = Field(default=1.52 * 32 / 45, description="ALU division dynamic power")
     alu_pow_mul_dyn: float = Field(default=0.795 * 32 / 45, description="ALU multiplication dynamic power")
