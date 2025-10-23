@@ -4,7 +4,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from .blocks.memory import SRAM
-from .blocks.vfu import IVFU, VFU
+from .blocks.vfu import FVFU, IVFU
 from .config import Config
 from .mvmu import MVMU
 from .ops import CoreOp
@@ -40,7 +40,7 @@ class Core:
         # Initialize components
         self.cache = SRAM(self.core_config, sram_type="cache")
         self.storage = SRAM(self.core_config, sram_type="storage")
-        self.vfu = VFU(self.config)
+        self.fvfu = FVFU(self.config)
         self.ivfu = IVFU(self.config)
         self.dram_controller = self.parent.dram_controller
 

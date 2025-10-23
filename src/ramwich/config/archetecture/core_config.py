@@ -106,6 +106,8 @@ class CoreConfig(BaseModel):
     alu_pow_leak: float = Field(default=0.27 * 32 / 45, description="ALU leakage power")
     alu_area: float = Field(default=0.00567 * 32 / 45, description="ALU area")
     act_area: float = Field(default=0.0003, description="Activation unit area")
+    int_min_value: int = Field(default=-(2**7), description="Minimum integer value for INT operations")
+    int_max_value: int = Field(default=2**7 - 1, description="Maximum integer value for INT operations")
 
     @model_validator(mode="after")
     def calculate_derived_values(self):

@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 import numpy as np
 
-from .ops import IVFU, MVM, VFU, Copy, Hlt, Load, Set, Store
+from .ops import FVFU, IVFU, MVM, Copy, Hlt, Load, Set, Store
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +32,7 @@ class CoreVisitor(ABC):
         pass
 
     @abstractmethod
-    def visit_vfu(self, op: VFU):
+    def visit_fvfu(self, op: FVFU):
         pass
 
     @abstractmethod
@@ -67,7 +67,7 @@ class CommonVisitor(CoreVisitor):
     def visit_mvm(self, op: MVM):
         return self._visit_common(op)
 
-    def visit_vfu(self, op: VFU):
+    def visit_fvfu(self, op: FVFU):
         return self._visit_common(op)
 
     def visit_ivfu(self, op: IVFU):
@@ -121,7 +121,7 @@ class CoreExecutionTimingVisitor(CoreVisitor):
         """Calculate copy execution time"""
         return self.config.core_config.dataMem_lat
 
-    def visit_vfu(self, op):
+    def visit_fvfu(self, op):
         """Calculate VFU execution time"""
         # To be implemented: placeholder value
         return 1
@@ -242,13 +242,13 @@ class CoreExecutionVisitor(CoreVisitor):
         # done_event is a timeout event since this operation takes fixed time
         return self.core.env.timeout(op.accept(self.timing_visitor))
 
-    def visit_vfu(self, op):
+    def visit_fvfu(self, op):
         a = self.core.read_from_register(op.read_1, op.vec)
         if op.read_2 is not None:
             b = self.core.read_from_register(op.read_2, op.vec)
-            result = self.core.vfu.calculate(op.opcode, a, b)
+            result = self.core.fvfu.calculate(op.opcode, a, b)
         else:
-            result = self.core.vfu.calculate(op.opcode, a)
+            result = self.core.fvfu.calculate(op.opcode, a)
         self.core.write_to_register(op.dest, result)
 
         # return the done event to the caller
