@@ -30,13 +30,21 @@ class DataConfig(BaseModel):
     weight_width: int = Field(default=None, init=False, description="Weight data bits")
     part_number: int = Field(default=None, init=False, description="Number of parts in weight partition")
 
+    MANT_factor: int = Field(default=10, description="Linear part scaling factor for MANT format")
+
     @model_validator(mode="after")
     def calculate_derived_values(self):
-        # Validate weight partition
-        wp = self.weight_partition
+        # If weight width is not yet set, defer validation until MVMUConfig fills it in
         ww = self.weight_width
+        if ww is None:
+            return self
+
+        # Validate weight partition basics
+        wp = self.weight_partition
         df = self.data_format
 
+        if not wp:
+            raise ValueError("Weight partition must contain at least one start bit (e.g., [0]).")
         if wp[0] != 0:
             raise ValueError(f"The first start bit in weight partition must be 0, but got {wp[0]}.")
         if any(wp[i + 1] <= wp[i] for i in range(len(wp) - 1)):
@@ -46,18 +54,18 @@ class DataConfig(BaseModel):
                 f"The last start bit in weight partition must be less than the last bit {ww - 1}, but got {wp[-1]}."
             )
 
+        # Compute per-part lengths and number of parts
         self.part_length = [wp[i + 1] - wp[i] for i in range(len(wp) - 1)] + [ww - wp[-1]]
+        self.part_number = len(self.part_length)
 
+        # Validate data_format alignment and allowed values
         if len(wp) != len(df):
             raise ValueError(f"Weight partition length {len(wp)} must match data format length {len(df)}.")
 
         valid_formats = {"INT", "EXP", "MANT"}
-        for i, fmt in enumerate(df):
+        for fmt in df:
             if fmt not in valid_formats:
                 raise ValueError(f"Invalid data format: {fmt}. Supported formats are INT, EXP, MANT.")
-            if fmt in {"EXP", "MANT"}:
-                for j in range(wp[i], wp[i] + self.part_length[i]):
-                    if self.is_bit_rram[-j - 1]:
-                        raise ValueError(f"Data format {fmt} not supported for RRAM bit at position {j}.")
 
+        # Note: RRAM/SRAM capability checks depend on architecture and are validated in MVMUConfig
         return self

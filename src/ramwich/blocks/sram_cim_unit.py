@@ -86,8 +86,9 @@ class SRAMCIMUnitArray:
             iteration: Current iteration number (0-indexed)
 
         Returns:
-            2D array with shape (num_xbar, xbar_size) containing the results of matrix-vector
-            multiplication and exponential results for each crossbar
+            Tuple of two 2D arrays, each with shape (num_xbar, xbar_size):
+            - mvm_result: MVM outputs (needs iteration shift in SNA)
+            - exp_result: EXP outputs (no iteration shift in SNA)
         """
 
         # Validate input
@@ -100,8 +101,9 @@ class SRAMCIMUnitArray:
         # Update current iteration
         is_last_iteration = iteration == self.mvmu_config.num_iterations - 1
 
-        # Initialize the final result array
-        result = np.zeros((self.num_xbar, self.xbar_size)).astype(np.int64)
+        # Initialize separate result arrays for MVM and EXP
+        mvm_result = np.zeros((self.num_xbar, self.xbar_size)).astype(np.int64)
+        exp_result = np.zeros((self.num_xbar, self.xbar_size)).astype(np.int64)
 
         # Perform MVM only for xbars that need it (INT and MANT types)
         if len(self.mvm_indices) > 0:
@@ -109,28 +111,32 @@ class SRAMCIMUnitArray:
             # i: crossbar index, j: crossbar row, k: crossbar column (multiplied by input)
             pos_result = np.einsum("ikj,j->ik", self.pos_xbar[self.mvm_indices], input_vector)
             neg_result = np.einsum("ikj,j->ik", self.neg_xbar[self.mvm_indices], input_vector)
-            mvm_result = pos_result - neg_result
+            mvm_output = pos_result - neg_result
 
-            # Process INT and MANT xbars
+            # Process INT and MANT xbars - store in mvm_result
             for i, xbar_idx in enumerate(self.mvm_indices):
-                result[xbar_idx] += mvm_result[i]
+                mvm_result[xbar_idx] += mvm_output[i]
 
         # Process EXP xbars separately (only shift-and-add, no MVM)
         if len(self.exp_indices) > 0:
             # For EXP, we do not need MVM, but need to store input shifted by iteration
-            self.exp_input += input_vector << iteration * self.mvmu_config.dac_config.resolution
+            self.exp_input += input_vector << (iteration * self.mvmu_config.dac_config.resolution)
 
             # For last iteration, compute the final exponential result
             if is_last_iteration:
-                pos_result = self.pos_xbar[self.exp_indices] @ self.exp_input
-                neg_result = self.neg_xbar[self.exp_indices] @ self.exp_input
-                exp_result = pos_result - neg_result
+                # Compute per-row sum over columns of (weight << input)
+                # Broadcast shift across the column dimension, then reduce along columns
+                pos_shifted = self.pos_xbar[self.exp_indices].astype(np.int64) << self.exp_input
+                neg_shifted = self.neg_xbar[self.exp_indices].astype(np.int64) << self.exp_input
+                pos_sum = np.sum(pos_shifted, axis=2)
+                neg_sum = np.sum(neg_shifted, axis=2)
+                exp_output = pos_sum - neg_sum
                 for i, xbar_idx in enumerate(self.exp_indices):
-                    # Return accumulated exponential result on last iteration
-                    result[xbar_idx] += exp_result[i]
+                    # Return accumulated exponential result on last iteration in exp_result
+                    exp_result[xbar_idx] += exp_output[i]
                     # Reset input buffer for next forward pass
                 self.exp_input.fill(0)
-            # else: result remains 0 for non-last iterations, no action needed
+            # else: exp_result remains 0 for non-last iterations, no action needed
 
         # Update the statistics (only count actual operations performed)
         num_mvm_xbars = len(self.mvm_indices)
@@ -139,7 +145,7 @@ class SRAMCIMUnitArray:
             num_exp_xbars = len(self.exp_indices)
             self.stats.exp_operations += num_exp_xbars * 2 * self.xbar_size
 
-        return result
+        return mvm_result, exp_result
 
     def reset(self):
         """Reset all statistics and accumulators to zero"""

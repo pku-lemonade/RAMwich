@@ -111,7 +111,22 @@ class MVMUConfig(BaseModel):
         self.stored_bit.append(bits)
 
         self.num_xbar_per_mvmu = self.num_sram_xbar_per_mvmu + self.num_rram_xbar_per_mvmu
-        self.weight_width = bits
+
+        # Propagate weight width into data config and compute its derived values
+        self.data_config.weight_width = bits
+        # Recompute data-config derived values now that weight_width is known
+        self.data_config.calculate_derived_values()
+
+        # Validate that EXP/MANT partitions are not mapped onto RRAM bits
+        wp = self.data_config.weight_partition
+        pl = self.data_config.part_length
+        df = self.data_config.data_format
+        for i, fmt in enumerate(df):
+            if fmt in ("EXP", "MANT"):
+                for j in range(wp[i], wp[i] + pl[i]):
+                    # Bits are indexed from LSB=0; is_bit_rram was built LSB->MSB
+                    if self.is_bit_rram[-j - 1]:
+                        raise ValueError(f"Data format {fmt} not supported for RRAM bit at position {j}.")
 
         # Assign output maps based on xbar type
         for i in range(self.num_xbar_per_mvmu):
@@ -124,7 +139,6 @@ class MVMUConfig(BaseModel):
         self.sram_xbar_types = []
         self.sram_mvm_indices = []
         self.sram_exp_indices = []
-        self.sram_mant_indices = []
 
         if self.have_sram_xbar:
             # Build list of (global_xbar_idx, sram_local_idx)
