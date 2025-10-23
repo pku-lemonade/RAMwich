@@ -16,8 +16,8 @@ class VFUStats(BaseModel):
     config: CoreConfig = Field(default=CoreConfig(), description="Configuration object")
 
     # VFU specific metrics
-    mul_operations: int = Field(default=0, description="Number of read operations")
-    div_operations: int = Field(default=0, description="Number of write operations")
+    mul_operations: int = Field(default=0, description="Number of multiplication operations")
+    div_operations: int = Field(default=0, description="Number of division operations")
     act_operations: int = Field(default=0, description="Number of activation operations")
     other_operations: int = Field(default=0, description="Number of other operations")
     total_operations: int = Field(default=0, description="Total number of operations")
@@ -60,8 +60,53 @@ class VFUStats(BaseModel):
         return stats_dict
 
 
+class IVFUStats(BaseModel):
+    """Statistics for Integer VFU operations"""
+
+    # Universal metrics
+    config: CoreConfig = Field(default=CoreConfig(), description="Configuration object")
+
+    # Integer VFU specific metrics
+    mul_operations: int = Field(default=0, description="Number of multiplication operations")
+    div_operations: int = Field(default=0, description="Number of division operations")
+    other_operations: int = Field(default=0, description="Number of other operations")
+    total_operations: int = Field(default=0, description="Total number of operations")
+
+    def reset(self):
+        """Reset all statistics to zero"""
+        self.mul_operations = 0
+        self.div_operations = 0
+        self.other_operations = 0
+        self.total_operations = 0
+
+    def get_stats(self) -> StatsDict:
+        """Convert Integer VFU Stats to general Stats object"""
+        stats_dict = StatsDict()
+
+        # Map VFU metrics to Stat object
+        stats_dict["IVFU"] = Stats(
+            activation_count=self.total_operations,
+            dynamic_energy=self.config.alu_pow_mul_dyn * self.mul_operations
+            + self.config.alu_pow_div_dyn * self.div_operations
+            + self.config.alu_pow_others_dyn * self.other_operations,
+            leakage_energy=self.config.alu_pow_leak,
+            area=self.config.alu_area + self.config.act_area,
+        )
+        stats_dict["IVFU MUL"] = Stats(
+            activation_count=self.mul_operations,
+        )
+        stats_dict["IVFU DIV"] = Stats(
+            activation_count=self.div_operations,
+        )
+        stats_dict["IVFU OTHERS"] = Stats(
+            activation_count=self.other_operations,
+        )
+
+        return stats_dict
+
+
 class VFU:
-    """SRAM register file component for the Core"""
+    """Floating Point Vector Functional Unit (VFU) for the Core"""
 
     def __init__(self, config: Config):
         self.config = config
@@ -195,6 +240,127 @@ class VFU:
             self.stats.div_operations += length
         elif operation_type == "act":
             self.stats.act_operations += length
+        else:
+            self.stats.other_operations += length
+        self.stats.total_operations += length
+
+    def reset(self):
+        """Reset all statistics"""
+        self.stats.reset()
+
+    def get_stats(self) -> StatsDict:
+        return self.stats.get_stats()
+
+
+class IVFU:
+    """Integer Vector Functional Unit (VFU) for the Core"""
+
+    def __init__(self, config: Config):
+        # Initialize configuration
+        self.config = config
+
+        # Initialize operation handlers
+        self._init_op_handlers()
+
+        # Initialize stats
+        self.stats = IVFUStats(config=self.config.core_config)
+
+    def _init_op_handlers(self):
+        """Initialize operation handlers dictionary"""
+        self.op_handlers = {
+            "and": self._handle_and,
+            "or": self._handle_or,
+            "xor": self._handle_xor,
+            "not": self._handle_not,
+            "add": self._handle_add,
+            "sub": self._handle_sub,
+            "mul": self._handle_mul,
+            "div": self._handle_div,
+            "min": self._handle_min,
+            "max": self._handle_max,
+        }
+
+    def calculate(
+        self, opcode: VFUOpType, a: Union[NDArray[np.int32], int], b: Optional[Union[NDArray[np.int32], int]] = None
+    ) -> NDArray[np.int32]:
+        """Perform a calculation using ALU"""
+        # Example operation: multiplication
+        if isinstance(a, int):
+            a = np.array([a], dtype=np.int32)
+
+        length = len(a)
+
+        if b is not None and isinstance(b, int):
+            b = np.array([b], dtype=np.int32)
+            if len(b) != length:
+                raise ValueError("Operands must be of the same length")
+
+        # Determine operation type for statistics
+        if opcode in ["mul", "div"]:
+            operation_type = opcode
+        else:
+            operation_type = "other"
+
+        # Execute operation based on arity (unary or binary)
+        if opcode == "not":
+            # Unary operations
+            if b is not None:
+                # If b is provided for unary operation, ignore it but log a warning
+                import warnings
+
+                warnings.warn(f"Second operand provided for unary operation {opcode}, it will be ignored", stacklevel=2)
+            result = self.op_handlers[opcode](a, None)
+        else:
+            # Binary operations
+            if b is None:
+                raise ValueError(f"Second operand required for operation {opcode}")
+            result = self.op_handlers[opcode](a, b)
+
+        # Update statistics
+        self._update_stats(operation_type, length)
+
+        # Do clipping
+        result = np.clip(result, self.min_value, self.max_value)
+
+        return result
+
+    def _handle_and(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
+        return a & b
+
+    def _handle_or(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
+        return a | b
+
+    def _handle_xor(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
+        return a ^ b
+
+    def _handle_not(self, a: NDArray[np.int32], _) -> NDArray[np.int32]:
+        return ~a
+
+    def _handle_add(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
+        return a + b
+
+    def _handle_sub(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
+        return a - b
+
+    def _handle_mul(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
+        return a * b
+
+    def _handle_div(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
+        if np.any(b == 0):
+            raise ZeroDivisionError("Division by zero")
+        return a // b
+
+    def _handle_min(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
+        return np.minimum(a, b)
+
+    def _handle_max(self, a: NDArray[np.int32], b: NDArray[np.int32]) -> NDArray[np.int32]:
+        return np.maximum(a, b)
+
+    def _update_stats(self, operation_type: str, length: int) -> None:
+        if operation_type == "mul":
+            self.stats.mul_operations += length
+        elif operation_type == "div":
+            self.stats.div_operations += length
         else:
             self.stats.other_operations += length
         self.stats.total_operations += length
