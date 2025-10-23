@@ -57,7 +57,9 @@ class SNAArray:
         # Initialize stats
         self.stats = SNAStats(config=self.mvmu_config)
 
-    def calculate(self, input_data: NDArray[np.int32], current_value: NDArray[np.int32], bits: int):
+    def calculate(
+        self, mvm_data: NDArray[np.int32], exp_data: NDArray[np.int32], current_value: NDArray[np.int32], bits: int
+    ):
         """Performs the Shift and Add (SNA) operation on the input data
 
         Each SNA unit combines data from multiple xbars for one ADC position:
@@ -66,15 +68,20 @@ class SNAArray:
         - Adds the shifted values to produce a single output
 
         Args:
-            input_data: 2D array with shape (num_xbar_per_mvmu, num_adc_per_xbar)
-            bits_per_cell: Array of bit shifts to apply for each xbar (optional)
+            mvm_data: 2D array with shape (num_xbar_per_mvmu, num_adc_per_xbar) - MVM outputs (need iteration shift)
+            exp_data: 2D array with shape (num_xbar_per_mvmu, num_adc_per_xbar) - EXP outputs (no iteration shift)
+            current_value: Current accumulated value in output register
+            bits: Number of bits to shift for this iteration (activation bit position)
 
         Returns:
             1D array with shape (num_adc_per_xbar,) containing SNA results
         """
         # Validate input data
-        if input_data.shape != self.input_shape:
-            raise ValueError(f"Input data shape {input_data.shape} does not match SNA array shape {self.input_shape}")
+        if mvm_data.shape != self.input_shape:
+            raise ValueError(f"MVM data shape {mvm_data.shape} does not match SNA array shape {self.input_shape}")
+
+        if exp_data.shape != self.input_shape:
+            raise ValueError(f"EXP data shape {exp_data.shape} does not match SNA array shape {self.input_shape}")
 
         if len(current_value) != self.mvmu_config.num_adc_per_xbar:
             raise ValueError(
@@ -83,15 +90,19 @@ class SNAArray:
 
         if bits < 0:
             raise ValueError(f"Bits {bits} must be non-negative")
-        # Apply intra-partition shifts for each xbar (parallel partitions)
-        shifted_data = input_data.astype(np.int64) << self.shift_bits  # Prevent overflow during shifting
 
-        # Sum across the xbar dimension to get final results
-        result = np.sum(shifted_data, axis=0)
+        # Process MVM data: apply intra-partition shifts, then iteration shift
+        mvm_shifted = mvm_data.astype(np.int64) << self.shift_bits
+        mvm_result = np.sum(mvm_shifted, axis=0)
+        mvm_result = mvm_result << bits  # Apply iteration shift to MVM
 
-        # Shift the accumulated result by the activation bit-slice position
-        # (this is independent of weight partitions)
-        result = result << bits
+        # Process EXP data: apply intra-partition shifts only (NO iteration shift)
+        exp_shifted = exp_data.astype(np.int64) << self.shift_bits
+        exp_result = np.sum(exp_shifted, axis=0)
+        # NO iteration shift for EXP - it's already properly positioned
+
+        # Combine both results
+        result = mvm_result + exp_result
 
         # Update stats
         self.stats.operations += self.size

@@ -14,7 +14,7 @@ from .blocks.snh import SNHArray
 from .blocks.sram_cim_unit import SRAMCIMUnitArray
 from .config import Config
 from .stats import Stats, StatsDict
-from .utils.data_convert import extract_bits, float_to_fixed, int_to_conductance
+from .utils.data_convert import extract_bits, int_to_conductance
 
 
 class MVMU:
@@ -73,22 +73,44 @@ class MVMU:
     def __repr__(self):
         return f"MVMU({self.id})"
 
-    def load_weights(self, weights: NDArray[np.float64]):
-        """Load weights into the crossbar arrays"""
+    def load_weights(self, weights: NDArray[np.uint32]):
+        """
+        Load weights into the crossbar arrays
+        Expected encoding (unsigned integer per cell):
+        - Lower bits [0:weight_width): concatenated magnitudes of all partitions according to weight_partition
+        - Higher bits [weight_width : weight_width + part_number): one sign bit per partition
+            0 => positive, 1 => negative
+
+        Example: 8-bit weights with 2 partitions of 4 bits each => total 10-bit code per cell
+        - Bits [0:4]: magnitude for partition 0
+        - Bits [4:8]: magnitude for partition 1
+        - Bit [8]: sign for partition 0
+        - Bit [9]: sign for partition 1
+        """
 
         # Validate input length
         xbar_size = self.mvmu_config.xbar_config.xbar_size
         if weights.shape != (xbar_size, xbar_size):
             raise ValueError(f"Expected weights shape ({xbar_size}, {xbar_size}), got {weights.shape}")
 
-        # Calculate signs of all weights at once
-        signs = np.sign(weights)
+        # Work in int64 for safe shifting and arithmetic
+        enc = weights.astype(np.int64)
 
-        # Prepare weights with positive magnitudes
-        abs_weights = np.abs(weights)
+        # Pull config-derived parameters
+        W = self.data_config.weight_width
+        wp = self.data_config.weight_partition
+        P = len(wp)
 
-        # Convert all weights to fixed-point representation
-        int_weights = np.vectorize(float_to_fixed)(abs_weights, self.mvmu_config.weight_frac_bits)
+        # Extract magnitudes (lower W bits)
+        mag_mask = (1 << W) - 1
+        magnitudes = enc & mag_mask
+
+        # Prepare per-partition sign factor matrices: +1 if sign bit=0 else -1
+        part_sign = []
+        for p in range(P):
+            sbit = (enc >> (W + p)) & 1
+            sgn = 1 - (sbit << 1)  # 1 if 0 else -1
+            part_sign.append(sgn.astype(np.int8))
 
         # Initialize the output array
         rram_xbar_weights = np.zeros((self.mvmu_config.num_rram_xbar_per_mvmu, xbar_size, xbar_size)).astype(np.float64)
@@ -97,29 +119,44 @@ class MVMU:
         rram_idx = 0
         sram_idx = 0
 
+        # Helper to map an xbar start bit to its partition index
+        def part_index_for_bit(bitpos: int) -> int:
+            idx = 0
+            for i in range(P):
+                if wp[i] <= bitpos:
+                    idx = i
+                else:
+                    break
+            return idx
+
         # Process each crossbar
         for k in range(self.mvmu_config.num_xbar_per_mvmu):
-            # Extract bits for this crossbar (still need to loop over k)
-            xbar_int_weights = np.vectorize(extract_bits)(
-                int_weights, self.mvmu_config.stored_bit[k], self.mvmu_config.stored_bit[k + 1]
-            )
+            start = self.mvmu_config.stored_bit[k]
+            end = self.mvmu_config.stored_bit[k + 1]
+            # Extract magnitude bits for this xbar slice
+            xbar_mag = np.vectorize(extract_bits)(magnitudes, start, end)
+
+            # Determine partition sign to apply for this slice
+            p_idx = part_index_for_bit(start)
+            sgn = part_sign[p_idx].astype(np.int8)
 
             if self.mvmu_config.is_xbar_rram[k]:
                 # Convert to conductance values (vectorized)
                 conductance_values = np.vectorize(int_to_conductance)(
-                    xbar_int_weights,
+                    xbar_mag,
                     self.mvmu_config.bits_per_cell[k],
                     self.mvmu_config.xbar_config.rram_conductance_min,
                     self.mvmu_config.xbar_config.rram_conductance_max,
                 )
 
-                # Apply signs and store in result array
-                rram_xbar_weights[rram_idx] = signs * conductance_values
+                # Apply partition sign and store in result array
+                rram_xbar_weights[rram_idx] = sgn * conductance_values
                 rram_idx += 1
 
             else:
-                # Directly store the integer weights for SRAM crossbars
-                sram_xbar_weights[sram_idx] = signs * xbar_int_weights
+                # SRAM stores 1-bit per cell; place +1/-1 when the bit is set, else 0
+                bit_set = (xbar_mag > 0).astype(np.int8)
+                sram_xbar_weights[sram_idx] = (sgn * bit_set).astype(np.int8)
                 sram_idx += 1
 
         # Load the processed weights into the xbar array
@@ -159,7 +196,7 @@ class MVMU:
             # If using SRAM CIM, do the following steps
             if self.mvmu_config.have_sram_xbar:
                 # Parallel with step 3, 4, 5, 6, and 7: SRAM crossbar multiplication
-                sram_xbar_output = self.sram_cim_unit_array.execute(sliced_digital_activation, i)
+                sram_mvm_output, sram_exp_output = self.sram_cim_unit_array.execute(sliced_digital_activation, i)
 
             # Step 6: MUX selection
             for j in range(self.mvmu_config.num_columns_per_adc):
@@ -174,30 +211,33 @@ class MVMU:
 
                 # MUX selection for SRAM
                 if self.mvmu_config.have_sram_xbar:
-                    mux_output_sram = self.mux_array_sram.select(sram_xbar_output, j)
+                    mux_mvm_sram = self.mux_array_sram.select(sram_mvm_output, j)
+                    mux_exp_sram = self.mux_array_sram.select(sram_exp_output, j)
 
-                # Depending on the type of crossbar, the calculation output will be from different sources
+                # Depending on the type of crossbar, prepare MVM and EXP outputs separately
                 if not self.mvmu_config.have_sram_xbar:
-                    # If all crossbars are RRAM, the calculation output is from the ADC
-                    calculation_output = adc_output
+                    # If all crossbars are RRAM, the calculation output is from the ADC (all MVM, no EXP)
+                    calculation_mvm = adc_output
+                    calculation_exp = np.zeros_like(adc_output)
                 elif not self.mvmu_config.have_rram_xbar:
-                    # If all crossbars are SRAM, the calculation output is from the SRAM MUX
-                    calculation_output = mux_output_sram
+                    # If all crossbars are SRAM, separate MVM and EXP from SRAM MUX
+                    calculation_mvm = mux_mvm_sram
+                    calculation_exp = mux_exp_sram
                 else:
                     # If both crossbars are present, we need to merge the outputs.
                     # This is done by hardware wiring, so it doesn't cost time and energy.
-                    calculation_output = np.zeros(
-                        (self.mvmu_config.num_xbar_per_mvmu, self.mvmu_config.num_adc_per_xbar)
-                    )
-                    calculation_output[self.mvmu_config.rram_to_output_map] = adc_output
-                    calculation_output[self.mvmu_config.sram_to_output_map] = mux_output_sram
+                    calculation_mvm = np.zeros((self.mvmu_config.num_xbar_per_mvmu, self.mvmu_config.num_adc_per_xbar))
+                    calculation_exp = np.zeros((self.mvmu_config.num_xbar_per_mvmu, self.mvmu_config.num_adc_per_xbar))
+                    calculation_mvm[self.mvmu_config.rram_to_output_map] = adc_output
+                    calculation_mvm[self.mvmu_config.sram_to_output_map] = mux_mvm_sram
+                    calculation_exp[self.mvmu_config.sram_to_output_map] = mux_exp_sram
 
                 # Step 8: Read current value from output register array
                 mask = np.arange(j, self.mvmu_config.xbar_config.xbar_size, self.mvmu_config.num_columns_per_adc)
                 current_output = self.output_register_array.read(mask)
 
-                # Step 9: SNA operation
-                sna_output = self.sna_array.calculate(calculation_output, current_output, i)
+                # Step 9: SNA operation with separate MVM and EXP inputs
+                sna_output = self.sna_array.calculate(calculation_mvm, calculation_exp, current_output, i)
 
                 # Step 10: Write back to the output register array
                 self.output_register_array.write(sna_output, mask)
@@ -216,7 +256,7 @@ class MVMU:
         On hardware, the core just reads the middle bits of the output register array. No additional energy cost.
         """
         indices = np.arange(start, start + length)
-        return self.output_register_array.read(indices) >> self.mvmu_config.weight_frac_bits
+        return self.output_register_array.read(indices)
 
     def reset(self):
         """Reset the MVMU to its initial state"""
