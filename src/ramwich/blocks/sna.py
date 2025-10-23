@@ -41,7 +41,18 @@ class SNAArray:
         self.input_shape = (self.mvmu_config.num_xbar_per_mvmu, self.mvmu_config.num_adc_per_xbar)
         self.size = np.prod(self.input_shape) + self.mvmu_config.num_adc_per_xbar
 
-        self.shift_bits = np.array(self.mvmu_config.stored_bit[:-1])[:, np.newaxis]
+        # Precompute per-xbar shift relative to its weight partition.
+        # Previously we used absolute stored_bit offsets, which incorrectly
+        # introduced inter-partition shifts when weights are partitioned.
+        # To make partitions operate in parallel, subtract the partition base.
+        stored_bit = np.array(self.mvmu_config.stored_bit[:-1], dtype=int)
+        wp = np.array(self.mvmu_config.data_config.weight_partition, dtype=int)
+        # For each xbar k, find the partition index such that wp[idx] <= stored_bit[k]
+        # Using searchsorted to get the rightmost insertion position, then minus 1
+        part_idx = np.searchsorted(wp, stored_bit, side="right") - 1
+        part_bases = wp[part_idx]
+        # Shift within partition only (no cross-partition offset)
+        self.shift_bits = (stored_bit - part_bases)[:, np.newaxis]
 
         # Initialize stats
         self.stats = SNAStats(config=self.mvmu_config)
@@ -63,7 +74,7 @@ class SNAArray:
         """
         # Validate input data
         if input_data.shape != self.input_shape:
-            raise ValueError(f"Input data shape {input_data.shape} does not match SNA array shape {self.shape}")
+            raise ValueError(f"Input data shape {input_data.shape} does not match SNA array shape {self.input_shape}")
 
         if len(current_value) != self.mvmu_config.num_adc_per_xbar:
             raise ValueError(
@@ -72,14 +83,14 @@ class SNAArray:
 
         if bits < 0:
             raise ValueError(f"Bits {bits} must be non-negative")
-
-        # Apply shifts for each xbar
+        # Apply intra-partition shifts for each xbar (parallel partitions)
         shifted_data = input_data.astype(np.int64) << self.shift_bits  # Prevent overflow during shifting
 
         # Sum across the xbar dimension to get final results
         result = np.sum(shifted_data, axis=0)
 
-        # shift the result to the left by bits
+        # Shift the accumulated result by the activation bit-slice position
+        # (this is independent of weight partitions)
         result = result << bits
 
         # Update stats
