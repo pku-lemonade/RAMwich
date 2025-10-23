@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field, model_validator
 
-from ..data_config import DataConfig
+from ..data_config import BitConfig, DataConfig
 from ..hardware.adc_config import ADCConfig
 from ..hardware.dac_config import DACConfig
 from ..hardware.xbar_config import XBARConfig
@@ -38,13 +38,21 @@ class MVMUConfig(BaseModel):
         default=None, init=False, description="Number of SRAM CIM calculators per crossbar"
     )
 
-    num_rram_xbar_per_mvmu: int = Field(default=None, init=False, description="Number of RRAM xbars")
-    num_sram_xbar_per_mvmu: int = Field(default=None, init=False, description="Number of SRAM xbars")
-    num_xbar_per_mvmu: int = Field(default=None, init=False, description="Number of crossbars per MVMU")
-
     dac_config: DACConfig = Field(default_factory=DACConfig)
     xbar_config: XBARConfig = Field(default_factory=XBARConfig)
     adc_config: ADCConfig = Field(default_factory=ADCConfig)
+
+    stored_bit: list = Field(default_factory=list, init=False, description="Stored bit positions")
+    bits_per_cell: list = Field(default_factory=list, init=False, description="Bits per cell")
+    is_xbar_rram: list = Field(default_factory=list, init=False, description="Is crossbar RRAM")
+    is_bit_rram: list = Field(default_factory=list, init=False, description="Is each bit RRAM")
+    rram_to_output_map: list = Field(default_factory=list, init=False, description="RRAM xbars to output map")
+    sram_to_output_map: list = Field(default_factory=list, init=False, description="SRAM xbars to output map")
+    have_rram_xbar: bool = Field(default=False, description="Whether have RRAM crossbar or not")
+    have_sram_xbar: bool = Field(default=False, description="Whether have SRAM crossbar or not")
+    num_rram_xbar_per_mvmu: int = Field(default=None, init=False, description="Number of RRAM xbars per MVMU")
+    num_sram_xbar_per_mvmu: int = Field(default=None, init=False, description="Number of SRAM xbars per MVMU")
+    num_xbar_per_mvmu: int = Field(default=None, init=False, description="Total number of xbars per MVMU")
 
     @model_validator(mode="after")
     def calculate_derived_values(self):
@@ -56,5 +64,46 @@ class MVMUConfig(BaseModel):
                 f"xbar_size ({self.xbar_config.xbar_size}) must be exactly divisible by "
                 f"num_columns_per_adc ({self.num_columns_per_adc})"
             )
+
+        self.have_sram_xbar = False  # Reset flag to avoid stale state
+        self.have_rram_xbar = False  # Reset flag to avoid stale state
+        self.stored_bit = []
+        self.bits_per_cell = []
+        self.is_xbar_rram = []
+        self.is_bit_rram = []
+        self.rram_to_output_map = []
+        self.sram_to_output_map = []
+
+        bits = 0  # total bits number in the operand
+        self.num_rram_xbar_per_mvmu = 0  # number of RRAM xbars
+        self.num_sram_xbar_per_mvmu = 0  # number of SRAM xbars
+        for i in self.data_config.storage_config:
+            self.stored_bit.append(bits)
+            if i == BitConfig.SRAM:
+                self.num_sram_xbar_per_mvmu += 1
+                self.bits_per_cell.append(1)
+                self.is_xbar_rram.append(False)
+                self.is_bit_rram.append(False)
+                bits += 1
+                self.have_sram_xbar = True
+            else:
+                self.num_rram_xbar_per_mvmu += 1
+                self.bits_per_cell.append(int(i))
+                self.is_xbar_rram.append(True)
+                for _j in range(int(i)):
+                    self.is_bit_rram.append(True)
+                bits += int(i)
+                self.have_rram_xbar = True
+        self.stored_bit.append(bits)
+
+        self.num_xbar_per_mvmu = self.num_sram_xbar_per_mvmu + self.num_rram_xbar_per_mvmu
+        self.weight_width = bits
+
+        # Assign output maps based on xbar type
+        for i in range(self.num_xbar_per_mvmu):
+            if self.is_xbar_rram[i]:
+                self.rram_to_output_map.append(i)
+            else:
+                self.sram_to_output_map.append(i)
 
         return self

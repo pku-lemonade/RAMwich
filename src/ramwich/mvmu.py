@@ -27,10 +27,10 @@ class MVMU:
         self.id = id
         self.mvmu_type = mvmu_type
         self.config = config
-        self.data_config = self.config.data_config
         self.mvmu_config = self.config.mvmu_configs.get(
             mvmu_type, config.mvmu_config
         )  # Use default config if not specified
+        self.data_config = self.mvmu_config.data_config
 
         # Initialize basic components
         self.input_register_array = InputRegisterArray(self.mvmu_config)
