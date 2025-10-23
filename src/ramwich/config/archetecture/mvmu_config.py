@@ -57,6 +57,15 @@ class MVMUConfig(BaseModel):
 
     num_iterations: int = Field(default=None, init=False, description="Number of iterations for one forward pass")
 
+    # Precomputed SRAM-specific typing and indices (to avoid recomputation per unit)
+    sram_xbar_types: list[str] = Field(default_factory=list, init=False, description="Type per SRAM xbar: INT/EXP/MANT")
+    sram_mvm_indices: list[int] = Field(
+        default_factory=list, init=False, description="SRAM xbars needing linear MVM (INT,MANT)"
+    )
+    sram_exp_indices: list[int] = Field(
+        default_factory=list, init=False, description="SRAM xbars needing exp shift-add (EXP,MANT)"
+    )
+
     @model_validator(mode="after")
     def calculate_derived_values(self):
         self.num_adc_per_xbar = self.xbar_config.xbar_size // self.num_columns_per_adc
@@ -110,5 +119,31 @@ class MVMUConfig(BaseModel):
                 self.rram_to_output_map.append(i)
             else:
                 self.sram_to_output_map.append(i)
+
+        # Precompute SRAM xbar types and masks/indices in SRAM-local order
+        self.sram_xbar_types = []
+        self.sram_mvm_indices = []
+        self.sram_exp_indices = []
+        self.sram_mant_indices = []
+
+        if self.have_sram_xbar:
+            # Build list of (global_xbar_idx, sram_local_idx)
+            sram_local = 0
+            for global_idx in range(self.num_xbar_per_mvmu):
+                if not self.is_xbar_rram[global_idx]:
+                    bit_position = self.stored_bit[global_idx]
+                    # Find partition index such that weight_partition[p] <= bit_position
+                    part_idx = 0
+                    for p_idx, wp in enumerate(self.data_config.weight_partition):
+                        if bit_position >= wp:
+                            part_idx = p_idx
+                    xbar_type = self.data_config.data_format[part_idx]
+                    self.sram_xbar_types.append(xbar_type)
+                    # Populate indices according to desired behavior
+                    if xbar_type in ("INT", "MANT"):
+                        self.sram_mvm_indices.append(sram_local)
+                    if xbar_type in ("EXP", "MANT"):
+                        self.sram_exp_indices.append(sram_local)
+                    sram_local += 1
 
         return self

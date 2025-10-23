@@ -14,10 +14,12 @@ class SRAMCIMUnitStats(BaseModel):
 
     # Xbar specific metrics
     mac_operations: int = Field(default=0, description="Total number of operations")
+    exp_operations: int = Field(default=0, description="Total number of exponential operations")
 
     def reset(self):
         """Reset all statistics to zero"""
         self.mac_operations = 0
+        self.exp_operations = 0
 
     def get_stats(self) -> StatsDict:
         # Map Xbar metrics to Stat object
@@ -50,6 +52,16 @@ class SRAMCIMUnitArray:
         self.pos_xbar = np.zeros((self.num_xbar, self.xbar_size, self.xbar_size)).astype(np.int8)
         self.neg_xbar = np.zeros((self.num_xbar, self.xbar_size, self.xbar_size)).astype(np.int8)
 
+        # Use precomputed types and indices from config to avoid per-unit recomputation
+        self.xbar_types = list(self.mvmu_config.sram_xbar_types)
+        self.mvm_indices = np.array(self.mvmu_config.sram_mvm_indices, dtype=int)
+        # EXP-style computation is required for both EXP and MANT at the last iteration
+        self.exp_indices = np.array(self.mvmu_config.sram_exp_indices, dtype=int)
+
+        # Initialize exp input buffer for exponential calculations if needed
+        if len(self.exp_indices) > 0:
+            self.exp_input = np.zeros(self.xbar_size, dtype=np.int64)
+
         # Initialize stats
         self.stats = SRAMCIMUnitStats(
             config=self.xbar_config, num_xbar=self.num_xbar * 2, num_calculator_per_xbar=self.num_calculator_per_xbar
@@ -66,15 +78,16 @@ class SRAMCIMUnitArray:
         self.pos_xbar = (weights == 1).astype(np.int8)
         self.neg_xbar = (weights == -1).astype(np.int8)
 
-    def execute_mvm(self, input_vector: NDArray[np.int32]):
+    def execute(self, input_vector: NDArray[np.int32], iteration: int):
         """Execute a matrix-vector multiplication operation
 
         Args:
             input_vector: 1D array of length xbar_size representing the input values
+            iteration: Current iteration number (0-indexed)
 
         Returns:
             2D array with shape (num_xbar, xbar_size) containing the results of matrix-vector
-            multiplication for each crossbar
+            multiplication and exponential results for each crossbar
         """
 
         # Validate input
@@ -84,25 +97,55 @@ class SRAMCIMUnitArray:
         if len(input_vector) != self.xbar_size:
             raise ValueError(f"Expected input vector of shape ({self.xbar_size},), got {input_vector.shape}")
 
-        # Use einsum for efficient matrix-vector multiplication across all crossbars
-        # i: crossbar index, j: crossbar row, k: crossbar column (multiplied by input)
-        # 'ijk,k->ij' for transpose multiplication
-        # 'ikj,j->ik' for standard multiplication
-        pos_result = np.einsum("ikj,j->ik", self.pos_xbar, input_vector)
-        neg_result = np.einsum("ikj,j->ik", self.neg_xbar, input_vector)
+        # Update current iteration
+        is_last_iteration = iteration == self.mvmu_config.num_iterations - 1
 
-        result = pos_result - neg_result
+        # Initialize the final result array
+        result = np.zeros((self.num_xbar, self.xbar_size)).astype(np.int64)
 
-        # Update the statistics
-        self.stats.mac_operations += (
-            self.num_xbar * 2 * self.xbar_size
-        )  # Two operations per crossbar (one for pos and one for neg)
+        # Perform MVM only for xbars that need it (INT and MANT types)
+        if len(self.mvm_indices) > 0:
+            # Use einsum for efficient matrix-vector multiplication on masked xbars
+            # i: crossbar index, j: crossbar row, k: crossbar column (multiplied by input)
+            pos_result = np.einsum("ikj,j->ik", self.pos_xbar[self.mvm_indices], input_vector)
+            neg_result = np.einsum("ikj,j->ik", self.neg_xbar[self.mvm_indices], input_vector)
+            mvm_result = pos_result - neg_result
+
+            # Process INT and MANT xbars
+            for i, xbar_idx in enumerate(self.mvm_indices):
+                result[xbar_idx] += mvm_result[i]
+
+        # Process EXP xbars separately (only shift-and-add, no MVM)
+        if len(self.exp_indices) > 0:
+            # For EXP, we do not need MVM, but need to store input shifted by iteration
+            self.exp_input += input_vector << iteration * self.mvmu_config.dac_config.resolution
+
+            # For last iteration, compute the final exponential result
+            if is_last_iteration:
+                pos_result = self.pos_xbar[self.exp_indices] @ self.exp_input
+                neg_result = self.neg_xbar[self.exp_indices] @ self.exp_input
+                exp_result = pos_result - neg_result
+                for i, xbar_idx in enumerate(self.exp_indices):
+                    # Return accumulated exponential result on last iteration
+                    result[xbar_idx] += exp_result[i]
+                    # Reset input buffer for next forward pass
+                self.exp_input.fill(0)
+            # else: result remains 0 for non-last iterations, no action needed
+
+        # Update the statistics (only count actual operations performed)
+        num_mvm_xbars = len(self.mvm_indices)
+        self.stats.mac_operations += num_mvm_xbars * 2 * self.xbar_size
+        if is_last_iteration:
+            num_exp_xbars = len(self.exp_indices)
+            self.stats.exp_operations += num_exp_xbars * 2 * self.xbar_size
 
         return result
 
     def reset(self):
-        """Reset all statistics to zero"""
+        """Reset all statistics and accumulators to zero"""
         self.stats.reset()
+        if hasattr(self, "exp_input"):
+            self.exp_input.fill(0)
 
     def get_stats(self) -> StatsDict:
         """Get statistics for this Xbar"""
