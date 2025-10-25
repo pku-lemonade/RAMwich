@@ -1,7 +1,7 @@
 [
     {
         "mem_addr": 768,
-        "target_tile": 3,
+        "target_tile": 2,
         "tile": 0,
         "type": "send",
         "vec": 1,
@@ -9,7 +9,7 @@
     },
     {
         "mem_addr": 640,
-        "target_tile": 3,
+        "target_tile": 2,
         "tile": 0,
         "type": "send",
         "vec": 8,
@@ -17,7 +17,7 @@
     },
     {
         "mem_addr": 512,
-        "target_tile": 3,
+        "target_tile": 2,
         "tile": 0,
         "type": "send",
         "vec": 8,
@@ -25,7 +25,7 @@
     },
     {
         "mem_addr": 384,
-        "target_tile": 3,
+        "target_tile": 2,
         "tile": 0,
         "type": "send",
         "vec": 8,
@@ -33,7 +33,7 @@
     },
     {
         "mem_addr": 256,
-        "target_tile": 3,
+        "target_tile": 2,
         "tile": 0,
         "type": "send",
         "vec": 8,
@@ -41,7 +41,7 @@
     },
     {
         "mem_addr": 128,
-        "target_tile": 3,
+        "target_tile": 2,
         "tile": 0,
         "type": "send",
         "vec": 8,
@@ -49,7 +49,7 @@
     },
     {
         "mem_addr": 0,
-        "target_tile": 3,
+        "target_tile": 2,
         "tile": 0,
         "type": "send",
         "vec": 8,
@@ -101,7 +101,7 @@
     },
     {
         "mem_addr": 0,
-        "source_tile": 4,
+        "source_tile": 2,
         "tile": 1,
         "type": "receive",
         "vec": 1,
@@ -152,48 +152,24 @@
         "type": "hlt"
     },
     {
-        "mem_addr": 2304,
-        "source_tile": 3,
+        "mem_addr": 3482,
+        "source_tile": 0,
+        "tile": 2,
+        "type": "receive",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "mem_addr": 3354,
+        "source_tile": 0,
         "tile": 2,
         "type": "receive",
         "vec": 8,
         "width": 16
     },
     {
-        "mem_addr": 2176,
-        "source_tile": 3,
-        "tile": 2,
-        "type": "receive",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 2048,
-        "source_tile": 3,
-        "tile": 2,
-        "type": "receive",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 1920,
-        "source_tile": 3,
-        "tile": 2,
-        "type": "receive",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 1792,
-        "source_tile": 3,
-        "tile": 2,
-        "type": "receive",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 1664,
-        "source_tile": 3,
+        "mem_addr": 3226,
+        "source_tile": 0,
         "tile": 2,
         "type": "receive",
         "vec": 8,
@@ -201,46 +177,86 @@
     },
     {
         "mem_addr": 768,
-        "target_tile": 3,
+        "target_tile": 4,
         "tile": 2,
         "type": "send",
         "vec": 8,
         "width": 16
     },
     {
-        "mem_addr": 2432,
-        "source_tile": 3,
+        "mem_addr": 3098,
+        "source_tile": 0,
         "tile": 2,
         "type": "receive",
-        "vec": 1,
+        "vec": 8,
         "width": 16
     },
     {
-        "mem_addr": 1536,
-        "target_tile": 3,
+        "mem_addr": 640,
+        "target_tile": 4,
         "tile": 2,
         "type": "send",
         "vec": 8,
         "width": 16
     },
     {
-        "mem_addr": 1408,
-        "target_tile": 3,
+        "mem_addr": 2970,
+        "source_tile": 0,
+        "tile": 2,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 512,
+        "target_tile": 4,
         "tile": 2,
         "type": "send",
         "vec": 8,
         "width": 16
     },
     {
-        "mem_addr": 1280,
-        "target_tile": 3,
+        "mem_addr": 2842,
+        "source_tile": 0,
+        "tile": 2,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 384,
+        "target_tile": 4,
         "tile": 2,
         "type": "send",
         "vec": 8,
         "width": 16
     },
     {
-        "mem_addr": 1152,
+        "mem_addr": 2714,
+        "source_tile": 0,
+        "tile": 2,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 256,
+        "target_tile": 4,
+        "tile": 2,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 2576,
+        "source_tile": 4,
+        "tile": 2,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 2448,
         "target_tile": 3,
         "tile": 2,
         "type": "send",
@@ -249,6 +265,22 @@
     },
     {
         "mem_addr": 1024,
+        "target_tile": 4,
+        "tile": 2,
+        "type": "send",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "mem_addr": 896,
+        "target_tile": 4,
+        "tile": 2,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 2320,
         "target_tile": 3,
         "tile": 2,
         "type": "send",
@@ -256,12 +288,60 @@
         "width": 16
     },
     {
-        "mem_addr": 896,
+        "mem_addr": 128,
         "target_tile": 3,
         "tile": 2,
         "type": "send",
         "vec": 8,
         "width": 16
+    },
+    {
+        "mem_addr": 0,
+        "target_tile": 3,
+        "tile": 2,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 2192,
+        "target_tile": 3,
+        "tile": 2,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 2064,
+        "target_tile": 3,
+        "tile": 2,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 1936,
+        "target_tile": 3,
+        "tile": 2,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 2704,
+        "source_tile": 4,
+        "tile": 2,
+        "type": "receive",
+        "vec": 1,
+        "width": 10
+    },
+    {
+        "mem_addr": 3498,
+        "target_tile": 1,
+        "tile": 2,
+        "type": "send",
+        "vec": 1,
+        "width": 10
     },
     {
         "tile": 2,
@@ -270,7 +350,7 @@
     {
         "core": 0,
         "dest": 1537,
-        "imm": 2304,
+        "imm": 2714,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -287,11 +367,58 @@
     },
     {
         "core": 0,
-        "dest": 640,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "opcode": "fp_to_int",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1665,
+        "imm": 256,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 1665,
         "read": 1537,
         "tile": 2,
-        "type": "copy",
-        "vec": 128
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 0,
+        "dest": 1665,
+        "imm": 896,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 640,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
     },
     {
         "core": 0,
@@ -303,7 +430,7 @@
     },
     {
         "core": 0,
-        "dest": 1537,
+        "dest": 1665,
         "read": 1408,
         "tile": 2,
         "type": "copy",
@@ -311,8 +438,8 @@
     },
     {
         "core": 0,
-        "dest": 1665,
-        "imm": 2176,
+        "dest": 1793,
+        "imm": 768,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -320,20 +447,12 @@
     },
     {
         "core": 0,
-        "dest": 1665,
-        "read": 1665,
+        "dest": 512,
+        "read": 1793,
         "tile": 2,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 0,
-        "dest": 512,
-        "read": 1665,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
     },
     {
         "core": 0,
@@ -345,7 +464,7 @@
     },
     {
         "core": 0,
-        "dest": 1665,
+        "dest": 1793,
         "read": 1280,
         "tile": 2,
         "type": "copy",
@@ -353,8 +472,8 @@
     },
     {
         "core": 0,
-        "dest": 1793,
-        "imm": 2048,
+        "dest": 1921,
+        "imm": 640,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -362,20 +481,12 @@
     },
     {
         "core": 0,
-        "dest": 1793,
-        "read": 1793,
+        "dest": 384,
+        "read": 1921,
         "tile": 2,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 0,
-        "dest": 384,
-        "read": 1793,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
     },
     {
         "core": 0,
@@ -387,7 +498,7 @@
     },
     {
         "core": 0,
-        "dest": 1793,
+        "dest": 1921,
         "read": 1152,
         "tile": 2,
         "type": "copy",
@@ -395,8 +506,8 @@
     },
     {
         "core": 0,
-        "dest": 1921,
-        "imm": 1920,
+        "dest": 2049,
+        "imm": 512,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -404,20 +515,12 @@
     },
     {
         "core": 0,
-        "dest": 1921,
-        "read": 1921,
+        "dest": 256,
+        "read": 2049,
         "tile": 2,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 0,
-        "dest": 256,
-        "read": 1921,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
     },
     {
         "core": 0,
@@ -429,7 +532,7 @@
     },
     {
         "core": 0,
-        "dest": 1921,
+        "dest": 2049,
         "read": 1024,
         "tile": 2,
         "type": "copy",
@@ -437,8 +540,8 @@
     },
     {
         "core": 0,
-        "dest": 2049,
-        "imm": 1792,
+        "dest": 2177,
+        "imm": 384,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -446,20 +549,12 @@
     },
     {
         "core": 0,
-        "dest": 2049,
-        "read": 2049,
+        "dest": 128,
+        "read": 2177,
         "tile": 2,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 0,
-        "dest": 128,
-        "read": 2049,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
     },
     {
         "core": 0,
@@ -471,7 +566,7 @@
     },
     {
         "core": 0,
-        "dest": 2049,
+        "dest": 2177,
         "read": 896,
         "tile": 2,
         "type": "copy",
@@ -479,26 +574,8 @@
     },
     {
         "core": 0,
-        "dest": 2177,
-        "imm": 1664,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 0,
-        "dest": 2177,
-        "read": 2177,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 0,
         "dest": 0,
-        "read": 2177,
+        "read": 1537,
         "tile": 2,
         "type": "copy",
         "vec": 128
@@ -513,58 +590,58 @@
     },
     {
         "core": 0,
-        "dest": 2049,
+        "dest": 1537,
         "opcode": "add",
-        "read_1": 2049,
+        "read_1": 2177,
         "read_2": 768,
         "tile": 2,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 0,
-        "dest": 1921,
-        "opcode": "add",
-        "read_1": 1921,
-        "read_2": 2049,
-        "tile": 2,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 0,
-        "dest": 1793,
-        "opcode": "add",
-        "read_1": 1793,
-        "read_2": 1921,
-        "tile": 2,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 0,
-        "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1793,
-        "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 0,
         "dest": 1537,
         "opcode": "add",
-        "read_1": 1537,
-        "read_2": 1665,
+        "read_1": 2049,
+        "read_2": 1537,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 1537,
+        "tile": 2,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1537,
+        "tile": 2,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1537,
+        "tile": 2,
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 0,
         "dest": 1665,
-        "imm": 0,
+        "imm": 1040,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -587,7 +664,7 @@
     {
         "core": 1,
         "dest": 1537,
-        "imm": 2176,
+        "imm": 2842,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -604,11 +681,58 @@
     },
     {
         "core": 1,
-        "dest": 640,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "opcode": "fp_to_int",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "imm": 384,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1665,
         "read": 1537,
         "tile": 2,
-        "type": "copy",
-        "vec": 128
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "imm": 768,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 640,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
     },
     {
         "core": 1,
@@ -620,7 +744,7 @@
     },
     {
         "core": 1,
-        "dest": 1537,
+        "dest": 1665,
         "read": 1408,
         "tile": 2,
         "type": "copy",
@@ -628,8 +752,8 @@
     },
     {
         "core": 1,
-        "dest": 1665,
-        "imm": 2048,
+        "dest": 1793,
+        "imm": 640,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -637,20 +761,12 @@
     },
     {
         "core": 1,
-        "dest": 1665,
-        "read": 1665,
+        "dest": 512,
+        "read": 1793,
         "tile": 2,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 1,
-        "dest": 512,
-        "read": 1665,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
     },
     {
         "core": 1,
@@ -662,7 +778,7 @@
     },
     {
         "core": 1,
-        "dest": 1665,
+        "dest": 1793,
         "read": 1280,
         "tile": 2,
         "type": "copy",
@@ -670,8 +786,8 @@
     },
     {
         "core": 1,
-        "dest": 1793,
-        "imm": 1920,
+        "dest": 1921,
+        "imm": 512,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -679,20 +795,12 @@
     },
     {
         "core": 1,
-        "dest": 1793,
-        "read": 1793,
+        "dest": 384,
+        "read": 1921,
         "tile": 2,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 1,
-        "dest": 384,
-        "read": 1793,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
     },
     {
         "core": 1,
@@ -704,7 +812,7 @@
     },
     {
         "core": 1,
-        "dest": 1793,
+        "dest": 1921,
         "read": 1152,
         "tile": 2,
         "type": "copy",
@@ -712,26 +820,8 @@
     },
     {
         "core": 1,
-        "dest": 1921,
-        "imm": 1792,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 1,
-        "dest": 1921,
-        "read": 1921,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 1,
         "dest": 256,
-        "read": 1921,
+        "read": 1537,
         "tile": 2,
         "type": "copy",
         "vec": 128
@@ -746,7 +836,7 @@
     },
     {
         "core": 1,
-        "dest": 1921,
+        "dest": 1537,
         "read": 1024,
         "tile": 2,
         "type": "copy",
@@ -755,7 +845,7 @@
     {
         "core": 1,
         "dest": 2049,
-        "imm": 1664,
+        "imm": 256,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -763,20 +853,12 @@
     },
     {
         "core": 1,
-        "dest": 2049,
+        "dest": 128,
         "read": 2049,
         "tile": 2,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 1,
-        "dest": 128,
-        "read": 2049,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
     },
     {
         "core": 1,
@@ -788,48 +870,48 @@
     },
     {
         "core": 1,
-        "dest": 1921,
+        "dest": 1537,
         "opcode": "add",
-        "read_1": 1921,
+        "read_1": 1537,
         "read_2": 896,
         "tile": 2,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 1,
-        "dest": 1793,
-        "opcode": "add",
-        "read_1": 1793,
-        "read_2": 1921,
-        "tile": 2,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 1,
-        "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1793,
-        "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 1,
         "dest": 1537,
         "opcode": "add",
-        "read_1": 1537,
-        "read_2": 1665,
+        "read_1": 1921,
+        "read_2": 1537,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1537,
+        "tile": 2,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1537,
+        "tile": 2,
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 1,
         "dest": 1665,
-        "imm": 128,
+        "imm": 1168,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -847,7 +929,7 @@
     {
         "core": 1,
         "dest": 1537,
-        "imm": 2432,
+        "imm": 1024,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -855,20 +937,12 @@
     },
     {
         "core": 1,
-        "dest": 1537,
+        "dest": 0,
         "read": 1537,
         "tile": 2,
         "type": "load",
         "vec": 1,
         "width": 16
-    },
-    {
-        "core": 1,
-        "dest": 0,
-        "read": 1537,
-        "tile": 2,
-        "type": "copy",
-        "vec": 16
     },
     {
         "core": 1,
@@ -889,7 +963,7 @@
     {
         "core": 1,
         "dest": 1665,
-        "imm": 0,
+        "imm": 1040,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -911,22 +985,32 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 1,
         "dest": 1537,
-        "opcode": "relu",
+        "opcode": "int_to_fp",
         "read_1": 1537,
         "tile": 2,
-        "type": "vfu",
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "muli",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "fvfu",
         "vec": 128
     },
     {
         "core": 1,
         "dest": 1665,
-        "imm": 896,
+        "imm": 1936,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -949,7 +1033,7 @@
     {
         "core": 2,
         "dest": 1537,
-        "imm": 2048,
+        "imm": 2970,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -966,11 +1050,58 @@
     },
     {
         "core": 2,
-        "dest": 640,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "fp_to_int",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "imm": 512,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1665,
         "read": 1537,
         "tile": 2,
-        "type": "copy",
-        "vec": 128
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "imm": 640,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 640,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
     },
     {
         "core": 2,
@@ -982,7 +1113,7 @@
     },
     {
         "core": 2,
-        "dest": 1537,
+        "dest": 1665,
         "read": 1408,
         "tile": 2,
         "type": "copy",
@@ -990,26 +1121,8 @@
     },
     {
         "core": 2,
-        "dest": 1665,
-        "imm": 1920,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "read": 1665,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 2,
         "dest": 512,
-        "read": 1665,
+        "read": 1537,
         "tile": 2,
         "type": "copy",
         "vec": 128
@@ -1024,7 +1137,7 @@
     },
     {
         "core": 2,
-        "dest": 1665,
+        "dest": 1537,
         "read": 1280,
         "tile": 2,
         "type": "copy",
@@ -1033,7 +1146,7 @@
     {
         "core": 2,
         "dest": 1793,
-        "imm": 1792,
+        "imm": 384,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -1041,20 +1154,12 @@
     },
     {
         "core": 2,
-        "dest": 1793,
+        "dest": 384,
         "read": 1793,
         "tile": 2,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 2,
-        "dest": 384,
-        "read": 1793,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
     },
     {
         "core": 2,
@@ -1075,7 +1180,7 @@
     {
         "core": 2,
         "dest": 1921,
-        "imm": 1664,
+        "imm": 256,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -1083,20 +1188,12 @@
     },
     {
         "core": 2,
-        "dest": 1921,
+        "dest": 256,
         "read": 1921,
         "tile": 2,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 2,
-        "dest": 256,
-        "read": 1921,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
     },
     {
         "core": 2,
@@ -1113,17 +1210,7 @@
         "read_1": 1793,
         "read_2": 1024,
         "tile": 2,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1793,
-        "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
@@ -1131,15 +1218,25 @@
         "dest": 1537,
         "opcode": "add",
         "read_1": 1537,
-        "read_2": 1665,
+        "read_2": 1793,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1537,
+        "tile": 2,
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 2,
         "dest": 1665,
-        "imm": 256,
+        "imm": 1296,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -1157,137 +1254,6 @@
     {
         "core": 2,
         "dest": 1537,
-        "imm": 2432,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 2,
-        "dest": 1537,
-        "read": 1537,
-        "tile": 2,
-        "type": "load",
-        "vec": 1,
-        "width": 16
-    },
-    {
-        "core": 2,
-        "dest": 128,
-        "read": 1537,
-        "tile": 2,
-        "type": "copy",
-        "vec": 16
-    },
-    {
-        "core": 2,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            1
-        ]
-    },
-    {
-        "core": 2,
-        "dest": 1537,
-        "read": 896,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "imm": 2304,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "read": 1665,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 2,
-        "dest": 0,
-        "read": 1665,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            0
-        ]
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "read": 768,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1793,
-        "imm": 128,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 2,
-        "dest": 1793,
-        "read": 1793,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1793,
-        "tile": 2,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1537,
-        "opcode": "add",
-        "read_1": 1537,
-        "read_2": 1665,
-        "tile": 2,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1537,
-        "opcode": "relu",
-        "read_1": 1537,
-        "tile": 2,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1665,
         "imm": 1024,
         "is_address": true,
         "tile": 2,
@@ -1296,6 +1262,131 @@
     },
     {
         "core": 2,
+        "dest": 128,
+        "read": 1537,
+        "tile": 2,
+        "type": "load",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            1
+        ]
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "read": 896,
+        "tile": 2,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "imm": 896,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 0,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            0
+        ]
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "read": 768,
+        "tile": 2,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1793,
+        "imm": 1168,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 2,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 2,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "int_to_fp",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "muli",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "imm": 2064,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
         "dest": 1665,
         "read": 1537,
         "tile": 2,
@@ -1311,7 +1402,7 @@
     {
         "core": 3,
         "dest": 1537,
-        "imm": 1920,
+        "imm": 3226,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -1328,128 +1419,27 @@
     },
     {
         "core": 3,
-        "dest": 640,
-        "read": 1537,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            5
-        ]
-    },
-    {
-        "core": 3,
         "dest": 1537,
-        "read": 1408,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "imm": 1792,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "read": 1665,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 3,
-        "dest": 512,
-        "read": 1665,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            4
-        ]
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "read": 1280,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1793,
-        "imm": 1664,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 3,
-        "dest": 1793,
-        "read": 1793,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 3,
-        "dest": 384,
-        "read": 1793,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            3
-        ]
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1152,
-        "tile": 2,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1537,
-        "opcode": "add",
+        "imm": 1.0,
+        "opcode": "divi",
         "read_1": 1537,
-        "read_2": 1665,
         "tile": 2,
-        "type": "vfu",
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "opcode": "fp_to_int",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "fvfu",
         "vec": 128
     },
     {
         "core": 3,
         "dest": 1665,
-        "imm": 384,
+        "imm": 768,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -1466,8 +1456,8 @@
     },
     {
         "core": 3,
-        "dest": 1537,
-        "imm": 2432,
+        "dest": 1665,
+        "imm": 512,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -1475,49 +1465,7 @@
     },
     {
         "core": 3,
-        "dest": 1537,
-        "read": 1537,
-        "tile": 2,
-        "type": "load",
-        "vec": 1,
-        "width": 16
-    },
-    {
-        "core": 3,
-        "dest": 256,
-        "read": 1537,
-        "tile": 2,
-        "type": "copy",
-        "vec": 16
-    },
-    {
-        "core": 3,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            2
-        ]
-    },
-    {
-        "core": 3,
-        "dest": 1537,
-        "read": 1024,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "imm": 2304,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 3,
-        "dest": 1665,
+        "dest": 640,
         "read": 1665,
         "tile": 2,
         "type": "load",
@@ -1526,24 +1474,16 @@
     },
     {
         "core": 3,
-        "dest": 128,
-        "read": 1665,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            1
+            5
         ]
     },
     {
         "core": 3,
         "dest": 1665,
-        "read": 896,
+        "read": 1408,
         "tile": 2,
         "type": "copy",
         "vec": 128
@@ -1551,7 +1491,7 @@
     {
         "core": 3,
         "dest": 1793,
-        "imm": 2176,
+        "imm": 384,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -1559,7 +1499,7 @@
     },
     {
         "core": 3,
-        "dest": 1793,
+        "dest": 512,
         "read": 1793,
         "tile": 2,
         "type": "load",
@@ -1568,24 +1508,16 @@
     },
     {
         "core": 3,
-        "dest": 0,
-        "read": 1793,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
         "tile": 2,
         "type": "mvm",
         "xbar": [
-            0
+            4
         ]
     },
     {
         "core": 3,
         "dest": 1793,
-        "read": 768,
+        "read": 1280,
         "tile": 2,
         "type": "copy",
         "vec": 128
@@ -1601,7 +1533,7 @@
     },
     {
         "core": 3,
-        "dest": 1921,
+        "dest": 384,
         "read": 1921,
         "tile": 2,
         "type": "load",
@@ -1610,12 +1542,20 @@
     },
     {
         "core": 3,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            3
+        ]
+    },
+    {
+        "core": 3,
         "dest": 1793,
         "opcode": "add",
         "read_1": 1793,
-        "read_2": 1921,
+        "read_2": 1152,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
@@ -1625,32 +1565,190 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1793,
+        "imm": 1424,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1793,
+        "read": 1665,
+        "tile": 2,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "imm": 1024,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 256,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "core": 3,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            2
+        ]
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "read": 1024,
+        "tile": 2,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1793,
+        "imm": 896,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 128,
+        "read": 1793,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 3,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            1
+        ]
+    },
+    {
+        "core": 3,
+        "dest": 1793,
+        "read": 896,
+        "tile": 2,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 0,
+        "read": 1537,
+        "tile": 2,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            0
+        ]
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "read": 768,
+        "tile": 2,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1921,
+        "imm": 1296,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1921,
+        "read": 1921,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
     },
     {
         "core": 3,
         "dest": 1537,
         "opcode": "add",
         "read_1": 1537,
-        "read_2": 1665,
+        "read_2": 1921,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 3,
         "dest": 1537,
-        "opcode": "relu",
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1537,
+        "tile": 2,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1537,
+        "tile": 2,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "opcode": "int_to_fp",
         "read_1": 1537,
         "tile": 2,
-        "type": "vfu",
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "muli",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "fvfu",
         "vec": 128
     },
     {
         "core": 3,
         "dest": 1665,
-        "imm": 1152,
+        "imm": 2192,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -1673,7 +1771,7 @@
     {
         "core": 4,
         "dest": 1537,
-        "imm": 1792,
+        "imm": 3098,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -1690,76 +1788,27 @@
     },
     {
         "core": 4,
-        "dest": 640,
-        "read": 1537,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            5
-        ]
-    },
-    {
-        "core": 4,
         "dest": 1537,
-        "read": 1408,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 1665,
-        "imm": 1664,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 4,
-        "dest": 1665,
-        "read": 1665,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 4,
-        "dest": 512,
-        "read": 1665,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            4
-        ]
-    },
-    {
-        "core": 4,
-        "dest": 1537,
-        "opcode": "add",
+        "imm": 1.0,
+        "opcode": "divi",
         "read_1": 1537,
-        "read_2": 1280,
         "tile": 2,
-        "type": "vfu",
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "opcode": "fp_to_int",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "fvfu",
         "vec": 128
     },
     {
         "core": 4,
         "dest": 1665,
-        "imm": 512,
+        "imm": 640,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -1776,175 +1825,7 @@
     },
     {
         "core": 4,
-        "dest": 1537,
-        "imm": 2432,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 4,
-        "dest": 1537,
-        "read": 1537,
-        "tile": 2,
-        "type": "load",
-        "vec": 1,
-        "width": 16
-    },
-    {
-        "core": 4,
-        "dest": 384,
-        "read": 1537,
-        "tile": 2,
-        "type": "copy",
-        "vec": 16
-    },
-    {
-        "core": 4,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            3
-        ]
-    },
-    {
-        "core": 4,
-        "dest": 1537,
-        "read": 1152,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
         "dest": 1665,
-        "imm": 2304,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 4,
-        "dest": 1665,
-        "read": 1665,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 4,
-        "dest": 256,
-        "read": 1665,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            2
-        ]
-    },
-    {
-        "core": 4,
-        "dest": 1665,
-        "read": 1024,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 1793,
-        "imm": 2176,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 4,
-        "dest": 1793,
-        "read": 1793,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 4,
-        "dest": 128,
-        "read": 1793,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            1
-        ]
-    },
-    {
-        "core": 4,
-        "dest": 1793,
-        "read": 896,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 1921,
-        "imm": 2048,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 4,
-        "dest": 1921,
-        "read": 1921,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 4,
-        "dest": 0,
-        "read": 1921,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            0
-        ]
-    },
-    {
-        "core": 4,
-        "dest": 1921,
-        "read": 768,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 2049,
         "imm": 384,
         "is_address": true,
         "tile": 2,
@@ -1953,6 +1834,220 @@
     },
     {
         "core": 4,
+        "dest": 640,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            5
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "read": 1408,
+        "tile": 2,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1793,
+        "imm": 256,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 512,
+        "read": 1793,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            4
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1280,
+        "tile": 2,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1793,
+        "imm": 1552,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1793,
+        "read": 1665,
+        "tile": 2,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "imm": 1024,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 384,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            3
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "read": 1152,
+        "tile": 2,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1793,
+        "imm": 896,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 256,
+        "read": 1793,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            2
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 1793,
+        "read": 1024,
+        "tile": 2,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1921,
+        "imm": 768,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 128,
+        "read": 1921,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            1
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 1921,
+        "read": 896,
+        "tile": 2,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 0,
+        "read": 1537,
+        "tile": 2,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            0
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "read": 768,
+        "tile": 2,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 2049,
+        "imm": 1424,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
         "dest": 2049,
         "read": 2049,
         "tile": 2,
@@ -1962,57 +2057,67 @@
     },
     {
         "core": 4,
-        "dest": 1921,
+        "dest": 1537,
         "opcode": "add",
-        "read_1": 1921,
+        "read_1": 1537,
         "read_2": 2049,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 4,
-        "dest": 1793,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 1537,
+        "tile": 2,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1537,
         "opcode": "add",
         "read_1": 1793,
-        "read_2": 1921,
+        "read_2": 1537,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 4,
-        "dest": 1665,
+        "dest": 1537,
         "opcode": "add",
         "read_1": 1665,
-        "read_2": 1793,
+        "read_2": 1537,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 4,
         "dest": 1537,
-        "opcode": "add",
+        "opcode": "int_to_fp",
         "read_1": 1537,
-        "read_2": 1665,
         "tile": 2,
-        "type": "vfu",
+        "type": "fvfu",
         "vec": 128
     },
     {
         "core": 4,
         "dest": 1537,
-        "opcode": "relu",
+        "imm": 1.0,
+        "opcode": "muli",
         "read_1": 1537,
         "tile": 2,
-        "type": "vfu",
+        "type": "fvfu",
         "vec": 128
     },
     {
         "core": 4,
         "dest": 1665,
-        "imm": 1280,
+        "imm": 0,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -2035,7 +2140,7 @@
     {
         "core": 5,
         "dest": 1537,
-        "imm": 1664,
+        "imm": 1680,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -2052,11 +2157,21 @@
     },
     {
         "core": 5,
-        "dest": 640,
-        "read": 1537,
+        "dest": 1665,
+        "imm": 256,
+        "is_address": true,
         "tile": 2,
-        "type": "copy",
-        "vec": 128
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 640,
+        "read": 1665,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
     },
     {
         "core": 5,
@@ -2069,15 +2184,17 @@
     {
         "core": 5,
         "dest": 1537,
-        "read": 1408,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1408,
         "tile": 2,
-        "type": "copy",
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 5,
         "dest": 1665,
-        "imm": 640,
+        "imm": 1808,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -2095,7 +2212,7 @@
     {
         "core": 5,
         "dest": 1537,
-        "imm": 2432,
+        "imm": 1024,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -2103,20 +2220,12 @@
     },
     {
         "core": 5,
-        "dest": 1537,
+        "dest": 512,
         "read": 1537,
         "tile": 2,
         "type": "load",
         "vec": 1,
         "width": 16
-    },
-    {
-        "core": 5,
-        "dest": 512,
-        "read": 1537,
-        "tile": 2,
-        "type": "copy",
-        "vec": 16
     },
     {
         "core": 5,
@@ -2137,7 +2246,7 @@
     {
         "core": 5,
         "dest": 1665,
-        "imm": 2304,
+        "imm": 896,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -2145,20 +2254,12 @@
     },
     {
         "core": 5,
-        "dest": 1665,
+        "dest": 384,
         "read": 1665,
         "tile": 2,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 5,
-        "dest": 384,
-        "read": 1665,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
     },
     {
         "core": 5,
@@ -2179,7 +2280,7 @@
     {
         "core": 5,
         "dest": 1793,
-        "imm": 2176,
+        "imm": 768,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -2187,20 +2288,12 @@
     },
     {
         "core": 5,
-        "dest": 1793,
+        "dest": 256,
         "read": 1793,
         "tile": 2,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 5,
-        "dest": 256,
-        "read": 1793,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
     },
     {
         "core": 5,
@@ -2221,7 +2314,7 @@
     {
         "core": 5,
         "dest": 1921,
-        "imm": 2048,
+        "imm": 640,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -2229,20 +2322,12 @@
     },
     {
         "core": 5,
-        "dest": 1921,
+        "dest": 128,
         "read": 1921,
         "tile": 2,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 5,
-        "dest": 128,
-        "read": 1921,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
     },
     {
         "core": 5,
@@ -2263,48 +2348,6 @@
     {
         "core": 5,
         "dest": 2049,
-        "imm": 1920,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 5,
-        "dest": 2049,
-        "read": 2049,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 5,
-        "dest": 0,
-        "read": 2049,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 5,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            0
-        ]
-    },
-    {
-        "core": 5,
-        "dest": 2049,
-        "read": 768,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 5,
-        "dest": 2177,
         "imm": 512,
         "is_address": true,
         "tile": 2,
@@ -2313,6 +2356,40 @@
     },
     {
         "core": 5,
+        "dest": 0,
+        "read": 2049,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 5,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            0
+        ]
+    },
+    {
+        "core": 5,
+        "dest": 2049,
+        "read": 768,
+        "tile": 2,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 2177,
+        "imm": 1552,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
         "dest": 2177,
         "read": 2177,
         "tile": 2,
@@ -2327,7 +2404,7 @@
         "read_1": 2049,
         "read_2": 2177,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
@@ -2337,7 +2414,7 @@
         "read_1": 1921,
         "read_2": 2049,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
@@ -2347,7 +2424,7 @@
         "read_1": 1793,
         "read_2": 1921,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
@@ -2357,7 +2434,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
@@ -2367,22 +2444,32 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 5,
         "dest": 1537,
-        "opcode": "relu",
+        "opcode": "int_to_fp",
         "read_1": 1537,
         "tile": 2,
-        "type": "vfu",
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "muli",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "fvfu",
         "vec": 128
     },
     {
         "core": 5,
         "dest": 1665,
-        "imm": 1408,
+        "imm": 128,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -2405,7 +2492,7 @@
     {
         "core": 6,
         "dest": 1537,
-        "imm": 2432,
+        "imm": 1024,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -2413,20 +2500,12 @@
     },
     {
         "core": 6,
-        "dest": 1537,
+        "dest": 640,
         "read": 1537,
         "tile": 2,
         "type": "load",
         "vec": 1,
         "width": 16
-    },
-    {
-        "core": 6,
-        "dest": 640,
-        "read": 1537,
-        "tile": 2,
-        "type": "copy",
-        "vec": 16
     },
     {
         "core": 6,
@@ -2447,7 +2526,7 @@
     {
         "core": 6,
         "dest": 1665,
-        "imm": 2304,
+        "imm": 896,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -2455,20 +2534,12 @@
     },
     {
         "core": 6,
-        "dest": 1665,
+        "dest": 512,
         "read": 1665,
         "tile": 2,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 6,
-        "dest": 512,
-        "read": 1665,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
     },
     {
         "core": 6,
@@ -2489,7 +2560,7 @@
     {
         "core": 6,
         "dest": 1793,
-        "imm": 2176,
+        "imm": 768,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -2497,20 +2568,12 @@
     },
     {
         "core": 6,
-        "dest": 1793,
+        "dest": 384,
         "read": 1793,
         "tile": 2,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 6,
-        "dest": 384,
-        "read": 1793,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
     },
     {
         "core": 6,
@@ -2531,132 +2594,6 @@
     {
         "core": 6,
         "dest": 1921,
-        "imm": 2048,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 6,
-        "dest": 1921,
-        "read": 1921,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 6,
-        "dest": 256,
-        "read": 1921,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 6,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            2
-        ]
-    },
-    {
-        "core": 6,
-        "dest": 1921,
-        "read": 1024,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 6,
-        "dest": 2049,
-        "imm": 1920,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 6,
-        "dest": 2049,
-        "read": 2049,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 6,
-        "dest": 128,
-        "read": 2049,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 6,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            1
-        ]
-    },
-    {
-        "core": 6,
-        "dest": 2049,
-        "read": 896,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 6,
-        "dest": 2177,
-        "imm": 1792,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 6,
-        "dest": 2177,
-        "read": 2177,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 6,
-        "dest": 0,
-        "read": 2177,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 6,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            0
-        ]
-    },
-    {
-        "core": 6,
-        "dest": 2177,
-        "read": 768,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 6,
-        "dest": 2305,
         "imm": 640,
         "is_address": true,
         "tile": 2,
@@ -2665,8 +2602,8 @@
     },
     {
         "core": 6,
-        "dest": 2305,
-        "read": 2305,
+        "dest": 256,
+        "read": 1921,
         "tile": 2,
         "type": "load",
         "vec": 8,
@@ -2674,13 +2611,123 @@
     },
     {
         "core": 6,
-        "dest": 2177,
-        "opcode": "add",
-        "read_1": 2177,
-        "read_2": 2305,
         "tile": 2,
-        "type": "vfu",
+        "type": "mvm",
+        "xbar": [
+            2
+        ]
+    },
+    {
+        "core": 6,
+        "dest": 1921,
+        "read": 1024,
+        "tile": 2,
+        "type": "copy",
         "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 2049,
+        "imm": 512,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 128,
+        "read": 2049,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 6,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            1
+        ]
+    },
+    {
+        "core": 6,
+        "dest": 2049,
+        "read": 896,
+        "tile": 2,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 2177,
+        "imm": 1808,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 2178,
+        "imm": 384,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 0,
+        "read": 2178,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 6,
+        "tile": 2,
+        "type": "mvm",
+        "xbar": [
+            0
+        ]
+    },
+    {
+        "core": 6,
+        "dest": 2178,
+        "read": 768,
+        "tile": 2,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 2306,
+        "imm": 1680,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 6,
+        "dest": 2306,
+        "read": 2178,
+        "tile": 2,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 6,
+        "dest": 2177,
+        "read": 2177,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
     },
     {
         "core": 6,
@@ -2689,7 +2736,7 @@
         "read_1": 2049,
         "read_2": 2177,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
@@ -2699,7 +2746,7 @@
         "read_1": 1921,
         "read_2": 2049,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
@@ -2709,7 +2756,7 @@
         "read_1": 1793,
         "read_2": 1921,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
@@ -2719,7 +2766,7 @@
         "read_1": 1665,
         "read_2": 1793,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
@@ -2729,22 +2776,32 @@
         "read_1": 1537,
         "read_2": 1665,
         "tile": 2,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 6,
         "dest": 1537,
-        "opcode": "relu",
+        "opcode": "int_to_fp",
         "read_1": 1537,
         "tile": 2,
-        "type": "vfu",
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "muli",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "fvfu",
         "vec": 128
     },
     {
         "core": 6,
         "dest": 1665,
-        "imm": 1536,
+        "imm": 2320,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -2767,7 +2824,7 @@
     {
         "core": 7,
         "dest": 1537,
-        "imm": 2304,
+        "imm": 2704,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -2775,41 +2832,8 @@
     },
     {
         "core": 7,
-        "dest": 1537,
-        "read": 1537,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 7,
-        "dest": 640,
-        "read": 1537,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            5
-        ]
-    },
-    {
-        "core": 7,
-        "dest": 1537,
-        "read": 1408,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "dest": 1665,
-        "imm": 2176,
+        "dest": 1538,
+        "imm": 3482,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -2817,146 +2841,39 @@
     },
     {
         "core": 7,
-        "dest": 1665,
-        "read": 1665,
+        "dest": 1538,
+        "read": 1538,
         "tile": 2,
         "type": "load",
-        "vec": 8,
+        "vec": 1,
         "width": 16
     },
     {
         "core": 7,
-        "dest": 512,
-        "read": 1665,
+        "dest": 1538,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1538,
         "tile": 2,
-        "type": "copy",
-        "vec": 128
+        "type": "fvfu",
+        "vec": 16
     },
     {
         "core": 7,
+        "dest": 1538,
+        "opcode": "fp_to_int",
+        "read_1": 1538,
         "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            4
-        ]
-    },
-    {
-        "core": 7,
-        "dest": 1665,
-        "read": 1280,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "dest": 1793,
-        "imm": 2048,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 7,
-        "dest": 1793,
-        "read": 1793,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 7,
-        "dest": 384,
-        "read": 1793,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            3
-        ]
-    },
-    {
-        "core": 7,
-        "dest": 1793,
-        "read": 1152,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "dest": 1921,
-        "imm": 1920,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 7,
-        "dest": 1921,
-        "read": 1921,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 7,
-        "dest": 256,
-        "read": 1921,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "tile": 2,
-        "type": "mvm",
-        "xbar": [
-            2
-        ]
-    },
-    {
-        "core": 7,
-        "dest": 1921,
-        "read": 1024,
-        "tile": 2,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "dest": 2049,
-        "imm": 1792,
-        "is_address": true,
-        "tile": 2,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 7,
-        "dest": 2049,
-        "read": 2049,
-        "tile": 2,
-        "type": "load",
-        "vec": 8,
-        "width": 16
+        "type": "fvfu",
+        "vec": 16
     },
     {
         "core": 7,
         "dest": 128,
-        "read": 2049,
+        "read": 1538,
         "tile": 2,
         "type": "copy",
-        "vec": 128
+        "vec": 16
     },
     {
         "core": 7,
@@ -2968,7 +2885,7 @@
     },
     {
         "core": 7,
-        "dest": 2049,
+        "dest": 1554,
         "read": 896,
         "tile": 2,
         "type": "copy",
@@ -2976,8 +2893,8 @@
     },
     {
         "core": 7,
-        "dest": 2177,
-        "imm": 1664,
+        "dest": 1682,
+        "imm": 3354,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -2985,8 +2902,8 @@
     },
     {
         "core": 7,
-        "dest": 2177,
-        "read": 2177,
+        "dest": 1682,
+        "read": 1682,
         "tile": 2,
         "type": "load",
         "vec": 8,
@@ -2994,8 +2911,27 @@
     },
     {
         "core": 7,
+        "dest": 1682,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1682,
+        "tile": 2,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "dest": 1682,
+        "opcode": "fp_to_int",
+        "read_1": 1682,
+        "tile": 2,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 7,
         "dest": 0,
-        "read": 2177,
+        "read": 1682,
         "tile": 2,
         "type": "copy",
         "vec": 128
@@ -3010,58 +2946,16 @@
     },
     {
         "core": 7,
-        "dest": 2049,
-        "opcode": "add",
-        "read_1": 2049,
-        "read_2": 768,
+        "dest": 1810,
+        "read": 768,
         "tile": 2,
-        "type": "vfu",
+        "type": "copy",
         "vec": 128
     },
     {
         "core": 7,
-        "dest": 1921,
-        "opcode": "add",
-        "read_1": 1921,
-        "read_2": 2049,
-        "tile": 2,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "dest": 1793,
-        "opcode": "add",
-        "read_1": 1793,
-        "read_2": 1921,
-        "tile": 2,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1793,
-        "tile": 2,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "dest": 1537,
-        "opcode": "add",
-        "read_1": 1537,
-        "read_2": 1665,
-        "tile": 2,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "dest": 1665,
-        "imm": 768,
+        "dest": 1938,
+        "imm": 2576,
         "is_address": true,
         "tile": 2,
         "type": "set",
@@ -3069,8 +2963,65 @@
     },
     {
         "core": 7,
-        "dest": 1665,
-        "read": 1537,
+        "dest": 1938,
+        "read": 1938,
+        "tile": 2,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 7,
+        "dest": 1810,
+        "opcode": "add",
+        "read_1": 1810,
+        "read_2": 1938,
+        "tile": 2,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "dest": 1554,
+        "opcode": "add",
+        "read_1": 1554,
+        "read_2": 1810,
+        "tile": 2,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "dest": 1554,
+        "opcode": "int_to_fp",
+        "read_1": 1554,
+        "tile": 2,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "dest": 1554,
+        "imm": 1.0,
+        "opcode": "muli",
+        "read_1": 1554,
+        "tile": 2,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "dest": 1810,
+        "imm": 2448,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1810,
+        "read": 1554,
         "tile": 2,
         "type": "store",
         "vec": 8,
@@ -3078,36 +3029,94 @@
     },
     {
         "core": 7,
+        "dest": 1554,
+        "imm": 1024,
+        "is_address": true,
         "tile": 2,
-        "type": "hlt"
+        "type": "set",
+        "vec": 1
     },
     {
-        "mem_addr": 3856,
-        "source_tile": 0,
-        "tile": 3,
-        "type": "receive",
+        "core": 7,
+        "dest": 1554,
+        "read": 1538,
+        "tile": 2,
+        "type": "store",
         "vec": 1,
         "width": 16
     },
     {
-        "mem_addr": 3728,
-        "source_tile": 0,
-        "tile": 3,
-        "type": "receive",
+        "core": 7,
+        "dest": 1538,
+        "imm": 896,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1538,
+        "read": 1682,
+        "tile": 2,
+        "type": "store",
         "vec": 8,
         "width": 16
     },
     {
-        "mem_addr": 3600,
-        "source_tile": 0,
-        "tile": 3,
-        "type": "receive",
-        "vec": 8,
-        "width": 16
+        "core": 7,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 2,
+        "type": "load",
+        "vec": 1,
+        "width": 10
+    },
+    {
+        "core": 7,
+        "dest": 1537,
+        "opcode": "int_to_fp",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "fvfu",
+        "vec": 10
+    },
+    {
+        "core": 7,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "muli",
+        "read_1": 1537,
+        "tile": 2,
+        "type": "fvfu",
+        "vec": 10
+    },
+    {
+        "core": 7,
+        "dest": 1547,
+        "imm": 3498,
+        "is_address": true,
+        "tile": 2,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1547,
+        "read": 1537,
+        "tile": 2,
+        "type": "store",
+        "vec": 1,
+        "width": 10
+    },
+    {
+        "core": 7,
+        "tile": 2,
+        "type": "hlt"
     },
     {
         "mem_addr": 3472,
-        "source_tile": 0,
+        "source_tile": 2,
         "tile": 3,
         "type": "receive",
         "vec": 8,
@@ -3115,7 +3124,7 @@
     },
     {
         "mem_addr": 3344,
-        "source_tile": 0,
+        "source_tile": 4,
         "tile": 3,
         "type": "receive",
         "vec": 8,
@@ -3123,94 +3132,6 @@
     },
     {
         "mem_addr": 3216,
-        "source_tile": 0,
-        "tile": 3,
-        "type": "receive",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 3088,
-        "source_tile": 0,
-        "tile": 3,
-        "type": "receive",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 640,
-        "target_tile": 2,
-        "tile": 3,
-        "type": "send",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 512,
-        "target_tile": 2,
-        "tile": 3,
-        "type": "send",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 384,
-        "target_tile": 2,
-        "tile": 3,
-        "type": "send",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 256,
-        "target_tile": 2,
-        "tile": 3,
-        "type": "send",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 128,
-        "target_tile": 2,
-        "tile": 3,
-        "type": "send",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 0,
-        "target_tile": 2,
-        "tile": 3,
-        "type": "send",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 2192,
-        "source_tile": 2,
-        "tile": 3,
-        "type": "receive",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 768,
-        "target_tile": 2,
-        "tile": 3,
-        "type": "send",
-        "vec": 1,
-        "width": 16
-    },
-    {
-        "mem_addr": 2960,
-        "source_tile": 2,
-        "tile": 3,
-        "type": "receive",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 2832,
         "source_tile": 2,
         "tile": 3,
         "type": "receive",
@@ -3234,7 +3155,7 @@
         "width": 16
     },
     {
-        "mem_addr": 2448,
+        "mem_addr": 3088,
         "source_tile": 2,
         "tile": 3,
         "type": "receive",
@@ -3242,7 +3163,7 @@
         "width": 16
     },
     {
-        "mem_addr": 2320,
+        "mem_addr": 2960,
         "source_tile": 2,
         "tile": 3,
         "type": "receive",
@@ -3250,31 +3171,23 @@
         "width": 16
     },
     {
-        "mem_addr": 2064,
-        "target_tile": 4,
+        "mem_addr": 2832,
+        "source_tile": 2,
         "tile": 3,
-        "type": "send",
+        "type": "receive",
         "vec": 8,
         "width": 16
     },
     {
-        "mem_addr": 1936,
+        "mem_addr": 2504,
         "target_tile": 4,
         "tile": 3,
         "type": "send",
-        "vec": 8,
-        "width": 16
+        "vec": 6,
+        "width": 12
     },
     {
-        "mem_addr": 1808,
-        "target_tile": 4,
-        "tile": 3,
-        "type": "send",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 1680,
+        "mem_addr": 2376,
         "target_tile": 4,
         "tile": 3,
         "type": "send",
@@ -3288,132 +3201,6 @@
     {
         "core": 0,
         "dest": 1537,
-        "imm": 3600,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 0,
-        "dest": 1537,
-        "read": 1537,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 0,
-        "dest": 640,
-        "read": 1537,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 0,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            5
-        ]
-    },
-    {
-        "core": 0,
-        "dest": 1665,
-        "read": 1408,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 0,
-        "dest": 1793,
-        "imm": 3472,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 0,
-        "dest": 1793,
-        "read": 1793,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 0,
-        "dest": 512,
-        "read": 1793,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 0,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            4
-        ]
-    },
-    {
-        "core": 0,
-        "dest": 1921,
-        "read": 1280,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 0,
-        "dest": 2049,
-        "imm": 3344,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 0,
-        "dest": 2049,
-        "read": 2049,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 0,
-        "dest": 384,
-        "read": 2049,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 0,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            3
-        ]
-    },
-    {
-        "core": 0,
-        "dest": 2177,
-        "read": 1152,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 0,
-        "dest": 2305,
         "imm": 3216,
         "is_address": true,
         "tile": 3,
@@ -3422,8 +3209,8 @@
     },
     {
         "core": 0,
-        "dest": 2305,
-        "read": 2305,
+        "dest": 1537,
+        "read": 1537,
         "tile": 3,
         "type": "load",
         "vec": 8,
@@ -3431,124 +3218,36 @@
     },
     {
         "core": 0,
-        "dest": 256,
-        "read": 2305,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
         "tile": 3,
-        "type": "copy",
+        "type": "fvfu",
         "vec": 128
     },
     {
         "core": 0,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1537,
         "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            2
-        ]
-    },
-    {
-        "core": 0,
-        "dest": 2433,
-        "read": 1024,
-        "tile": 3,
-        "type": "copy",
+        "type": "fvfu",
         "vec": 128
     },
     {
         "core": 0,
-        "dest": 2561,
-        "imm": 3088,
-        "is_address": true,
+        "dest": 1537,
+        "opcode": "fp_to_int",
+        "read_1": 1537,
         "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 0,
-        "dest": 2561,
-        "read": 2561,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 0,
-        "dest": 128,
-        "read": 2561,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 0,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            1
-        ]
-    },
-    {
-        "core": 0,
-        "dest": 2433,
-        "opcode": "add",
-        "read_1": 2433,
-        "read_2": 896,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 0,
-        "dest": 2177,
-        "opcode": "add",
-        "read_1": 2177,
-        "read_2": 2433,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 0,
-        "dest": 1921,
-        "opcode": "add",
-        "read_1": 1921,
-        "read_2": 2177,
-        "tile": 3,
-        "type": "vfu",
+        "type": "fvfu",
         "vec": 128
     },
     {
         "core": 0,
         "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1921,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 0,
-        "dest": 1921,
-        "imm": 784,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 0,
-        "dest": 1921,
-        "read": 1665,
-        "tile": 3,
-        "type": "store",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 0,
-        "dest": 1665,
-        "imm": 768,
+        "imm": 640,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -3557,57 +3256,6 @@
     {
         "core": 0,
         "dest": 1665,
-        "read": 1665,
-        "tile": 3,
-        "type": "load",
-        "vec": 1,
-        "width": 16
-    },
-    {
-        "core": 0,
-        "dest": 0,
-        "read": 1665,
-        "tile": 3,
-        "type": "copy",
-        "vec": 16
-    },
-    {
-        "core": 0,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            0
-        ]
-    },
-    {
-        "core": 0,
-        "dest": 1665,
-        "read": 768,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 0,
-        "dest": 1921,
-        "imm": 2192,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 0,
-        "dest": 1922,
-        "imm": 512,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 0,
-        "dest": 1922,
         "read": 1537,
         "tile": 3,
         "type": "store",
@@ -3616,8 +3264,8 @@
     },
     {
         "core": 0,
-        "dest": 1537,
-        "imm": 384,
+        "dest": 1665,
+        "imm": 2832,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -3625,52 +3273,44 @@
     },
     {
         "core": 0,
-        "dest": 1537,
-        "read": 1793,
+        "dest": 1665,
+        "read": 1665,
         "tile": 3,
-        "type": "store",
+        "type": "load",
         "vec": 8,
         "width": 16
     },
     {
         "core": 0,
-        "dest": 1537,
-        "imm": 256,
-        "is_address": true,
+        "dest": 1665,
+        "opcode": "relu",
+        "read_1": 1665,
         "tile": 3,
-        "type": "set",
-        "vec": 1
+        "type": "fvfu",
+        "vec": 128
     },
     {
         "core": 0,
-        "dest": 1537,
-        "read": 2049,
+        "dest": 1665,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1665,
         "tile": 3,
-        "type": "store",
-        "vec": 8,
-        "width": 16
+        "type": "fvfu",
+        "vec": 128
     },
     {
         "core": 0,
-        "dest": 1537,
-        "imm": 128,
-        "is_address": true,
+        "dest": 1665,
+        "opcode": "fp_to_int",
+        "read_1": 1665,
         "tile": 3,
-        "type": "set",
-        "vec": 1
+        "type": "fvfu",
+        "vec": 128
     },
     {
         "core": 0,
-        "dest": 1537,
-        "read": 2305,
-        "tile": 3,
-        "type": "store",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 0,
-        "dest": 1537,
+        "dest": 1793,
         "imm": 0,
         "is_address": true,
         "tile": 3,
@@ -3679,8 +3319,8 @@
     },
     {
         "core": 0,
-        "dest": 1537,
-        "read": 2561,
+        "dest": 1793,
+        "read": 1665,
         "tile": 3,
         "type": "store",
         "vec": 8,
@@ -3688,7 +3328,74 @@
     },
     {
         "core": 0,
+        "dest": 640,
+        "read": 1537,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            5
+        ]
+    },
+    {
+        "core": 0,
         "dest": 1537,
+        "read": 1408,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1793,
+        "imm": 512,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 512,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 0,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            4
+        ]
+    },
+    {
+        "core": 0,
+        "dest": 1793,
+        "read": 1280,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1921,
+        "imm": 384,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 384,
         "read": 1921,
         "tile": 3,
         "type": "load",
@@ -3697,27 +3404,158 @@
     },
     {
         "core": 0,
-        "dest": 1537,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1537,
         "tile": 3,
-        "type": "vfu",
+        "type": "mvm",
+        "xbar": [
+            3
+        ]
+    },
+    {
+        "core": 0,
+        "dest": 1921,
+        "read": 1152,
+        "tile": 3,
+        "type": "copy",
         "vec": 128
     },
     {
         "core": 0,
-        "dest": 1537,
-        "opcode": "relu",
-        "read_1": 1537,
+        "dest": 2049,
+        "imm": 256,
+        "is_address": true,
         "tile": 3,
-        "type": "vfu",
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 256,
+        "read": 2049,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 0,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            2
+        ]
+    },
+    {
+        "core": 0,
+        "dest": 2049,
+        "read": 1024,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 2177,
+        "imm": 128,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 128,
+        "read": 2177,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 0,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            1
+        ]
+    },
+    {
+        "core": 0,
+        "dest": 2177,
+        "read": 896,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 0,
+        "read": 1665,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            0
+        ]
+    },
+    {
+        "core": 0,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 2177,
+        "read_2": 768,
+        "tile": 3,
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 0,
         "dest": 1665,
-        "imm": 912,
+        "opcode": "add",
+        "read_1": 2049,
+        "read_2": 1665,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 1665,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1665,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1665,
+        "imm": 1024,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -3740,7 +3578,7 @@
     {
         "core": 1,
         "dest": 1537,
-        "imm": 3856,
+        "imm": 2960,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -3752,16 +3590,238 @@
         "read": 1537,
         "tile": 3,
         "type": "load",
-        "vec": 1,
+        "vec": 8,
         "width": 16
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "opcode": "fp_to_int",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "imm": 128,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "imm": 384,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 640,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 1,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            5
+        ]
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "read": 1408,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1793,
+        "imm": 256,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 512,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 1,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            4
+        ]
+    },
+    {
+        "core": 1,
+        "dest": 1793,
+        "read": 1280,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 384,
+        "read": 1537,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            3
+        ]
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "read": 1152,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1921,
+        "imm": 0,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 256,
+        "read": 1921,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 1,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            2
+        ]
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1024,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1537,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1537,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "imm": 1152,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "imm": 896,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
     },
     {
         "core": 1,
         "dest": 128,
         "read": 1537,
         "tile": 3,
-        "type": "copy",
-        "vec": 16
+        "type": "load",
+        "vec": 8,
+        "width": 16
     },
     {
         "core": 1,
@@ -3773,7 +3833,7 @@
     },
     {
         "core": 1,
-        "dest": 1553,
+        "dest": 1537,
         "read": 896,
         "tile": 3,
         "type": "copy",
@@ -3781,114 +3841,7 @@
     },
     {
         "core": 1,
-        "dest": 1681,
-        "imm": 3728,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 1,
-        "dest": 1681,
-        "read": 1681,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 1,
-        "dest": 0,
-        "read": 1681,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 1,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            0
-        ]
-    },
-    {
-        "core": 1,
-        "dest": 1809,
-        "read": 768,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 1,
-        "dest": 1937,
-        "imm": 784,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 1,
-        "dest": 1937,
-        "read": 1937,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 1,
-        "dest": 1809,
-        "opcode": "add",
-        "read_1": 1809,
-        "read_2": 1937,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 1,
-        "dest": 1553,
-        "opcode": "add",
-        "read_1": 1553,
-        "read_2": 1809,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 1,
-        "dest": 1553,
-        "opcode": "relu",
-        "read_1": 1553,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 1,
-        "dest": 1809,
-        "imm": 1040,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 1,
-        "dest": 1809,
-        "read": 1553,
-        "tile": 3,
-        "type": "store",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 1,
-        "dest": 1553,
+        "dest": 1665,
         "imm": 768,
         "is_address": true,
         "tile": 3,
@@ -3897,16 +3850,332 @@
     },
     {
         "core": 1,
-        "dest": 1553,
-        "read": 1537,
+        "dest": 0,
+        "read": 1665,
         "tile": 3,
-        "type": "store",
-        "vec": 1,
+        "type": "load",
+        "vec": 8,
         "width": 16
     },
     {
         "core": 1,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            0
+        ]
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "read": 768,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1793,
+        "imm": 1024,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 1,
         "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "opcode": "int_to_fp",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "muli",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "imm": 1536,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 1,
+        "tile": 3,
+        "type": "hlt"
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "imm": 2704,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "fp_to_int",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "imm": 512,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "imm": 128,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 640,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            5
+        ]
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "read": 1408,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1793,
+        "imm": 0,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 512,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            4
+        ]
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1280,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1793,
+        "imm": 1280,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1793,
+        "read": 1665,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "imm": 896,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 384,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            3
+        ]
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "read": 1152,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1793,
+        "imm": 768,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 256,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            2
+        ]
+    },
+    {
+        "core": 2,
+        "dest": 1793,
+        "read": 1024,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1921,
         "imm": 640,
         "is_address": true,
         "tile": 3,
@@ -3914,212 +4183,13 @@
         "vec": 1
     },
     {
-        "core": 1,
-        "dest": 1537,
-        "read": 1681,
-        "tile": 3,
-        "type": "store",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 1,
-        "tile": 3,
-        "type": "hlt"
-    },
-    {
-        "core": 2,
-        "dest": 1537,
-        "imm": 2960,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 2,
-        "dest": 1537,
-        "read": 1537,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 2,
-        "dest": 640,
-        "read": 1537,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            5
-        ]
-    },
-    {
-        "core": 2,
-        "dest": 1537,
-        "read": 1408,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "imm": 2832,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "read": 1665,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 2,
-        "dest": 512,
-        "read": 1665,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            4
-        ]
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "read": 1280,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1793,
-        "imm": 2704,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 2,
-        "dest": 1793,
-        "read": 1793,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 2,
-        "dest": 384,
-        "read": 1793,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            3
-        ]
-    },
-    {
-        "core": 2,
-        "dest": 1793,
-        "read": 1152,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1921,
-        "imm": 2576,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 2,
-        "dest": 1921,
-        "read": 1921,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 2,
-        "dest": 256,
-        "read": 1921,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            2
-        ]
-    },
-    {
-        "core": 2,
-        "dest": 1921,
-        "read": 1024,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 2049,
-        "imm": 2448,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 2,
-        "dest": 2049,
-        "read": 2049,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
         "core": 2,
         "dest": 128,
-        "read": 2049,
+        "read": 1921,
         "tile": 3,
-        "type": "copy",
-        "vec": 128
+        "type": "load",
+        "vec": 8,
+        "width": 16
     },
     {
         "core": 2,
@@ -4131,7 +4201,7 @@
     },
     {
         "core": 2,
-        "dest": 2049,
+        "dest": 1921,
         "read": 896,
         "tile": 3,
         "type": "copy",
@@ -4139,26 +4209,8 @@
     },
     {
         "core": 2,
-        "dest": 2177,
-        "imm": 2320,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 2,
-        "dest": 2177,
-        "read": 2177,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 2,
         "dest": 0,
-        "read": 2177,
+        "read": 1537,
         "tile": 3,
         "type": "copy",
         "vec": 128
@@ -4173,373 +4225,116 @@
     },
     {
         "core": 2,
-        "dest": 2049,
-        "opcode": "add",
-        "read_1": 2049,
-        "read_2": 768,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1921,
-        "opcode": "add",
-        "read_1": 1921,
-        "read_2": 2049,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1793,
-        "opcode": "add",
-        "read_1": 1793,
-        "read_2": 1921,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1793,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 2,
         "dest": 1537,
-        "opcode": "add",
-        "read_1": 1537,
-        "read_2": 1665,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "imm": 1168,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 2,
-        "dest": 1665,
-        "read": 1537,
-        "tile": 3,
-        "type": "store",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 2,
-        "tile": 3,
-        "type": "hlt"
-    },
-    {
-        "core": 3,
-        "dest": 1537,
-        "imm": 2704,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 3,
-        "dest": 1537,
-        "read": 1537,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 3,
-        "dest": 640,
-        "read": 1537,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            5
-        ]
-    },
-    {
-        "core": 3,
-        "dest": 1537,
-        "read": 1408,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "imm": 2576,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "read": 1665,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 3,
-        "dest": 512,
-        "read": 1665,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            4
-        ]
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "read": 1280,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1793,
-        "imm": 2448,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 3,
-        "dest": 1793,
-        "read": 1793,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 3,
-        "dest": 384,
-        "read": 1793,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            3
-        ]
-    },
-    {
-        "core": 3,
-        "dest": 1793,
-        "read": 1152,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1921,
-        "imm": 2320,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 3,
-        "dest": 1921,
-        "read": 1921,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 3,
-        "dest": 256,
-        "read": 1921,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            2
-        ]
-    },
-    {
-        "core": 3,
-        "dest": 1793,
-        "opcode": "add",
-        "read_1": 1793,
-        "read_2": 1024,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1793,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1537,
-        "opcode": "add",
-        "read_1": 1537,
-        "read_2": 1665,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "imm": 1296,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "read": 1537,
-        "tile": 3,
-        "type": "store",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 3,
-        "dest": 1537,
-        "imm": 1040,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 3,
-        "dest": 1537,
-        "read": 1537,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 3,
-        "dest": 128,
-        "read": 1537,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            1
-        ]
-    },
-    {
-        "core": 3,
-        "dest": 1537,
-        "read": 896,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "imm": 912,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "read": 1665,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 3,
-        "dest": 0,
-        "read": 1665,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            0
-        ]
-    },
-    {
-        "core": 3,
-        "dest": 1665,
         "read": 768,
         "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
+        "core": 2,
+        "dest": 2049,
+        "imm": 1152,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 2049,
+        "read": 2049,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 2049,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 1537,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1537,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1537,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "opcode": "int_to_fp",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "muli",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "imm": 1664,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 2,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 2,
+        "tile": 3,
+        "type": "hlt"
+    },
+    {
         "core": 3,
-        "dest": 1793,
-        "imm": 1168,
+        "dest": 1537,
+        "imm": 3088,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -4547,32 +4342,12 @@
     },
     {
         "core": 3,
-        "dest": 1793,
-        "read": 1793,
+        "dest": 1537,
+        "read": 1537,
         "tile": 3,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 3,
-        "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1793,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 3,
-        "dest": 1537,
-        "opcode": "add",
-        "read_1": 1537,
-        "read_2": 1665,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
     },
     {
         "core": 3,
@@ -4580,13 +4355,32 @@
         "opcode": "relu",
         "read_1": 1537,
         "tile": 3,
-        "type": "vfu",
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "opcode": "fp_to_int",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
         "vec": 128
     },
     {
         "core": 3,
         "dest": 1665,
-        "imm": 1680,
+        "imm": 256,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -4603,37 +4397,24 @@
     },
     {
         "core": 3,
-        "tile": 3,
-        "type": "hlt"
-    },
-    {
-        "core": 4,
-        "dest": 1537,
-        "imm": 2448,
+        "dest": 1665,
+        "imm": 896,
         "is_address": true,
         "tile": 3,
         "type": "set",
         "vec": 1
     },
     {
-        "core": 4,
-        "dest": 1537,
-        "read": 1537,
+        "core": 3,
+        "dest": 640,
+        "read": 1665,
         "tile": 3,
         "type": "load",
         "vec": 8,
         "width": 16
     },
     {
-        "core": 4,
-        "dest": 640,
-        "read": 1537,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
+        "core": 3,
         "tile": 3,
         "type": "mvm",
         "xbar": [
@@ -4641,171 +4422,25 @@
         ]
     },
     {
-        "core": 4,
-        "dest": 1537,
+        "core": 3,
+        "dest": 1665,
         "read": 1408,
         "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
-        "core": 4,
-        "dest": 1665,
-        "imm": 2320,
+        "core": 3,
+        "dest": 1793,
+        "imm": 768,
         "is_address": true,
         "tile": 3,
         "type": "set",
         "vec": 1
     },
     {
-        "core": 4,
-        "dest": 1665,
-        "read": 1665,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 4,
+        "core": 3,
         "dest": 512,
-        "read": 1665,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            4
-        ]
-    },
-    {
-        "core": 4,
-        "dest": 1537,
-        "opcode": "add",
-        "read_1": 1537,
-        "read_2": 1280,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 1665,
-        "imm": 1424,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 4,
-        "dest": 1665,
-        "read": 1537,
-        "tile": 3,
-        "type": "store",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 4,
-        "dest": 1537,
-        "imm": 1040,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 4,
-        "dest": 1537,
-        "read": 1537,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 4,
-        "dest": 384,
-        "read": 1537,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            3
-        ]
-    },
-    {
-        "core": 4,
-        "dest": 1537,
-        "read": 1152,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 1665,
-        "imm": 912,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 4,
-        "dest": 1665,
-        "read": 1665,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 4,
-        "dest": 256,
-        "read": 1665,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            2
-        ]
-    },
-    {
-        "core": 4,
-        "dest": 1665,
-        "read": 1024,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 1793,
-        "imm": 2960,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 4,
-        "dest": 1793,
         "read": 1793,
         "tile": 3,
         "type": "load",
@@ -4813,231 +4448,7 @@
         "width": 16
     },
     {
-        "core": 4,
-        "dest": 128,
-        "read": 1793,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            1
-        ]
-    },
-    {
-        "core": 4,
-        "dest": 1793,
-        "read": 896,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 1921,
-        "imm": 2832,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 4,
-        "dest": 1921,
-        "read": 1921,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 4,
-        "dest": 0,
-        "read": 1921,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            0
-        ]
-    },
-    {
-        "core": 4,
-        "dest": 1921,
-        "read": 768,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 2049,
-        "imm": 1296,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 4,
-        "dest": 2049,
-        "read": 2049,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 4,
-        "dest": 1921,
-        "opcode": "add",
-        "read_1": 1921,
-        "read_2": 2049,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 1793,
-        "opcode": "add",
-        "read_1": 1793,
-        "read_2": 1921,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1793,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 1537,
-        "opcode": "add",
-        "read_1": 1537,
-        "read_2": 1665,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 1537,
-        "opcode": "relu",
-        "read_1": 1537,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 4,
-        "dest": 1665,
-        "imm": 1808,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 4,
-        "dest": 1665,
-        "read": 1537,
-        "tile": 3,
-        "type": "store",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 4,
-        "tile": 3,
-        "type": "hlt"
-    },
-    {
-        "core": 5,
-        "dest": 1537,
-        "imm": 1040,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 5,
-        "dest": 1537,
-        "read": 1537,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 5,
-        "dest": 640,
-        "read": 1537,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 5,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            5
-        ]
-    },
-    {
-        "core": 5,
-        "dest": 1537,
-        "read": 1408,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 5,
-        "dest": 1665,
-        "imm": 912,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 5,
-        "dest": 1665,
-        "read": 1665,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 5,
-        "dest": 512,
-        "read": 1665,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 5,
+        "core": 3,
         "tile": 3,
         "type": "mvm",
         "xbar": [
@@ -5045,41 +4456,33 @@
         ]
     },
     {
-        "core": 5,
-        "dest": 1665,
+        "core": 3,
+        "dest": 1793,
         "read": 1280,
         "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
-        "core": 5,
-        "dest": 1793,
-        "imm": 2960,
+        "core": 3,
+        "dest": 1921,
+        "imm": 640,
         "is_address": true,
         "tile": 3,
         "type": "set",
         "vec": 1
     },
     {
-        "core": 5,
-        "dest": 1793,
-        "read": 1793,
+        "core": 3,
+        "dest": 384,
+        "read": 1921,
         "tile": 3,
         "type": "load",
         "vec": 8,
         "width": 16
     },
     {
-        "core": 5,
-        "dest": 384,
-        "read": 1793,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 5,
+        "core": 3,
         "tile": 3,
         "type": "mvm",
         "xbar": [
@@ -5087,41 +4490,33 @@
         ]
     },
     {
-        "core": 5,
-        "dest": 1793,
+        "core": 3,
+        "dest": 1921,
         "read": 1152,
         "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
-        "core": 5,
-        "dest": 1921,
-        "imm": 2832,
+        "core": 3,
+        "dest": 2049,
+        "imm": 512,
         "is_address": true,
         "tile": 3,
         "type": "set",
         "vec": 1
     },
     {
-        "core": 5,
-        "dest": 1921,
-        "read": 1921,
+        "core": 3,
+        "dest": 256,
+        "read": 2049,
         "tile": 3,
         "type": "load",
         "vec": 8,
         "width": 16
     },
     {
-        "core": 5,
-        "dest": 256,
-        "read": 1921,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 5,
+        "core": 3,
         "tile": 3,
         "type": "mvm",
         "xbar": [
@@ -5129,41 +4524,33 @@
         ]
     },
     {
-        "core": 5,
-        "dest": 1921,
+        "core": 3,
+        "dest": 2049,
         "read": 1024,
         "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
-        "core": 5,
-        "dest": 2049,
-        "imm": 2704,
+        "core": 3,
+        "dest": 2177,
+        "imm": 384,
         "is_address": true,
         "tile": 3,
         "type": "set",
         "vec": 1
     },
     {
-        "core": 5,
-        "dest": 2049,
-        "read": 2049,
+        "core": 3,
+        "dest": 128,
+        "read": 2177,
         "tile": 3,
         "type": "load",
         "vec": 8,
         "width": 16
     },
     {
-        "core": 5,
-        "dest": 128,
-        "read": 2049,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 5,
+        "core": 3,
         "tile": 3,
         "type": "mvm",
         "xbar": [
@@ -5171,41 +4558,23 @@
         ]
     },
     {
-        "core": 5,
-        "dest": 2049,
+        "core": 3,
+        "dest": 2177,
         "read": 896,
         "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
-        "core": 5,
-        "dest": 2177,
-        "imm": 2576,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 5,
-        "dest": 2177,
-        "read": 2177,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 5,
+        "core": 3,
         "dest": 0,
-        "read": 2177,
+        "read": 1537,
         "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
-        "core": 5,
+        "core": 3,
         "tile": 3,
         "type": "mvm",
         "xbar": [
@@ -5213,24 +4582,24 @@
         ]
     },
     {
-        "core": 5,
-        "dest": 2177,
+        "core": 3,
+        "dest": 1537,
         "read": 768,
         "tile": 3,
         "type": "copy",
         "vec": 128
     },
     {
-        "core": 5,
+        "core": 3,
         "dest": 2305,
-        "imm": 1424,
+        "imm": 1280,
         "is_address": true,
         "tile": 3,
         "type": "set",
         "vec": 1
     },
     {
-        "core": 5,
+        "core": 3,
         "dest": 2305,
         "read": 2305,
         "tile": 3,
@@ -5239,24 +4608,587 @@
         "width": 16
     },
     {
-        "core": 5,
-        "dest": 2177,
+        "core": 3,
+        "dest": 1537,
         "opcode": "add",
-        "read_1": 2177,
+        "read_1": 1537,
         "read_2": 2305,
         "tile": 3,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
-        "core": 5,
+        "core": 3,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 2177,
+        "read_2": 1537,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 2049,
+        "read_2": 1537,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 1537,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1537,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1537,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1537,
+        "opcode": "int_to_fp",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "imm": 1792,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 3,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 3,
+        "tile": 3,
+        "type": "hlt"
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "imm": 640,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 640,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            5
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "read": 1408,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "imm": 512,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 512,
+        "read": 1665,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            4
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "read": 1280,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1793,
+        "imm": 2576,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "dest": 1793,
+        "opcode": "relu",
+        "read_1": 1793,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1793,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1793,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1793,
+        "opcode": "fp_to_int",
+        "read_1": 1793,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 384,
+        "read": 1793,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            3
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 1921,
+        "read": 1152,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 2049,
+        "imm": 256,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 256,
+        "read": 2049,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            2
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 2049,
+        "read": 1024,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 2177,
+        "imm": 128,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 128,
+        "read": 2177,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            1
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 2177,
+        "read": 896,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 2305,
+        "imm": 0,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 0,
+        "read": 2305,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            0
+        ]
+    },
+    {
+        "core": 4,
+        "dest": 2177,
+        "opcode": "add",
+        "read_1": 2177,
+        "read_2": 768,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 4,
         "dest": 2049,
         "opcode": "add",
         "read_1": 2049,
         "read_2": 2177,
         "tile": 3,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1921,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 2049,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1921,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "imm": 1408,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1665,
+        "read": 1537,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "imm": 384,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 4,
+        "dest": 1537,
+        "read": 1793,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 4,
+        "tile": 3,
+        "type": "hlt"
+    },
+    {
+        "core": 5,
+        "dest": 1537,
+        "imm": 3472,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1537,
+        "read": 1537,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 5,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1537,
+        "opcode": "fp_to_int",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 128,
+        "read": 1537,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            1
+        ]
+    },
+    {
+        "core": 5,
+        "dest": 1665,
+        "read": 896,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1793,
+        "imm": 3344,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1793,
+        "read": 1793,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 5,
+        "dest": 1793,
+        "imm": 1.0,
+        "opcode": "muli",
+        "read_1": 1793,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1793,
+        "opcode": "relu",
+        "read_1": 1793,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1793,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1793,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1793,
+        "opcode": "fp_to_int",
+        "read_1": 1793,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 0,
+        "read": 1793,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            0
+        ]
+    },
+    {
+        "core": 5,
+        "dest": 1921,
+        "read": 768,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 2049,
+        "imm": 1408,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 2049,
+        "read": 2049,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
     },
     {
         "core": 5,
@@ -5265,17 +5197,7 @@
         "read_1": 1921,
         "read_2": 2049,
         "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 5,
-        "dest": 1793,
-        "opcode": "add",
-        "read_1": 1793,
-        "read_2": 1921,
-        "tile": 3,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
@@ -5283,34 +5205,52 @@
         "dest": 1665,
         "opcode": "add",
         "read_1": 1665,
-        "read_2": 1793,
+        "read_2": 1921,
         "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 5,
-        "dest": 1537,
-        "opcode": "add",
-        "read_1": 1537,
-        "read_2": 1665,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 5,
-        "dest": 1537,
-        "opcode": "relu",
-        "read_1": 1537,
-        "tile": 3,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 5,
         "dest": 1665,
-        "imm": 1936,
+        "opcode": "int_to_fp",
+        "read_1": 1665,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1665,
+        "imm": 1.0,
+        "opcode": "muli",
+        "read_1": 1665,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 5,
+        "dest": 1921,
+        "imm": 1920,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1921,
+        "read": 1665,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 5,
+        "dest": 1665,
+        "imm": 896,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5327,13 +5267,31 @@
     },
     {
         "core": 5,
+        "dest": 1537,
+        "imm": 768,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 5,
+        "dest": 1537,
+        "read": 1793,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 5,
         "tile": 3,
         "type": "hlt"
     },
     {
         "core": 6,
         "dest": 1537,
-        "imm": 2960,
+        "imm": 1664,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5347,6 +5305,34 @@
         "type": "load",
         "vec": 8,
         "width": 16
+    },
+    {
+        "core": 6,
+        "dest": 1537,
+        "opcode": "relu",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1537,
+        "opcode": "fp_to_int",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
     },
     {
         "core": 6,
@@ -5366,16 +5352,16 @@
     },
     {
         "core": 6,
-        "dest": 1537,
+        "dest": 1665,
         "read": 1408,
         "tile": 3,
         "type": "copy",
-        "vec": 128
+        "vec": 72
     },
     {
         "core": 6,
-        "dest": 1665,
-        "imm": 2832,
+        "dest": 1737,
+        "imm": 1536,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5383,8 +5369,8 @@
     },
     {
         "core": 6,
-        "dest": 1665,
-        "read": 1665,
+        "dest": 1737,
+        "read": 1737,
         "tile": 3,
         "type": "load",
         "vec": 8,
@@ -5392,8 +5378,36 @@
     },
     {
         "core": 6,
+        "dest": 1737,
+        "opcode": "relu",
+        "read_1": 1737,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1737,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1737,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1737,
+        "opcode": "fp_to_int",
+        "read_1": 1737,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 6,
         "dest": 512,
-        "read": 1665,
+        "read": 1737,
         "tile": 3,
         "type": "copy",
         "vec": 128
@@ -5409,15 +5423,17 @@
     {
         "core": 6,
         "dest": 1665,
-        "read": 1280,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1280,
         "tile": 3,
-        "type": "copy",
-        "vec": 128
+        "type": "ivfu",
+        "vec": 72
     },
     {
         "core": 6,
-        "dest": 1793,
-        "imm": 2704,
+        "dest": 1865,
+        "imm": 2304,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5425,20 +5441,30 @@
     },
     {
         "core": 6,
-        "dest": 1793,
-        "read": 1793,
+        "dest": 1865,
+        "read": 1665,
         "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
+        "type": "store",
+        "vec": 6,
+        "width": 12
+    },
+    {
+        "core": 6,
+        "dest": 1665,
+        "imm": 2176,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
     },
     {
         "core": 6,
         "dest": 384,
-        "read": 1793,
+        "read": 1665,
         "tile": 3,
-        "type": "copy",
-        "vec": 128
+        "type": "load",
+        "vec": 8,
+        "width": 16
     },
     {
         "core": 6,
@@ -5450,7 +5476,7 @@
     },
     {
         "core": 6,
-        "dest": 1793,
+        "dest": 1865,
         "read": 1152,
         "tile": 3,
         "type": "copy",
@@ -5458,8 +5484,8 @@
     },
     {
         "core": 6,
-        "dest": 1921,
-        "imm": 2576,
+        "dest": 1665,
+        "imm": 2048,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5467,20 +5493,12 @@
     },
     {
         "core": 6,
-        "dest": 1921,
-        "read": 1921,
+        "dest": 256,
+        "read": 1665,
         "tile": 3,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 6,
-        "dest": 256,
-        "read": 1921,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
     },
     {
         "core": 6,
@@ -5492,7 +5510,7 @@
     },
     {
         "core": 6,
-        "dest": 1921,
+        "dest": 1993,
         "read": 1024,
         "tile": 3,
         "type": "copy",
@@ -5500,26 +5518,8 @@
     },
     {
         "core": 6,
-        "dest": 2049,
-        "imm": 2448,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 6,
-        "dest": 2049,
-        "read": 2049,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 6,
         "dest": 128,
-        "read": 2049,
+        "read": 1537,
         "tile": 3,
         "type": "copy",
         "vec": 128
@@ -5534,7 +5534,7 @@
     },
     {
         "core": 6,
-        "dest": 2049,
+        "dest": 1537,
         "read": 896,
         "tile": 3,
         "type": "copy",
@@ -5542,26 +5542,8 @@
     },
     {
         "core": 6,
-        "dest": 2177,
-        "imm": 2320,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 6,
-        "dest": 2177,
-        "read": 2177,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 6,
         "dest": 0,
-        "read": 2177,
+        "read": 1737,
         "tile": 3,
         "type": "copy",
         "vec": 128
@@ -5576,58 +5558,57 @@
     },
     {
         "core": 6,
-        "dest": 2049,
+        "dest": 1537,
         "opcode": "add",
-        "read_1": 2049,
+        "read_1": 1537,
         "read_2": 768,
         "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 6,
-        "dest": 1921,
-        "opcode": "add",
-        "read_1": 1921,
-        "read_2": 2049,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 6,
-        "dest": 1793,
-        "opcode": "add",
-        "read_1": 1793,
-        "read_2": 1921,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 6,
-        "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1793,
-        "tile": 3,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 6,
         "dest": 1537,
         "opcode": "add",
-        "read_1": 1537,
-        "read_2": 1665,
+        "read_1": 1993,
+        "read_2": 1537,
         "tile": 3,
-        "type": "vfu",
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1865,
+        "read_2": 1537,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1537,
+        "opcode": "int_to_fp",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 6,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "muli",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
         "vec": 128
     },
     {
         "core": 6,
         "dest": 1665,
-        "imm": 1552,
+        "imm": 2376,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5650,7 +5631,7 @@
     {
         "core": 7,
         "dest": 1537,
-        "imm": 1040,
+        "imm": 1920,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5664,110 +5645,6 @@
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 7,
-        "dest": 128,
-        "read": 1537,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            1
-        ]
-    },
-    {
-        "core": 7,
-        "dest": 1537,
-        "read": 896,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "dest": 1665,
-        "imm": 912,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 7,
-        "dest": 1665,
-        "read": 1665,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 7,
-        "dest": 0,
-        "read": 1665,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "tile": 3,
-        "type": "mvm",
-        "xbar": [
-            0
-        ]
-    },
-    {
-        "core": 7,
-        "dest": 1665,
-        "read": 768,
-        "tile": 3,
-        "type": "copy",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "dest": 1793,
-        "imm": 1552,
-        "is_address": true,
-        "tile": 3,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 7,
-        "dest": 1793,
-        "read": 1793,
-        "tile": 3,
-        "type": "load",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "core": 7,
-        "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1793,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 7,
-        "dest": 1537,
-        "opcode": "add",
-        "read_1": 1537,
-        "read_2": 1665,
-        "tile": 3,
-        "type": "vfu",
-        "vec": 128
     },
     {
         "core": 7,
@@ -5775,13 +5652,220 @@
         "opcode": "relu",
         "read_1": 1537,
         "tile": 3,
-        "type": "vfu",
+        "type": "fvfu",
         "vec": 128
     },
     {
         "core": 7,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "dest": 1537,
+        "opcode": "fp_to_int",
+        "read_1": 1537,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "dest": 128,
+        "read": 1537,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            1
+        ]
+    },
+    {
+        "core": 7,
         "dest": 1665,
-        "imm": 2064,
+        "read": 896,
+        "tile": 3,
+        "type": "copy",
+        "vec": 72
+    },
+    {
+        "core": 7,
+        "dest": 1737,
+        "imm": 1792,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1737,
+        "read": 1737,
+        "tile": 3,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 7,
+        "dest": 1737,
+        "imm": 1.0,
+        "opcode": "muli",
+        "read_1": 1737,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "dest": 1737,
+        "opcode": "relu",
+        "read_1": 1737,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "dest": 1737,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1737,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "dest": 1737,
+        "opcode": "fp_to_int",
+        "read_1": 1737,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "dest": 0,
+        "read": 1737,
+        "tile": 3,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 7,
+        "tile": 3,
+        "type": "mvm",
+        "xbar": [
+            0
+        ]
+    },
+    {
+        "core": 7,
+        "dest": 1865,
+        "read": 768,
+        "tile": 3,
+        "type": "copy",
+        "vec": 72
+    },
+    {
+        "core": 7,
+        "dest": 1937,
+        "imm": 2304,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1937,
+        "read": 1937,
+        "tile": 3,
+        "type": "load",
+        "vec": 6,
+        "width": 12
+    },
+    {
+        "core": 7,
+        "dest": 1865,
+        "opcode": "add",
+        "read_1": 1865,
+        "read_2": 1937,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 72
+    },
+    {
+        "core": 7,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1865,
+        "tile": 3,
+        "type": "ivfu",
+        "vec": 72
+    },
+    {
+        "core": 7,
+        "dest": 1665,
+        "opcode": "int_to_fp",
+        "read_1": 1665,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 72
+    },
+    {
+        "core": 7,
+        "dest": 1665,
+        "imm": 1.0,
+        "opcode": "muli",
+        "read_1": 1665,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 72
+    },
+    {
+        "core": 7,
+        "dest": 1665,
+        "opcode": "relu",
+        "read_1": 1665,
+        "tile": 3,
+        "type": "fvfu",
+        "vec": 72
+    },
+    {
+        "core": 7,
+        "dest": 1865,
+        "imm": 2504,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1865,
+        "read": 1665,
+        "tile": 3,
+        "type": "store",
+        "vec": 6,
+        "width": 12
+    },
+    {
+        "core": 7,
+        "dest": 1665,
+        "imm": 2176,
         "is_address": true,
         "tile": 3,
         "type": "set",
@@ -5798,11 +5882,109 @@
     },
     {
         "core": 7,
+        "dest": 1537,
+        "imm": 2048,
+        "is_address": true,
+        "tile": 3,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 7,
+        "dest": 1537,
+        "read": 1737,
+        "tile": 3,
+        "type": "store",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 7,
         "tile": 3,
         "type": "hlt"
     },
     {
-        "mem_addr": 656,
+        "mem_addr": 906,
+        "source_tile": 2,
+        "tile": 4,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 778,
+        "source_tile": 2,
+        "tile": 4,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 650,
+        "source_tile": 2,
+        "tile": 4,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 522,
+        "source_tile": 2,
+        "tile": 4,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 394,
+        "source_tile": 2,
+        "tile": 4,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 128,
+        "target_tile": 2,
+        "tile": 4,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 1162,
+        "source_tile": 2,
+        "tile": 4,
+        "type": "receive",
+        "vec": 1,
+        "width": 16
+    },
+    {
+        "mem_addr": 1034,
+        "source_tile": 2,
+        "tile": 4,
+        "type": "receive",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 256,
+        "target_tile": 3,
+        "tile": 4,
+        "type": "send",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "mem_addr": 1306,
+        "source_tile": 3,
+        "tile": 4,
+        "type": "receive",
+        "vec": 6,
+        "width": 12
+    },
+    {
+        "mem_addr": 1178,
         "source_tile": 3,
         "tile": 4,
         "type": "receive",
@@ -5810,32 +5992,8 @@
         "width": 16
     },
     {
-        "mem_addr": 528,
-        "source_tile": 3,
-        "tile": 4,
-        "type": "receive",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 400,
-        "source_tile": 3,
-        "tile": 4,
-        "type": "receive",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 272,
-        "source_tile": 3,
-        "tile": 4,
-        "type": "receive",
-        "vec": 8,
-        "width": 16
-    },
-    {
-        "mem_addr": 784,
-        "target_tile": 1,
+        "mem_addr": 384,
+        "target_tile": 2,
         "tile": 4,
         "type": "send",
         "vec": 1,
@@ -5848,7 +6006,7 @@
     {
         "core": 0,
         "dest": 1537,
-        "imm": 400,
+        "imm": 1034,
         "is_address": true,
         "tile": 4,
         "type": "set",
@@ -5856,20 +6014,12 @@
     },
     {
         "core": 0,
-        "dest": 1537,
+        "dest": 640,
         "read": 1537,
         "tile": 4,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 0,
-        "dest": 640,
-        "read": 1537,
-        "tile": 4,
-        "type": "copy",
-        "vec": 128
     },
     {
         "core": 0,
@@ -5881,16 +6031,16 @@
     },
     {
         "core": 0,
-        "dest": 1665,
+        "dest": 1537,
         "read": 1408,
         "tile": 4,
         "type": "copy",
-        "vec": 72
+        "vec": 128
     },
     {
         "core": 0,
-        "dest": 1737,
-        "imm": 272,
+        "dest": 1665,
+        "imm": 906,
         "is_address": true,
         "tile": 4,
         "type": "set",
@@ -5898,20 +6048,12 @@
     },
     {
         "core": 0,
-        "dest": 1737,
-        "read": 1737,
+        "dest": 512,
+        "read": 1665,
         "tile": 4,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 0,
-        "dest": 512,
-        "read": 1737,
-        "tile": 4,
-        "type": "copy",
-        "vec": 128
     },
     {
         "core": 0,
@@ -5924,56 +6066,28 @@
     {
         "core": 0,
         "dest": 1665,
-        "opcode": "add",
-        "read_1": 1665,
-        "read_2": 1280,
+        "read": 1280,
         "tile": 4,
-        "type": "vfu",
-        "vec": 72
+        "type": "copy",
+        "vec": 128
     },
     {
         "core": 0,
-        "dest": 1865,
-        "imm": 0,
+        "dest": 1793,
+        "imm": 778,
         "is_address": true,
         "tile": 4,
         "type": "set",
         "vec": 1
-    },
-    {
-        "core": 0,
-        "dest": 1865,
-        "read": 1665,
-        "tile": 4,
-        "type": "store",
-        "vec": 6,
-        "width": 12
-    },
-    {
-        "core": 0,
-        "dest": 1665,
-        "imm": 656,
-        "is_address": true,
-        "tile": 4,
-        "type": "set",
-        "vec": 1
-    },
-    {
-        "core": 0,
-        "dest": 1865,
-        "read": 1665,
-        "tile": 4,
-        "type": "load",
-        "vec": 8,
-        "width": 16
     },
     {
         "core": 0,
         "dest": 384,
-        "read": 1865,
+        "read": 1793,
         "tile": 4,
-        "type": "copy",
-        "vec": 128
+        "type": "load",
+        "vec": 8,
+        "width": 16
     },
     {
         "core": 0,
@@ -5985,7 +6099,7 @@
     },
     {
         "core": 0,
-        "dest": 1865,
+        "dest": 1793,
         "read": 1152,
         "tile": 4,
         "type": "copy",
@@ -5993,8 +6107,8 @@
     },
     {
         "core": 0,
-        "dest": 1665,
-        "imm": 528,
+        "dest": 1921,
+        "imm": 650,
         "is_address": true,
         "tile": 4,
         "type": "set",
@@ -6002,20 +6116,12 @@
     },
     {
         "core": 0,
-        "dest": 1993,
-        "read": 1665,
+        "dest": 256,
+        "read": 1921,
         "tile": 4,
         "type": "load",
         "vec": 8,
         "width": 16
-    },
-    {
-        "core": 0,
-        "dest": 256,
-        "read": 1993,
-        "tile": 4,
-        "type": "copy",
-        "vec": 128
     },
     {
         "core": 0,
@@ -6027,7 +6133,7 @@
     },
     {
         "core": 0,
-        "dest": 1993,
+        "dest": 1921,
         "read": 1024,
         "tile": 4,
         "type": "copy",
@@ -6035,11 +6141,21 @@
     },
     {
         "core": 0,
-        "dest": 128,
-        "read": 1537,
+        "dest": 2049,
+        "imm": 522,
+        "is_address": true,
         "tile": 4,
-        "type": "copy",
-        "vec": 128
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 128,
+        "read": 2049,
+        "tile": 4,
+        "type": "load",
+        "vec": 8,
+        "width": 16
     },
     {
         "core": 0,
@@ -6051,7 +6167,7 @@
     },
     {
         "core": 0,
-        "dest": 1537,
+        "dest": 2049,
         "read": 896,
         "tile": 4,
         "type": "copy",
@@ -6059,11 +6175,21 @@
     },
     {
         "core": 0,
-        "dest": 0,
-        "read": 1737,
+        "dest": 2177,
+        "imm": 394,
+        "is_address": true,
         "tile": 4,
-        "type": "copy",
-        "vec": 128
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 0,
+        "dest": 0,
+        "read": 2177,
+        "tile": 4,
+        "type": "load",
+        "vec": 8,
+        "width": 16
     },
     {
         "core": 0,
@@ -6075,47 +6201,58 @@
     },
     {
         "core": 0,
-        "dest": 1537,
+        "dest": 2049,
         "opcode": "add",
-        "read_1": 1537,
+        "read_1": 2049,
         "read_2": 768,
         "tile": 4,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 0,
-        "dest": 1537,
+        "dest": 1921,
         "opcode": "add",
-        "read_1": 1993,
-        "read_2": 1537,
+        "read_1": 1921,
+        "read_2": 2049,
         "tile": 4,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 0,
-        "dest": 1537,
+        "dest": 1793,
         "opcode": "add",
-        "read_1": 1865,
-        "read_2": 1537,
+        "read_1": 1793,
+        "read_2": 1921,
         "tile": 4,
-        "type": "vfu",
-        "vec": 128
-    },
-    {
-        "core": 0,
-        "dest": 1537,
-        "opcode": "relu",
-        "read_1": 1537,
-        "tile": 4,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 128
     },
     {
         "core": 0,
         "dest": 1665,
-        "imm": 72,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 4,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 4,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 0,
+        "dest": 1665,
+        "imm": 0,
         "is_address": true,
         "tile": 4,
         "type": "set",
@@ -6138,7 +6275,7 @@
     {
         "core": 1,
         "dest": 1537,
-        "imm": 656,
+        "imm": 906,
         "is_address": true,
         "tile": 4,
         "type": "set",
@@ -6146,7 +6283,7 @@
     },
     {
         "core": 1,
-        "dest": 1537,
+        "dest": 640,
         "read": 1537,
         "tile": 4,
         "type": "load",
@@ -6155,11 +6292,139 @@
     },
     {
         "core": 1,
-        "dest": 128,
-        "read": 1537,
+        "tile": 4,
+        "type": "mvm",
+        "xbar": [
+            5
+        ]
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "read": 1408,
         "tile": 4,
         "type": "copy",
         "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "imm": 778,
+        "is_address": true,
+        "tile": 4,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 512,
+        "read": 1665,
+        "tile": 4,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 1,
+        "tile": 4,
+        "type": "mvm",
+        "xbar": [
+            4
+        ]
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "read": 1280,
+        "tile": 4,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1793,
+        "imm": 650,
+        "is_address": true,
+        "tile": 4,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 384,
+        "read": 1793,
+        "tile": 4,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 1,
+        "tile": 4,
+        "type": "mvm",
+        "xbar": [
+            3
+        ]
+    },
+    {
+        "core": 1,
+        "dest": 1793,
+        "read": 1152,
+        "tile": 4,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1921,
+        "imm": 522,
+        "is_address": true,
+        "tile": 4,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 256,
+        "read": 1921,
+        "tile": 4,
+        "type": "load",
+        "vec": 8,
+        "width": 16
+    },
+    {
+        "core": 1,
+        "tile": 4,
+        "type": "mvm",
+        "xbar": [
+            2
+        ]
+    },
+    {
+        "core": 1,
+        "dest": 1921,
+        "read": 1024,
+        "tile": 4,
+        "type": "copy",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 2049,
+        "imm": 394,
+        "is_address": true,
+        "tile": 4,
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 128,
+        "read": 2049,
+        "tile": 4,
+        "type": "load",
+        "vec": 8,
+        "width": 16
     },
     {
         "core": 1,
@@ -6171,16 +6436,48 @@
     },
     {
         "core": 1,
-        "dest": 1537,
-        "read": 896,
+        "dest": 1921,
+        "opcode": "add",
+        "read_1": 1921,
+        "read_2": 896,
         "tile": 4,
-        "type": "copy",
-        "vec": 72
+        "type": "ivfu",
+        "vec": 128
     },
     {
         "core": 1,
-        "dest": 1609,
-        "imm": 528,
+        "dest": 1793,
+        "opcode": "add",
+        "read_1": 1793,
+        "read_2": 1921,
+        "tile": 4,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "opcode": "add",
+        "read_1": 1665,
+        "read_2": 1793,
+        "tile": 4,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1537,
+        "opcode": "add",
+        "read_1": 1537,
+        "read_2": 1665,
+        "tile": 4,
+        "type": "ivfu",
+        "vec": 128
+    },
+    {
+        "core": 1,
+        "dest": 1665,
+        "imm": 128,
         "is_address": true,
         "tile": 4,
         "type": "set",
@@ -6188,20 +6485,30 @@
     },
     {
         "core": 1,
-        "dest": 1609,
-        "read": 1609,
+        "dest": 1665,
+        "read": 1537,
         "tile": 4,
-        "type": "load",
+        "type": "store",
         "vec": 8,
         "width": 16
     },
     {
         "core": 1,
-        "dest": 0,
-        "read": 1609,
+        "dest": 1537,
+        "imm": 1162,
+        "is_address": true,
         "tile": 4,
-        "type": "copy",
-        "vec": 128
+        "type": "set",
+        "vec": 1
+    },
+    {
+        "core": 1,
+        "dest": 0,
+        "read": 1537,
+        "tile": 4,
+        "type": "load",
+        "vec": 1,
+        "width": 16
     },
     {
         "core": 1,
@@ -6213,15 +6520,15 @@
     },
     {
         "core": 1,
-        "dest": 1609,
+        "dest": 1537,
         "read": 768,
         "tile": 4,
         "type": "copy",
-        "vec": 72
+        "vec": 128
     },
     {
         "core": 1,
-        "dest": 1681,
+        "dest": 1665,
         "imm": 0,
         "is_address": true,
         "tile": 4,
@@ -6230,46 +6537,36 @@
     },
     {
         "core": 1,
-        "dest": 1681,
-        "read": 1681,
+        "dest": 1665,
+        "read": 1665,
         "tile": 4,
         "type": "load",
-        "vec": 6,
-        "width": 12
-    },
-    {
-        "core": 1,
-        "dest": 1609,
-        "opcode": "add",
-        "read_1": 1609,
-        "read_2": 1681,
-        "tile": 4,
-        "type": "vfu",
-        "vec": 72
+        "vec": 8,
+        "width": 16
     },
     {
         "core": 1,
         "dest": 1537,
         "opcode": "add",
         "read_1": 1537,
-        "read_2": 1609,
+        "read_2": 1665,
         "tile": 4,
-        "type": "vfu",
-        "vec": 72
+        "type": "ivfu",
+        "vec": 128
     },
     {
         "core": 1,
         "dest": 1537,
-        "opcode": "relu",
+        "opcode": "int_to_fp",
         "read_1": 1537,
         "tile": 4,
-        "type": "vfu",
-        "vec": 72
+        "type": "fvfu",
+        "vec": 128
     },
     {
         "core": 1,
-        "dest": 1609,
-        "imm": 200,
+        "dest": 1665,
+        "imm": 256,
         "is_address": true,
         "tile": 4,
         "type": "set",
@@ -6277,12 +6574,12 @@
     },
     {
         "core": 1,
-        "dest": 1609,
+        "dest": 1665,
         "read": 1537,
         "tile": 4,
         "type": "store",
-        "vec": 6,
-        "width": 12
+        "vec": 8,
+        "width": 16
     },
     {
         "core": 1,
@@ -6292,7 +6589,7 @@
     {
         "core": 2,
         "dest": 1537,
-        "imm": 200,
+        "imm": 1306,
         "is_address": true,
         "tile": 4,
         "type": "set",
@@ -6309,10 +6606,21 @@
     },
     {
         "core": 2,
-        "dest": 128,
-        "read": 1537,
+        "dest": 1537,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1537,
         "tile": 4,
-        "type": "copy",
+        "type": "fvfu",
+        "vec": 72
+    },
+    {
+        "core": 2,
+        "dest": 128,
+        "opcode": "fp_to_int",
+        "read_1": 1537,
+        "tile": 4,
+        "type": "fvfu",
         "vec": 72
     },
     {
@@ -6334,7 +6642,7 @@
     {
         "core": 2,
         "dest": 1547,
-        "imm": 72,
+        "imm": 1178,
         "is_address": true,
         "tile": 4,
         "type": "set",
@@ -6351,10 +6659,30 @@
     },
     {
         "core": 2,
-        "dest": 0,
-        "read": 1547,
+        "dest": 1547,
+        "opcode": "relu",
+        "read_1": 1547,
         "tile": 4,
-        "type": "copy",
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 1547,
+        "imm": 1.0,
+        "opcode": "divi",
+        "read_1": 1547,
+        "tile": 4,
+        "type": "fvfu",
+        "vec": 128
+    },
+    {
+        "core": 2,
+        "dest": 0,
+        "opcode": "fp_to_int",
+        "read_1": 1547,
+        "tile": 4,
+        "type": "fvfu",
         "vec": 128
     },
     {
@@ -6372,13 +6700,13 @@
         "read_1": 1537,
         "read_2": 768,
         "tile": 4,
-        "type": "vfu",
+        "type": "ivfu",
         "vec": 10
     },
     {
         "core": 2,
         "dest": 1547,
-        "imm": 784,
+        "imm": 384,
         "is_address": true,
         "tile": 4,
         "type": "set",
