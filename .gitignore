@@ -178,7 +178,8 @@ cython_debug/
 local_tests/
 
 # Ignore examples but keep one
-examples/
+examples/**
+!examples/mlp_l4_mnist/
 !examples/mlp_l4_mnist/config.json
 !examples/mlp_l4_mnist/config.yaml
 !examples/mlp_l4_mnist/ops.json
