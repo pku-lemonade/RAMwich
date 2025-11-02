@@ -1,3 +1,4 @@
+import copy
 import json
 import logging
 import os
@@ -19,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class RAMwich:
-    def __init__(self, json_config_file: str, yaml_config_file: str, ops_file: str, weights_file: str = None):
+    def __init__(self, json_config_file: str, yaml_config_file: str, ops_file: str, params_file: str = None):
         # Load base configuration from JSON file
         if not os.path.exists(json_config_file):
             raise FileNotFoundError(f"Configuration file {json_config_file} not found")
@@ -57,8 +58,8 @@ class RAMwich:
         self.load_operations(ops_file)
 
         # Load weights if provided
-        if weights_file:
-            self.load_weights(weights_file)
+        if params_file:
+            self.load_params(params_file)
 
     def _merge_configs(self, json_config: dict, yaml_config: dict) -> dict:
         """
@@ -66,21 +67,20 @@ class RAMwich:
         JSON config values override YAML config values for the same keys.
         For nested dictionaries, performs a deep merge.
         """
-        if not yaml_config:
-            return json_config
-
-        merged = json_config.copy()
+        base = copy.deepcopy(yaml_config) if yaml_config else {}
 
         # Deep merge function for nested dictionaries
-        def deep_merge(original, override):
+        def deep_merge(original: dict, override: dict):
             for key, value in override.items():
-                if key in original and isinstance(original[key], dict) and isinstance(value, dict):
+                if isinstance(value, dict) and isinstance(original.get(key), dict):
                     deep_merge(original[key], value)
                 else:
                     original[key] = value
 
-        deep_merge(merged, json_config)
-        return merged
+        if json_config:
+            deep_merge(base, json_config)
+
+        return base
 
     def _build_architecture(self) -> list[Node]:
         """Build the hierarchical architecture based on configuration"""
@@ -131,7 +131,7 @@ class RAMwich:
             except ValueError as e:
                 logger.warning(str(e))
 
-    def load_weights(self, file_path: str):
+    def load_params(self, file_path: str):
         """Load weights from a NPZ file and organize by node/tile/core/mvmu hierarchy"""
         if not os.path.exists(file_path):
             logger.error(f"Weight file {file_path} not found")
@@ -141,29 +141,41 @@ class RAMwich:
         if file_path.endswith(".npz"):
             weight_data = np.load(file_path)
 
-            # Define the expected format pattern
-            pattern = r"^node(\d+)_tile(\d+)_core(\d+)_mvmu(\d+)$"
+            # Define the expected format patterns
+            weight_pattern = r"^weight_node(\d+)_tile(\d+)_core(\d+)_mvmu(\d+)$"
+            vector_pattern = r"^vector_node(\d+)_tile(\d+)_core(\d+)_reg(\d+)$"
+            legacy_weight_pattern = r"^node(\d+)_tile(\d+)_core(\d+)_mvmu(\d+)$"
 
             for key in weight_data.files:
-                # Validate the key format
-                match = re.match(pattern, key)
-                if not match:
-                    logger.warning(f"Skipping weight with invalid key format: {key}")
-                    continue
-
-                # Extract IDs from regex groups
-                node_id = int(match.group(1))
-                tile_id = int(match.group(2))
-                core_id = int(match.group(3))
-                mvmu_id = int(match.group(4))
+                weight_match = re.match(weight_pattern, key)
+                vector_match = re.match(vector_pattern, key)
+                legacy_weight_match = re.match(legacy_weight_pattern, key)
 
                 try:
-                    node = self.get_node(node_id)
-                    tile = node.get_tile(tile_id)
-                    core = tile.get_core(core_id)
-                    mvmu = core.get_mvmu(mvmu_id)
+                    if weight_match or legacy_weight_match:
+                        match = weight_match or legacy_weight_match
+                        node_id = int(match.group(1))
+                        tile_id = int(match.group(2))
+                        core_id = int(match.group(3))
+                        mvmu_id = int(match.group(4))
 
-                    mvmu.load_weights(weight_data[key])
+                        node = self.get_node(node_id)
+                        tile = node.get_tile(tile_id)
+                        core = tile.get_core(core_id)
+                        mvmu = core.get_mvmu(mvmu_id)
+                        mvmu.load_weights(weight_data[key])
+                    elif vector_match:
+                        node_id = int(vector_match.group(1))
+                        tile_id = int(vector_match.group(2))
+                        core_id = int(vector_match.group(3))
+                        register_id = int(vector_match.group(4))
+
+                        node = self.get_node(node_id)
+                        tile = node.get_tile(tile_id)
+                        core = tile.get_core(core_id)
+                        core.load_vector(register_id, weight_data[key])
+                    else:
+                        logger.warning(f"Skipping weight with invalid key format: {key}")
                 except IndexError:
                     logger.error(f"Invalid component ID in key: {key}")
                 except Exception as e:
@@ -209,13 +221,11 @@ class RAMwich:
             logger.error(f"Activation data length {length} exceeds EDRAM size {self.config.tile_config.edram_size}")
             return
 
-        # Convert activation data to fixed-point representation (using int)
-        activation_data = (activation_data * (1 << self.config.data_config.activation_frac_bits)).astype(np.int32)
-
         # Load activation data into the first tile of the first node
         node = self.get_node(0)
         tile = node.get_tile(0)
         tile.edram.cells[:length] = activation_data
+        tile.edram.type_bits[:length] = True  # Assuming activations are floats
         tile.dram_controller.valid[:length] = True
 
     def run(self, activation: Union[str, NDArray] = None):

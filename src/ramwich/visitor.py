@@ -138,9 +138,7 @@ class CoreExecutionTimingVisitor(CoreVisitor):
         """Calculate MVM execution time"""
         # This is now synchronized with PUMA. Needs to be recalculated
         return self.config.mvmu_config.adc_config.lat * (
-            (self.config.data_config.activation_width + self.config.mvmu_config.dac_config.resolution - 1)
-            // self.config.mvmu_config.dac_config.resolution
-            + 2
+            (8 + self.config.mvmu_config.dac_config.resolution - 1) // self.config.mvmu_config.dac_config.resolution + 2
         )
 
     def visit_hlt(self, op):
@@ -246,9 +244,9 @@ class CoreExecutionVisitor(CoreVisitor):
         a = self.core.read_from_register(op.read_1, op.vec)
         if op.read_2 is not None:
             b = self.core.read_from_register(op.read_2, op.vec)
-            result = self.core.fvfu.calculate(op.opcode, a, b)
+            result = self.core.fvfu.calculate(op.opcode, a, b, op.imm)
         else:
-            result = self.core.fvfu.calculate(op.opcode, a)
+            result = self.core.fvfu.calculate(op.opcode, a, imm=op.imm)
         self.core.write_to_register(op.dest, result)
 
         # return the done event to the caller
