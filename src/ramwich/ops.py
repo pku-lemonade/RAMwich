@@ -74,7 +74,23 @@ class MVM(CoreOp):
         return visitor.visit_mvm(self)
 
 
-FVFUOpType = Literal["add", "sub", "mul", "div", "min", "max", "sig", "tanh", "relu", "INTtoFP", "FPtoINT"]
+FVFUOpType = Literal[
+    "add",
+    "addi",
+    "sub",
+    "subi",
+    "mul",
+    "muli",
+    "div",
+    "divi",
+    "min",
+    "max",
+    "sig",
+    "tanh",
+    "relu",
+    "int_to_fp",
+    "fp_to_int",
+]
 IVFUOpType = Literal["and", "or", "xor", "not", "add", "sub", "mul", "div", "min", "max"]
 
 
@@ -84,7 +100,7 @@ class FVFU(CoreOp):
     dest: int  # Target register where the result vector will be stored
     read_1: int  # Register that stores operator 1
     read_2: Optional[int] = None  # Register that stores operator 2, Not needed in sig, tanh and relu
-    imm: Optional[int] = None  # Immediate value to use some operation
+    imm: Optional[float] = None  # Immediate value to use in supported operations
     vec: int  # Length of vector
 
     def accept(self, visitor):

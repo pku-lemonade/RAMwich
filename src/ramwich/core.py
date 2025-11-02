@@ -1,4 +1,5 @@
 import logging
+from typing import Union
 
 import numpy as np
 from numpy.typing import NDArray
@@ -46,7 +47,7 @@ class Core:
 
         # Initialize MVMUs
         self.mvmus = [
-            MVMU(id=i, type=self.core_type, config=self.config) for i in range(self.config.num_mvmus_per_core)
+            MVMU(id=i, mvmu_type=self.core_type, config=self.config) for i in range(self.config.num_mvmus_per_core)
         ]
 
         # Initialize simulation timing attributes
@@ -84,7 +85,7 @@ class Core:
 
         return mvmu_id % self.config.num_mvmus_per_core
 
-    def write_to_register(self, start: int, data: NDArray[np.int32]):
+    def write_to_register(self, start: int, data: Union[NDArray[np.int32], NDArray[np.float32]]):
         """Write data to the register file of the MVMU."""
 
         length = len(data)
@@ -111,7 +112,7 @@ class Core:
             internal_start = start % self.config.mvmu_config.xbar_config.xbar_size
             self.mvmus[mvmu_id].write_to_inreg(internal_start, data)
 
-    def read_from_register(self, start: int, length: int) -> NDArray[np.int32]:
+    def read_from_register(self, start: int, length: int) -> Union[NDArray[np.int32], NDArray[np.float32]]:
         """Read data from the register file of the MVMU."""
         end = start + length
 
@@ -136,6 +137,22 @@ class Core:
             mvmu_id = self._get_mvmu_id_from_address(start, end)
             internal_start = start % self.config.mvmu_config.xbar_config.xbar_size
             return self.mvmus[mvmu_id].read_from_outreg(internal_start, length)
+
+    def load_vector(self, reg_id: int, vector: NDArray[np.float32]):
+        """Load a vector into the specified storage register region."""
+        if reg_id < self.storage_start:
+            raise IndexError(f"Load vector operation only allowed in storage registers ({reg_id})")
+
+        start = reg_id - self.storage_start
+        end = start + len(vector)
+
+        if end > self.storage.size:
+            raise IndexError(f"Vector length {len(vector)} exceeds storage capacity starting at register {reg_id}")
+
+        float_vector = np.asarray(vector, dtype=np.float32)
+        # Delegate to SRAM abstraction so metadata stays consistent.
+        self.storage.cells[start:end] = float_vector.view(np.uint32)
+        self.storage.type_bits[start:end] = True  # Mark these cells as floats
 
     def run(self, env):
         """
