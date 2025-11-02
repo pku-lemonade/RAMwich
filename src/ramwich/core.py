@@ -189,7 +189,8 @@ class Core:
     def reset(self):
         """Reset the core and its components"""
         self.cache.reset()
-        self.vfu.reset()
+        self.fvfu.reset()
+        self.ivfu.reset()
         for mvmu in self.mvmus:
             mvmu.reset()
 
