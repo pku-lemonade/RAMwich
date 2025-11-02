@@ -39,27 +39,13 @@ class FVFUStats(BaseModel):
         # Map VFU metrics to Stat object
         stats_dict["FVFU"] = Stats(
             activation_count=self.total_operations,
-            dynamic_energy=self.config.alu_pow_mul_dyn * self.mul_operations
-            + self.config.alu_pow_div_dyn * self.div_operations
+            dynamic_energy=self.config.fvfu_pow_mul_dyn * self.mul_operations
+            + self.config.fvfu_pow_div_dyn * self.div_operations
             + self.config.act_pow_dyn * self.act_operations
-            + self.config.alu_pow_others_dyn * self.other_operations,
-            leakage_energy=self.config.alu_pow_leak,
-            area=self.config.alu_area + self.config.act_area,
-        )
-        stats_dict["FVFU MUL"] = Stats(
-            activation_count=self.mul_operations,
-        )
-        stats_dict["FVFU DIV"] = Stats(
-            activation_count=self.div_operations,
-        )
-        stats_dict["FVFU ACT"] = Stats(
-            activation_count=self.act_operations,
-        )
-        stats_dict["FVFU CONVERT"] = Stats(
-            activation_count=self.convert_operations,
-        )
-        stats_dict["FVFU OTHERS"] = Stats(
-            activation_count=self.other_operations,
+            + self.config.fvfu_pow_convert_dyn * self.convert_operations
+            + self.config.fvfu_pow_others_dyn * self.other_operations,
+            leakage_energy=self.config.fvfu_pow_leak,
+            area=self.config.fvfu_area + self.config.act_area,
         )
 
         return stats_dict
@@ -96,15 +82,6 @@ class IVFUStats(BaseModel):
             + self.config.alu_pow_others_dyn * self.other_operations,
             leakage_energy=self.config.alu_pow_leak,
             area=self.config.alu_area + self.config.act_area,
-        )
-        stats_dict["IVFU MUL"] = Stats(
-            activation_count=self.mul_operations,
-        )
-        stats_dict["IVFU DIV"] = Stats(
-            activation_count=self.div_operations,
-        )
-        stats_dict["IVFU OTHERS"] = Stats(
-            activation_count=self.other_operations,
         )
 
         return stats_dict

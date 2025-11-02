@@ -1,4 +1,4 @@
-from .adc_config import ADCType, ADCConfig
+from .adc_config import ADCConfig, ADCType
 from .dac_config import DACConfig
-from .xbar_config import XBARConfig
 from .noc_config import NOCConfig
+from .xbar_config import XBARConfig

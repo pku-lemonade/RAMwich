@@ -21,15 +21,15 @@ class MVMUConfig(BaseModel):
     )
     snh_area: float = Field(default=0.00004 / 8 / 128, description="Single sample and holder area")
 
-    mux_lat: float = Field(default=0, description="Single MUX processing latency")
-    mux_pow_leak: float = Field(default=0, description="Single MUX leakage power")
-    mux_pow_dyn: float = Field(default=0, description="Single MUX dynamic power")
-    mux_area: float = Field(default=0, description="Single MUX area")
+    mux_lat: float = Field(default=0.07, description="Single MUX processing latency")
+    mux_pow_leak: float = Field(default=0.001, description="Single MUX leakage power")
+    mux_pow_dyn: float = Field(default=0.01893, description="Single MUX dynamic power")
+    mux_area: float = Field(default=0.000005, description="Single MUX area")
 
-    sna_lat: float = Field(default=1, description="Single shift and adder processing latency")
-    sna_pow_leak: float = Field(default=0.005, description="Single shift and adder leakage power")
-    sna_pow_dyn: float = Field(default=0.05 - 0.005, description="Single shift and adder dynamic power")
-    sna_area: float = Field(default=0.00006, description="Single shift and adder area")
+    sna_lat: float = Field(default=0.42, description="Single shift and adder processing latency")
+    sna_pow_leak: float = Field(default=0.001, description="Single shift and adder leakage power")
+    sna_pow_dyn: float = Field(default=0.158, description="Single shift and adder dynamic power")
+    sna_area: float = Field(default=0.000031, description="Single shift and adder area")
 
     num_columns_per_adc: int = Field(default=16, description="Number of columns per ADC")
     num_adc_per_xbar: int = Field(default=None, init=False, description="Number of ADCs per crossbar")

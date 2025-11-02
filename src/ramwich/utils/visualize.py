@@ -18,7 +18,7 @@ def summarize_results(simulator_stats):
 
     # Extract overall statistics
     overall_stats = simulator_stats.get("stats", {})
-    components = simulator_stats.get("components", [])
+    # components = simulator_stats.get("components", [])
 
     print(f"Total operations completed: {sum(overall_stats.get('op_counts', {}).values())}")
     print(f"Total execution time: {overall_stats.get('total_execution_time', 0)}")
