@@ -70,7 +70,16 @@ def main():
     activation = np.load(activation_file)
     label = np.load(label_file)
 
-    batches = 100
+    # Prepare activation to needed shape
+    activation = activation.reshape(-1, 3, 32, 32)
+    activation = activation.transpose(0, 2, 3, 1)  # to (N,H,W,C)
+    activation = activation.reshape(activation.shape[0], -1)  # to (N,3072)
+
+    batches = activation.shape[0]
+
+    print("Loaded activation and label data, Batches:", batches)
+
+    batches = 100  # Limit for testing
     num_workers = 64  # Adjust based on CPU cores
 
     start_time = time.perf_counter()
