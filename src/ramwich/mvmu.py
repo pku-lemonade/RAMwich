@@ -258,6 +258,82 @@ class MVMU:
         indices = np.arange(start, start + length)
         return self.output_register_array.read(indices)
 
+    def read_weights(self) -> NDArray[np.int64]:
+        """Read back the weights stored in the crossbar arrays (for testing/debugging)"""
+        xbar_size = self.mvmu_config.xbar_config.xbar_size
+        data_cfg = self.data_config
+
+        if data_cfg.part_number is None:
+            raise RuntimeError("Data configuration is missing partition metadata; weights cannot be reconstructed.")
+
+        # Allocate result tensor (partition, row, column)
+        weights = np.zeros((data_cfg.part_number, xbar_size, xbar_size), dtype=np.int64)
+
+        # Helper to map a bit position back to the partition index used during loading
+        def part_index_for_bit(bitpos: int) -> int:
+            idx = 0
+            for p in range(data_cfg.part_number):
+                if data_cfg.weight_partition[p] <= bitpos:
+                    idx = p
+                else:
+                    break
+            return idx
+
+        rram_idx = 0
+        sram_idx = 0
+        g_min = self.mvmu_config.xbar_config.rram_conductance_min
+        g_max = self.mvmu_config.xbar_config.rram_conductance_max
+
+        for k in range(self.mvmu_config.num_xbar_per_mvmu):
+            start = self.mvmu_config.stored_bit[k]
+            end = self.mvmu_config.stored_bit[k + 1]
+            bits = end - start
+            if bits <= 0:
+                continue
+
+            part_idx = part_index_for_bit(start)
+            shift = start - data_cfg.weight_partition[part_idx]
+            if shift < 0:
+                raise ValueError("Stored bit configuration is inconsistent with weight partitions.")
+
+            if self.mvmu_config.is_xbar_rram[k]:
+                # Recover signed conductance and map back to integer magnitude
+                pos = self.rram_xbar_array.pos_xbar[rram_idx]
+                neg = self.rram_xbar_array.neg_xbar[rram_idx]
+                signed_conductance = pos - neg
+                abs_conductance = np.abs(signed_conductance)
+
+                denom = (1 << bits) - 1
+                if denom <= 0 or g_max == g_min:
+                    magnitude = np.zeros_like(abs_conductance, dtype=np.int64)
+                else:
+                    step = (g_max - g_min) / denom
+                    # Guard against floating error before rounding
+                    raw = np.maximum(abs_conductance - g_min, 0.0) / step
+                    magnitude = np.rint(raw).astype(np.int64)
+                    magnitude = np.clip(magnitude, 0, denom)
+
+                sign = np.zeros_like(signed_conductance, dtype=np.int64)
+                sign[signed_conductance > 0] = 1
+                sign[signed_conductance < 0] = -1
+                sign = np.where(magnitude == 0, 0, sign)
+                contrib = (magnitude * sign).astype(np.int64)
+                rram_idx += 1
+            else:
+                # SRAM weights are ternary {-1,0,1}
+                pos = self.sram_cim_unit_array.pos_xbar[sram_idx].astype(np.int64)
+                neg = self.sram_cim_unit_array.neg_xbar[sram_idx].astype(np.int64)
+                contrib = pos - neg
+                sram_idx += 1
+
+            # Align the extracted bits back to the partition-local position
+            if shift != 0:
+                contrib = np.left_shift(contrib, shift)
+
+            weights[part_idx] += contrib
+
+        return weights
+
     def reset(self):
         """Reset the MVMU to its initial state"""
         self.rram_xbar_array.reset()
