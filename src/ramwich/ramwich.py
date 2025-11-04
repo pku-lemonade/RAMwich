@@ -224,7 +224,7 @@ class RAMwich:
         # Load activation data into the first tile of the first node
         node = self.get_node(0)
         tile = node.get_tile(0)
-        tile.edram.cells[:length] = activation_data
+        tile.edram.cells[:length] = activation_data.view(np.uint32)
         tile.edram.type_bits[:length] = True  # Assuming activations are floats
         tile.dram_controller.valid[:length] = True
 
