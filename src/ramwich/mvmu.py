@@ -336,15 +336,19 @@ class MVMU:
 
     def reset(self):
         """Reset the MVMU to its initial state"""
-        self.rram_xbar_array.reset()
-        self.dac_array.reset()
-        self.adc_array.reset()
+        if self.mvmu_config.have_rram_xbar:
+            self.rram_xbar_array.reset()
+            self.dac_array.reset()
+            self.snh_array_pos.reset()
+            self.snh_array_neg.reset()
+            self.adc_array.reset()
+            self.mux_array_pos.reset()
+            self.mux_array_neg.reset()
+        if self.mvmu_config.have_sram_xbar:
+            self.sram_cim_unit_array.reset()
+            self.mux_array_sram.reset()
         self.input_register_array.reset()
         self.output_register_array.reset()
-        self.snh_array_pos.reset()
-        self.snh_array_neg.reset()
-        self.mux_array_pos.reset()
-        self.mux_array_neg.reset()
         self.sna_array.reset()
 
     def get_stats(self) -> StatsDict:

@@ -15,15 +15,23 @@ class CoreConfig(BaseModel):
     ccu_area: float = Field(default=0.00145 * 2.25, description="Core control unit area")
 
     # Memory lookup tables
-    DATA_MEM_LAT_DICT: ClassVar[dict[int, int]] = {256: 1, 512: 1, 1024: 1, 2048: 1, 4096: 1}
-    DATA_MEM_POW_DYN_DICT: ClassVar[dict[int, float]] = {256: 0.16, 512: 0.24, 1024: 0.33, 2048: 0.57, 4096: 1}
-    DATA_MEM_POW_LEAK_DICT: ClassVar[dict[int, float]] = {256: 0.044, 512: 0.078, 1024: 0.147, 2048: 0.33, 4096: 1}
+    DATA_MEM_LAT_DICT: ClassVar[dict[int, int]] = {256: 1, 512: 1, 1024: 1, 2048: 1, 4096: 1, 8192: 1}
+    DATA_MEM_POW_DYN_DICT: ClassVar[dict[int, float]] = {256: 0.16, 512: 0.24, 1024: 0.33, 2048: 0.57, 4096: 1, 8192: 1}
+    DATA_MEM_POW_LEAK_DICT: ClassVar[dict[int, float]] = {
+        256: 0.044,
+        512: 0.078,
+        1024: 0.147,
+        2048: 0.33,
+        4096: 1,
+        8192: 1,
+    }
     DATA_MEM_AREA_DICT: ClassVar[dict[int, float]] = {
         256: 0.00056,
         512: 0.00108,
         1024: 0.00192,
         2048: 0.00392,
         4096: 0.00392,  # Aligned with PUMA
+        8192: 0.00392,
     }
 
     dataMem_size: int = Field(default=4096, description="Data memory size")
