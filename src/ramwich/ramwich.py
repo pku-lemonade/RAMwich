@@ -28,7 +28,6 @@ class RAMwich:
         with open(json_config_file) as f:
             if json_config_file.endswith(".json"):
                 json_config = json.load(f)
-                print("config.json loaded")
             else:
                 raise ValueError(f"Unsupported config format: {json_config_file}. Use JSON.")
 
@@ -39,7 +38,6 @@ class RAMwich:
         with open(yaml_config_file) as f:
             if yaml_config_file.endswith(".yaml"):
                 yaml_config = yaml.safe_load(f)
-                print("config.yaml loaded")
             else:
                 raise ValueError(f"Unsupported config format: {yaml_config_file}. Use YAML.")
 
