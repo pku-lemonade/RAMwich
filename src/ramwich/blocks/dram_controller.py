@@ -286,7 +286,7 @@ class DRAMController:
         # Check if there are any pending reads
         if self.pending_reads:
             # If there are pending reads, add them to the ready requests
-            for request in self.pending_reads:
+            for request in self.pending_reads[:]:
                 # If the data is valid, add it to the ready requests
                 if np.all(self.valid[request.start : request.start + request.length]):
                     self.requests.put(request)

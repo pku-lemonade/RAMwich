@@ -85,7 +85,7 @@ class Router:
         total_routers = self.config.num_nodes * self.config.num_tiles_per_node
         for i in range(total_routers):
             if i != self.id:  # Skip creating a buffer for this router itself
-                self.receive_buffers[i] = simpy.Store(env, capacity=1)
+                self.receive_buffers[i] = simpy.Store(env)
 
         # Start the send thread
         self.sending_event = None
