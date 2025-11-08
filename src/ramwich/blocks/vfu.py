@@ -158,7 +158,7 @@ class FVFU:
           * int_to_fp: accepts INT32 input and returns FP32 output.
           * fp_to_int: accepts FP32 input and returns INT32 output.
         """
-        # Example operation: multiplication
+
         if isinstance(a, (int, np.int32)):
             # Normalize scalar to 1D array with appropriate dtype based on opcode
             if opcode == "int_to_fp":
