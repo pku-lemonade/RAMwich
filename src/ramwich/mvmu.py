@@ -196,7 +196,9 @@ class MVMU:
             # If using SRAM CIM, do the following steps
             if self.mvmu_config.have_sram_xbar:
                 # Parallel with step 3, 4, 5, 6, and 7: SRAM crossbar multiplication
-                sram_mvm_output, sram_exp_output = self.sram_cim_unit_array.execute(sliced_digital_activation, i)
+                sram_mvm_output, sram_eaa_output, sram_ewmvm_output = self.sram_cim_unit_array.execute(
+                    sliced_digital_activation, i
+                )
 
             # Step 6: MUX selection
             for j in range(self.mvmu_config.num_columns_per_adc):
@@ -212,32 +214,42 @@ class MVMU:
                 # MUX selection for SRAM
                 if self.mvmu_config.have_sram_xbar:
                     mux_mvm_sram = self.mux_array_sram.select(sram_mvm_output, j)
-                    mux_exp_sram = self.mux_array_sram.select(sram_exp_output, j)
+                    mux_eaa_sram = self.mux_array_sram.select(sram_eaa_output, j)
+                    # expw output is 1D, mux will be simpler and just hardcoded
+                    mux_ewmvm_sram = sram_ewmvm_output[j :: self.mvmu_config.num_columns_per_adc]
 
                 # Depending on the type of crossbar, prepare MVM and EXP outputs separately
                 if not self.mvmu_config.have_sram_xbar:
                     # If all crossbars are RRAM, the calculation output is from the ADC (all MVM, no EXP)
                     calculation_mvm = adc_output
-                    calculation_exp = np.zeros_like(adc_output)
+                    calculation_eaa = np.zeros_like(adc_output)
+                    calculation_ewmvm = np.zeros(self.mvmu_config.num_adc_per_xbar)
+
                 elif not self.mvmu_config.have_rram_xbar:
                     # If all crossbars are SRAM, separate MVM and EXP from SRAM MUX
                     calculation_mvm = mux_mvm_sram
-                    calculation_exp = mux_exp_sram
+                    calculation_eaa = mux_eaa_sram
+                    calculation_ewmvm = mux_ewmvm_sram
+
                 else:
                     # If both crossbars are present, we need to merge the outputs.
                     # This is done by hardware wiring, so it doesn't cost time and energy.
                     calculation_mvm = np.zeros((self.mvmu_config.num_xbar_per_mvmu, self.mvmu_config.num_adc_per_xbar))
-                    calculation_exp = np.zeros((self.mvmu_config.num_xbar_per_mvmu, self.mvmu_config.num_adc_per_xbar))
+                    calculation_eaa = np.zeros((self.mvmu_config.num_xbar_per_mvmu, self.mvmu_config.num_adc_per_xbar))
                     calculation_mvm[self.mvmu_config.rram_to_output_map] = adc_output
+                    calculation_eaa[self.mvmu_config.rram_to_output_map] = np.zeros_like(adc_output)
                     calculation_mvm[self.mvmu_config.sram_to_output_map] = mux_mvm_sram
-                    calculation_exp[self.mvmu_config.sram_to_output_map] = mux_exp_sram
+                    calculation_eaa[self.mvmu_config.sram_to_output_map] = mux_eaa_sram
+                    calculation_ewmvm = mux_ewmvm_sram
 
                 # Step 8: Read current value from output register array
                 mask = np.arange(j, self.mvmu_config.xbar_config.xbar_size, self.mvmu_config.num_columns_per_adc)
                 current_output = self.output_register_array.read(mask)
 
-                # Step 9: SNA operation with separate MVM and EXP inputs
-                sna_output = self.sna_array.calculate(calculation_mvm, calculation_exp, current_output, i)
+                # Step 9: SNA operation with separate MVM EAA and EWMVM inputs
+                sna_output = self.sna_array.calculate(
+                    calculation_mvm, calculation_eaa, calculation_ewmvm, current_output, i
+                )
 
                 # Step 10: Write back to the output register array
                 self.output_register_array.write(sna_output, mask)
