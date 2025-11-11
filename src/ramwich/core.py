@@ -166,14 +166,17 @@ class Core:
 
         self.start_time = env.now
 
-        # Create pipeline stages
+        # Create a mapping from operation to index for tracking
+        self.op_to_index = {id(op): i for i, op in enumerate(self.operations)}
+
+        # Create pipeline stages with completion callback
         pipeline_config = [
             StageConfig("fetch", CoreFetchVisitor(self)),
             StageConfig("decode", CoreDecodeVisitor(self)),
             StageConfig("execute", CoreExecutionVisitor(self)),
         ]
 
-        pipeline = Pipeline(env, pipeline_config)
+        pipeline = Pipeline(env, pipeline_config, on_operation_complete=self._on_operation_complete)
         pipeline.run()
 
         # Feed instructions into pipeline
@@ -185,6 +188,23 @@ class Core:
         self.active_cycles = env.now - self.start_time
 
         logger.info(f"Tile {self.parent.id} Core {self.id} finished execution at time {env.now}")
+
+    def _on_operation_complete(self, op, execution_time):
+        """Callback when an operation completes execution in the pipeline."""
+        # Get the operation index
+        op_index = self.op_to_index.get(id(op))
+        if op_index is None:
+            return
+
+        # Mark as executed in debug monitor if available
+        if (
+            hasattr(self.parent, "parent")
+            and hasattr(self.parent.parent, "parent")
+            and hasattr(self.parent.parent.parent, "monitor")
+            and self.parent.parent.parent.monitor
+        ):
+            op_id = f"node{self.parent.parent.id}_tile{self.parent.id}_core{self.id}_op{op_index}"
+            self.parent.parent.parent.monitor.mark_operation_executed(op_id, execution_time)
 
     def reset(self):
         """Reset the core and its components"""
