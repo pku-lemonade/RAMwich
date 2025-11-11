@@ -92,14 +92,22 @@ class Memory:
     def __init__(self, size: int):
         self.size = size
 
-        # Initialize memory cells
-        self.cells = np.zeros(self.size, dtype=np.int32)
+        # Initialize memory cells as raw 32-bit words; interpretation handled on read/write
+        self.cells = np.zeros(self.size, dtype=np.uint32)
+        # Track whether each cell currently stores a float (True) or int (False)
+        self.type_bits = np.zeros(self.size, dtype=np.bool_)
 
         # Initialize stats
         self.stats = MemoryStats()
 
     def read(self, start: int, length: int, batch: int = 1):
-        """Read a block of registers from SRAM"""
+        """Read a block of registers from SRAM.
+
+        The values are automatically converted back to their stored precision
+        (float32 or int32) using the type metadata captured during writes. If a
+        mixture of types exists inside the requested span, the result is
+        promoted to float32 to avoid information loss.
+        """
 
         end = start + length
 
@@ -115,18 +123,52 @@ class Memory:
         self.stats.total_operations += batch
         self.stats.total_operated_cells += length
 
-        return self.cells[start:end].copy()
+        raw = self.cells[start:end].copy()
+        type_slice = self.type_bits[start:end]
+
+        if np.all(type_slice):
+            return raw.view(np.float32)
+        if not np.any(type_slice):
+            return raw.view(np.int32)
+
+        # Mixed types: promote to float32 for safe interpretation
+        promoted = raw.view(np.float32)
+        return promoted
 
     def reset(self):
         """Reset the memory cells and statistics"""
         self.cells.fill(0)
+        self.type_bits.fill(False)
         self.stats.reset()
 
-    def write(self, start: int, values: Union[NDArray[np.int32], int], batch: int = 1):
-        """Write values to a block of registers in SRAM"""
-        # Convert to numpy array if it's a single value
-        if isinstance(values, int):
-            values = np.array([values], dtype=np.int32)
+    def write(
+        self,
+        start: int,
+        values: Union[NDArray[np.int32], NDArray[np.float32], int, float],
+        batch: int = 1,
+    ):
+        """Write values to a block of registers in SRAM.
+
+        Accepts either 32-bit integer or 32-bit floating-point inputs. Values are stored as
+        raw 32-bit words, preserving exact bit patterns for both representations.
+        """
+
+        # Normalize input to numpy array
+        if isinstance(values, (int, float)):
+            values = np.array([values], dtype=np.float32 if isinstance(values, float) else np.int32)
+        else:
+            values = np.asarray(values)
+
+        if np.issubdtype(values.dtype, np.floating):
+            values = values.astype(np.float32, copy=False)
+            stored = values.view(np.uint32)
+            is_float = True
+        elif np.issubdtype(values.dtype, np.integer):
+            values = values.astype(np.int32, copy=False)
+            stored = values.view(np.uint32)
+            is_float = False
+        else:
+            raise TypeError("Memory write supports only 32-bit integer or float data")
 
         length = len(values)
         end = start + length
@@ -136,7 +178,8 @@ class Memory:
             raise IndexError(f"Write operation out of range ({start}, {length})")
 
         # Write values
-        self.cells[start:end] = values
+        self.cells[start:end] = stored
+        self.type_bits[start:end] = is_float
 
         # Update stats
         self.stats.write_operations += batch

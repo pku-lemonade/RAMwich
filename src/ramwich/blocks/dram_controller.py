@@ -2,7 +2,6 @@ from typing import Optional
 
 import numpy as np
 import simpy
-from numpy.typing import NDArray
 from pydantic import BaseModel, Field
 from pydantic.config import ConfigDict
 
@@ -36,7 +35,7 @@ class ReadRequest(Request):
 
 
 class WriteRequest(Request):
-    data: NDArray[np.int32]
+    data: np.ndarray
 
     @property
     def length(self) -> int:
@@ -174,7 +173,7 @@ class DRAMController:
         # Return event that the core can yield on
         return done_event
 
-    def submit_write_request(self, core_id: int, start: int, data: NDArray[np.int32]) -> simpy.Event:
+    def submit_write_request(self, core_id: int, start: int, data: np.ndarray) -> simpy.Event:
         """Submit a write request to the DRAM controller"""
 
         if not self.is_running:
@@ -183,8 +182,16 @@ class DRAMController:
         # Create an event that will be triggered when request completes
         done_event = self.env.event()
 
+        data_array = np.asarray(data)
+        if data_array.ndim == 1:
+            data_array = data_array.reshape(1, -1)
+        elif data_array.ndim != 2:
+            raise ValueError("Write data must be 1D or 2D array")
+
         # Add request to queue with completion event
-        request = WriteRequest(core_id=core_id, start=start, data=data, submit_time=self.env.now, done_event=done_event)
+        request = WriteRequest(
+            core_id=core_id, start=start, data=data_array, submit_time=self.env.now, done_event=done_event
+        )
 
         # Add the request to the ready requests
         self.requests.put(request)
@@ -279,7 +286,7 @@ class DRAMController:
         # Check if there are any pending reads
         if self.pending_reads:
             # If there are pending reads, add them to the ready requests
-            for request in self.pending_reads:
+            for request in self.pending_reads[:]:
                 # If the data is valid, add it to the ready requests
                 if np.all(self.valid[request.start : request.start + request.length]):
                     self.requests.put(request)

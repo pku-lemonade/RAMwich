@@ -66,9 +66,9 @@ class Tile:
     def execute_receive(self, op: Recv):
         """Execute a Receive operation"""
 
-        # creata a data buffer to store the received data
-        received_data = np.zeros((op.vec, op.width), dtype=np.int32)
-        for i in range(op.vec):
+        # collect each received vector; dtype may be int or float depending on source
+        received_rows = []
+        for _ in range(op.vec):
             # Wait for the data to be available in the router's receive buffer
             data = yield self.env.process(self.router.read_packet(source=op.source_tile))
 
@@ -77,8 +77,13 @@ class Tile:
                 logger.error(f"Tile {self.id}: Data size mismatch for receive operation at time {self.env.now}")
                 return False
 
-            # Copy the data to the received_data buffer
-            np.copyto(received_data[i], data)
+            received_rows.append(np.array(data, copy=True))
+
+        try:
+            received_data = np.stack(received_rows, axis=0)
+        except ValueError as exc:
+            logger.error(f"Tile {self.id}: Failed to stack received packets: {exc}")
+            return False
 
         # Write the received data to the DRAM
         yield self.dram_controller.submit_write_request(core_id=-1, start=op.mem_addr, data=received_data)
@@ -112,12 +117,20 @@ class Tile:
         self.dram_controller.run(env)
         self.router.run(env)
 
-        for op in self.operations:
+        for i, op in enumerate(self.operations):
             success = yield env.process(op.accept(self))
             if not success:
                 logger.warning(f"Tile {self.id}: Operation {op} failed at time {env.now}")
             else:
                 logger.debug(f"Tile {self.id}: Operation {op} completed at time {env.now}")
+                # Mark operation as executed in debug monitor if available
+                if (
+                    hasattr(self.parent, "parent")
+                    and hasattr(self.parent.parent, "monitor")
+                    and self.parent.parent.monitor
+                ):
+                    op_id = f"node{self.parent.id}_tile{self.id}_op{i}"
+                    self.parent.parent.monitor.mark_operation_executed(op_id, env.now)
 
         self.active_cycles = env.now - self.start_time
 
