@@ -14,12 +14,14 @@ class SRAMCIMUnitStats(BaseModel):
 
     # Xbar specific metrics
     mac_operations: int = Field(default=0, description="Total number of operations")
-    exp_operations: int = Field(default=0, description="Total number of exponential operations")
+    eaa_operations: int = Field(default=0, description="Total number of exponential operations")
+    ewmvm_operations: int = Field(default=0, description="Total number of exponential with MVM operations")
 
     def reset(self):
         """Reset all statistics to zero"""
         self.mac_operations = 0
-        self.exp_operations = 0
+        self.eaa_operations = 0
+        self.ewmvm_operations = 0
 
     def get_stats(self) -> StatsDict:
         # Map Xbar metrics to Stat object
@@ -37,6 +39,7 @@ class SRAMCIMUnitStats(BaseModel):
 
 
 class SRAMCIMUnitArray:
+    max_val = 0
     """
     Crossbar array component that performs matrix-vector multiplication operations.
     """
@@ -54,18 +57,29 @@ class SRAMCIMUnitArray:
 
         # Use precomputed types and indices from config to avoid per-unit recomputation
         self.xbar_types = list(self.mvmu_config.sram_xbar_types)
+        # MVM is required for INT and MANT xbars
         self.mvm_indices = np.array(self.mvmu_config.sram_mvm_indices, dtype=int)
-        # EXP-style computation is required for both EXP and MANT at the last iteration
-        self.exp_indices = np.array(self.mvmu_config.sram_exp_indices, dtype=int)
+        # EAA computation is required for EXPA at the last iteration
+        self.eaa_indices = np.array(self.mvmu_config.sram_eaa_indices, dtype=int)
+        # EWMVM computation is required for EXPW and MANT at all iterations
+        self.ewmvm_indices = np.array(self.mvmu_config.sram_ewmvm_indices, dtype=int)
         # MANT xbars need scaling factor applied to their MVM part
         self.mant_indices = np.array(self.mvmu_config.sram_mant_indices, dtype=int)
         self.mant_factor = self.mvmu_config.data_config.MANT_factor
         # Create a boolean mask for fast MANT lookup: True if mvm_indices[i] is a MANT xbar
         self.mvm_is_mant = np.isin(self.mvm_indices, self.mant_indices)
 
-        # Initialize exp input buffer for exponential calculations if needed
-        if len(self.exp_indices) > 0:
-            self.exp_input = np.zeros(self.xbar_size, dtype=np.int64)
+        # Initialize eaa input buffer for exponential calculations if needed
+        if len(self.eaa_indices) > 0:
+            self.eaa_input = np.zeros(self.xbar_size, dtype=np.int64)
+
+        # Initialize ewmvm weight buffer for exponential with MVM calculations if needed
+        # This is not part of real hardware, just for simulation purposes
+        # In real hardware, weights are stored in pos_xbar and neg_xbar, and shifter will read them directly
+        if len(self.ewmvm_indices) > 0:
+            self.ewmvm_weight = np.zeros(
+                (len(self.mvmu_config.expw_partition_indices), self.xbar_size, self.xbar_size), dtype=np.int64
+            )
 
         # Initialize stats
         self.stats = SRAMCIMUnitStats(
@@ -82,6 +96,18 @@ class SRAMCIMUnitArray:
         # Direct boolean comparisons are faster than np.maximum
         self.pos_xbar = (weights == 1).astype(np.int8)
         self.neg_xbar = (weights == -1).astype(np.int8)
+
+        # For EXPW xbars, store weights in ewmvm_weight buffer for simulation purposes
+        if len(self.ewmvm_indices) > 0:
+            for i, part_indices in enumerate(self.mvmu_config.expw_partition_indices):
+                pos_weight = np.zeros((self.xbar_size, self.xbar_size), dtype=np.int64)
+                neg_weight = np.zeros((self.xbar_size, self.xbar_size), dtype=np.int64)
+                for xbar_idx in part_indices:
+                    pos_weight += self.pos_xbar[xbar_idx]
+                    neg_weight += self.neg_xbar[xbar_idx]
+                    pos_weight = pos_weight << 1
+                    neg_weight = neg_weight << 1
+                self.ewmvm_weight[i] = pos_weight - neg_weight
 
     def execute(self, input_vector: NDArray[np.int32], iteration: int):
         """Execute a matrix-vector multiplication operation
@@ -108,7 +134,8 @@ class SRAMCIMUnitArray:
 
         # Initialize separate result arrays for MVM and EXP
         mvm_result = np.zeros((self.num_xbar, self.xbar_size)).astype(np.int64)
-        exp_result = np.zeros((self.num_xbar, self.xbar_size)).astype(np.int64)
+        eaa_result = np.zeros((self.num_xbar, self.xbar_size)).astype(np.int64)
+        ewmvm_result = np.zeros(self.xbar_size).astype(np.int64)
 
         # Perform MVM only for xbars that need it (INT and MANT types)
         if len(self.mvm_indices) > 0:
@@ -125,41 +152,48 @@ class SRAMCIMUnitArray:
             for i, xbar_idx in enumerate(self.mvm_indices):
                 mvm_result[xbar_idx] += scaled_output[i]
 
-        # Process EXP xbars separately (only shift-and-add, no MVM)
-        if len(self.exp_indices) > 0:
+        # Process EXPA xbars separately (only shift-and-add, no MVM)
+        if len(self.eaa_indices) > 0:
             # For EXP, we do not need MVM, but need to store input shifted by iteration
-            self.exp_input += input_vector << (iteration * self.mvmu_config.dac_config.resolution)
+            self.eaa_input += input_vector << (iteration * self.mvmu_config.dac_config.resolution)
 
             # For last iteration, compute the final exponential result
             if is_last_iteration:
                 # Compute per-row sum over columns of (weight << input)
                 # Broadcast shift across the column dimension, then reduce along columns
-                pos_shifted = self.pos_xbar[self.exp_indices].astype(np.int64) << self.exp_input
-                neg_shifted = self.neg_xbar[self.exp_indices].astype(np.int64) << self.exp_input
+                pos_shifted = self.pos_xbar[self.eaa_indices].astype(np.int64) << self.eaa_input
+                neg_shifted = self.neg_xbar[self.eaa_indices].astype(np.int64) << self.eaa_input
                 pos_sum = np.sum(pos_shifted, axis=2)
                 neg_sum = np.sum(neg_shifted, axis=2)
                 exp_output = pos_sum - neg_sum
-                for i, xbar_idx in enumerate(self.exp_indices):
-                    # Return accumulated exponential result on last iteration in exp_result
-                    exp_result[xbar_idx] += exp_output[i]
+                for i, xbar_idx in enumerate(self.eaa_indices):
+                    # Return accumulated exponential result on last iteration in eaa_result
+                    eaa_result[xbar_idx] += exp_output[i]
                     # Reset input buffer for next forward pass
-                self.exp_input.fill(0)
-            # else: exp_result remains 0 for non-last iterations, no action needed
+                self.eaa_input.fill(0)
+            # else: eaa_result remains 0 for non-last iterations, no action needed
+
+        # Process EWMVM xbars (exponential weight MVM) at all iterations
+        if len(self.ewmvm_indices) > 0:
+            # Combine all partition contributions in a single contraction
+            ewmvm_result = np.einsum("ikj,j->k", self.ewmvm_weight, input_vector)
 
         # Update the statistics (only count actual operations performed)
         num_mvm_xbars = len(self.mvm_indices)
         self.stats.mac_operations += num_mvm_xbars * 2 * self.xbar_size
+        num_ewmvms = len(self.mvmu_config.expw_partition_indices)
+        self.stats.ewmvm_operations += num_ewmvms * self.xbar_size
         if is_last_iteration:
             num_exp_xbars = len(self.exp_indices)
-            self.stats.exp_operations += num_exp_xbars * 2 * self.xbar_size
+            self.stats.eaa_operations += num_exp_xbars * 2 * self.xbar_size
 
-        return mvm_result, exp_result
+        return mvm_result, eaa_result, ewmvm_result
 
     def reset(self):
         """Reset all statistics and accumulators to zero"""
         self.stats.reset()
-        if hasattr(self, "exp_input"):
-            self.exp_input.fill(0)
+        if hasattr(self, "eaa_input"):
+            self.eaa_input.fill(0)
 
     def get_stats(self) -> StatsDict:
         """Get statistics for this Xbar"""
