@@ -117,12 +117,20 @@ class Tile:
         self.dram_controller.run(env)
         self.router.run(env)
 
-        for op in self.operations:
+        for i, op in enumerate(self.operations):
             success = yield env.process(op.accept(self))
             if not success:
                 logger.warning(f"Tile {self.id}: Operation {op} failed at time {env.now}")
             else:
                 logger.debug(f"Tile {self.id}: Operation {op} completed at time {env.now}")
+                # Mark operation as executed in debug monitor if available
+                if (
+                    hasattr(self.parent, "parent")
+                    and hasattr(self.parent.parent, "monitor")
+                    and self.parent.parent.monitor
+                ):
+                    op_id = f"node{self.parent.id}_tile{self.id}_op{i}"
+                    self.parent.parent.monitor.mark_operation_executed(op_id, env.now)
 
         self.active_cycles = env.now - self.start_time
 

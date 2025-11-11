@@ -11,6 +11,7 @@ import yaml
 from numpy.typing import NDArray
 
 from .config import Config
+from .debug_monitor import SimulationMonitor
 from .node import Node
 from .ops import CoreOp, Operation, TileOp
 from .stats import StatsDict
@@ -59,6 +60,9 @@ class RAMwich:
         if params_file:
             self.load_params(params_file)
 
+        # Debug monitor instance (will be initialized in run())
+        self.monitor = None
+
     def _merge_configs(self, json_config: dict, yaml_config: dict) -> dict:
         """
         Merge YAML and JSON configurations.
@@ -85,7 +89,7 @@ class RAMwich:
         nodes = []
 
         for node_id in range(self.config.num_nodes):
-            node = Node(id=node_id, config=self.config)
+            node = Node(id=node_id, parent=self, config=self.config)
             nodes.append(node)
 
         return nodes
@@ -226,8 +230,24 @@ class RAMwich:
         tile.edram.type_bits[:length] = True  # Assuming activations are floats
         tile.dram_controller.valid[:length] = True
 
-    def run(self, activation: Union[str, NDArray] = None):
-        """Run the simulation with operations from the specified file"""
+    def run(
+        self,
+        activation: Union[str, NDArray] = None,
+        timeout: int = 100000,
+        save_time: int = None,
+        enable_debug_monitor: bool = True,
+        debug_file: str = None,
+    ):
+        """
+        Run the simulation with operations from the specified file.
+
+        Args:
+            activation: Input activation data (file path or numpy array)
+            timeout: Maximum simulation time before timeout (in cycles)
+            save_time: Specific time to save debug info (if None, only saves on timeout)
+            enable_debug_monitor: Enable debug monitoring to detect stuck simulations
+            debug_file: Path to save debug information (default: debug_output_<timestamp>.txt)
+        """
 
         # Load activations if provided
         if activation is not None:
@@ -242,9 +262,22 @@ class RAMwich:
         for node in self.nodes:
             processes.append(self.env.process(node.run(self.env)))
 
+        # Add debug monitor if enabled
+        if enable_debug_monitor:
+            self.monitor = SimulationMonitor(self, timeout=timeout, save_time=save_time, debug_file=debug_file)
+            monitor_process = self.env.process(self.monitor.monitor_process(self.env))
+            processes.append(monitor_process)
+
         # Run simulation until all node processes complete
         if processes:
-            self.env.run(until=simpy.AllOf(self.env, processes))
+            try:
+                self.env.run(until=simpy.AllOf(self.env, processes))
+            except RuntimeError as e:
+                if "timeout" in str(e).lower():
+                    logger.error(f"Simulation timed out: {e}")
+                    raise
+                else:
+                    raise
         else:
             logger.warning("No node processes to run. Please check the operations file.")
 

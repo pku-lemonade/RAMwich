@@ -16,6 +16,7 @@ class Stage:
         input_buffer: simpy.Store,
         output_buffer: Optional[simpy.Store],
         visitor: CoreVisitor,
+        on_operation_complete=None,
     ):
         self.env = env
         self.name = name
@@ -23,6 +24,7 @@ class Stage:
         self.output_buffer = output_buffer
         self.visitor = visitor
         self.completion_event = self.env.event()
+        self.on_operation_complete = on_operation_complete
 
     def run(self):
         """
@@ -32,6 +34,10 @@ class Stage:
             op = yield self.input_buffer.get()
 
             yield op.accept(self.visitor)
+
+            # If this is the last stage (execute), call the completion callback
+            if self.output_buffer is None and self.on_operation_complete:
+                self.on_operation_complete(op, self.env.now)
 
             if self.output_buffer:
                 yield self.output_buffer.put(op)
@@ -55,12 +61,13 @@ class StageConfig:
 class Pipeline:
     """Encapsulates the setup and execution of a multi-stage pipeline."""
 
-    def __init__(self, env: simpy.Environment, config: list[StageConfig]):
+    def __init__(self, env: simpy.Environment, config: list[StageConfig], on_operation_complete=None):
         self.env = env
         self.config = config
         self.stages: list[Stage] = []
         self.first_stage_buffer = simpy.Store(self.env, capacity=1)
         self.done_event = self.env.event()
+        self.on_operation_complete = on_operation_complete  # Callback for when an operation completes
         self._build()
 
     def _build(self):
@@ -73,8 +80,16 @@ class Pipeline:
 
             output_buffer = None if i == len(self.config) - 1 else simpy.Store(self.env, capacity=1)
 
+            # Pass callback only to the last stage (execute stage)
+            callback = self.on_operation_complete if output_buffer is None else None
+
             stage = Stage(
-                env=self.env, name=name, input_buffer=current_input_buffer, output_buffer=output_buffer, visitor=visitor
+                env=self.env,
+                name=name,
+                input_buffer=current_input_buffer,
+                output_buffer=output_buffer,
+                visitor=visitor,
+                on_operation_complete=callback,
             )
             self.stages.append(stage)
 
