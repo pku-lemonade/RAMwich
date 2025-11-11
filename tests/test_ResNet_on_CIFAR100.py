@@ -40,11 +40,11 @@ def process_batch(
             simulator.reset()
 
         # Run simulation for this sample
-        simulator.run(activation=activation[test_id])
+        simulator.run(activation=activation[test_id], enable_debug_monitor=False)
 
         # Check prediction
-        output = simulator.get_node(0).get_tile(1).edram.cells[:10]
-        output_float = output.astype(np.float64) / (1 << 8)
+        output = simulator.get_node(0).get_tile(1).edram.cells[:100]
+        output_float = output.view(np.float32)
         correct = np.argmax(output_float) == labels[test_id]
         results.append(correct)
 
@@ -67,20 +67,18 @@ def main():
     activation_file = "examples/ResNet_20_cifar100/cifar100_test.npy"
     label_file = "examples/ResNet_20_cifar100/cifar100_test_labels.npy"
 
-    activation = np.load(activation_file)
-    label = np.load(label_file)
-
-    # Prepare activation to needed shape
-    activation = activation.reshape(-1, 3, 32, 32)
+    # Prepare activation to needed shape and do normalization
+    activation = np.load(activation_file).reshape(-1, 3, 32, 32).astype(np.float32)
     activation = activation.transpose(0, 2, 3, 1)  # to (N,H,W,C)
     activation = activation.reshape(activation.shape[0], -1)  # to (N,3072)
+    label = np.load(label_file)
 
     batches = activation.shape[0]
 
-    print("Loaded activation and label data, Batches:", batches)
-
-    batches = 100  # Limit for testing
+    # batches = 100  # Limit for testing
     num_workers = 64  # Adjust based on CPU cores
+
+    print("Loaded activation and label data, Batches:", batches)
 
     start_time = time.perf_counter()
 
@@ -93,6 +91,11 @@ def main():
 
     # Divide work among workers
     sample_indices = list(range(0, batches))
+    if not sample_indices:
+        print("No samples to process.")
+        return
+
+    num_workers = min(num_workers, len(sample_indices))
     samples_per_worker = len(sample_indices) // num_workers
     remainder = len(sample_indices) % num_workers
 
