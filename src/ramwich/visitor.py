@@ -122,9 +122,10 @@ class CoreExecutionTimingVisitor(CoreVisitor):
         return self.config.core_config.dataMem_lat
 
     def visit_fvfu(self, op):
-        """Calculate VFU execution time"""
-        # To be implemented: placeholder value
-        return 1
+        """Calculate FVFU execution time"""
+        return self.config.core_config.fvfu_lat * (
+            (op.vec + self.config.core_config.num_alu_per_ivfu - 1) // self.config.core_config.num_alu_per_ivfu
+        )
 
     def visit_ivfu(self, op):
         """Calculate Integer VFU execution time"""
@@ -135,11 +136,14 @@ class CoreExecutionTimingVisitor(CoreVisitor):
         )
 
     def visit_mvm(self, op):
-        """Calculate MVM execution time"""
-        # This is now synchronized with PUMA. Needs to be recalculated
-        return self.config.mvmu_config.adc_config.lat * (
-            (8 + self.config.mvmu_config.dac_config.resolution - 1) // self.config.mvmu_config.dac_config.resolution + 2
-        )
+        """Calculate MVM execution time - corrected"""
+        mvmu_config = self.config.mvmu_config
+
+        adc_throughput = mvmu_config.num_columns_per_adc / mvmu_config.adc_config.lat
+
+        total_latency = mvmu_config.num_iterations * (mvmu_config.num_columns_per_adc / adc_throughput) + 2
+
+        return int(total_latency)
 
     def visit_hlt(self, op):
         return 1  # Minimal time unit for halt

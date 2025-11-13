@@ -1,5 +1,7 @@
 from typing import ClassVar
+
 from pydantic import BaseModel, Field, model_validator
+
 
 class DACConfig(BaseModel):
     """Digital-to-Analog Converter configuration"""
@@ -7,20 +9,20 @@ class DACConfig(BaseModel):
     # Class constants for lookup tables
     LAT_DICT: ClassVar[dict[int, int]] = {1: 1, 2: 1, 4: 1, 8: 1, 16: 1}
     POW_DYN_DICT: ClassVar[dict[int, float]] = {
-        1: 0.00350625,
-        2: 0.00350625,
-        4: 0.00350625,
-        8: 0.00350625,
-        16: 0.00350625,
+        1: 0.5739,
+        2: 1.1444,
+        4: 2.4808,
+        8: 4.0827,
+        16: 6.6344,
     }
     POW_LEAK_DICT: ClassVar[dict[int, float]] = {
-        1: 0.000390625,
-        2: 0.000390625,
-        4: 0.000390625,
-        8: 0.000390625,
-        16: 0.000390625,
+        1: 0,
+        2: 0,
+        4: 0,
+        8: 0,
+        16: 0,
     }
-    AREA_DICT: ClassVar[dict[int, float]] = {1: 1.67e-7, 2: 1.67e-7, 4: 1.67e-7, 8: 1.67e-7, 16: 1.67e-7}
+    AREA_DICT: ClassVar[dict[int, float]] = {1: 0.000466, 2: 0.000489, 4: 0.000601, 8: 0.000703, 16: 0.000915}
 
     resolution: int = Field(default=1, description="DAC resolution")
     VDD: float = Field(default=1, description="Supply voltage")
@@ -38,5 +40,5 @@ class DACConfig(BaseModel):
             self.pow_dyn = self.POW_DYN_DICT[self.resolution]
             self.pow_leak = self.POW_LEAK_DICT[self.resolution]
             self.area = self.AREA_DICT[self.resolution]
-            
+
         return self

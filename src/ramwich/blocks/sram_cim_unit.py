@@ -32,7 +32,8 @@ class SRAMCIMUnitStats(BaseModel):
                 self.config.sram_xbar_pow_leak + self.config.calculator_pow_leak * self.num_calculator_per_xbar
             )
             * self.num_xbar,
-            area=(self.config.sram_xbar_area + self.num_calculator_per_xbar) * self.num_xbar,
+            area=(self.config.sram_xbar_area + self.num_calculator_per_xbar * self.config.calculator_area)
+            * self.num_xbar,
         )
 
         return StatsDict({"SRAM CIM Unit": stats})
