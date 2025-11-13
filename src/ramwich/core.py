@@ -236,7 +236,8 @@ class Core:
 
         # then add stats from all other components
         stats_dict.merge(self.cache.get_stats())
-        stats_dict.merge(self.vfu.get_stats())
+        stats_dict.merge(self.fvfu.get_stats())
+        stats_dict.merge(self.ivfu.get_stats())
         for mvmu in self.mvmus:
             stats_dict.merge(mvmu.get_stats())
 
