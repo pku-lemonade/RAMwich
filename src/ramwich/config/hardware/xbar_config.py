@@ -41,6 +41,11 @@ class XBARConfig(BaseModel):
     sram_xbar_pow_leak: float = Field(default=None, init=False, description="Crossbar leakage power")
     sram_xbar_area: float = Field(default=None, init=False, description="Crossbar area")
 
+    mac_lat: float = Field(default=4, description="Single MAC processing latency")
+    mac_pow_leak: float = Field(default=0.003, description="Single MAC leakage power")
+    mac_pow_dyn: float = Field(default=0.02, description="Single MAC dynamic power")
+    mac_area: float = Field(default=0.000171, description="Single MAC area")
+
     CALCULATOR_LAT_DICT: ClassVar[dict[int, int]] = {32: 0, 64: 0, 128: 0, 256: 0}
     CALCULATOR_POW_LEAK_DICT: ClassVar[dict[int, int]] = {32: 0, 64: 0, 128: 0, 256: 0}
     CALCULATOR_POW_DYN_DICT: ClassVar[dict[int, int]] = {32: 2.769, 64: 2.769, 128: 2.769, 256: 2.769}

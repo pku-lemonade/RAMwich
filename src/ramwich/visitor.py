@@ -135,15 +135,48 @@ class CoreExecutionTimingVisitor(CoreVisitor):
             // self.config.core_config.num_alu_per_ivfu
         )
 
-    def visit_mvm(self, op):
-        """Calculate MVM execution time - corrected"""
-        mvmu_config = self.config.mvmu_config
+    def visit_mvm(self, op: MVM) -> int:
+        """Calculate MVM execution time"""
 
-        adc_throughput = mvmu_config.num_columns_per_adc / mvmu_config.adc_config.lat
+        mvmu   = self.config.mvmu_config
+        xbar = self.config.xbar_config
+        dac  = self.config.dac_config
+        adc  = self.config.adc_config
 
-        total_latency = mvmu_config.num_iterations * (mvmu_config.num_columns_per_adc / adc_throughput) + 2
+        num_iter = mvmu.num_iterations
+        activation_width = self.config.data_config.activation_width
 
-        return int(total_latency)
+
+        # if RRAM, use adc to read out
+        if mvmu.have_rram_xbar:
+            t_rram_core     = dac.lat + xbar.xbar_lat + mvmu.snh_lat
+            t_rram_readout  = mvmu.mux_lat + adc.LAT_DICT[8]
+        else:
+            t_rram_core    = 0
+            t_rram_readout = 0
+
+        # if SRAM, consider linear and expw paths
+        has_linear = len(mvmu.sram_mvm_indices) > 0 and mvmu.have_sram_xbar
+        t_linear_core = (xbar.sram_xbar_lat + xbar.calculator_lat + xbar.mac_lat) if has_linear else 0
+
+        has_expw = len(mvmu.sram_ewmvm_indices) > 0 and mvmu.have_sram_xbar
+        t_expw_core = (xbar.sram_xbar_lat + xbar.calculator_lat + xbar.mac_lat + mvmu.sna_lat) if has_expw else 0
+
+        # EAA finalize time (only once at the end)
+        has_eaa = len(mvmu.sram_eaa_indices) > 0 and mvmu.have_sram_xbar
+        t_eaa_finalize = mvmu.sna_lat if has_eaa else 0
+
+        # Parallel mvmu core take the maximum of the three + RRAM
+        t_core = max(t_rram_core, t_linear_core, t_expw_core)
+
+        t_linear_accumulate = mvmu.sna_lat if has_linear else 0
+        t_expw_accumulate   = mvmu.sna_lat if has_expw else 0
+
+        per_iter = t_core + t_rram_readout + t_linear_accumulate + t_expw_accumulate
+
+        total_cycles = (num_iter * per_iter + t_eaa_finalize) * activation_width + 2
+        return total_cycles
+    
 
     def visit_hlt(self, op):
         return 1  # Minimal time unit for halt

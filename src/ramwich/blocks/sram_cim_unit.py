@@ -27,12 +27,12 @@ class SRAMCIMUnitStats(BaseModel):
         # Map Xbar metrics to Stat object
         stats = Stats(
             activation_count=self.mac_operations,
-            dynamic_energy=(self.config.sram_xbar_pow_dyn + self.config.calculator_pow_dyn) * self.mac_operations,
+            dynamic_energy=(self.config.sram_xbar_pow_dyn + self.config.calculator_pow_dyn + self.config.mac_pow_dyn) * self.mac_operations,
             leakage_energy=(
-                self.config.sram_xbar_pow_leak + self.config.calculator_pow_leak * self.num_calculator_per_xbar
+                self.config.sram_xbar_pow_leak + self.config.calculator_pow_leak * self.num_calculator_per_xbar + self.config.mac_pow_leak * self.num_calculator_per_xbar
             )
             * self.num_xbar,
-            area=(self.config.sram_xbar_area + self.num_calculator_per_xbar * self.config.calculator_area)
+            area=(self.config.sram_xbar_area + self.num_calculator_per_xbar * self.config.calculator_area + self.num_calculator_per_xbar * self.config.mac_area)
             * self.num_xbar,
         )
 
