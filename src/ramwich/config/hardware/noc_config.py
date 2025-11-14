@@ -18,14 +18,14 @@ class NOCConfig(BaseModel):
     num_port: int = Field(default=4, description="Number of ports")
 
     # Hypertransport network defaults
-    noc_ht_lat: float = Field(default=5, description="Hypertransport latency")
-    noc_inter_lat: float = Field(default=36, description="NoC inter-node latency")
+    noc_ht_lat: int = Field(default=5, description="Hypertransport latency")
+    noc_inter_lat: int = Field(default=36, description="NoC inter-node latency")
     noc_inter_pow_dyn: float = Field(default=8320, description="NoC inter-node dynamic power")
     noc_inter_pow_leak: float = Field(default=0, description="NoC inter-node leakage power")
     noc_inter_area: float = Field(default=18.25, description="NoC inter-node area")
 
     # Intra-node network defaults
-    noc_intra_lat: float = Field(default=None, init=False, description="NoC intra-node latency")
+    noc_intra_lat: int = Field(default=None, init=False, description="NoC intra-node latency")
     noc_intra_pow_dyn: float = Field(default=None, init=False, description="NoC intra-node dynamic power")
     noc_intra_pow_leak: float = Field(default=None, init=False, description="NoC intra-node leakage power")
     noc_intra_area: float = Field(default=None, init=False, description="NoC intra-node area")
@@ -51,5 +51,4 @@ class NOCConfig(BaseModel):
 
         # Update inter-node latency based on intra-node latency
         self.noc_inter_lat = self.noc_ht_lat + self.noc_intra_lat
-
         return self

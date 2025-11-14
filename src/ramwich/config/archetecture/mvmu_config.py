@@ -14,19 +14,19 @@ class MVMUConfig(BaseModel):
 
     data_config: DataConfig = Field(default_factory=DataConfig)
 
-    snh_lat: float = Field(default=1, description="Single sample and holder processing latency")
+    snh_lat: int = Field(default=1, description="Single sample and holder processing latency")
     snh_pow_leak: float = Field(default=9.7 * 10 ** (-7), description="Single sample and holder leakage power")
     snh_pow_dyn: float = Field(
         default=9.7 * 10 ** (-6) - 9.7 * 10 ** (-7), description="Single sample and holder dynamic power"
     )
     snh_area: float = Field(default=0.00004 / 8 / 128, description="Single sample and holder area")
 
-    mux_lat: float = Field(default=0, description="Single MUX processing latency")
+    mux_lat: int = Field(default=0, description="Single MUX processing latency")
     mux_pow_leak: float = Field(default=0.001, description="Single MUX leakage power")
     mux_pow_dyn: float = Field(default=0.01893, description="Single MUX dynamic power")
     mux_area: float = Field(default=0.000005, description="Single MUX area")
 
-    sna_lat: float = Field(default=1, description="Single shift and adder processing latency")
+    sna_lat: int = Field(default=1, description="Single shift and adder processing latency")
     sna_pow_leak: float = Field(default=0.001, description="Single shift and adder leakage power")
     sna_pow_dyn: float = Field(default=0.158, description="Single shift and adder dynamic power")
     sna_area: float = Field(default=0.000031, description="Single shift and adder area")

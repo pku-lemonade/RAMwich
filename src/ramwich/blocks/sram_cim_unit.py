@@ -185,7 +185,7 @@ class SRAMCIMUnitArray:
         num_ewmvms = len(self.mvmu_config.expw_partition_indices)
         self.stats.ewmvm_operations += num_ewmvms * self.xbar_size
         if is_last_iteration:
-            num_exp_xbars = len(self.exp_indices)
+            num_exp_xbars = len(self.eaa_indices)
             self.stats.eaa_operations += num_exp_xbars * 2 * self.xbar_size
 
         return mvm_result, eaa_result, ewmvm_result

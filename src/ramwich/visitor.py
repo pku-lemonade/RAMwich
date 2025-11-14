@@ -135,22 +135,25 @@ class CoreExecutionTimingVisitor(CoreVisitor):
             // self.config.core_config.num_alu_per_ivfu
         )
 
-    def visit_mvm(self, op: MVM) -> int:
+    def visit_mvm(self, op):
         """Calculate MVM execution time"""
 
-        mvmu   = self.config.mvmu_config
-        xbar = self.config.xbar_config
-        dac  = self.config.dac_config
-        adc  = self.config.adc_config
+        # Fetch nested configs from the mvmu_config (Config does not expose xbar/dac/adc directly)
+        mvmu = self.config.mvmu_config
+        xbar = mvmu.xbar_config
+        dac = mvmu.dac_config
+        adc = mvmu.adc_config
 
         num_iter = mvmu.num_iterations
-        activation_width = self.config.data_config.activation_width
+        activation_width = mvmu.data_config.activation_width
 
 
         # if RRAM, use adc to read out
         if mvmu.have_rram_xbar:
-            t_rram_core     = dac.lat + xbar.xbar_lat + mvmu.snh_lat
-            t_rram_readout  = mvmu.mux_lat + adc.LAT_DICT[8]
+            t_rram_core = dac.lat + xbar.xbar_lat + mvmu.snh_lat
+            # Use the configured ADC latency (resolution already validated)
+            adc_latency = adc.lat if adc.lat is not None else adc.LAT_DICT.get(adc.resolution, 0)
+            t_rram_readout = mvmu.mux_lat + adc_latency
         else:
             t_rram_core    = 0
             t_rram_readout = 0
