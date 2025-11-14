@@ -13,7 +13,7 @@ class TileConfig(BaseModel):
     tcu_area: float = Field(default=0.001639, description="Tile control unit area")
 
     # EDRAM lookup tables
-    EDRAM_LAT_DICT: ClassVar[dict[int, float]] = {
+    EDRAM_LAT_DICT: ClassVar[dict[int, int]] = {
         8: 3,
         64: 3,
         128: 4,
@@ -42,7 +42,7 @@ class TileConfig(BaseModel):
 
     edram_size_in_KB: int = Field(default=8192, description="EDRAM size in KB")
     edram_size: int = Field(default=4194304, description="EDRAM size")
-    edram_lat: float = Field(default=None, init=False, description="EDRAM latency")
+    edram_lat: int = Field(default=None, init=False, description="EDRAM latency")
     edram_pow_dyn: float = Field(default=None, init=False, description="EDRAM dynamic power")
     edram_pow_leak: float = Field(default=None, init=False, description="EDRAM leakage power")
     edram_area: float = Field(default=None, init=False, description="EDRAM area")
@@ -98,32 +98,32 @@ class TileConfig(BaseModel):
     }
 
     instrnMem_size: int = Field(default=131072, description="Tile instruction memory size")
-    instrnMem_lat: float = Field(default=None, init=False, description="Tile instruction memory latency")
+    instrnMem_lat: int = Field(default=None, init=False, description="Tile instruction memory latency")
     instrnMem_pow_dyn: float = Field(default=None, init=False, description="Tile instruction memory dynamic power")
     instrnMem_pow_leak: float = Field(default=None, init=False, description="Tile instruction memory leakage power")
     instrnMem_area: float = Field(default=None, init=False, description="Tile instruction memory area")
 
     # EDRAM counter buffer values
-    counter_buff_lat: float = Field(default=1 * math.sqrt(8), description="Counter buffer latency")
+    counter_buff_lat: int = Field(default=int(round(1 * math.sqrt(8))), description="Counter buffer latency")
     counter_buff_pow_dyn: float = Field(default=0.65 / 2 * math.sqrt(8), description="Counter buffer dynamic power")
     counter_buff_pow_leak: float = Field(default=0.33 / 2 * math.sqrt(8), description="Counter buffer leakage power")
     counter_buff_area: float = Field(default=0.0041 * math.sqrt(8), description="Counter buffer area")
 
     # EDRAM to MVMU bus values
     edram_bus_size: int = Field(default=256, description="EDRAM bus size")
-    edram_bus_lat: float = Field(default=10, description="EDRAM bus latency")
+    edram_bus_lat: int = Field(default=10, description="EDRAM bus latency")
     edram_bus_pow_dyn: float = Field(default=0.7985, description="EDRAM bus dynamic power")
     edram_bus_pow_leak: float = Field(default=0.0925, description="EDRAM bus leakage power")
     edram_bus_area: float = Field(default=0.0004, description="EDRAM bus area")
 
     # EDRAM controller values
-    edram_ctrl_lat: float = Field(default=8, description="EDRAM controller latency")
+    edram_ctrl_lat: int = Field(default=8, description="EDRAM controller latency")
     edram_ctrl_pow_dyn: float = Field(default=0.309705, description="EDRAM controller dynamic power")
     edram_ctrl_pow_leak: float = Field(default=0.034536, description="EDRAM controller leakage power")
     edram_ctrl_area: float = Field(default=0.000144581760, description="EDRAM controller area")
 
     # Receive buffer value dictionary
-    receive_buffer_lat: float = Field(default=10, description="Receive buffer latency")
+    receive_buffer_lat: int = Field(default=10, description="Receive buffer latency")
     receive_buffer_pow_dyn: float = Field(default=0.530580, description="Receive buffer dynamic power")
     receive_buffer_pow_leak: float = Field(default=0.056765, description="Receive buffer leakage power")
     receive_buffer_area: float = Field(default=0.000244944002, description="Receive buffer area")
