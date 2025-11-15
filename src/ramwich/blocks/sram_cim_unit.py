@@ -25,17 +25,27 @@ class SRAMCIMUnitStats(BaseModel):
 
     def get_stats(self) -> StatsDict:
         # Map Xbar metrics to Stat object
+        # Dynamic energy:
+        # - mac_operations: linear MVM on INT/MANT -> xbar + calculator + mac
+        # - eaa_operations: EXP(A) shift-and-accumulate on last iter -> xbar + calculator (no MAC)
+        # - ewmvm_operations: EXP(W) MVM on all iters -> xbar + calculator + mac
+        dyn_mvm   = (self.config.sram_xbar_pow_dyn + self.config.calculator_pow_dyn * self.num_calculator_per_xbar + self.config.mac_pow_dyn) * self.mac_operations
+        dyn_eaa   = (self.config.sram_xbar_pow_dyn + self.config.calculator_pow_dyn * self.num_calculator_per_xbar) * self.eaa_operations
+        dyn_ewmvm = (self.config.sram_xbar_pow_dyn + self.config.calculator_pow_dyn * self.num_calculator_per_xbar + self.config.mac_pow_dyn) * self.ewmvm_operations
         stats = Stats(
-            activation_count=self.mac_operations,
-            dynamic_energy=(self.config.sram_xbar_pow_dyn + self.config.calculator_pow_dyn + self.config.mac_pow_dyn) * self.mac_operations,
+            activation_count=self.mac_operations + self.eaa_operations + self.ewmvm_operations,
+            dynamic_energy=dyn_mvm + dyn_eaa + dyn_ewmvm,
             leakage_energy=(
-                self.config.sram_xbar_pow_leak + self.config.calculator_pow_leak * self.num_calculator_per_xbar + self.config.mac_pow_leak * self.num_calculator_per_xbar
-            )
-            * self.num_xbar,
-            area=(self.config.sram_xbar_area + self.num_calculator_per_xbar * self.config.calculator_area + self.num_calculator_per_xbar * self.config.mac_area)
-            * self.num_xbar,
+                self.config.sram_xbar_pow_leak
+                + self.config.calculator_pow_leak * self.num_calculator_per_xbar
+                + self.config.mac_pow_leak * self.num_calculator_per_xbar
+            ) * self.num_xbar,
+            area=(
+                self.config.sram_xbar_area
+                + self.num_calculator_per_xbar * self.config.calculator_area
+                + self.num_calculator_per_xbar * self.config.mac_area
+            ) * self.num_xbar,
         )
-
         return StatsDict({"SRAM CIM Unit": stats})
 
 
