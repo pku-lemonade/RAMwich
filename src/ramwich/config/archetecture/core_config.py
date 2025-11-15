@@ -16,9 +16,30 @@ class CoreConfig(BaseModel):
 
     # Memory lookup tables
     DATA_MEM_LAT_DICT: ClassVar[dict[int, int]] = {256: 1, 512: 1, 1024: 1, 2048: 1, 4096: 1, 8192: 1}
-    DATA_MEM_POW_DYN_DICT: ClassVar[dict[int, float]] = {256: 0.0014, 512: 0.00188, 1024: 0.00304, 2048: 0.00383, 4096: 0.00925, 8192: 0.0195}
-    DATA_MEM_POW_LEAK_DICT: ClassVar[dict[int, float]] = {256: 0.000176, 512: 0.000342, 1024: 0.000614, 2048: 0.001216, 4096: 0.004438, 8192: 0.008698}
-    DATA_MEM_AREA_DICT: ClassVar[dict[int, float]] = {256: 0.0606252, 512: 0.0108623, 1024: 0.0171094, 2048: 0.0356512, 4096: 0.136807, 8192: 0.302279}
+    DATA_MEM_POW_DYN_DICT: ClassVar[dict[int, float]] = {
+        256: 0.0014,
+        512: 0.00188,
+        1024: 0.00304,
+        2048: 0.00383,
+        4096: 0.00925,
+        8192: 0.0195,
+    }
+    DATA_MEM_POW_LEAK_DICT: ClassVar[dict[int, float]] = {
+        256: 0.000176,
+        512: 0.000342,
+        1024: 0.000614,
+        2048: 0.001216,
+        4096: 0.004438,
+        8192: 0.008698,
+    }
+    DATA_MEM_AREA_DICT: ClassVar[dict[int, float]] = {
+        256: 0.0606252,
+        512: 0.0108623,
+        1024: 0.0171094,
+        2048: 0.0356512,
+        4096: 0.136807,
+        8192: 0.302279,
+    }
 
     dataMem_size: int = Field(default=4096, description="Data memory size")
     dataMem_lat: int = Field(default=None, description="Data memory latency")
@@ -43,7 +64,7 @@ class CoreConfig(BaseModel):
         16384: 2,
         32768: 2,
         65536: 2,
-        131072: 3,
+        131072: 2,
     }
     INSTRN_MEM_POW_DYN_DICT: ClassVar[dict[int, float]] = {
         256: 0.01623,
@@ -51,11 +72,11 @@ class CoreConfig(BaseModel):
         1024: 0.018365,
         2048: 0.02168,
         4096: 0.02781,
-        8192: 0.02825,
-        16384: 0.02596,
-        32768: 0.03351,
-        65536: 0.03981,
-        131072: 0.043195,
+        8192: 0.02781,
+        16384: 0.02781,
+        32768: 0.02781,
+        65536: 0.02781,
+        131072: 0.02781,
     }
     INSTRN_MEM_POW_LEAK_DICT: ClassVar[dict[int, float]] = {
         256: 0.000377,
@@ -63,11 +84,11 @@ class CoreConfig(BaseModel):
         1024: 0.000603,
         2048: 0.001097,
         4096: 0.001982,
-        8192: 0.003984,
-        16384: 0.008845,
-        32768: 0.017154,
-        65536: 0.031180,
-        131072: 0.62359,
+        8192: 0.001982,
+        16384: 0.001982,
+        32768: 0.001982,
+        65536: 0.001982,
+        131072: 0.001982,
     }
     INSTRN_MEM_AREA_DICT: ClassVar[dict[int, float]] = {
         256: 0.0969725,
@@ -75,11 +96,11 @@ class CoreConfig(BaseModel):
         1024: 0.0769046,
         2048: 0.0786408,
         4096: 0.0740648,
-        8192: 0.147075,
-        16384: 0.326787,
-        32768: 0.521506,
-        65536: 0.890833,
-        131072: 1.77083,
+        8192: 0.0740648,
+        16384: 0.0740648,
+        32768: 0.0740648,
+        65536: 0.0740648,
+        131072: 0.0740648,
     }
 
     instrnMem_size: int = Field(default=131072, description="Core instruction memory size")
