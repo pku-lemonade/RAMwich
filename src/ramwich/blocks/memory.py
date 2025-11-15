@@ -36,7 +36,7 @@ class MemoryStats(BaseModel):
         """Convert MemoryStats to general Stats object"""
 
         # Map Memory metrics to StatsDict object
-        if self.memory_type == "SRAM Cache":
+        if self.memory_type == "SRAM cache":
             stats = Stats(
                 activation_count=self.total_operated_cells,
                 dynamic_energy=self.config.dataMem_pow_dyn * self.total_operated_cells,
