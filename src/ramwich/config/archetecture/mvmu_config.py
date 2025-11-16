@@ -34,10 +34,7 @@ class MVMUConfig(BaseModel):
     num_columns_per_adc: int = Field(default=16, description="Number of columns per ADC")
     num_adc_per_xbar: int = Field(default=None, init=False, description="Number of ADCs per crossbar")
 
-    num_columns_per_calculator: int = Field(default=128, description="Number of columns per SRAM CIM calculator")
-    num_calculator_per_xbar: int = Field(
-        default=None, init=False, description="Number of SRAM CIM calculators per crossbar"
-    )
+    num_columns_per_macu: int = Field(default=128, description="Number of columns per SRAM CIM MAC unit")
 
     dac_config: DACConfig = Field(default_factory=DACConfig)
     xbar_config: XBARConfig = Field(default_factory=XBARConfig)
