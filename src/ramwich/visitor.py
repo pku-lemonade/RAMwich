@@ -162,7 +162,7 @@ class CoreExecutionTimingVisitor(CoreVisitor):
                 cycles = mac_cycles + xbar.inMem_lat + xbar.outMem_lat + mvmu.sna_lat
                 max_cycles = max(max_cycles, cycles)
             if len(mvmu.sram_ewmvm_indices):
-                smac_cycles = xbar.smacu_lat * num_iter * xbar.xbar_size
+                smac_cycles = xbar.smacu_lat * num_iter * mvmu.num_columns_per_macu
                 cycles = smac_cycles + xbar.inMem_lat + xbar.outMem_lat + mvmu.snh_lat
                 max_cycles = max(max_cycles, cycles)
 
