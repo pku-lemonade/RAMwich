@@ -15,10 +15,10 @@ class ADCConfig(BaseModel):
     type: ADCType = Field(default=ADCType.NORMAL, description="ADC type")
 
     # Class constants for lookup tables - using integers as keys instead of strings
-    LAT_DICT: ClassVar[dict[int, int]] = {1: 2, 2: 3, 4: 5, 8: 9, 16: 17}
-    POW_DYN_DICT: ClassVar[dict[int, float]] = {1: 0.8592847, 2: 1.00747422, 4: 1.5334067, 8: 2.5617338, 16: 5.0623805}
+    LAT_DICT: ClassVar[dict[int, int]] = {1: 10, 2: 10, 4: 10, 8: 10, 16: 10}
+    POW_DYN_DICT: ClassVar[dict[int, float]] = {1: 4, 2: 4, 4: 4, 8: 4, 16: 4}
     POW_LEAK_DICT: ClassVar[dict[int, float]] = {1: 0.0, 2: 0.0, 4: 0.0, 8: 0.0, 16: 0.0}
-    AREA_DICT: ClassVar[dict[int, float]] = {1: 0.000788, 2: 0.001088, 4: 0.001687, 8: 0.002887, 16: 0.005287}
+    AREA_DICT: ClassVar[dict[int, float]] = {1: 0.0055, 2: 0.0055, 4: 0.0055, 8:0.0055, 16: 0.0055}
 
     resolution: int = Field(default=8, description="ADC resolution")
 
@@ -31,7 +31,7 @@ class ADCConfig(BaseModel):
     def calculate_derived_values(self):
         # Update derived values based on resolution if it's different from default
         if self.resolution in self.LAT_DICT:
-            self.lat = int(self.LAT_DICT[self.resolution])
+            self.lat = self.LAT_DICT[self.resolution]
             self.pow_dyn = self.POW_DYN_DICT[self.resolution]
             self.pow_leak = self.POW_LEAK_DICT[self.resolution]
             self.area = self.AREA_DICT[self.resolution]
