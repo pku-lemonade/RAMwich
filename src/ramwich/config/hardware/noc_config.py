@@ -10,19 +10,19 @@ class NOCConfig(BaseModel):
     INJ_RATE_MAX: ClassVar[int] = 0.025
     # Map injection rates to corresponding latencies
     LAT_DICT: ClassVar[dict[float, int]] = {0.001: 8, 0.005: 9, 0.01: 12, 0.02: 20, 0.025: 30}
-    AREA_DICT: ClassVar[dict[int, float]] = {4: 0.047, 8: 0.116}
-    POW_DYN_DICT: ClassVar[dict[int, float]] = {4: 128.05, 8: 147.61}
+    AREA_DICT: ClassVar[dict[int, float]] = {4: 0.0222, 8: 0.0548}
+    POW_DYN_DICT: ClassVar[dict[int, float]] = {4: 81.8, 8: 95.1}
     POW_LEAK_DICT: ClassVar[dict[int, float]] = {4: 0.328, 8: 0.832}
 
     inj_rate: float = Field(default=0.005, description="Injection rate")
     num_port: int = Field(default=4, description="Number of ports")
 
     # Hypertransport network defaults
-    noc_ht_lat: int = Field(default=5, description="Hypertransport latency")
-    noc_inter_lat: int = Field(default=36, description="NoC inter-node latency")
-    noc_inter_pow_dyn: float = Field(default=8320, description="NoC inter-node dynamic power")
+    noc_ht_lat: int = Field(default=0, description="Hypertransport latency")
+    noc_inter_lat: int = Field(default=0, description="NoC inter-node latency")
+    noc_inter_pow_dyn: float = Field(default=0, description="NoC inter-node dynamic power")
     noc_inter_pow_leak: float = Field(default=0, description="NoC inter-node leakage power")
-    noc_inter_area: float = Field(default=18.25, description="NoC inter-node area")
+    noc_inter_area: float = Field(default=0, description="NoC inter-node area")
 
     # Intra-node network defaults
     noc_intra_lat: int = Field(default=None, init=False, description="NoC intra-node latency")
