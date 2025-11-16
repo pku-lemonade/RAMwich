@@ -102,8 +102,9 @@ class CoreDecodeVisitor(CommonVisitor):
 class CoreExecutionTimingVisitor(CoreVisitor):
     """Visitor for calculating operation execution timing"""
 
-    def __init__(self, config):
+    def __init__(self, config, type_id):
         self.config = config
+        self.type_id = type_id
 
     def visit_load(self, op):
         # This should not be used for load operations
@@ -139,7 +140,7 @@ class CoreExecutionTimingVisitor(CoreVisitor):
         """Calculate MVM execution time"""
 
         # Fetch nested configs from the mvmu_config (Config does not expose xbar/dac/adc directly)
-        mvmu = self.config.mvmu_config
+        mvmu = self.config.mvmu_configs[self.type_id]
         xbar = mvmu.xbar_config
         dac = mvmu.dac_config
         adc = mvmu.adc_config
@@ -165,6 +166,7 @@ class CoreExecutionTimingVisitor(CoreVisitor):
                 cycles = smac_cycles + xbar.inMem_lat + xbar.outMem_lat + mvmu.snh_lat
                 max_cycles = max(max_cycles, cycles)
 
+        print(f"MVMU Type: {mvmu.mvmu_type}, MVM Latency (cycles): {max_cycles}")
         return max_cycles
 
     def visit_hlt(self, op):
@@ -176,7 +178,7 @@ class CoreExecutionVisitor(CoreVisitor):
 
     def __init__(self, core):
         self.core = core
-        self.timing_visitor = CoreExecutionTimingVisitor(core.config)
+        self.timing_visitor = CoreExecutionTimingVisitor(core.config, core.core_type)
 
     def visit_load(self, op):
         # Create an event to signal when the load operation is complete
