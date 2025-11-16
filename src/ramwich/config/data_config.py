@@ -62,7 +62,7 @@ class DataConfig(BaseModel):
         if len(wp) != len(df):
             raise ValueError(f"Weight partition length {len(wp)} must match data format length {len(df)}.")
 
-        valid_formats = {"INT", "EXP", "MANT"}
+        valid_formats = {"INT", "EXPW", "EXPA", "MANT"}
         for fmt in df:
             if fmt not in valid_formats:
                 raise ValueError(f"Invalid data format: {fmt}. Supported formats are INT, EXP, MANT.")
