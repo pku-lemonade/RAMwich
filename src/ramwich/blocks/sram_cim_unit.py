@@ -10,10 +10,11 @@ class SRAMCIMUnitStats(BaseModel):
     # Universal metrics
     config: XBARConfig = Field(default=XBARConfig(), description="Xbar configuration")
     num_xbar: int = Field(default=0, description="Number of crossbars")
-    num_calculator_per_xbar: int = Field(default=0, description="Number of calculators")
+    num_smacu: int = Field(default=0, description="Number of SRAM CIM shifter-mac units")
+    num_macu_per_xbar: int = Field(default=0, description="Number of MAC units per crossbar")
 
     # Xbar specific metrics
-    mac_operations: int = Field(default=0, description="Total number of operations")
+    mac_operations: int = Field(default=0, description="Total number of MAC operations")
     eaa_operations: int = Field(default=0, description="Total number of exponential operations")
     ewmvm_operations: int = Field(default=0, description="Total number of exponential with MVM operations")
 
@@ -29,28 +30,23 @@ class SRAMCIMUnitStats(BaseModel):
         # - mac_operations: linear MVM on INT/MANT -> xbar + calculator + mac
         # - eaa_operations: EXP(A) shift-and-accumulate on last iter -> xbar + calculator (no MAC)
         # - ewmvm_operations: EXP(W) MVM on all iters -> xbar + calculator + mac
-        dyn_mvm   = (self.config.sram_xbar_pow_dyn + self.config.calculator_pow_dyn * self.num_calculator_per_xbar + self.config.mac_pow_dyn) * self.mac_operations
-        dyn_eaa   = (self.config.sram_xbar_pow_dyn + self.config.calculator_pow_dyn * self.num_calculator_per_xbar) * self.eaa_operations
-        dyn_ewmvm = (self.config.sram_xbar_pow_dyn + self.config.calculator_pow_dyn * self.num_calculator_per_xbar + self.config.mac_pow_dyn) * self.ewmvm_operations
+        dyn_xbar = self.config.sram_xbar_pow_dyn * (self.mac_operations + self.eaa_operations + self.ewmvm_operations)
+        dyn_mvm = self.config.mac_pow_dyn * self.mac_operations
+        # dyn_eaa   = (self.config.sram_xbar_pow_dyn + self.config.calculator_pow_dyn * self.num_calculator_per_xbar) * self.eaa_operations
+        dyn_ewmvm = self.config.smac_pow_dyn * self.ewmvm_operations
         stats = Stats(
             activation_count=self.mac_operations + self.eaa_operations + self.ewmvm_operations,
-            dynamic_energy=dyn_mvm + dyn_eaa + dyn_ewmvm,
-            leakage_energy=(
-                self.config.sram_xbar_pow_leak
-                + self.config.calculator_pow_leak * self.num_calculator_per_xbar
-                + self.config.mac_pow_leak * self.num_calculator_per_xbar
-            ) * self.num_xbar,
-            area=(
-                self.config.sram_xbar_area
-                + self.num_calculator_per_xbar * self.config.calculator_area
-                + self.num_calculator_per_xbar * self.config.mac_area
-            ) * self.num_xbar,
+            dynamic_energy=dyn_xbar + dyn_mvm + dyn_ewmvm,
+            leakage_energy=(self.config.sram_xbar_pow_leak + self.config.macu_pow_leak * self.num_macu_per_xbar)
+            * self.num_xbar
+            + self.config.smacu_pow_leak * self.num_smacu,
+            area=(self.config.sram_xbar_area + self.num_macu_per_xbar * self.config.mac_area) * self.num_xbar
+            + self.config.smacu_area * self.num_smacu,
         )
         return StatsDict({"SRAM CIM Unit": stats})
 
 
 class SRAMCIMUnitArray:
-    max_val = 0
     """
     Crossbar array component that performs matrix-vector multiplication operations.
     """
@@ -60,7 +56,7 @@ class SRAMCIMUnitArray:
         self.xbar_config = self.mvmu_config.xbar_config
         self.num_xbar = self.mvmu_config.num_sram_xbar_per_mvmu
         self.xbar_size = self.xbar_config.xbar_size
-        self.num_calculator_per_xbar = self.xbar_size // self.mvmu_config.num_columns_per_calculator
+        self.num_macu_per_xbar = self.xbar_size // self.mvmu_config.num_columns_per_macu
 
         # Initialize the crossbar
         self.pos_xbar = np.zeros((self.num_xbar, self.xbar_size, self.xbar_size)).astype(np.int8)
@@ -94,7 +90,10 @@ class SRAMCIMUnitArray:
 
         # Initialize stats
         self.stats = SRAMCIMUnitStats(
-            config=self.xbar_config, num_xbar=self.num_xbar * 2, num_calculator_per_xbar=self.num_calculator_per_xbar
+            config=self.xbar_config,
+            num_xbar=self.num_xbar * 2,
+            num_macu_per_xbar=self.num_macu_per_xbar * 2,
+            num_smacu=len(self.mvmu_config.expw_partition_indices) * 2,
         )  # 2 for pos and neg xbar
 
     def load_weights(self, weights: NDArray[np.int32]):
@@ -193,7 +192,7 @@ class SRAMCIMUnitArray:
         num_mvm_xbars = len(self.mvm_indices)
         self.stats.mac_operations += num_mvm_xbars * 2 * self.xbar_size
         num_ewmvms = len(self.mvmu_config.expw_partition_indices)
-        self.stats.ewmvm_operations += num_ewmvms * self.xbar_size
+        self.stats.ewmvm_operations += num_ewmvms * 2 * self.xbar_size
         if is_last_iteration:
             num_exp_xbars = len(self.eaa_indices)
             self.stats.eaa_operations += num_exp_xbars * 2 * self.xbar_size
