@@ -9,20 +9,20 @@ class DACConfig(BaseModel):
     # Class constants for lookup tables
     LAT_DICT: ClassVar[dict[int, int]] = {1: 1, 2: 1, 4: 1, 8: 1, 16: 1}
     POW_DYN_DICT: ClassVar[dict[int, float]] = {
-        1: 0.5739,
-        2: 1.1444,
-        4: 2.4808,
-        8: 4.0827,
-        16: 6.6344,
+        1: 5.604e-4,
+        2: 1.112e-3,
+        4: 2.422e-3,
+        8: 3.987e-3,
+        16: 6.479e-3,
     }
     POW_LEAK_DICT: ClassVar[dict[int, float]] = {
-        1: 0,
-        2: 0,
-        4: 0,
-        8: 0,
-        16: 0,
+        1: 0.00078,
+        2: 0.00078,
+        4: 0.00078,
+        8: 0.00078,
+        16: 0.00078,
     }
-    AREA_DICT: ClassVar[dict[int, float]] = {1: 0.000466, 2: 0.000489, 4: 0.000601, 8: 0.000703, 16: 0.000915}
+    AREA_DICT: ClassVar[dict[int, float]] = {1: 4.551e-7, 2: 4.775e-7, 4: 5.892e-7, 8: 6.865e-7, 16: 8.935e-7}
 
     resolution: int = Field(default=1, description="DAC resolution")
     VDD: float = Field(default=1, description="Supply voltage")
@@ -36,7 +36,7 @@ class DACConfig(BaseModel):
     def calculate_derived_values(self):
         # Update derived values if resolution is different from default
         if self.resolution in self.LAT_DICT:
-            self.lat = int(self.LAT_DICT[self.resolution])
+            self.lat = self.LAT_DICT[self.resolution]
             self.pow_dyn = self.POW_DYN_DICT[self.resolution]
             self.pow_leak = self.POW_LEAK_DICT[self.resolution]
             self.area = self.AREA_DICT[self.resolution]

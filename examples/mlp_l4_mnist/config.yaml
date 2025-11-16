@@ -23,6 +23,9 @@ data_config_list:
   5:
     storage_config: ["s", "s", "s"]
     data_format: ["MANT"]  # MANT
+  6:
+    storage_config: ["3"]
+    data_format: ["INT"]  # INT4
 
 # Network-on-Chip Configuration
 noc_config:
