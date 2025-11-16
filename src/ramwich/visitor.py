@@ -166,7 +166,6 @@ class CoreExecutionTimingVisitor(CoreVisitor):
                 cycles = smac_cycles + xbar.inMem_lat + xbar.outMem_lat + mvmu.snh_lat
                 max_cycles = max(max_cycles, cycles)
 
-        print(f"MVMU Type: {mvmu.mvmu_type}, MVM Latency (cycles): {max_cycles}")
         return max_cycles
 
     def visit_hlt(self, op):
