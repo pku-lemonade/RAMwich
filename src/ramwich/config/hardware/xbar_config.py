@@ -31,7 +31,7 @@ class XBARConfig(BaseModel):
     xbar_pow_leak: float = Field(default=0, description="Crossbar leakage power")
     xbar_area: float = Field(default=None, init=False, description="Crossbar area")
 
-    SRAM_XBAR_LAT_DICT: ClassVar[dict[int, int]] = {32: 1, 64: 1, 128: 0, 256: 1}
+    SRAM_XBAR_LAT_DICT: ClassVar[dict[int, int]] = {32: 1, 64: 1, 128: 1, 256: 1}
     SRAM_XBAR_POW_DYN_DICT: ClassVar[dict[int, float]] = {32: 0.06394, 64: 0.12687, 128: 0.0143025, 256: 0.34447}
     SRAM_XBAR_POW_LEAK_DICT: ClassVar[dict[int, float]] = {32: 0.093, 64: 0.094, 128: 0.095, 256: 0.138}
     SRAM_XBAR_AREA_DICT: ClassVar[dict[int, float]] = {32: 6.9375e-5, 64: 1.3875e-4, 128: 2.775e-4, 256: 5.55125e-4}
