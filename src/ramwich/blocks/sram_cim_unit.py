@@ -92,7 +92,7 @@ class SRAMCIMUnitArray:
         self.stats = SRAMCIMUnitStats(
             config=self.xbar_config,
             num_xbar=self.num_xbar,
-            num_macu_per_xbar=self.num_macu_per_xbar * 2,
+            num_macu_per_xbar=self.num_macu_per_xbar * 2 if (len(self.mvm_indices) > 0) else 0,
             num_smacu=len(self.mvmu_config.expw_partition_indices) * 2 * self.num_macu_per_xbar,
         )  # 2 for pos and neg xbar
 
