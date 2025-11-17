@@ -18,14 +18,14 @@ data_config_list:
     storage_config: ["1", "2"]
     data_format: ["INT"]  # INT4
   4:
-    storage_config: ["s", "2"]
-    data_format: ["INT"]  # INT4
-  5:
-    storage_config: ["s", "s", "s"]
-    data_format: ["MANT"]  # MANT
-  6:
     storage_config: ["3"]
     data_format: ["INT"]  # INT4
+  5:
+    storage_config: ["s", "2"]
+    data_format: ["INT"]  # INT4
+  6:
+    storage_config: ["s", "s", "s"]
+    data_format: ["MANT"]  # MANT
 
 # Network-on-Chip Configuration
 noc_config:
