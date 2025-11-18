@@ -24,7 +24,7 @@ class XBARConfig(BaseModel):
     # XBAR lookup tables
     XBAR_LAT_DICT: ClassVar[dict[int, int]] = {32: 1, 64: 1, 128: 1, 256: 1}
     XBAR_POW_DICT: ClassVar[dict[int, float]] = {32: 0.02874, 64: 0.05701, 128: 0.11211, 256: 0.15480}
-    XBAR_AREA_DICT: ClassVar[dict[int, float]] = {32: 1.1875e-5, 64: 2.375e-5, 128: 4.7625e-5, 256: 9.5125e-5}
+    XBAR_AREA_DICT: ClassVar[dict[int, float]] = {32: 2.6214e-5, 64: 5.2428e-5, 128: 1.04865e-4, 256: 2.0971e-5}
 
     xbar_lat: int = Field(default=None, init=False, description="Crossbar latency")
     xbar_pow: float = Field(default=None, init=False, description="Crossbar power")
@@ -34,7 +34,7 @@ class XBARConfig(BaseModel):
     SRAM_XBAR_LAT_DICT: ClassVar[dict[int, int]] = {32: 1, 64: 1, 128: 1, 256: 1}
     SRAM_XBAR_POW_DYN_DICT: ClassVar[dict[int, float]] = {32: 0.06394, 64: 0.12687, 128: 0.0143025, 256: 0.34447}
     SRAM_XBAR_POW_LEAK_DICT: ClassVar[dict[int, float]] = {32: 0.093, 64: 0.094, 128: 0.095, 256: 0.138}
-    SRAM_XBAR_AREA_DICT: ClassVar[dict[int, float]] = {32: 6.9375e-5, 64: 1.3875e-4, 128: 2.775e-4, 256: 5.55125e-4}
+    SRAM_XBAR_AREA_DICT: ClassVar[dict[int, float]] = {32: 5.5509e-4, 64: 1.1101e-3, 128: 2.2203e-3, 256: 4.4407e-3}
 
     sram_xbar_lat: int = Field(default=None, init=False, description="Crossbar latency")
     sram_xbar_pow_dyn: float = Field(default=None, init=False, description="Crossbar power")
