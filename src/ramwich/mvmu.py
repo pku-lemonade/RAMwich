@@ -196,7 +196,9 @@ class MVMU:
             # If using SRAM CIM, do the following steps
             if self.mvmu_config.have_sram_xbar:
                 # Parallel with step 3, 4, 5, 6, and 7: SRAM crossbar multiplication
-                sram_mvm_output, sram_exp_output = self.sram_cim_unit_array.execute(sliced_digital_activation, i)
+                sram_mvm_output, sram_eaa_output, sram_ewmvm_output = self.sram_cim_unit_array.execute(
+                    sliced_digital_activation, i
+                )
 
             # Step 6: MUX selection
             for j in range(self.mvmu_config.num_columns_per_adc):
@@ -212,32 +214,42 @@ class MVMU:
                 # MUX selection for SRAM
                 if self.mvmu_config.have_sram_xbar:
                     mux_mvm_sram = self.mux_array_sram.select(sram_mvm_output, j)
-                    mux_exp_sram = self.mux_array_sram.select(sram_exp_output, j)
+                    mux_eaa_sram = self.mux_array_sram.select(sram_eaa_output, j)
+                    # expw output is 1D, mux will be simpler and just hardcoded
+                    mux_ewmvm_sram = sram_ewmvm_output[j :: self.mvmu_config.num_columns_per_adc]
 
                 # Depending on the type of crossbar, prepare MVM and EXP outputs separately
                 if not self.mvmu_config.have_sram_xbar:
                     # If all crossbars are RRAM, the calculation output is from the ADC (all MVM, no EXP)
                     calculation_mvm = adc_output
-                    calculation_exp = np.zeros_like(adc_output)
+                    calculation_eaa = np.zeros_like(adc_output)
+                    calculation_ewmvm = np.zeros(self.mvmu_config.num_adc_per_xbar)
+
                 elif not self.mvmu_config.have_rram_xbar:
                     # If all crossbars are SRAM, separate MVM and EXP from SRAM MUX
                     calculation_mvm = mux_mvm_sram
-                    calculation_exp = mux_exp_sram
+                    calculation_eaa = mux_eaa_sram
+                    calculation_ewmvm = mux_ewmvm_sram
+
                 else:
                     # If both crossbars are present, we need to merge the outputs.
                     # This is done by hardware wiring, so it doesn't cost time and energy.
                     calculation_mvm = np.zeros((self.mvmu_config.num_xbar_per_mvmu, self.mvmu_config.num_adc_per_xbar))
-                    calculation_exp = np.zeros((self.mvmu_config.num_xbar_per_mvmu, self.mvmu_config.num_adc_per_xbar))
+                    calculation_eaa = np.zeros((self.mvmu_config.num_xbar_per_mvmu, self.mvmu_config.num_adc_per_xbar))
                     calculation_mvm[self.mvmu_config.rram_to_output_map] = adc_output
+                    calculation_eaa[self.mvmu_config.rram_to_output_map] = np.zeros_like(adc_output)
                     calculation_mvm[self.mvmu_config.sram_to_output_map] = mux_mvm_sram
-                    calculation_exp[self.mvmu_config.sram_to_output_map] = mux_exp_sram
+                    calculation_eaa[self.mvmu_config.sram_to_output_map] = mux_eaa_sram
+                    calculation_ewmvm = mux_ewmvm_sram
 
                 # Step 8: Read current value from output register array
                 mask = np.arange(j, self.mvmu_config.xbar_config.xbar_size, self.mvmu_config.num_columns_per_adc)
                 current_output = self.output_register_array.read(mask)
 
-                # Step 9: SNA operation with separate MVM and EXP inputs
-                sna_output = self.sna_array.calculate(calculation_mvm, calculation_exp, current_output, i)
+                # Step 9: SNA operation with separate MVM EAA and EWMVM inputs
+                sna_output = self.sna_array.calculate(
+                    calculation_mvm, calculation_eaa, calculation_ewmvm, current_output, i
+                )
 
                 # Step 10: Write back to the output register array
                 self.output_register_array.write(sna_output, mask)
@@ -258,17 +270,97 @@ class MVMU:
         indices = np.arange(start, start + length)
         return self.output_register_array.read(indices)
 
+    def read_weights(self) -> NDArray[np.int64]:
+        """Read back the weights stored in the crossbar arrays (for testing/debugging)"""
+        xbar_size = self.mvmu_config.xbar_config.xbar_size
+        data_cfg = self.data_config
+
+        if data_cfg.part_number is None:
+            raise RuntimeError("Data configuration is missing partition metadata; weights cannot be reconstructed.")
+
+        # Allocate result tensor (partition, row, column)
+        weights = np.zeros((data_cfg.part_number, xbar_size, xbar_size), dtype=np.int64)
+
+        # Helper to map a bit position back to the partition index used during loading
+        def part_index_for_bit(bitpos: int) -> int:
+            idx = 0
+            for p in range(data_cfg.part_number):
+                if data_cfg.weight_partition[p] <= bitpos:
+                    idx = p
+                else:
+                    break
+            return idx
+
+        rram_idx = 0
+        sram_idx = 0
+        g_min = self.mvmu_config.xbar_config.rram_conductance_min
+        g_max = self.mvmu_config.xbar_config.rram_conductance_max
+
+        for k in range(self.mvmu_config.num_xbar_per_mvmu):
+            start = self.mvmu_config.stored_bit[k]
+            end = self.mvmu_config.stored_bit[k + 1]
+            bits = end - start
+            if bits <= 0:
+                continue
+
+            part_idx = part_index_for_bit(start)
+            shift = start - data_cfg.weight_partition[part_idx]
+            if shift < 0:
+                raise ValueError("Stored bit configuration is inconsistent with weight partitions.")
+
+            if self.mvmu_config.is_xbar_rram[k]:
+                # Recover signed conductance and map back to integer magnitude
+                pos = self.rram_xbar_array.pos_xbar[rram_idx]
+                neg = self.rram_xbar_array.neg_xbar[rram_idx]
+                signed_conductance = pos - neg
+                abs_conductance = np.abs(signed_conductance)
+
+                denom = (1 << bits) - 1
+                if denom <= 0 or g_max == g_min:
+                    magnitude = np.zeros_like(abs_conductance, dtype=np.int64)
+                else:
+                    step = (g_max - g_min) / denom
+                    # Guard against floating error before rounding
+                    raw = np.maximum(abs_conductance - g_min, 0.0) / step
+                    magnitude = np.rint(raw).astype(np.int64)
+                    magnitude = np.clip(magnitude, 0, denom)
+
+                sign = np.zeros_like(signed_conductance, dtype=np.int64)
+                sign[signed_conductance > 0] = 1
+                sign[signed_conductance < 0] = -1
+                sign = np.where(magnitude == 0, 0, sign)
+                contrib = (magnitude * sign).astype(np.int64)
+                rram_idx += 1
+            else:
+                # SRAM weights are ternary {-1,0,1}
+                pos = self.sram_cim_unit_array.pos_xbar[sram_idx].astype(np.int64)
+                neg = self.sram_cim_unit_array.neg_xbar[sram_idx].astype(np.int64)
+                contrib = pos - neg
+                sram_idx += 1
+
+            # Align the extracted bits back to the partition-local position
+            if shift != 0:
+                contrib = np.left_shift(contrib, shift)
+
+            weights[part_idx] += contrib
+
+        return weights
+
     def reset(self):
         """Reset the MVMU to its initial state"""
-        self.rram_xbar_array.reset()
-        self.dac_array.reset()
-        self.adc_array.reset()
+        if self.mvmu_config.have_rram_xbar:
+            self.rram_xbar_array.reset()
+            self.dac_array.reset()
+            self.snh_array_pos.reset()
+            self.snh_array_neg.reset()
+            self.adc_array.reset()
+            self.mux_array_pos.reset()
+            self.mux_array_neg.reset()
+        if self.mvmu_config.have_sram_xbar:
+            self.sram_cim_unit_array.reset()
+            self.mux_array_sram.reset()
         self.input_register_array.reset()
         self.output_register_array.reset()
-        self.snh_array_pos.reset()
-        self.snh_array_neg.reset()
-        self.mux_array_pos.reset()
-        self.mux_array_neg.reset()
         self.sna_array.reset()
 
     def get_stats(self) -> StatsDict:

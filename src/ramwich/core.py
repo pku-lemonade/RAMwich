@@ -1,4 +1,5 @@
 import logging
+from typing import Union
 
 import numpy as np
 from numpy.typing import NDArray
@@ -46,7 +47,7 @@ class Core:
 
         # Initialize MVMUs
         self.mvmus = [
-            MVMU(id=i, type=self.core_type, config=self.config) for i in range(self.config.num_mvmus_per_core)
+            MVMU(id=i, mvmu_type=self.core_type, config=self.config) for i in range(self.config.num_mvmus_per_core)
         ]
 
         # Initialize simulation timing attributes
@@ -84,7 +85,7 @@ class Core:
 
         return mvmu_id % self.config.num_mvmus_per_core
 
-    def write_to_register(self, start: int, data: NDArray[np.int32]):
+    def write_to_register(self, start: int, data: Union[NDArray[np.int32], NDArray[np.float32]]):
         """Write data to the register file of the MVMU."""
 
         length = len(data)
@@ -111,7 +112,7 @@ class Core:
             internal_start = start % self.config.mvmu_config.xbar_config.xbar_size
             self.mvmus[mvmu_id].write_to_inreg(internal_start, data)
 
-    def read_from_register(self, start: int, length: int) -> NDArray[np.int32]:
+    def read_from_register(self, start: int, length: int) -> Union[NDArray[np.int32], NDArray[np.float32]]:
         """Read data from the register file of the MVMU."""
         end = start + length
 
@@ -137,6 +138,22 @@ class Core:
             internal_start = start % self.config.mvmu_config.xbar_config.xbar_size
             return self.mvmus[mvmu_id].read_from_outreg(internal_start, length)
 
+    def load_vector(self, reg_id: int, vector: NDArray[np.float32]):
+        """Load a vector into the specified storage register region."""
+        if reg_id < self.storage_start:
+            raise IndexError(f"Load vector operation only allowed in storage registers ({reg_id})")
+
+        start = reg_id - self.storage_start
+        end = start + len(vector)
+
+        if end > self.storage.size:
+            raise IndexError(f"Vector length {len(vector)} exceeds storage capacity starting at register {reg_id}")
+
+        float_vector = np.asarray(vector, dtype=np.float32)
+        # Delegate to SRAM abstraction so metadata stays consistent.
+        self.storage.cells[start:end] = float_vector.view(np.uint32)
+        self.storage.type_bits[start:end] = True  # Mark these cells as floats
+
     def run(self, env):
         """
         Execute all operations assigned to this core using a pipeline.
@@ -149,14 +166,17 @@ class Core:
 
         self.start_time = env.now
 
-        # Create pipeline stages
+        # Create a mapping from operation to index for tracking
+        self.op_to_index = {id(op): i for i, op in enumerate(self.operations)}
+
+        # Create pipeline stages with completion callback
         pipeline_config = [
             StageConfig("fetch", CoreFetchVisitor(self)),
             StageConfig("decode", CoreDecodeVisitor(self)),
             StageConfig("execute", CoreExecutionVisitor(self)),
         ]
 
-        pipeline = Pipeline(env, pipeline_config)
+        pipeline = Pipeline(env, pipeline_config, on_operation_complete=self._on_operation_complete)
         pipeline.run()
 
         # Feed instructions into pipeline
@@ -169,10 +189,28 @@ class Core:
 
         logger.info(f"Tile {self.parent.id} Core {self.id} finished execution at time {env.now}")
 
+    def _on_operation_complete(self, op, execution_time):
+        """Callback when an operation completes execution in the pipeline."""
+        # Get the operation index
+        op_index = self.op_to_index.get(id(op))
+        if op_index is None:
+            return
+
+        # Mark as executed in debug monitor if available
+        if (
+            hasattr(self.parent, "parent")
+            and hasattr(self.parent.parent, "parent")
+            and hasattr(self.parent.parent.parent, "monitor")
+            and self.parent.parent.parent.monitor
+        ):
+            op_id = f"node{self.parent.parent.id}_tile{self.parent.id}_core{self.id}_op{op_index}"
+            self.parent.parent.parent.monitor.mark_operation_executed(op_id, execution_time)
+
     def reset(self):
         """Reset the core and its components"""
         self.cache.reset()
-        self.vfu.reset()
+        self.fvfu.reset()
+        self.ivfu.reset()
         for mvmu in self.mvmus:
             mvmu.reset()
 
@@ -198,7 +236,8 @@ class Core:
 
         # then add stats from all other components
         stats_dict.merge(self.cache.get_stats())
-        stats_dict.merge(self.vfu.get_stats())
+        stats_dict.merge(self.fvfu.get_stats())
+        stats_dict.merge(self.ivfu.get_stats())
         for mvmu in self.mvmus:
             stats_dict.merge(mvmu.get_stats())
 

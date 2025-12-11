@@ -1,3 +1,4 @@
+import copy
 import json
 import logging
 import os
@@ -10,6 +11,7 @@ import yaml
 from numpy.typing import NDArray
 
 from .config import Config
+from .debug_monitor import SimulationMonitor
 from .node import Node
 from .ops import CoreOp, Operation, TileOp
 from .stats import StatsDict
@@ -19,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 class RAMwich:
-    def __init__(self, json_config_file: str, yaml_config_file: str, ops_file: str, weights_file: str = None):
+    def __init__(self, json_config_file: str, yaml_config_file: str, ops_file: str, params_file: str = None):
         # Load base configuration from JSON file
         if not os.path.exists(json_config_file):
             raise FileNotFoundError(f"Configuration file {json_config_file} not found")
@@ -27,7 +29,6 @@ class RAMwich:
         with open(json_config_file) as f:
             if json_config_file.endswith(".json"):
                 json_config = json.load(f)
-                print("config.json loaded")
             else:
                 raise ValueError(f"Unsupported config format: {json_config_file}. Use JSON.")
 
@@ -38,7 +39,6 @@ class RAMwich:
         with open(yaml_config_file) as f:
             if yaml_config_file.endswith(".yaml"):
                 yaml_config = yaml.safe_load(f)
-                print("config.yaml loaded")
             else:
                 raise ValueError(f"Unsupported config format: {yaml_config_file}. Use YAML.")
 
@@ -57,8 +57,11 @@ class RAMwich:
         self.load_operations(ops_file)
 
         # Load weights if provided
-        if weights_file:
-            self.load_weights(weights_file)
+        if params_file:
+            self.load_params(params_file)
+
+        # Debug monitor instance (will be initialized in run())
+        self.monitor = None
 
     def _merge_configs(self, json_config: dict, yaml_config: dict) -> dict:
         """
@@ -66,28 +69,27 @@ class RAMwich:
         JSON config values override YAML config values for the same keys.
         For nested dictionaries, performs a deep merge.
         """
-        if not yaml_config:
-            return json_config
-
-        merged = json_config.copy()
+        base = copy.deepcopy(yaml_config) if yaml_config else {}
 
         # Deep merge function for nested dictionaries
-        def deep_merge(original, override):
+        def deep_merge(original: dict, override: dict):
             for key, value in override.items():
-                if key in original and isinstance(original[key], dict) and isinstance(value, dict):
+                if isinstance(value, dict) and isinstance(original.get(key), dict):
                     deep_merge(original[key], value)
                 else:
                     original[key] = value
 
-        deep_merge(merged, json_config)
-        return merged
+        if json_config:
+            deep_merge(base, json_config)
+
+        return base
 
     def _build_architecture(self) -> list[Node]:
         """Build the hierarchical architecture based on configuration"""
         nodes = []
 
         for node_id in range(self.config.num_nodes):
-            node = Node(id=node_id, config=self.config)
+            node = Node(id=node_id, parent=self, config=self.config)
             nodes.append(node)
 
         return nodes
@@ -131,7 +133,7 @@ class RAMwich:
             except ValueError as e:
                 logger.warning(str(e))
 
-    def load_weights(self, file_path: str):
+    def load_params(self, file_path: str):
         """Load weights from a NPZ file and organize by node/tile/core/mvmu hierarchy"""
         if not os.path.exists(file_path):
             logger.error(f"Weight file {file_path} not found")
@@ -141,29 +143,41 @@ class RAMwich:
         if file_path.endswith(".npz"):
             weight_data = np.load(file_path)
 
-            # Define the expected format pattern
-            pattern = r"^node(\d+)_tile(\d+)_core(\d+)_mvmu(\d+)$"
+            # Define the expected format patterns
+            weight_pattern = r"^weight_node(\d+)_tile(\d+)_core(\d+)_mvmu(\d+)$"
+            vector_pattern = r"^vector_node(\d+)_tile(\d+)_core(\d+)_reg(\d+)$"
+            legacy_weight_pattern = r"^node(\d+)_tile(\d+)_core(\d+)_mvmu(\d+)$"
 
             for key in weight_data.files:
-                # Validate the key format
-                match = re.match(pattern, key)
-                if not match:
-                    logger.warning(f"Skipping weight with invalid key format: {key}")
-                    continue
-
-                # Extract IDs from regex groups
-                node_id = int(match.group(1))
-                tile_id = int(match.group(2))
-                core_id = int(match.group(3))
-                mvmu_id = int(match.group(4))
+                weight_match = re.match(weight_pattern, key)
+                vector_match = re.match(vector_pattern, key)
+                legacy_weight_match = re.match(legacy_weight_pattern, key)
 
                 try:
-                    node = self.get_node(node_id)
-                    tile = node.get_tile(tile_id)
-                    core = tile.get_core(core_id)
-                    mvmu = core.get_mvmu(mvmu_id)
+                    if weight_match or legacy_weight_match:
+                        match = weight_match or legacy_weight_match
+                        node_id = int(match.group(1))
+                        tile_id = int(match.group(2))
+                        core_id = int(match.group(3))
+                        mvmu_id = int(match.group(4))
 
-                    mvmu.load_weights(weight_data[key])
+                        node = self.get_node(node_id)
+                        tile = node.get_tile(tile_id)
+                        core = tile.get_core(core_id)
+                        mvmu = core.get_mvmu(mvmu_id)
+                        mvmu.load_weights(weight_data[key])
+                    elif vector_match:
+                        node_id = int(vector_match.group(1))
+                        tile_id = int(vector_match.group(2))
+                        core_id = int(vector_match.group(3))
+                        register_id = int(vector_match.group(4))
+
+                        node = self.get_node(node_id)
+                        tile = node.get_tile(tile_id)
+                        core = tile.get_core(core_id)
+                        core.load_vector(register_id, weight_data[key])
+                    else:
+                        logger.warning(f"Skipping weight with invalid key format: {key}")
                 except IndexError:
                     logger.error(f"Invalid component ID in key: {key}")
                 except Exception as e:
@@ -209,17 +223,31 @@ class RAMwich:
             logger.error(f"Activation data length {length} exceeds EDRAM size {self.config.tile_config.edram_size}")
             return
 
-        # Convert activation data to fixed-point representation (using int)
-        activation_data = (activation_data * (1 << self.config.data_config.activation_frac_bits)).astype(np.int32)
-
         # Load activation data into the first tile of the first node
         node = self.get_node(0)
         tile = node.get_tile(0)
-        tile.edram.cells[:length] = activation_data
+        tile.edram.cells[:length] = activation_data.view(np.uint32)
+        tile.edram.type_bits[:length] = True  # Assuming activations are floats
         tile.dram_controller.valid[:length] = True
 
-    def run(self, activation: Union[str, NDArray] = None):
-        """Run the simulation with operations from the specified file"""
+    def run(
+        self,
+        activation: Union[str, NDArray] = None,
+        timeout: int = 100000,
+        save_time: int = None,
+        enable_debug_monitor: bool = True,
+        debug_file: str = None,
+    ):
+        """
+        Run the simulation with operations from the specified file.
+
+        Args:
+            activation: Input activation data (file path or numpy array)
+            timeout: Maximum simulation time before timeout (in cycles)
+            save_time: Specific time to save debug info (if None, only saves on timeout)
+            enable_debug_monitor: Enable debug monitoring to detect stuck simulations
+            debug_file: Path to save debug information (default: debug_output_<timestamp>.txt)
+        """
 
         # Load activations if provided
         if activation is not None:
@@ -234,14 +262,29 @@ class RAMwich:
         for node in self.nodes:
             processes.append(self.env.process(node.run(self.env)))
 
+        # Add debug monitor if enabled
+        if enable_debug_monitor:
+            self.monitor = SimulationMonitor(self, timeout=timeout, save_time=save_time, debug_file=debug_file)
+            monitor_process = self.env.process(self.monitor.monitor_process(self.env))
+            processes.append(monitor_process)
+
         # Run simulation until all node processes complete
         if processes:
-            self.env.run(until=simpy.AllOf(self.env, processes))
+            try:
+                self.env.run(until=simpy.AllOf(self.env, processes))
+            except RuntimeError as e:
+                if "timeout" in str(e).lower():
+                    logger.error(f"Simulation timed out: {e}")
+                    raise
+                else:
+                    raise
         else:
             logger.warning("No node processes to run. Please check the operations file.")
 
         logger.info(f"Simulation completed at time {self.env.now}")
         # summarize_results(self.nodes)
+        stats = self.get_stats()
+        logger.info(stats.print())
 
     def reset(self):
         """Reset the simulator state"""

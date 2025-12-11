@@ -1,111 +1,152 @@
 # RAMwich
 
-RAMwich is a simulator for heterogeneous RRAM and SRAM CiM architectures.
+RAMwich is a cycle-accurate simulator designed for heterogeneous Compute-in-Memory (CiM) architectures, supporting both RRAM and SRAM technologies. It allows researchers and developers to model, simulate, and evaluate the performance, energy efficiency, and area of various CiM configurations. Built with `simpy`, it provides a flexible event-driven simulation environment.
 
-## How to run
+## Features
 
-```shell
+- **Heterogeneous Architecture Support**: Model architectures with both RRAM and SRAM CiM macros.
+- **Cycle-Accurate Simulation**: Precise timing analysis using `simpy`.
+- **Configurable**: Define architecture structure and component specifications via JSON and YAML configuration files.
+- **Detailed Metrics**: Obtain statistics on latency, energy consumption, and area.
+- **Workload Support**: Run neural network workloads defined by operation sequences and parameters.
+
+## Workflow
+
+RAMwich works in conjunction with the [Hybrid-CiM-compiler]. The compiler takes a high-level model description (e.g., in C++) and generates the necessary input files for the simulator:
+
+1.  **Operations (`ops.json`)**: The sequence of operations to be executed by the hardware.
+2.  **Weights (`weights.npz`)**: The model parameters (converted from `weights.json`).
+3.  **Configuration (`config.json`)**: The architecture configuration derived from the compilation process.
+
+To generate these files, refer to the `Hybrid-CiM-compiler` documentation.
+
+## Architecture Overview
+
+RAMwich models a hierarchical architecture composed of the following levels:
+
+1.  **Node**: The top-level entity containing multiple tiles.
+2.  **Tile**: Contains a set of Cores, an eDRAM buffer, and a Network-on-Chip (NoC) router for inter-tile communication.
+3.  **Core**: The processing unit containing a set of MVMUs (Matrix-Vector Multiplication Units), a Vector Functional Unit (VFU) for non-linear operations, and local registers.
+4.  **MVMU**: The compute engine (Crossbar array) responsible for matrix-vector multiplication.
+
+## Configuration
+
+RAMwich uses a dual-configuration system:
+
+*   **JSON Configuration**: Defines the high-level architecture structure (e.g., number of nodes, tiles, cores, MVMUs).
+*   **YAML Configuration**: Defines the detailed hardware specifications for components (e.g., ADC/DAC precision, memory sizes, energy costs).
+
+Key configuration parameters include:
+*   `num_nodes`: Number of nodes in the system.
+*   `num_tiles_per_node`: Number of tiles per node.
+*   `num_cores_per_tile`: Number of cores per tile.
+*   `num_mvmus_per_core`: Number of MVMUs per core.
+
+## Supported Operations
+
+The simulator supports a variety of operations defined in JSON format:
+
+*   **Memory Operations**: `load`, `store`, `set`, `copy`
+*   **Compute Operations**:
+    *   `mvm`: Matrix-Vector Multiplication using the crossbar arrays.
+    *   `fvfu`: Floating-point Vector Functional Unit operations (e.g., `add`, `mul`, `sig`, `tanh`, `relu`).
+    *   `ivfu`: Integer Vector Functional Unit operations (e.g., `add`, `sub`, `and`, `or`).
+*   **Control Flow**: `hlt` (Halt).
+*   **Communication**: `send`, `receive` (Inter-tile communication).
+
+## Installation
+
+1.  Clone the repository.
+2.  Install the required Python packages:
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+## Usage
+
+To run the simulator, use `run.py` with the necessary configuration and data files. Ensure that the `src` directory is in your `PYTHONPATH`.
+
+```bash
 export PYTHONPATH="$PWD/src:$PYTHONPATH"
-python run.py --config <config_file> --ops <ops_file> --weight <weight_file> --activation <activation_file>
+python run.py \
+  --JSONConfig <path_to_json_config> \
+  --YAMLConfig <path_to_yaml_config> \
+  --ops <path_to_ops_json> \
+  [--params <path_to_params_npz>] \
+  [--activation <path_to_activation_npy>] \
+  [--timeout <cycles>] \
+  [--no-debug]
 ```
 
-## Test
+### Arguments
 
-To test loading operations and weights:
+-   `--JSONConfig`: Path to the JSON configuration file defining the architecture structure.
+-   `--YAMLConfig`: Path to the YAML configuration file defining component specifications.
+-   `--ops`: Path to the JSON file containing the operations to be executed.
+-   `--params`: (Optional) Path to the NPZ file containing model parameters (weights).
+-   `--activation`: (Optional) Path to the NPY file containing input activations.
+-   `--timeout`: (Optional) Simulation timeout in cycles (default: 100000).
+-   `--no-debug`: (Optional) Disable debug monitoring.
 
-```shell
+## Output Metrics
+
+Upon completion, RAMwich provides a summary of statistics, including:
+
+*   **Activation Count**: Total number of activations.
+*   **Dynamic Energy**: Energy consumed by active switching and computation.
+*   **Leakage Energy**: Static energy consumption over the simulation time.
+*   **Area**: Total silicon area estimate.
+
+## Testing
+
+You can run various tests to verify the simulator's functionality.
+
+**Test loading operations and weights:**
+
+```bash
 export PYTHONPATH="$PWD/src:$PYTHONPATH"
 python tests/test_load.py
 ```
 
-To test MVMU:
+**Test MVMU (Matrix-Vector Multiplication Unit):**
 
-```shell
+```bash
 export PYTHONPATH="$PWD/src:$PYTHONPATH"
-python tests/test_mvm.py
+python tests/test_mvmu.py
 ```
 
-To test DRAM controller:
+**Test DRAM Controller:**
 
-```shell
+```bash
 export PYTHONPATH="$PWD/src:$PYTHONPATH"
 python -m pytest tests/test_dram_controller.py
 ```
 
-To test all core features:
+**Test Core Features:**
 
-```shell
+```bash
 export PYTHONPATH="$PWD/src:$PYTHONPATH"
 python tests/test_core_features.py
 ```
 
-To test all core and tile features:
+**Test Tile Features:**
 
-```shell
+```bash
 export PYTHONPATH="$PWD/src:$PYTHONPATH"
 python tests/test_tile_features.py
 ```
 
-To test a single MLP run on MNIST:
+**Test MLP on MNIST (Single Batch):**
 
-```shell
+```bash
 export PYTHONPATH="$PWD/src:$PYTHONPATH"
 python tests/test_mlp_on_mnist_single.py
 ```
 
-To test multiple batch of MNIST on MLP, adjust num_workers in test_mlp_on_mnist_multi.py, then run:
+**Test MLP on MNIST (Multi-Batch):**
 
-```shell
+```bash
 export PYTHONPATH="$PWD/src:$PYTHONPATH"
 python tests/test_mlp_on_mnist_multi.py
 ```
-
-
-
-## TODO
-
-### ETA: 2 days
-
-- [x] convert puma simulator config file to .yaml file that can be read by RAMwich
-- [x] convert puma compiler output .puma to .json files that conform to ops.py definitions/load_operations
-- [x] test the RAMwich simulator, verify that it can load operations and build architecture
-
-### ETA: 2 days
-
-- [x] convert puma config .yaml files that can be read by RAMwich/dac_config adc_config
-- [x] convert puma compiler output .weight to .json files that conform to load_weights
-- [x] modify stats class according to puma simulator
-
-### ETA: 1 week (1 day for each unit)
-
-- [x] move the puma simulator functional simultion logic to RAMwich (add details in mvmu/adc/alu, need to decompose this task into smaller tasks later) Here is a more detailed plan:
-  - [x] implement all core visitor methods
-    - [x] implement and test MVMU components(xbar, adc, dac, sna etc.)
-    - [x] implement mvm method in MVMU for visitor
-    - [x] implement and test core components for calculation(cache, alu)
-    - [x] implement visitor method for set, copy, mvm and vfu
-    - [x] implement and test core and tile components for load and store(dram, dram controller etc.)
-    - [x] implement visitor method for load and store
-  - [x] implement all tile visitor methods (send and receive)
-  - [x] test the run time, make sure it is faster than original simulator.
-  - [x] run timing simulation, check with puma that cycles match
-  - [x] run functional simulation, verify that accuracy match
-- [x] test the RAMwich simulator with mlp, verify that cycles, energy, and area are aligned with puma
-
-### ETA: 2 days
-
-- [x] test the RAMwich simulator with mlp, verify that accuracy is aligned
-- [x] Add multi-batch function
-
-### ETA
-
-- [ ] Add SRAM CIM support for inference (2 to 3 days)
-- [ ] Verify all parameters of blocks
-- [ ] Run test on LeNet-5, ResNet-20, parallel-CNN, DS-CNN
-
-### misc
-
-- [x] save/load weight in npy
-- [ ] recalculate MVM latency
-- [ ] redesign receive logic
-- [ ] Do rusults visualize

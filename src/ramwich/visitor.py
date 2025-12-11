@@ -102,8 +102,9 @@ class CoreDecodeVisitor(CommonVisitor):
 class CoreExecutionTimingVisitor(CoreVisitor):
     """Visitor for calculating operation execution timing"""
 
-    def __init__(self, config):
+    def __init__(self, config, type_id):
         self.config = config
+        self.type_id = type_id
 
     def visit_load(self, op):
         # This should not be used for load operations
@@ -122,9 +123,10 @@ class CoreExecutionTimingVisitor(CoreVisitor):
         return self.config.core_config.dataMem_lat
 
     def visit_fvfu(self, op):
-        """Calculate VFU execution time"""
-        # To be implemented: placeholder value
-        return 1
+        """Calculate FVFU execution time"""
+        return self.config.core_config.fvfu_lat * (
+            (op.vec + self.config.core_config.num_alu_per_ivfu - 1) // self.config.core_config.num_alu_per_ivfu
+        )
 
     def visit_ivfu(self, op):
         """Calculate Integer VFU execution time"""
@@ -136,12 +138,35 @@ class CoreExecutionTimingVisitor(CoreVisitor):
 
     def visit_mvm(self, op):
         """Calculate MVM execution time"""
-        # This is now synchronized with PUMA. Needs to be recalculated
-        return self.config.mvmu_config.adc_config.lat * (
-            (self.config.data_config.activation_width + self.config.mvmu_config.dac_config.resolution - 1)
-            // self.config.mvmu_config.dac_config.resolution
-            + 2
-        )
+
+        # Fetch nested configs from the mvmu_config (Config does not expose xbar/dac/adc directly)
+        mvmu = self.config.mvmu_configs[self.type_id]
+        xbar = mvmu.xbar_config
+        dac = mvmu.dac_config
+        adc = mvmu.adc_config
+
+        num_iter = mvmu.num_iterations
+
+        max_cycles = 0
+
+        # if RRAM, use adc to read out
+        if mvmu.have_rram_xbar:
+            adc_cycles = adc.lat * mvmu.num_columns_per_adc * mvmu.num_iterations
+            cycles = (
+                adc_cycles + xbar.xbar_lat + dac.lat + mvmu.sna_lat + xbar.inMem_lat + xbar.outMem_lat + mvmu.snh_lat
+            )
+            max_cycles = max(max_cycles, cycles)
+        if mvmu.have_sram_xbar:
+            if len(mvmu.sram_mvm_indices):
+                mac_cycles = xbar.macu_lat * num_iter * mvmu.num_columns_per_macu
+                cycles = mac_cycles + xbar.inMem_lat + xbar.outMem_lat + mvmu.sna_lat
+                max_cycles = max(max_cycles, cycles)
+            if len(mvmu.sram_ewmvm_indices):
+                smac_cycles = xbar.smacu_lat * num_iter * mvmu.num_columns_per_macu
+                cycles = smac_cycles + xbar.inMem_lat + xbar.outMem_lat + mvmu.snh_lat
+                max_cycles = max(max_cycles, cycles)
+
+        return max_cycles
 
     def visit_hlt(self, op):
         return 1  # Minimal time unit for halt
@@ -152,7 +177,7 @@ class CoreExecutionVisitor(CoreVisitor):
 
     def __init__(self, core):
         self.core = core
-        self.timing_visitor = CoreExecutionTimingVisitor(core.config)
+        self.timing_visitor = CoreExecutionTimingVisitor(core.config, core.core_type)
 
     def visit_load(self, op):
         # Create an event to signal when the load operation is complete
@@ -246,9 +271,9 @@ class CoreExecutionVisitor(CoreVisitor):
         a = self.core.read_from_register(op.read_1, op.vec)
         if op.read_2 is not None:
             b = self.core.read_from_register(op.read_2, op.vec)
-            result = self.core.fvfu.calculate(op.opcode, a, b)
+            result = self.core.fvfu.calculate(op.opcode, a, b, op.imm)
         else:
-            result = self.core.fvfu.calculate(op.opcode, a)
+            result = self.core.fvfu.calculate(op.opcode, a, imm=op.imm)
         self.core.write_to_register(op.dest, result)
 
         # return the done event to the caller

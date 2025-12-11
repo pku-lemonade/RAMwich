@@ -14,30 +14,27 @@ class MVMUConfig(BaseModel):
 
     data_config: DataConfig = Field(default_factory=DataConfig)
 
-    snh_lat: float = Field(default=1, description="Single sample and holder processing latency")
+    snh_lat: int = Field(default=1, description="Single sample and holder processing latency")
     snh_pow_leak: float = Field(default=9.7 * 10 ** (-7), description="Single sample and holder leakage power")
     snh_pow_dyn: float = Field(
         default=9.7 * 10 ** (-6) - 9.7 * 10 ** (-7), description="Single sample and holder dynamic power"
     )
     snh_area: float = Field(default=0.00004 / 8 / 128, description="Single sample and holder area")
 
-    mux_lat: float = Field(default=0, description="Single MUX processing latency")
-    mux_pow_leak: float = Field(default=0, description="Single MUX leakage power")
-    mux_pow_dyn: float = Field(default=0, description="Single MUX dynamic power")
-    mux_area: float = Field(default=0, description="Single MUX area")
+    mux_lat: int = Field(default=0, description="Single MUX processing latency")
+    mux_pow_leak: float = Field(default=0.001, description="Single MUX leakage power")
+    mux_pow_dyn: float = Field(default=0.01893, description="Single MUX dynamic power")
+    mux_area: float = Field(default=0.000005, description="Single MUX area")
 
-    sna_lat: float = Field(default=1, description="Single shift and adder processing latency")
-    sna_pow_leak: float = Field(default=0.005, description="Single shift and adder leakage power")
-    sna_pow_dyn: float = Field(default=0.05 - 0.005, description="Single shift and adder dynamic power")
-    sna_area: float = Field(default=0.00006, description="Single shift and adder area")
+    sna_lat: int = Field(default=1, description="Single shift and adder processing latency")
+    sna_pow_leak: float = Field(default=0.001, description="Single shift and adder leakage power")
+    sna_pow_dyn: float = Field(default=0.158, description="Single shift and adder dynamic power")
+    sna_area: float = Field(default=0.000031, description="Single shift and adder area")
 
     num_columns_per_adc: int = Field(default=16, description="Number of columns per ADC")
     num_adc_per_xbar: int = Field(default=None, init=False, description="Number of ADCs per crossbar")
 
-    num_columns_per_calculator: int = Field(default=128, description="Number of columns per SRAM CIM calculator")
-    num_calculator_per_xbar: int = Field(
-        default=None, init=False, description="Number of SRAM CIM calculators per crossbar"
-    )
+    num_columns_per_macu: int = Field(default=16, description="Number of columns per SRAM CIM MAC unit")
 
     dac_config: DACConfig = Field(default_factory=DACConfig)
     xbar_config: XBARConfig = Field(default_factory=XBARConfig)
@@ -58,15 +55,25 @@ class MVMUConfig(BaseModel):
     num_iterations: int = Field(default=None, init=False, description="Number of iterations for one forward pass")
 
     # Precomputed SRAM-specific typing and indices (to avoid recomputation per unit)
-    sram_xbar_types: list[str] = Field(default_factory=list, init=False, description="Type per SRAM xbar: INT/EXP/MANT")
+    sram_xbar_types: list[str] = Field(
+        default_factory=list, init=False, description="Type per SRAM xbar: INT/EXPW/EXPA/MANT"
+    )
     sram_mvm_indices: list[int] = Field(
         default_factory=list, init=False, description="SRAM xbars needing linear MVM (INT,MANT)"
     )
-    sram_exp_indices: list[int] = Field(
-        default_factory=list, init=False, description="SRAM xbars needing exp shift-add (EXP,MANT)"
+    sram_ewmvm_indices: list[int] = Field(
+        default_factory=list, init=False, description="SRAM xbars needing exp weight MVM (EXPW,MANT)"
+    )
+    sram_eaa_indices: list[int] = Field(
+        default_factory=list, init=False, description="SRAM xbars needing exp activation accumulate (EXPA,MANT)"
     )
     sram_mant_indices: list[int] = Field(
         default_factory=list, init=False, description="SRAM xbars needing MANT processing (MANT only)"
+    )
+    expw_partition_indices: list[list[int]] = Field(
+        default_factory=list,
+        init=False,
+        description="Bit indices grouped per EXPW partition",
     )
 
     @model_validator(mode="after")
@@ -125,7 +132,7 @@ class MVMUConfig(BaseModel):
         pl = self.data_config.part_length
         df = self.data_config.data_format
         for i, fmt in enumerate(df):
-            if fmt in ("EXP", "MANT"):
+            if fmt in ("EXPA", "EXPW", "MANT"):
                 for j in range(wp[i], wp[i] + pl[i]):
                     # Bits are indexed from LSB=0; is_bit_rram was built LSB->MSB
                     if self.is_bit_rram[-j - 1]:
@@ -141,7 +148,9 @@ class MVMUConfig(BaseModel):
         # Precompute SRAM xbar types and masks/indices in SRAM-local order
         self.sram_xbar_types = []
         self.sram_mvm_indices = []
-        self.sram_exp_indices = []
+        self.sram_eaa_indices = []
+        self.sram_ewmvm_indices = []
+        self.sram_mant_indices = []
 
         if self.have_sram_xbar:
             # Build list of (global_xbar_idx, sram_local_idx)
@@ -159,10 +168,23 @@ class MVMUConfig(BaseModel):
                     # Populate indices according to desired behavior
                     if xbar_type in ("INT", "MANT"):
                         self.sram_mvm_indices.append(sram_local)
-                    if xbar_type in ("EXP", "MANT"):
-                        self.sram_exp_indices.append(sram_local)
+                    if xbar_type in ("EXPA"):
+                        self.sram_eaa_indices.append(sram_local)
+                    if xbar_type in ("EXPW", "MANT"):
+                        self.sram_ewmvm_indices.append(sram_local)
                     if xbar_type == "MANT":
                         self.sram_mant_indices.append(sram_local)
                     sram_local += 1
+
+        # Build summary of partitions typed as EXPW and MANT
+        self.expw_partition_indices = []
+
+        for part_idx, fmt in enumerate(self.data_config.data_format):
+            start_bit = self.data_config.weight_partition[part_idx]
+            part_len = self.data_config.part_length[part_idx]
+            indices = list(range(start_bit, start_bit + part_len))
+
+            if fmt in ["EXPW", "MANT"]:
+                self.expw_partition_indices.append(indices)
 
         return self

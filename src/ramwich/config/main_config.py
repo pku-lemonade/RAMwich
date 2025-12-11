@@ -42,4 +42,43 @@ class Config(BaseModel):
     def validate_and_calculate(self):
         self.tile_config.edram_size = self.tile_config.edram_size_in_KB * 1024 * 8 // 16  # 16 for 16-bit activation
 
+        # Normalize the data-config list to an int-keyed dictionary
+        data_cfg_map: dict[int, DataConfig]
+        if isinstance(self.data_config_list, list):  # Allow list-style config inputs
+            data_cfg_map = dict(enumerate(self.data_config_list))
+        else:
+            data_cfg_map = {int(k): v for k, v in self.data_config_list.items()}
+        object.__setattr__(self, "data_config_list", data_cfg_map)
+
+        # Normalize mvmu_configs to an int-keyed dictionary and wire the proper data config per type
+        mvmu_cfgs_raw = self.mvmu_configs
+        if isinstance(mvmu_cfgs_raw, list):  # Allow list-style config inputs
+            mvmu_cfg_map: dict[int, MVMUConfig] = {}
+            for idx, cfg in enumerate(mvmu_cfgs_raw):
+                key = cfg.mvmu_type if cfg.mvmu_type is not None else idx
+                mvmu_cfg_map[int(key)] = cfg
+        else:
+            mvmu_cfg_map = {int(k): v for k, v in mvmu_cfgs_raw.items()}
+
+        for mvmu_type, mvmu_cfg in mvmu_cfg_map.items():
+            data_cfg = data_cfg_map.get(mvmu_type)
+            if data_cfg is not None:
+                mvmu_cfg.data_config = data_cfg.model_copy(deep=True)
+                mvmu_cfg.calculate_derived_values()
+        object.__setattr__(self, "mvmu_configs", mvmu_cfg_map)
+
+        # Ensure the default mvmu_config matches the specialized config if available
+        default_mvmu_cfg = self.mvmu_config
+        if default_mvmu_cfg is not None:
+            default_type = default_mvmu_cfg.mvmu_type
+            specialized_cfg = mvmu_cfg_map.get(default_type)
+            if specialized_cfg is not None:
+                object.__setattr__(self, "mvmu_config", specialized_cfg)
+            else:
+                data_cfg = data_cfg_map.get(default_type)
+                if data_cfg is not None:
+                    default_mvmu_cfg.data_config = data_cfg.model_copy(deep=True)
+                    default_mvmu_cfg.calculate_derived_values()
+                    object.__setattr__(self, "mvmu_config", default_mvmu_cfg)
+
         return self

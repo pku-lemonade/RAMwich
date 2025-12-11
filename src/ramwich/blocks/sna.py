@@ -58,7 +58,12 @@ class SNAArray:
         self.stats = SNAStats(config=self.mvmu_config)
 
     def calculate(
-        self, mvm_data: NDArray[np.int32], exp_data: NDArray[np.int32], current_value: NDArray[np.int32], bits: int
+        self,
+        mvm_data: NDArray[np.int32],
+        eaa_data: NDArray[np.int32],
+        ewmvm_data: NDArray[np.int32],
+        current_value: NDArray[np.int32],
+        bits: int,
     ):
         """Performs the Shift and Add (SNA) operation on the input data
 
@@ -69,7 +74,8 @@ class SNAArray:
 
         Args:
             mvm_data: 2D array with shape (num_xbar_per_mvmu, num_adc_per_xbar) - MVM outputs (need iteration shift)
-            exp_data: 2D array with shape (num_xbar_per_mvmu, num_adc_per_xbar) - EXP outputs (no iteration shift)
+            eaa_data: 2D array with shape (num_xbar_per_mvmu, num_adc_per_xbar) - EAA outputs (no iteration shift)
+            ewmvm_data: 1D array with shape (num_adc_per_xbar) - EWMVM outputs (need iteration shift, but already shifted for place)
             current_value: Current accumulated value in output register
             bits: Number of bits to shift for this iteration (activation bit position)
 
@@ -80,8 +86,8 @@ class SNAArray:
         if mvm_data.shape != self.input_shape:
             raise ValueError(f"MVM data shape {mvm_data.shape} does not match SNA array shape {self.input_shape}")
 
-        if exp_data.shape != self.input_shape:
-            raise ValueError(f"EXP data shape {exp_data.shape} does not match SNA array shape {self.input_shape}")
+        if eaa_data.shape != self.input_shape:
+            raise ValueError(f"EAA data shape {eaa_data.shape} does not match SNA array shape {self.input_shape}")
 
         if len(current_value) != self.mvmu_config.num_adc_per_xbar:
             raise ValueError(
@@ -96,13 +102,16 @@ class SNAArray:
         mvm_result = np.sum(mvm_shifted, axis=0)
         mvm_result = mvm_result << bits  # Apply iteration shift to MVM
 
-        # Process EXP data: apply intra-partition shifts only (NO iteration shift)
-        exp_shifted = exp_data.astype(np.int64) << self.shift_bits
-        exp_result = np.sum(exp_shifted, axis=0)
-        # NO iteration shift for EXP - it's already properly positioned
+        # Process EAA data: apply intra-partition shifts only (NO iteration shift)
+        eaa_shifted = eaa_data.astype(np.int64) << self.shift_bits
+        eaa_result = np.sum(eaa_shifted, axis=0)
+        # NO iteration shift for EAA - it's already properly positioned
+
+        # Process EWMVM data: apply iteration shift only (NO intra-partition shift)
+        ewmvm_result = ewmvm_data.astype(np.int64) << bits  # Apply iteration shift to EWMVM
 
         # Combine both results
-        result = mvm_result + exp_result
+        result = mvm_result + eaa_result + ewmvm_result
 
         # Update stats
         self.stats.operations += self.size

@@ -1,17 +1,19 @@
 from typing import ClassVar
+
 from pydantic import BaseModel, Field, model_validator
+
 
 class XBARConfig(BaseModel):
     """Crossbar and its IO register configuration"""
 
     # XBAR in memory lookup tables
-    INMEM_LAT_DICT: ClassVar[dict[int, int]] = {32: 1, 64: 1, 128: 1, 256: 1}
-    INMEM_POW_DYN_READ_DICT: ClassVar[dict[int, int]] = {32: 0.3, 64: 0.7, 128: 1.7, 256: 4.7}
-    INMEM_POW_DYN_WRITE_DICT: ClassVar[dict[int, int]] = {32: 0.1, 64: 0.1, 128: 0.16, 256: 0.2}
-    INMEM_POW_LEAK_DICT: ClassVar[dict[int, int]] = {32: 0.009, 64: 0.02, 128: 0.04, 256: 0.075}
-    INMEM_AREA_DICT: ClassVar[dict[int, int]] = {32: 0.00015, 64: 0.00033, 128: 0.00078, 256: 0.0019}
+    INMEM_LAT_DICT: ClassVar[dict[int, int]] = {32: 1, 64: 1, 128: 2, 256: 2}
+    INMEM_POW_DYN_READ_DICT: ClassVar[dict[int, float]] = {32: 0.28, 64: 0.50, 128: 0.92, 256: 0.92}
+    INMEM_POW_DYN_WRITE_DICT: ClassVar[dict[int, float]] = {32: 0.30, 64: 0.40, 128: 0.58, 256: 0.58}
+    INMEM_POW_LEAK_DICT: ClassVar[dict[int, float]] = {32: 0.035, 64: 0.081, 128: 0.151, 256: 0.151}
+    INMEM_AREA_DICT: ClassVar[dict[int, float]] = {32: 0.000888364, 64: 0.00191931, 128: 0.00378474, 256: 0.00378474}
 
-    inMem_lat: float = Field(default=None, init=False, description="Crossbar input memory latency")
+    inMem_lat: int = Field(default=None, init=False, description="Crossbar input memory latency")
     inMem_pow_dyn_read: float = Field(default=None, init=False, description="Crossbar input memory dynamic read power")
     inMem_pow_dyn_write: float = Field(
         default=None, init=False, description="Crossbar input memory dynamic write power"
@@ -20,53 +22,53 @@ class XBARConfig(BaseModel):
     inMem_area: float = Field(default=None, init=False, description="Crossbar input memory area")
 
     # XBAR lookup tables
-    XBAR_LAT_DICT: ClassVar[dict[int, int]] = {32: 32, 64: 64, 128: 128, 256: 256}
-    XBAR_POW_DICT: ClassVar[dict[int, int]] = {32: 0.01875, 64: 0.075, 128: 0.3, 256: 1.2}
-    XBAR_AREA_DICT: ClassVar[dict[int, int]] = {32: 1.5625e-6, 64: 6.25e-6, 128: 2.5e-5, 256: 1.0e-4}
+    XBAR_LAT_DICT: ClassVar[dict[int, int]] = {32: 1, 64: 1, 128: 1, 256: 1}
+    XBAR_POW_DICT: ClassVar[dict[int, float]] = {32: 0.02874, 64: 0.05701, 128: 0.11211, 256: 0.15480}
+    XBAR_AREA_DICT: ClassVar[dict[int, float]] = {32: 2.6214e-5, 64: 5.2428e-5, 128: 1.04865e-4, 256: 2.0971e-5}
 
-    xbar_lat: float = Field(default=None, init=False, description="Crossbar latency")
+    xbar_lat: int = Field(default=None, init=False, description="Crossbar latency")
     xbar_pow: float = Field(default=None, init=False, description="Crossbar power")
     xbar_pow_leak: float = Field(default=0, description="Crossbar leakage power")
     xbar_area: float = Field(default=None, init=False, description="Crossbar area")
 
     SRAM_XBAR_LAT_DICT: ClassVar[dict[int, int]] = {32: 1, 64: 1, 128: 1, 256: 1}
-    SRAM_XBAR_POW_DYN_DICT: ClassVar[dict[int, int]] = {32: 0.32, 64: 0.64, 128: 1.28, 256: 2.56}
-    SRAM_XBAR_POW_LEAK_DICT: ClassVar[dict[int, int]] = {32: 0.02, 64: 0.08, 128: 0.32, 256: 1.28}
-    SRAM_XBAR_AREA_DICT: ClassVar[dict[int, int]] = {32: 0.00012, 64: 0.00049, 128: 0.00196, 256: 0.00784}
+    SRAM_XBAR_POW_DYN_DICT: ClassVar[dict[int, float]] = {32: 0.06394, 64: 0.12687, 128: 0.0143025, 256: 0.34447}
+    SRAM_XBAR_POW_LEAK_DICT: ClassVar[dict[int, float]] = {32: 0.093, 64: 0.094, 128: 0.095, 256: 0.138}
+    SRAM_XBAR_AREA_DICT: ClassVar[dict[int, float]] = {32: 5.5509e-4, 64: 1.1101e-3, 128: 2.2203e-3, 256: 4.4407e-3}
 
-    sram_xbar_lat: float = Field(default=None, init=False, description="Crossbar latency")
+    sram_xbar_lat: int = Field(default=None, init=False, description="Crossbar latency")
     sram_xbar_pow_dyn: float = Field(default=None, init=False, description="Crossbar power")
     sram_xbar_pow_leak: float = Field(default=None, init=False, description="Crossbar leakage power")
     sram_xbar_area: float = Field(default=None, init=False, description="Crossbar area")
 
-    CALCULATOR_LAT_DICT: ClassVar[dict[int, int]] = {32: 6, 64: 7, 128: 8, 256: 9}
-    CALCULATOR_POW_LEAK_DICT: ClassVar[dict[int, int]] = {32: 0.02, 64: 0.04, 128: 0.08, 256: 0.16}
-    CALCULATOR_POW_DYN_DICT: ClassVar[dict[int, int]] = {32: 3.24, 64: 6.98, 128: 14.56, 256: 29.82}
-    CALCULATOR_AREA_DICT: ClassVar[dict[int, int]] = {32: 0.000058, 64: 0.000127, 128: 0.000265, 256: 0.000545}
+    macu_lat: int = Field(default=3, description="Single MAC processing latency")
+    macu_pow_leak: float = Field(default=0.00444, description="Single MAC leakage power")
+    macu_pow_dyn: float = Field(default=0.04013, description="Single MAC dynamic power")
+    macu_area: float = Field(default=0.000221, description="Single MAC area")
 
-    calculator_lat: float = Field(default=None, init=False, description="Single SRAM CIM calculator processing latency")
-    calculator_pow_leak: float = Field(default=None, init=False, description="Single SRAM CIM calculator leakage power")
-    calculator_pow_dyn: float = Field(default=None, init=False, description="Single SRAM CIM calculator dynamic power")
-    calculator_area: float = Field(default=None, init=False, description="Single SRAM CIM calculator area")
+    smacu_lat: int = Field(default=3, description="Single SRAM CIM calculator processing latency")
+    smacu_pow_leak: float = Field(default=0.00671, description="Single SRAM CIM calculator leakage power")
+    smacu_pow_dyn: float = Field(default=0.05338, description="Single SRAM CIM calculator dynamic power")
+    smacu_area: float = Field(default=0.000343, description="Single SRAM CIM calculator area")
 
     # XBAR out memory lookup tables
-    OUTMEM_LAT_DICT: ClassVar[dict[int, int]] = {32: 1, 64: 1, 128: 1, 256: 1}
-    OUTMEM_POW_DYN_DICT: ClassVar[dict[int, int]] = {32: 0.1, 64: 0.1, 128: 0.16, 256: 0.2}
-    OUTMEM_POW_LEAK_DICT: ClassVar[dict[int, int]] = {32: 0.009, 64: 0.02, 128: 0.04, 256: 0.075}
-    OUTMEM_AREA_DICT: ClassVar[dict[int, int]] = {32: 0.00015, 64: 0.00033, 128: 0.00078, 256: 0.0019}
+    OUTMEM_LAT_DICT: ClassVar[dict[int, int]] = {32: 1, 64: 1, 128: 2, 256: 2}
+    OUTMEM_POW_DYN_DICT: ClassVar[dict[int, float]] = {32: 0.29, 64: 0.45, 128: 0.75, 256: 0.75}
+    OUTMEM_POW_LEAK_DICT: ClassVar[dict[int, float]] = {32: 0.035, 64: 0.081, 128: 0.151, 256: 0.151}
+    OUTMEM_AREA_DICT: ClassVar[dict[int, float]] = {32: 0.000888364, 64: 0.00191931, 128: 0.00378474, 256: 0.00378474}
 
-    outMem_lat: float = Field(default=None, init=False, description="Crossbar output memory latency")
+    outMem_lat: int = Field(default=None, init=False, description="Crossbar output memory latency")
     outMem_pow_dyn: float = Field(default=None, init=False, description="Crossbar output memory dynamic write power")
     outMem_pow_leak: float = Field(default=None, init=False, description="Crossbar output memory leakage power")
     outMem_area: float = Field(default=None, init=False, description="Crossbar output memory area")
 
     # Set default values for derived fields instead of None
-    xbar_ip_lat: float = Field(default=100.0, description="XBAR input processing latency")
+    xbar_ip_lat: int = Field(default=100, description="XBAR input processing latency")
     xbar_ip_pow: float = Field(default=1.37 * 2.0 - 1.04, description="XBAR input processing power")
-    xbar_op_lat: float = Field(default=20.0 * 12.8, description="XBAR output processing latency")
+    xbar_op_lat: int = Field(default=256, description="XBAR output processing latency")
     xbar_op_pow: float = Field(default=4.44 * 3.27 / 12.8, description="XBAR output processing power")
-    xbar_rd_lat: float = Field(default=328.0 * 1000 * (1 / 32.0), description="XBAR read latency")
-    xbar_wr_lat: float = Field(default=351.0 * 1000 * (1 / 32.0), description="XBAR write latency")
+    xbar_rd_lat: int = Field(default=10250, description="XBAR read latency")
+    xbar_wr_lat: int = Field(default=10969, description="XBAR write latency")
     xbar_rd_pow: float = Field(
         default=208.0 * 1000 * (1 / 32.0) / (328.0 * 1000 * (1 / 32.0)), description="XBAR read power"
     )
@@ -74,12 +76,12 @@ class XBARConfig(BaseModel):
         default=676.0 * 1000 * (1 / 32.0) / (328.0 * 1000 * (1 / 32.0)), description="XBAR write power"
     )
 
-    rram_conductance_min: float = Field(default=0, description="Min value of RRAM conductance")
-    rram_conductance_max: float = Field(default=1, description="Max value of RRAM conductance")
+    rram_conductance_min: float = Field(default=9.8e-6, description="Min value of RRAM conductance (S)")
+    rram_conductance_max: float = Field(default=1.67e-4, description="Max value of RRAM conductance (S)")
 
     xbar_size: int = Field(default=128, description="Crossbar size")
-    noise_sigma: float = Field(default=0.01, description="RRAM read and calculate noise sigma")
-    has_noise: bool = Field(default=False, description="Whether to add noise to the crossbar")
+    noise_sigma: float = Field(default=1e-6, description="RRAM read and calculate noise sigma")
+    has_noise: bool = Field(default=True, description="Whether to add noise to the crossbar")
 
     @model_validator(mode="after")
     def calculate_derived_values(self):
@@ -107,12 +109,5 @@ class XBARConfig(BaseModel):
             self.sram_xbar_pow_dyn = self.SRAM_XBAR_POW_DYN_DICT[self.xbar_size]
             self.sram_xbar_area = self.SRAM_XBAR_AREA_DICT[self.xbar_size]
             self.sram_xbar_pow_leak = self.SRAM_XBAR_POW_LEAK_DICT[self.xbar_size]
-
-        # Override calculator parameters based on xbar_size if it differs from default
-        if self.xbar_size in self.CALCULATOR_LAT_DICT:
-            self.calculator_lat = self.CALCULATOR_LAT_DICT[self.xbar_size]
-            self.calculator_pow_leak = self.CALCULATOR_POW_LEAK_DICT[self.xbar_size]
-            self.calculator_pow_dyn = self.CALCULATOR_POW_DYN_DICT[self.xbar_size]
-            self.calculator_area = self.CALCULATOR_AREA_DICT[self.xbar_size]
 
         return self

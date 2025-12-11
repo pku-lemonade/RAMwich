@@ -56,8 +56,8 @@ class RRAMXbarArray:
         if weights.shape != expected_shape:
             raise ValueError(f"Expected weights shape {expected_shape}, got {weights.shape}")
 
-        self.pos_xbar = np.maximum(weights, 0)
-        self.neg_xbar = np.maximum(-weights, 0)
+        self.pos_xbar = np.maximum(weights, self.xbar_config.rram_conductance_min)
+        self.neg_xbar = np.maximum(-weights, self.xbar_config.rram_conductance_min)
 
     def __repr__(self):
         return f"Xbar({self.id}, size={self.size})"
