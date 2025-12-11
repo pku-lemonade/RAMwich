@@ -65,7 +65,7 @@ class DataConfig(BaseModel):
         valid_formats = {"INT", "EXPW", "EXPA", "MANT"}
         for fmt in df:
             if fmt not in valid_formats:
-                raise ValueError(f"Invalid data format: {fmt}. Supported formats are INT, EXP, MANT.")
+                raise ValueError(f"Invalid data format: {fmt}. Supported formats are INT, EXPW, EXPA, MANT.")
 
         # Note: RRAM/SRAM capability checks depend on architecture and are validated in MVMUConfig
         return self

@@ -32,7 +32,7 @@ class SRAMCIMUnitStats(BaseModel):
         # - ewmvm_operations: EXP(W) MVM on all iters -> xbar + calculator + mac
         dyn_xbar = self.config.sram_xbar_pow_dyn * (self.mac_operations + self.eaa_operations + self.ewmvm_operations)
         dyn_mvm = self.config.macu_pow_dyn * self.mac_operations
-        # dyn_eaa   = (self.config.sram_xbar_pow_dyn + self.config.calculator_pow_dyn * self.num_calculator_per_xbar) * self.eaa_operations
+        # TODO dyn_eaa   = (self.config.sram_xbar_pow_dyn + self.config.calculator_pow_dyn * self.num_calculator_per_xbar) * self.eaa_operations
         dyn_ewmvm = self.config.smacu_pow_dyn * self.ewmvm_operations
         stats = Stats(
             activation_count=self.mac_operations + self.eaa_operations + self.ewmvm_operations,

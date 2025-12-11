@@ -285,7 +285,6 @@ class RAMwich:
         # summarize_results(self.nodes)
         stats = self.get_stats()
         logger.info(stats.print())
-        
 
     def reset(self):
         """Reset the simulator state"""
