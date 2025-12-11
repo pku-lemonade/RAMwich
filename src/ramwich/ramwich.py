@@ -84,6 +84,28 @@ class RAMwich:
 
         return base
 
+    def _merge_configs(self, json_config: dict, yaml_config: dict) -> dict:
+        """
+        Merge YAML and JSON configurations.
+        JSON config values override YAML config values for the same keys.
+        For nested dictionaries, performs a deep merge.
+        """
+        if not yaml_config:
+            return json_config
+
+        merged = json_config.copy()
+
+        # Deep merge function for nested dictionaries
+        def deep_merge(original, override):
+            for key, value in override.items():
+                if key in original and isinstance(original[key], dict) and isinstance(value, dict):
+                    deep_merge(original[key], value)
+                else:
+                    original[key] = value
+
+        deep_merge(merged, json_config)
+        return merged
+
     def _build_architecture(self) -> list[Node]:
         """Build the hierarchical architecture based on configuration"""
         nodes = []
